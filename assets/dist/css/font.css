@@ -1,0 +1,98 @@
+/* CircularStd @font-face kit */
+@font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-Black.otf") format("opentype");
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-BlackItalic.otf") format("opentype");
+    font-weight: 800;
+    font-style: italic;
+  }
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-BoldItalic.otf") format("opentype");
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-SemiBold.otf") format("opentype");
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-SemiBoldItalic.otf") format("opentype");
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-MediumItalic.otf") format("opentype");
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-Semilight.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-SemilightItalic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-LightItalic.otf") format("opentype");
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-Thin.otf") format("opentype");
+    font-weight: 100;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Branding";
+    src: url("../fonts/Branding-ThinItalic.otf") format("opentype");
+    font-weight: 100;
+    font-style: italic;
+  }
+  

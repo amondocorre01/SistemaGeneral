@@ -1,0 +1,309 @@
+body {
+    font-family: Branding !important;
+}
+
+.info{
+    font-size: 13px;
+}
+
+label {
+    font-family: Branding !important;
+    font-weight: 500;
+}
+
+#paper-bg {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-right: 1px solid #eee;
+    height: auto;
+ }
+
+ .oculto {
+    display: none;
+ }
+ .bg-yaigo{
+    background-color: #7545D1 !important;
+    color: white;
+ }
+ .bg-capresso{
+    background-color: #E2232A !important;
+    color: white;
+ }
+ .bg-pedidos-ya{
+    background-color: #F52F41 !important;
+    color: white;
+ }
+ .bg-ser{
+    background-color: #FF5700 !important;
+    color: white;
+ }
+
+ .bg-yaigo:hover{
+    background-color: #7545D1 !important;
+    color: white;
+ }
+ .bg-capresso:hover{
+    background-color: #E2232A !important;
+    color: white;
+ }
+ .bg-pedidos-ya:hover{
+    background-color: #F52F41 !important;
+    color: white;
+ }
+ .bg-ser:hover{
+    background-color: #FF5700 !important;
+    color: white;
+ }
+ .btn-app:hover{
+    opacity: 0.8;
+ }
+
+ button.expanded, a.expanded, input.expanded {
+   width: 100%;
+   margin-left: 0;
+   margin-right: 0;
+   display:block;
+   height: max-content;
+   margin-bottom: 0.5rem;
+ }
+
+ img {
+   cursor:pointer;
+ }
+
+ .styled-table {
+   border-collapse: collapse;
+   margin: 25px 0;
+   font-size: 0.7rem;
+   font-family: Branding;
+   min-width: 400px;
+   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+   background-color: #98000d;
+   color: #ffffff;
+   text-align: left;
+
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+   border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+   background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+   border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+   font-weight: bold;
+   color: #009879;
+}
+ .nav-search{
+   width: 200px !important;
+   margin-right: 0px;
+ }
+
+ .in-cant{
+   width: 50px !important;
+ }
+
+ .derechaTotal{
+   padding-right: 20px;
+   float: right;
+}
+
+.tableProducts{
+   padding-top: 0px !important;
+   padding-bottom: 0px !important;
+}
+
+.btnSearchNit{
+   margin-bottom: 0rem !important;
+}
+
+.checksTiposPago{
+   padding-top: 0px !important;
+   padding-bottom: 0px !important;
+}
+
+.cardSearchNit{
+   padding-top: 4px !important;
+   padding-left: 0px !important;
+   padding-bottom: 0px !important;
+}
+.form-check-label {
+   font-weight: 0 !important;
+   font-size: 11px;
+}
+
+.thProd{
+   width: 190px !important;
+}
+
+.resumen {
+   font-size: 1.4rem;
+   font-weight: 600;
+   height: 2.8rem;
+}
+.orange{
+   background-color: #FF5700;
+}
+
+.blue{
+   background-color: #98000d;
+}
+
+.tableProducts td, .tableProducts th{
+   padding-left: 2px !important;
+   padding-right: 0px !important;
+   padding-top: 1px !important;
+   padding-bottom: 1px !important;
+   font-size: smaller;
+   vertical-align: middle !important;
+   line-height: initial !important;
+}
+.tableProducts th{
+   padding-top: 1.5px !important;
+   padding-bottom: 1.5px !important;
+   font-size: smaller;
+   vertical-align: middle !important;
+   line-height: initial !important;
+}
+
+.tableProducts .celdaProducts{
+   vertical-align: middle !important;
+}
+
+.btn-app{
+   margin: 0px !important;
+}
+
+.card-body-left{
+   padding: 0px !important;
+}
+
+.total-left{
+   display:inline;
+}
+
+.main-card-left{
+   width: 33%;
+   position: fixed;
+}
+.main-card-right{
+   width: 67%;
+}
+.btn-footer-card{
+   margin-top: -10px;
+   align-self: end;
+}
+
+.cat1 {
+    height: 5.5rem;
+    padding: 0.25rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.viewtable {
+   height: 4rem;
+   width: 100%;
+   display: table;
+   margin-bottom: 0.2rem;
+   margin-right: 0.2 !important;
+   cursor: pointer
+}
+
+.viewtable:hover {
+  background: #990012 !important;
+}
+
+
+
+
+.areacat {
+   padding-right: 4.5px !important; 
+    padding-left: 4.5px !important; 
+}
+
+.col-md-1-7 {
+   -ms-flex: 0 0 14.285714%;
+   flex: 0 0 14.285714%;
+   max-width: 14.285714%;
+}
+
+.col-md-2-5 {
+   -ms-flex: 0 0 20%;
+   flex: 0 0 20%;
+   max-width: 20%;
+}
+
+.btnDisable{
+   background-color:#EAEAEA;
+}
+
+.card-categorias{
+   padding: 0.7rem !important;
+}
+
+.ladoDerecho{
+   padding-right: 2px !important;
+   padding-left: 1px !important;
+}
+
+.badge {
+   font-size: 90%;
+}
+
+.bell-danger{
+   color: red !important;
+}
+
+.btn-sales-ini{
+   background-color: yellow !important;
+}
+
+.btn-sales-borrar{
+   background-color: #BE252D !important;
+   color: white;
+}
+
+.btn-sales-cliente{
+   background-color: green !important;
+   color: white;
+}
+
+.form-group{
+   margin-bottom: 0.3rem !important;
+}
+
+.name_sucursal{
+   background-color: #DD3B4A !important;
+   color: #FFFFFF !important;
+   padding: 2px;
+   border-radius: 5px;
+}
+.name_cliente{
+   background-color: #008000 !important;
+   color: #FFFFFF !important;
+   padding: 2px;
+   border-radius: 2px;
+   font-size: 12px;
+}
+
+.btn-aceptar-frutas{
+   margin-left: 22px !important;
+}
+
