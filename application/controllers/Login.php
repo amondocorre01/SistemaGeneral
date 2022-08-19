@@ -49,29 +49,11 @@ class Login extends CI_Controller {
 					$apellido_p_usuario = $row->AP_PATERNO;
 					$apellido_m_usuario = $row->AP_MATERNO;
 				}
-				//$acceso = $this->getPermisoSucursal($id_ubicacion,$id_usuario);
 				
 			}else{
 				$acceso = false;
 			}
-			$dosificacion = $this->getDosificacion();
-			if(count($dosificacion)==1){
-				$id_dosificacion = $dosificacion[0]->ID_DOSIFICACION;
-				$numero_autorizacion = $dosificacion[0]->N_AUTORIZACION;
-				$clave = $dosificacion[0]->LLAVE_DOSIFICACION;
-				$fecha_limite = $dosificacion[0]->FECHA_LIMITE;
-				$direccion_dosificacion = $dosificacion[0]->DIRECCION_SUCURSAL;
-				$telefono_dosificacion = $dosificacion[0]->TELEFONO;
-				$nit_dosificacion = $dosificacion[0]->NIT;
-				$departamentoPais_dosificacion = $dosificacion[0]->DEPARTAMENTO_Y_PAIS;
-				$this->session->set_userdata('departamentoPais_dosificacion',$departamentoPais_dosificacion);
-				$this->session->set_userdata('direccion_dosificacion',$direccion_dosificacion);
-				if($id_dosificacion == null){
-					$acceso = false;
-				}
-			}else{
-				$acceso= false;
-			}
+			
 			if(!$acceso){
 				$this->session->set_flashdata('msg', 'Acceso denegado');
 					redirect('login/index', 'refresh');
@@ -209,13 +191,6 @@ class Login extends CI_Controller {
 		$res=null;
 		$id_usuario = $this->session->userdata('id_usuario');
 		$sql = "EXEC ".PRE_SUC."GET_DATOS_TURNO ;";
-		$respuesta = $this->main->getQuery($sql);
-		return $respuesta;
-	}
-
-	function getDosificacion(){
-		$fecha= date('Y-m-d');
-		$sql = "EXEC ".PRE_SUC."GET_MAX_DOSIFICACION '$fecha';";
 		$respuesta = $this->main->getQuery($sql);
 		return $respuesta;
 	}
