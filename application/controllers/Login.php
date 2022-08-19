@@ -25,6 +25,8 @@ class Login extends CI_Controller {
 
     public function inicio()
 	{			
+		
+
 		$this->form_validation->set_rules('usuario', 'Usuario', 'required');
 		$this->form_validation->set_rules('password', 'Password Confirmation', 'required');
 
@@ -37,6 +39,7 @@ class Login extends CI_Controller {
 			$sql="select * FROM VENTAS_USUARIOS vu, SIREPE_EMPLEADO se  WHERE se.ID_EMPLEADO = vu.ID_EMPLEADO and  USUARIO = '$usuario' COLLATE SQL_Latin1_General_CP1_CS_AS AND CONTRASEÑA='$password';";
 			$res = $this->main->getQuery($sql);
 			if(count($res)>0){
+				$acceso = true;
 				$id_empleado=null;
 				$tipo_usuario=null;
 				foreach ($res as $row)
