@@ -145,7 +145,24 @@
 
                     case 'reimpresion':
                         echo $this->load->view('generico/apertura/reimpresion', null, TRUE);
-                    break;  
+                    break;
+                    
+                    case 'nuevo-usuario':
+                      $campos = "ID_CARGO AS ID, CONCAT_WS('-', AREA, NOMBRE_CARGO) AS TEXT";
+                                         $this->db->where('ESTADO', 1);
+                      $cargos = $this->main->getListSelect('SIREPE_CARGOS', $campos, ['TEXT'=>'ASC']);
+                      $datos['cargos'] = $this->main->dropdown($cargos, '--- Seleccione una opcion ---');
+
+                      $campos_afp = "ID_AFP,	NOMBRE_AFP";
+                      $afp = $this->main->getListSelect('SIREPE_AFP', $campos_afp, ['ID_AFP'=>'ASC']);
+                      $datos['afp'] = $this->main->dropdown($afp, '--- Seleccione una opcion ---');
+                                      
+                                      $this->db->where('ESTADO', 1);
+                      $ubicaciones =  $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION, DESCRIPCION', ['DESCRIPCION'=>'ASC']);
+                      $datos['ubicaciones'] = $this->main->dropdown($ubicaciones);
+
+                      $this->load->view('usuario/nuevo', $datos, FALSE);
+                    break;
 
                   }
                 }
@@ -155,7 +172,7 @@
             default :
               $tipo_usuario = $this->session->userdata('tipo_usuario'); 
               if($tipo_usuario != 'Global'){
-                echo $this->load->view('generico/apertura/index', null, TRUE);
+                echo $this->load->view('generico/inicio/index', null, TRUE);
               }
             break;
         }

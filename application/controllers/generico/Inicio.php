@@ -366,7 +366,7 @@ class Inicio extends CI_Controller {
     }
     
     public function obtenerMenuPrincipal($id_usuario, $data){
-        $sql="select * from ventas_acceso where NIVEL_SUPERIOR = 0 and tipo='menu' and estado=1 order by numero_orden;";
+        $sql="select * from ventas_acceso where NIVEL_SUPERIOR = 0 and ID_VENTAS_ACCESO != 23 and tipo='menu' and estado=1 order by numero_orden;";
         $res_sql = $this->main->getQuery($sql);
         $res='';
         foreach ($res_sql as $row)

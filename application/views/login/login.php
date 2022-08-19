@@ -142,8 +142,6 @@
 <!-- jQuery -->
 <!-- Bootstrap 4 -->
 <script src="<?=base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')?>"></script>
-<!-- ChartJS -->
-<script src="<?=base_url('assets/plugins/chart.js/Chart.min.js')?>"></script>
 <!-- Sparkline -->
 <script src="<?=base_url('assets/plugins/sparklines/sparkline.js')?>"></script>
 <!-- JQVMap -->

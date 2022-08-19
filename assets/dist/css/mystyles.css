@@ -307,3 +307,24 @@ label {
    margin-left: 22px !important;
 }
 
+.login-page, .register-page {
+   background-color: rgb(60,60,60) !important;
+}
+
+[class*=sidebar-dark-] {
+   background-color: darkred !important;
+}
+
+.row  {
+   margin-bottom: 1rem;
+}
+
+.btn {
+   color: white;
+   font-weight: 700;
+   font-size: 1.2rem;
+}
+
+i {
+   margin-right: 0.5rem;
+}

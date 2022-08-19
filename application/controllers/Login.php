@@ -24,39 +24,7 @@ class Login extends CI_Controller {
 	}
 
     public function inicio()
-	{	
-		$acceso = false;
-		$sucursal= $this->getSucursal(IP_SUCURSAL);
-		if(count($sucursal)==1){
-			foreach ($sucursal as $row)
-			{
-				$id_ubicacion = $row->ID_UBICACION;
-				$descripcion = $row->DESCRIPCION;
-				$tipo = $row->TIPO;
-				$correo = $row->CORREO;
-				$impresora = $row->IMPRESORA;
-				$ip_disponible = $row->IP_DISPONIBLE;
-			}
-			if($ip_disponible ==1){
-				$current_ip = $_SERVER['REMOTE_ADDR'];
-				//$current_ip = '177.222.102.26';//comentar esta linea para q compruebe con la ip publica
-				if(IP_SUCURSAL == $current_ip){
-					$acceso= true;
-					$this->session->set_userdata('impresora', $impresora);
-				}else{
-					$acceso=false;
-				}
-			}else{
-				//echo 'entrar sin comprobar ip';
-				$acceso= true;
-				$this->session->set_userdata('impresora', $impresora);
-			}
-		}
-		if(!$acceso){
-			$this->session->set_flashdata('msg', 'Acceso denegado');
-				redirect('login/index', 'refresh');
-		}
-		
+	{			
 		$this->form_validation->set_rules('usuario', 'Usuario', 'required');
 		$this->form_validation->set_rules('password', 'Password Confirmation', 'required');
 
@@ -81,7 +49,7 @@ class Login extends CI_Controller {
 					$apellido_p_usuario = $row->AP_PATERNO;
 					$apellido_m_usuario = $row->AP_MATERNO;
 				}
-				$acceso = $this->getPermisoSucursal($id_ubicacion,$id_usuario);
+				//$acceso = $this->getPermisoSucursal($id_ubicacion,$id_usuario);
 				
 			}else{
 				$acceso = false;
@@ -124,12 +92,7 @@ class Login extends CI_Controller {
 						//$this->abrirSesion($id_usuario);
 						$this->session->set_userdata($data);
 				  }else{
-					$cantidad_sesiones = $this->cantidadSesiones();
-					if($cantidad_sesiones!=0){
-						$this->session->set_flashdata('msg', 'Existe una sesion abierta, cierrela para abrir, o consulte con el Administrador');
-						redirect('login/index', 'refresh');
-						exit();
-					}
+					
 					$comprobar = $this->verificarEstadoTurno();
 					$cant= count($comprobar);
 					if($cant>0){
@@ -229,13 +192,6 @@ class Login extends CI_Controller {
 		if(count($respuesta)==1){
 			$res = $respuesta[0]->ID_CIERRE_APERTURA_TURNO;
 		}
-		return $res;
-	}
-
-	function getSucursal($ip){
-		$res = null;
-		$sql="select * FROM ID_UBICACION WHERE IP_PUBLICA = '$ip';";
-		$res = $this->main->getQuery($sql);
 		return $res;
 	}
 

@@ -24,8 +24,6 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="<?=base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')?>"></script>
-<!-- ChartJS -->
-<script src="<?=base_url('assets/plugins/chart.js/Chart.min.js')?>"></script>
 <!-- Sparkline -->
 <script src="<?=base_url('assets/plugins/sparklines/sparkline.js')?>"></script>
 <!-- JQVMap -->
@@ -51,6 +49,9 @@
 <!-- DAataTables-->
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
   <?=link_tag('https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css')?>
+
+   
+
    
 
 </body>

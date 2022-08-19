@@ -131,17 +131,15 @@ if(!function_exists('botones')) {
 }
 
 
-if(!function_exists('formas_pago')) {
-	function formas_pago($id_lista, $id_ubicacion) {
-
-		$CI =& get_instance();
-
-					$CI->db->where('ID_UBICACION', $id_ubicacion);
-					$CI->db->where('ID_NOMBRE_LISTA_PRECIOS', $id_lista);
-		$formas = 	$CI->main->getSelect('TIPOS_PAGO', 'FORMAS_PAGO');
-
-		return json_decode($formas->FORMAS_PAGO);
-
+if(!function_exists('strToHex')) {
+	function strToHex($string){
+		$hex = '';
+		for ($i=0; $i<strlen($string); $i++){
+			$ord = ord($string[$i]);
+			$hexCode = dechex($ord);
+			$hex .= substr('0'.$hexCode, -2);
+		}
+		return strToUpper($hex);
 	}
 }
 

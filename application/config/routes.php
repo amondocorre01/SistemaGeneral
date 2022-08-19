@@ -108,4 +108,9 @@ $route['imprimir-copia-factura'] = 'api/impresion/imprimirCopiaFactura';
 $route['abrir-gaveta'] = 'api/impresion/gaveta';
 
 
+/**  USUARIOS */
+$route['nuevo-usuario'] = 'usuario/nuevo';
+$route['guardar-usuario'] = 'usuario/save';
+
+
 
