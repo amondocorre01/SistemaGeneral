@@ -25,6 +25,8 @@ class Login extends CI_Controller {
 
     public function inicio()
 	{	
+		$acceso = true;
+
 		$this->form_validation->set_rules('usuario', 'Usuario', 'required');
 		$this->form_validation->set_rules('password', 'Password Confirmation', 'required');
 
@@ -53,24 +55,7 @@ class Login extends CI_Controller {
 			}else{
 				$acceso = false;
 			}
-			$dosificacion = $this->getDosificacion();
-			if(count($dosificacion)==1){
-				$id_dosificacion = $dosificacion[0]->ID_DOSIFICACION;
-				$numero_autorizacion = $dosificacion[0]->N_AUTORIZACION;
-				$clave = $dosificacion[0]->LLAVE_DOSIFICACION;
-				$fecha_limite = $dosificacion[0]->FECHA_LIMITE;
-				$direccion_dosificacion = $dosificacion[0]->DIRECCION_SUCURSAL;
-				$telefono_dosificacion = $dosificacion[0]->TELEFONO;
-				$nit_dosificacion = $dosificacion[0]->NIT;
-				$departamentoPais_dosificacion = $dosificacion[0]->DEPARTAMENTO_Y_PAIS;
-				$this->session->set_userdata('departamentoPais_dosificacion',$departamentoPais_dosificacion);
-				$this->session->set_userdata('direccion_dosificacion',$direccion_dosificacion);
-				if($id_dosificacion == null){
-					$acceso = false;
-				}
-			}else{
-				$acceso= false;
-			}
+			
 			if(!$acceso){
 				$this->session->set_flashdata('msg', 'Acceso denegado');
 					redirect('login/index', 'refresh');
@@ -85,46 +70,9 @@ class Login extends CI_Controller {
 					'nombre' => $nombre_usuario.' '.$apellido_p_usuario,
 					'loggin' => TRUE
 				  ];
-				  $this->session->set_userdata('id_ubicacion', $id_ubicacion);
-				  if($tipo_usuario === 'Global'){
-					
-						$this->session->set_userdata($data);
-				  }else{
-					
-					$comprobar = $this->verificarEstadoTurno();
-					$cant= count($comprobar);
-					if($cant>0){
-						$res_usuario_turno = $this->verificarUsuarioTurno($id_usuario);
-						if(count($res_usuario_turno)>0){
-							$id_apertura_turno = $this->getIdAperturaTurno(); 
-                    		$this->session->set_userdata('id_apertura_turno', $id_apertura_turno);
-							$this->session->set_userdata($data);
-							$this->session->set_userdata('acceso_menu_ventas', 'accept');
-							$this->abrirSesion($id_usuario);
-							$cant_ca=$this->getCierreAperturaTurno();
-							if(count($cant_ca)>0){
-								$monto = $cant_ca[0]->MONTO_APERTURA;
-								if($monto === null){
-									$this->session->set_userdata('acceso_menu_ventas', 'deny' );
-									$this->session->set_userdata('notification_ac', 'Atencion: Esta pendiente el registro del monto con el ingreso del turno. Para registrar la informacion ingrese en el menu lateral en la opcion APERTURA DE CAJA.');
-									$this->session->set_userdata('monto_apertura_pendiente', '1' );
-									$this->session->set_userdata('id_apertura_turno', $id_apertura_turno);
-									$this->session->set_userdata('notification_ac_link');
-									redirect('generico/inicio','refresh');
-								}
-							}
-							redirect('generico/inicio','refresh');
-						}else{
-							$this->session->set_flashdata('msg', 'Existe un turno abierto');
-							redirect('login/index', 'refresh');
-							exit();
-						}	
-					}else{
-						$this->abrirSesion($id_usuario);
-						$this->session->set_userdata($data);
-					}
-				  }
-				  
+				 
+					$this->session->set_userdata($data);
+				
 					redirect('generico/inicio','refresh');
 			}else{
 				$this->session->set_flashdata('msg', 'Escribir correctamente su usuario o contraseña');
@@ -140,10 +88,6 @@ class Login extends CI_Controller {
 
 	public function logout()
 	{
-		$tipo_usuario = $this->session->userdata('tipo_usuario'); 
-		if($tipo_usuario != 'Global'){
-			$this->eliminarSesion();
-		}
 		$this->session->sess_destroy();
 		redirect('login/index');
 	}
