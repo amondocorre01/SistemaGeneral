@@ -164,6 +164,11 @@
                       $this->load->view('usuario/nuevo', $datos, FALSE);
                     break;
 
+                    case 'dar-baja':
+                      $datos = null;
+                      $this->load->view('usuario/darbaja', $datos, FALSE);
+                    break;
+
                   }
                 }
               }

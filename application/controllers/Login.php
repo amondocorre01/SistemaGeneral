@@ -24,9 +24,7 @@ class Login extends CI_Controller {
 	}
 
     public function inicio()
-	{			
-		
-
+	{	
 		$this->form_validation->set_rules('usuario', 'Usuario', 'required');
 		$this->form_validation->set_rules('password', 'Password Confirmation', 'required');
 
@@ -36,10 +34,9 @@ class Login extends CI_Controller {
 			$password = $this->strToHex(trim($password));
 			$opcionTurno = set_value('abrirTurno');
 
-			$sql="select * FROM VENTAS_USUARIOS vu, SIREPE_EMPLEADO se  WHERE se.ID_EMPLEADO = vu.ID_EMPLEADO and  USUARIO = '$usuario' COLLATE SQL_Latin1_General_CP1_CS_AS AND CONTRASEÑA='$password';";
+			$sql="select * FROM VENTAS_USUARIOS vu, SIREPE_EMPLEADO se  WHERE se.ID_EMPLEADO = vu.ID_EMPLEADO AND se.ID_STATUS = 1  AND USUARIO = '$usuario' COLLATE SQL_Latin1_General_CP1_CS_AS AND CONTRASEÑA='$password';";
 			$res = $this->main->getQuery($sql);
 			if(count($res)>0){
-				$acceso = true;
 				$id_empleado=null;
 				$tipo_usuario=null;
 				foreach ($res as $row)
@@ -52,11 +49,28 @@ class Login extends CI_Controller {
 					$apellido_p_usuario = $row->AP_PATERNO;
 					$apellido_m_usuario = $row->AP_MATERNO;
 				}
-				
+								
 			}else{
 				$acceso = false;
 			}
-			
+			$dosificacion = $this->getDosificacion();
+			if(count($dosificacion)==1){
+				$id_dosificacion = $dosificacion[0]->ID_DOSIFICACION;
+				$numero_autorizacion = $dosificacion[0]->N_AUTORIZACION;
+				$clave = $dosificacion[0]->LLAVE_DOSIFICACION;
+				$fecha_limite = $dosificacion[0]->FECHA_LIMITE;
+				$direccion_dosificacion = $dosificacion[0]->DIRECCION_SUCURSAL;
+				$telefono_dosificacion = $dosificacion[0]->TELEFONO;
+				$nit_dosificacion = $dosificacion[0]->NIT;
+				$departamentoPais_dosificacion = $dosificacion[0]->DEPARTAMENTO_Y_PAIS;
+				$this->session->set_userdata('departamentoPais_dosificacion',$departamentoPais_dosificacion);
+				$this->session->set_userdata('direccion_dosificacion',$direccion_dosificacion);
+				if($id_dosificacion == null){
+					$acceso = false;
+				}
+			}else{
+				$acceso= false;
+			}
 			if(!$acceso){
 				$this->session->set_flashdata('msg', 'Acceso denegado');
 					redirect('login/index', 'refresh');
@@ -73,8 +87,7 @@ class Login extends CI_Controller {
 				  ];
 				  $this->session->set_userdata('id_ubicacion', $id_ubicacion);
 				  if($tipo_usuario === 'Global'){
-					base();
-						//$this->abrirSesion($id_usuario);
+					
 						$this->session->set_userdata($data);
 				  }else{
 					
@@ -87,7 +100,6 @@ class Login extends CI_Controller {
                     		$this->session->set_userdata('id_apertura_turno', $id_apertura_turno);
 							$this->session->set_userdata($data);
 							$this->session->set_userdata('acceso_menu_ventas', 'accept');
-							base();
 							$this->abrirSesion($id_usuario);
 							$cant_ca=$this->getCierreAperturaTurno();
 							if(count($cant_ca)>0){
@@ -108,7 +120,6 @@ class Login extends CI_Controller {
 							exit();
 						}	
 					}else{
-						base();
 						$this->abrirSesion($id_usuario);
 						$this->session->set_userdata($data);
 					}
@@ -194,6 +205,13 @@ class Login extends CI_Controller {
 		$res=null;
 		$id_usuario = $this->session->userdata('id_usuario');
 		$sql = "EXEC ".PRE_SUC."GET_DATOS_TURNO ;";
+		$respuesta = $this->main->getQuery($sql);
+		return $respuesta;
+	}
+
+	function getDosificacion(){
+		$fecha= date('Y-m-d');
+		$sql = "EXEC ".PRE_SUC."GET_MAX_DOSIFICACION '$fecha';";
 		$respuesta = $this->main->getQuery($sql);
 		return $respuesta;
 	}

@@ -113,4 +113,12 @@ $route['nuevo-usuario'] = 'usuario/nuevo';
 $route['guardar-usuario'] = 'usuario/save';
 
 
+/** API USUARIOS */
+$route['get-usuarios'] = 'api/usuarios';
+$route['dar-baja'] = 'api/usuarios/baja';
+$route['dar-alta'] = 'api/usuarios/alta';
+
+
+
+
 
