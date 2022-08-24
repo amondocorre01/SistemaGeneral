@@ -38,23 +38,24 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <?=form_label(lang('dni'), 'dni');?>
-                                <?=form_input('dni', null, ['class'=>'form-control', 'id'=>'dni', 'required'=>'required']);?>
+                                <?=form_input('dni', null, ['class'=>'form-control', 'id'=>'dni','minlength'=>'5', 'required'=>'required']);?>
                                 <div class="valid-feedback"></div>
                             </div>
                         </div>
 
                         <div class="col-md-2">
                             <div class="form-group" >
-                                <?=form_label("N° Telefono", 'telefono');?>
-                                <?=form_input(['name'=>'telefono', 'type'=>'text' ,'class'=>'form-control', 'pattern'=>'[4]{1}[0-9]{6}']);?>
+                                <?=form_label("N° Teléfono", 'telefono');?>
+                                <?=form_input(['name'=>'telefono', 'type'=>'text' ,'class'=>'form-control', 'maxlength'=>'7','pattern'=>'[4]{1}[0-9]{6}']);?>
                             </div>
                         </div>
 
                         <div class="col-md-2">
                             <div class="form-group" >
                                 <?=form_label("N° Celular", 'celular');?>
-                                <?=form_input(['name'=>'celular', 'type'=>'text' ,'class'=>'form-control', 'pattern'=>'[6-7]{1}[0-9]{7}', 'required'=>'required' ]);?>
+                                <?=form_input(['name'=>'celular', 'type'=>'text' ,'class'=>'form-control','maxlength'=>'8', 'pattern'=>'[6-7]{1}[0-9]{7}', 'required'=>'required' ]);?>
                             </div>
+                            
                         </div>
                     </div>
 
