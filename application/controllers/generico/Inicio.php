@@ -419,7 +419,7 @@ class Inicio extends CI_Controller {
                             </li>';
                         }else{
                             $res = $res.'<li class="nav-item">
-                            <a href="'.$url.'" class="nav-link">
+                            <a href="'.$url.'" class="nav-link">   
                             '.$row->ICONO.'
                             <p>'.$nombre.'</p>
                             </a>
@@ -449,7 +449,7 @@ class Inicio extends CI_Controller {
 
     public function verificarPermisoMenu($id_usuario, $id_nivel){
         $res = false;
-        $sql="select count(*) as cantidad from ventas_usuarios_acceso where ID_USUARIO = '$id_usuario' and ID_VENTAS_ACCESO = '$id_nivel';";
+        $sql="select count(*) as cantidad from VENTAS_USUARIOS_ACCESO where ID_USUARIO = '$id_usuario' and ID_VENTAS_ACCESO = '$id_nivel';";
         $res_sql = $this->main->getQuery($sql);
         $cantidad = $res_sql[0]->cantidad;
         if($cantidad != 0 ){
