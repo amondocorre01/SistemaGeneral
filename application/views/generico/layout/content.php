@@ -164,8 +164,19 @@
                       $this->load->view('usuario/nuevo', $datos, FALSE);
                     break;
 
-                    case 'dar-baja':
-                      $datos = null;
+                    case 'accesibilidad':
+                      $sucursales = $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION, DESCRIPCION', ['DESCRIPCION'=>'ASC'], ['ESTADO'=>1]);
+
+                      $campos = "ID_CARGO AS ID, CONCAT_WS('-', AREA, NOMBRE_CARGO) AS TEXT";
+
+                      $cargos = $this->main->getListSelect('SIREPE_CARGOS', $campos, ['TEXT'=>'ASC']);
+                      $datos['cargos'] = $this->main->dropdown($cargos, '');
+
+                      $campos_afp = "ID_AFP,	NOMBRE_AFP";
+                      $afp = $this->main->getListSelect('SIREPE_AFP', $campos_afp, ['ID_AFP'=>'ASC']);
+                      $datos['afp'] = $this->main->dropdown($afp, '');
+
+                      $datos['sucursales'] = $this->main->dropdown($sucursales, '');
                       $this->load->view('usuario/darbaja', $datos, FALSE);
                     break;
 

@@ -117,6 +117,8 @@ $route['guardar-usuario'] = 'usuario/save';
 $route['get-usuarios'] = 'api/usuarios';
 $route['dar-baja'] = 'api/usuarios/baja';
 $route['dar-alta'] = 'api/usuarios/alta';
+$route['set-ubicacion'] = 'api/usuarios/ubicacion';
+
 
 
 
