@@ -1,6 +1,9 @@
 <br>
 <br>
 <?php 
+
+    $resultado = null;
+   /*
     $fecha =$this->input->get('fecha');
     if($fecha)
     {
@@ -13,7 +16,8 @@
         $this->db->where('FECHA2 <=', date('Y-m-d').' 23:59:59');
     }
 
-    $resultado = json_encode($this->main->getListSelect(PRE_SUC.'VENTAS v', 'ROW_NUMBER() OVER(ORDER BY v.FECHA DESC) AS row, v.*', ['ID_VENTA_DOCUMENTO'=>'DESC']));
+   
+    $resultado = json_encode($this->main->getListSelect($PRE_SUC.'VENTAS v', 'ROW_NUMBER() OVER(ORDER BY v.FECHA DESC) AS row, v.*', ['ID_VENTA_DOCUMENTO'=>'DESC']));
 
     $id_menu = intval($this->input->get('vc'));
     $id_usuario = $this->session->id_usuario;
@@ -27,7 +31,7 @@
 
     $botones = $data->result();
     $botones = $botones[0]->BOTONES; 
-    $botones = json_decode($botones);
+    $botones = json_decode($botones);*/
 ?>
 
 <div class="row">
@@ -41,7 +45,7 @@
             <div class="col-offset-3 col-md-3">
                 <form action="<?=current_url()?>" method="GET" id="form_fecha">
                     <input name="fecha" type="date" class="form-control" id="fecha">
-                    <input  name="vc" type="hidden" id="fecha" value="42">
+                    <input  name="vc" type="hidden" id="fecha" value="<?=$id_menu?>">
                 </form>
             </div>
         </div>
@@ -60,7 +64,6 @@
 <script>
    $(document).ready(function(){
 
-
     var datos = <?=json_encode($botones)?>;
 
     let puede_a = datos.find(el => el.ID_VENTAS_BOTON == 1);
@@ -72,8 +75,6 @@
     let puede_io = datos.find(el => el.ID_VENTAS_BOTON == 3);
     var io = puede_io['ESTADO'];
 
-
-
     
 	   var table = $('#table').dataTable({
 	   data: <?php echo $resultado ?>,
@@ -83,14 +84,11 @@
     "pageLength": 15, select: {style: 'single' },
 
 language:{ search: "Buscar", lengthMenu: "Mostrar _MENU_", zeroRecords: "No se encontró nada",
-		   info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-		   infoEmpty: "No hay registros disponibles", infoFiltered: "(Filtrado de _MAX_ registros totales)",
-		   previous: "Anterior", oPaginate: { sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },
-		   oAria: {SortAscending:  ": Ordenar de manera ascendente", sSortDescending: ": Ordenar de manera descendente"},                  
+		   info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros", infoEmpty: "No hay registros disponibles", 
+           infoFiltered: "(Filtrado de _MAX_ registros totales)", previous: "Anterior", oPaginate: { sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },                  
         },      
 
 columns: [
-
 
 { title:"Accion", className: 'check-boy', data: null, orderable: false, className: 'text-center',
     render: function (data, type, full, meta) 
@@ -105,15 +103,16 @@ columns: [
 
          
         if(anular == true) {
-
             button += '<div class="btn-group" role="group" aria-label="Basic example">';
             button += '<form action="'+url_anular+'" method="post" id="anular'+data.ID_VENTA_DOCUMENTO+'">';
                 button += '<input name="id" type="hidden" value="'+data.ID_VENTA_DOCUMENTO+'"/>';
+                button += '<input name="db" type="hidden" value="<?=$db?>"/>';
+                button += '<input name="suf_suc" type="hidden" value="<?=$SUF_SUC?>"/>';
+                button += '<input name="id_menu" type="hidden" value="<?=$id_menu?>"/>';
                 button += '<button class="btn btn-primary btn-danger btn-md" type="submit" form="anular'+data.ID_VENTA_DOCUMENTO+'" title="Anular Factura">';
                     button +='<i class="las la-times"></i>';
                 button += '</button>';
             button += '</form>';
-
         }
         
         if(ic == true) {
@@ -185,7 +184,7 @@ $('#fecha').on('change', function(){
 
 
 function copia(id) {
-        $.post("<?=site_url('copia-factura')?>", {id: id})
+        $.post("<?=site_url('copia-factura')?>", {id: id,  pre_suc:'<?=$PRE_SUC?>'})
         .done(function( data ) {
             var url= "<?=site_url('imprimir-copia-factura')?>";
             window.open(url,'_blank');

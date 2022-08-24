@@ -14,24 +14,32 @@
     
         public function anular()
         {
-            $DB2 = $this->load->database('ventas', TRUE);
+            $db = $this->input->post('db');
+            $suf_suc = $this->input->post('suf_suc');
+            $id_menu = $this->input->post('id_menu');
+
+
+
+            $DB2 = $this->load->database($db, TRUE);
 
             $id = $this->input->post('id');
 
             $DB2->where('ID_VENTA_DOCUMENTO', $id);
-            $DB2->update('VENTA_DOCUMENTO'.SUF_SUC , ['ANULADO'=>1]);
+            $DB2->update('VENTA_DOCUMENTO'.$suf_suc , ['ANULADO'=>1]);
 
             $this->session->set_flashdata('anulado', 'SI');
             
 
-            redirect(site_url('generico/inicio?vc=42'),'refresh');
+            redirect(site_url('generico/inicio?vc='.$id_menu),'refresh');
         
         }
 
         public function copia()
         {
             $id = $this->input->post('id');
-            $result = $this->main->get(PRE_SUC.'VENTAS', ['ID_VENTA_DOCUMENTO'=>$id]);
+            $pre_suc = $this->input->post('pre_suc');
+
+            $result = $this->main->get($pre_suc.'VENTAS', ['ID_VENTA_DOCUMENTO'=>$id]);
 
             $literal = convertir($result->TOTAL_A_PAGAR);
     

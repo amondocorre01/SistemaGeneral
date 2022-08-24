@@ -95,7 +95,7 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 
-$db['ventas'] = array(
+$db['cineCenter'] = array(
 	'dsn'	=> '',
 	'hostname' => 'capresso.database.windows.net',
 	'username' => 'capresso',

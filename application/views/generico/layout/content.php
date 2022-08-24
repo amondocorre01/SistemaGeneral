@@ -169,6 +169,12 @@
                       $this->load->view('usuario/darbaja', $datos, FALSE);
                     break;
 
+                    case 'reimpresion-cine-center':
+                      $datos['db'] = 'cineCenter'; 
+                      $datos['sucursal'] = 'Cine Center';
+                     echo $this->load->view('generico/apertura/reimpresion', $datos, TRUE);
+                    break;
+
                   }
                 }
               }

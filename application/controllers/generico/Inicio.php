@@ -366,7 +366,7 @@ class Inicio extends CI_Controller {
     }
     
     public function obtenerMenuPrincipal($id_usuario, $data){
-        $sql="select * from ventas_acceso where NIVEL_SUPERIOR = 0 and ID_VENTAS_ACCESO != 23 and tipo='menu' and estado=1 order by numero_orden;";
+        $sql="select * from VENTAS_ACCESO where NIVEL_SUPERIOR = 0 and tipo='menu' and estado=1 order by numero_orden;";
         $res_sql = $this->main->getQuery($sql);
         $res='';
         foreach ($res_sql as $row)
@@ -377,7 +377,7 @@ class Inicio extends CI_Controller {
                 if($habilitado){
                     $res = $res.'<li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="fa fa-table nav-icon"></i>
+                        '.$row->ICONO.'
                         <p>
                         '.$nombre.'
                         <i class="fa fa-angle-left right"></i>
@@ -394,7 +394,7 @@ class Inicio extends CI_Controller {
     }
 
     public function obtenerSubMenu($id_usuario, $id_nivel_superior, $data){
-        $sql="select * from ventas_acceso where NIVEL_SUPERIOR = '$id_nivel_superior' and estado=1;";
+        $sql="select * from VENTAS_ACCESO where NIVEL_SUPERIOR = '$id_nivel_superior' and estado=1;";
         $res_sql = $this->main->getQuery($sql);
         $res='';
         foreach ($res_sql as $row)
@@ -413,14 +413,14 @@ class Inicio extends CI_Controller {
                             $url=site_url($link);
                             $res = $res.'<li class="nav-item">
                             <a href="'.$url.'" target="_blank" class="nav-link">
-                            <i class="fa fa-circle-o nav-icon"></i>
+                            '.$row->ICONO.'
                             <p>'.$nombre.'</p>
                             </a>
                             </li>';
                         }else{
                             $res = $res.'<li class="nav-item">
                             <a href="'.$url.'" class="nav-link">
-                            <i class="fa fa-circle-o nav-icon"></i>
+                            '.$row->ICONO.'
                             <p>'.$nombre.'</p>
                             </a>
                             </li>';
