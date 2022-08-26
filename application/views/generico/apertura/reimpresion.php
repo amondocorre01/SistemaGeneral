@@ -3,7 +3,7 @@
 <?php 
 
     $resultado = null;
-   /*
+   
     $fecha =$this->input->get('fecha');
     if($fecha)
     {
@@ -17,7 +17,7 @@
     }
 
    
-    $resultado = json_encode($this->main->getListSelect($PRE_SUC.'VENTAS v', 'ROW_NUMBER() OVER(ORDER BY v.FECHA DESC) AS row, v.*', ['ID_VENTA_DOCUMENTO'=>'DESC']));
+    $resultado = json_encode($this->main->getListSelect('PP_VENTAS v', 'ROW_NUMBER() OVER(ORDER BY v.FECHA DESC) AS row, v.*', ['ID_VENTA_DOCUMENTO'=>'DESC']));
 
     $id_menu = intval($this->input->get('vc'));
     $id_usuario = $this->session->id_usuario;
@@ -31,7 +31,7 @@
 
     $botones = $data->result();
     $botones = $botones[0]->BOTONES; 
-    $botones = json_decode($botones);*/
+    $botones = json_decode($botones);
 ?>
 
 <div class="row">
@@ -45,7 +45,7 @@
             <div class="col-offset-3 col-md-3">
                 <form action="<?=current_url()?>" method="GET" id="form_fecha">
                     <input name="fecha" type="date" class="form-control" id="fecha">
-                    <input  name="vc" type="hidden" id="fecha" value="<?=$id_menu?>">
+                    <input  name="vc" type="hidden" id="fecha" value="<?=$this->input->get('vc')?>">
                 </form>
             </div>
         </div>
@@ -106,8 +106,8 @@ columns: [
             button += '<div class="btn-group" role="group" aria-label="Basic example">';
             button += '<form action="'+url_anular+'" method="post" id="anular'+data.ID_VENTA_DOCUMENTO+'">';
                 button += '<input name="id" type="hidden" value="'+data.ID_VENTA_DOCUMENTO+'"/>';
-                button += '<input name="db" type="hidden" value="<?=$db?>"/>';
-                button += '<input name="suf_suc" type="hidden" value="<?=$SUF_SUC?>"/>';
+                button += '<input name="db" type="hidden" value="prueba"/>';
+                button += '<input name="suf_suc" type="hidden" value="PP_"/>';
                 button += '<input name="id_menu" type="hidden" value="<?=$id_menu?>"/>';
                 button += '<button class="btn btn-primary btn-danger btn-md" type="submit" form="anular'+data.ID_VENTA_DOCUMENTO+'" title="Anular Factura">';
                     button +='<i class="las la-times"></i>';
@@ -184,7 +184,7 @@ $('#fecha').on('change', function(){
 
 
 function copia(id) {
-        $.post("<?=site_url('copia-factura')?>", {id: id,  pre_suc:'<?=$PRE_SUC?>'})
+        $.post("<?=site_url('copia-factura')?>", {id: id,  pre_suc:'PP_'})
         .done(function( data ) {
             var url= "<?=site_url('imprimir-copia-factura')?>";
             window.open(url,'_blank');
