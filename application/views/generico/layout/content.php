@@ -177,6 +177,13 @@
                       $datos['afp'] = $this->main->dropdown($afp, '');
 
                       $datos['sucursales'] = $this->main->dropdown($sucursales, '');
+
+                      $campos_menu = "ID_VENTAS_ACCESO AS tt_key, NIVEL_SUPERIOR AS tt_parent, NOMBRE AS name";
+
+                      $this->db->where('ESTADO', 1);
+                      $menu = $this->main->getListSelect('VENTAS_ACCESO', $campos_menu, ['tt_parent'=>'ASC']);
+                      $datos['menuMain']  = json_encode($menu);
+
                       $this->load->view('usuario/darbaja', $datos, FALSE);
                     break;
 
@@ -184,6 +191,24 @@
                       $datos['db'] = 'cineCenter'; 
                       $datos['sucursal'] = 'Cine Center';
                      echo $this->load->view('generico/apertura/reimpresion', $datos, TRUE);
+                    break;
+
+                    case 'permisos':
+                                      $this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = SE.ID_EMPLEADO', 'left');
+                                      $this->db->where('vu.ID_EMPLEADO !=', null);
+                      $usuarios = $this->main->getListSelect('SIREPE_EMPLEADO se', 'vu.ID_USUARIO, NOMBRE_COMPLETO', ['NOMBRE_COMPLETO'=>'ASC']);
+
+                      $datos['usuarios'] = $this->main->dropdown($usuarios, '');
+                      echo $this->load->view('usuario/permisos', $datos, TRUE);
+                    break;
+
+                    case 'permisos-boton':
+                      $this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = SE.ID_EMPLEADO', 'left');
+                      $this->db->where('vu.ID_EMPLEADO !=', null);
+                      $usuarios = $this->main->getListSelect('SIREPE_EMPLEADO se', 'vu.ID_USUARIO, NOMBRE_COMPLETO', ['NOMBRE_COMPLETO'=>'ASC']);
+
+                      $datos['usuarios'] = $this->main->dropdown($usuarios, '');
+                      echo $this->load->view('usuario/boton', $datos, TRUE);
                     break;
 
                   }

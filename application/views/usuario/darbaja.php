@@ -40,7 +40,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-danger" id="confirmar">Confirmar Cambios</button>
+        <button type="button" class="btn btn-danger" id="confirmar">Confirmar</button>
       </div>
     </div>
   </div>
@@ -122,7 +122,7 @@
         <div class="col-md-4">
             <div class="form-group" >
                 <?=form_label("Cargo", 'cargos');?>
-                <?=form_dropdown('cargos', $cargos, null ,['id'=>'cargos', 'class'=>'form-control']);?>
+                <?=form_dropdown('cargos', $cargos, null ,['id'=>'cargos']);?>
             </div>
         </div>
 
@@ -172,7 +172,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-danger" id="confirmar_edicion">Confirmar Cambios</button>
+        <button type="button" class="btn btn-danger" id="confirmar_edicion">Confirmar</button>
       </div>
     </div>
   </div>
@@ -187,6 +187,10 @@
     $('#operacion').select2({
         placeholder: "Seleccione una opcion"
     });
+
+    $('#cargos').select2({
+        placeholder: "Seleccione una opcion"
+    });
     
     var table = $('#table').DataTable({
         ajax: { url: '<?=site_url('get-usuarios')?>' },
@@ -195,7 +199,7 @@
         info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
         infoFiltered: "(Filtrado de _MAX_ registros totales)",
         oPaginate: {sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },
-    },
+        },
         columns: [
             { title: 'Nombre completo', width:'20%',data: 'NOMBRE' },
             { title: 'Doc. Ident.', width:'10%' ,data: 'CI' },
@@ -225,9 +229,8 @@
                         button += '</button>';
 
                         button += '<button class="btn btn-xs edit palette-Amber-800 bg" data-toggle="modal" data-target="#editar" onclick="editEmpleado('+row.ID_EMPLEADO+',\''+row.NOMBRE+'\')">';
-                            button +='<i class="las la-user-edit"></i>';
-                            button += '</button>';
-
+                        button +='<i class="las la-user-edit"></i>';
+                        button += '</button>';
 
                         if(row.ID_USUARIO) {
 
@@ -291,6 +294,28 @@
         $('#nombre').append(nombre);
     }
 
+    function editEmpleado(id, nombre) {
+
+        $('#nombre2').empty();
+        $('#nombre2').append(nombre);
+
+        $.post("<?=site_url('get-empleado')?>", {id:id})
+        .done(function (data){
+
+            var empleado = JSON.parse(data);
+
+            $('#nombres').val(empleado.data.NOMBRE);
+            $('#appat').val(empleado.data.AP_PATERNO);
+            $('#apmat').val(empleado.data.AP_MATERNO);
+            $('#dni').val(empleado.data.CI);
+            $('input[name="telefono"]').val(empleado.data.TELEFONO);
+            $('input[name="celular"]').val(empleado.data.CELULAR);
+            $('input[name="nacimiento"]').val(empleado.data.FECHA_NACIMIENTO);
+            $('input[name="email"]').val(empleado.data.EMAIL);
+            $('#cargos').val(empleado.data.ID_CARGO).trigger('change');
+        });
+    }
+
     $('#confirmar').on('click', function(){
 
         var user = $('#sucursal').attr('data-user');
@@ -315,5 +340,19 @@
         }
     });
 
-    
+
+    function permisos(id, nombre) {
+
+        $.post("<?=site_url('get-menu')?>", {id: id} )
+
+            .done( function( data ) {
+
+               var datos = JSON.parse(data);
+                var armada
+
+                $.each(datos, function (i, v) { 
+                     
+                });
+            });
+    }
 </script>

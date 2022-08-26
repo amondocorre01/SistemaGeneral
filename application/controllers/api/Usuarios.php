@@ -14,6 +14,16 @@
             echo json_encode(['data'=>$usuarios]);
         }
 
+        public function empleado()
+        {
+            $campos = "ID_EMPLEADO, ID_STATUS, NOMBRE, AP_PATERNO, AP_MATERNO, CI, CELULAR, ID_AFP, FECHA_NACIMIENTO, EMAIL, TELEFONO, ID_CARGO, DIRECCION, FECHA_INGRESO, SEXO, SUELDO,CUENTA_BANCARIA";
+            
+                        $this->db->where('ID_EMPLEADO', $this->input->post('id'));
+            $empleado = $this->main->getSelect('SIREPE_EMPLEADO se', $campos);
+
+            echo json_encode(['data'=>$empleado]);
+        }
+
 
         public function baja() {
             $id = $this->input->post('id');
@@ -92,6 +102,90 @@
 
             echo json_encode($response);
         }
+
+
+        public function menu() {
+
+            $id = $this->input->post('id');
+           
+            $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ROW_NUMBER() OVER(ORDER BY NUMERO_ORDEN ASC) AS row, ID_VENTAS_ACCESO, NOMBRE, NUMERO_ORDEN, ( 
+                SELECT ID_VENTAS_ACCESO 
+                FROM VENTAS_USUARIOS_ACCESO vua 
+                WHERE vua.ID_USUARIO = '.$id.' AND 
+                vua.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO
+            ) AS ACCEDE');
+
+            echo $this->load->view('usuario/body/permisos', $data, TRUE);
+            
+        }
+
+        public function permisos() {
+
+           $habilitados = $this->input->post('escogidos');
+           $user = $this->input->post('usuarios');
+
+            $this->db->where('ID_USUARIO', $user);
+            $this->db->delete('VENTAS_USUARIOS_ACCESO');
+
+            $real = [];
+            foreach ($habilitados as $value) {
+
+                $temp['ID_USUARIO'] = $user;
+                $temp['ID_VENTAS_ACCESO'] = $value;
+                $temp['ESTADO'] = 1;
+
+                array_push($real, $temp);
+            }
+           
+            $this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $real);
+
+            $this->session->set_flashdata('cambios', 'cambios');
+            
+            
+            redirect('generico/inicio?vc='.$this->input->post('id_menu'),'refresh');
+        }
+
+        public function boton() {
+
+            $id = $this->input->post('id');
+           
+            $data['botones'] = $this->main->getListSelect('VENTAS_BOTON vb', 'ROW_NUMBER() OVER(ORDER BY ID_VENTAS_BOTON ASC) AS row, ID_VENTAS_BOTON, REFERENCIA_BOTON, ( 
+                SELECT ID_VENTAS_ACCESO_BOTON 
+                FROM VENTAS_ACCESO_BOTON vab 
+                WHERE vab.ID_USUARIO = '.$id.' AND 
+                vab.ID_VENTAS_BOTON = vb.ID_VENTAS_BOTON
+            ) AS ACCEDE');
+
+            echo $this->load->view('usuario/body/boton', $data, TRUE);
+            
+        }
+
+
+        public function botones() {
+
+            $habilitados = $this->input->post('escogidos');
+            $user = $this->input->post('usuarios');
+ 
+             $this->db->where('ID_USUARIO', $user);
+             $this->db->delete('VENTAS_ACCESO_BOTON');
+ 
+             $real = [];
+             foreach ($habilitados as $value) {
+ 
+                 $temp['ID_USUARIO'] = $user;
+                 $temp['ID_VENTAS_ACCESO_BOTON'] = $value;
+                 $temp['ESTADO'] = 1;
+ 
+                 array_push($real, $temp);
+             }
+            
+             $this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $real);
+ 
+             $this->session->set_flashdata('cambios', 'cambios');
+             
+             
+             redirect('generico/inicio?vc='.$this->input->post('id_menu'),'refresh');
+         }
     
     }
     

@@ -118,6 +118,12 @@ $route['get-usuarios'] = 'api/usuarios';
 $route['dar-baja'] = 'api/usuarios/baja';
 $route['dar-alta'] = 'api/usuarios/alta';
 $route['set-ubicacion'] = 'api/usuarios/ubicacion';
+$route['get-empleado'] = 'api/usuarios/empleado';
+$route['get-menu'] = 'api/usuarios/menu';
+$route['actualizar-permisos'] = 'api/usuarios/permisos';
+$route['get-permiso-boton'] = 'api/usuarios/boton';
+
+
 
 
 

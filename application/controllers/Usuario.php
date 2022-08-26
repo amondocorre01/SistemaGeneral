@@ -114,7 +114,7 @@
 									$temp3['ID_VENTAS_ACCESO'] = $m->ID_VENTAS_ACCESO;
 									$temp3['ESTADO'] = 0;
 
-									array_push($temp, $temp2);
+									array_push($temp, $temp3);
 								}
 
 								$this->db->insert_batch('VENTAS_PERMISO_SUCURSAL', $temp);

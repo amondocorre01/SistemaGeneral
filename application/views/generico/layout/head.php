@@ -54,13 +54,12 @@
   <?=link_tag(base_url('node_modules/select2/select2.css'))?>
   <?=link_tag('assets/plugins/select2-bootstrap4/select2-bootstrap4-theme/select2-bootstrap4.css')?>
   <script src="<?=base_url('node_modules/select2/select2.js')?>"></script>
-  
-
- 
-    <!-- BOOTSTRAP-SELECT -->
+   
+  <!-- BOOTSTRAP-SELECT -->
   <?=link_tag(base_url('node_modules/bootstrap-select/dist/css/bootstrap-select.css'))?>
   <script src="<?=base_url('node_modules/bootstrap-select/dist/js/bootstrap-select.js')?>"></script>
 
+  
 
 
   
