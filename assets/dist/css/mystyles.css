@@ -312,7 +312,7 @@ label {
 }
 
 [class*=sidebar-dark-] {
-   background-color: darkred !important;
+   background-color: rgb(56, 55, 55) !important;
 }
 
 .row  {
@@ -322,7 +322,7 @@ label {
 .btn {
    color: white;
    font-weight: 700;
-   font-size: 1.2rem;
+   font-size: 1rem;
 }
 
 i {

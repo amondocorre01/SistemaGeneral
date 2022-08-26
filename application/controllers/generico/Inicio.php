@@ -394,7 +394,7 @@ class Inicio extends CI_Controller {
     }
 
     public function obtenerSubMenu($id_usuario, $id_nivel_superior, $data){
-        $sql="select * from VENTAS_ACCESO where NIVEL_SUPERIOR = '$id_nivel_superior' and estado=1;";
+        $sql="select * from VENTAS_ACCESO where NIVEL_SUPERIOR = '$id_nivel_superior' and estado=1 and sistema_general=1";
         $res_sql = $this->main->getQuery($sql);
         $res='';
         foreach ($res_sql as $row)
