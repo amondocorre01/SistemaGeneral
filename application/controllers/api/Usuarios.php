@@ -147,12 +147,15 @@
 
         public function boton() {
 
-            $id = $this->input->post('id');
+            $id_usuario = $this->input->post('id_usuario');
+            $id_menu = $this->input->post('id_menu');
+
+
            
             $data['botones'] = $this->main->getListSelect('VENTAS_BOTON vb', 'ROW_NUMBER() OVER(ORDER BY ID_VENTAS_BOTON ASC) AS row, ID_VENTAS_BOTON, REFERENCIA_BOTON, ( 
                 SELECT ID_VENTAS_ACCESO_BOTON 
                 FROM VENTAS_ACCESO_BOTON vab 
-                WHERE vab.ID_USUARIO = '.$id.' AND 
+                WHERE vab.ID_USUARIO = '.$id_usuario.' AND vab.ID_VENTAS_ACCESO = '.$id_menu.' AND
                 vab.ID_VENTAS_BOTON = vb.ID_VENTAS_BOTON
             ) AS ACCEDE');
 

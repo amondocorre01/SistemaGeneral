@@ -17,7 +17,7 @@
     }
 
    
-    $resultado = json_encode($this->main->getListSelect('PP_VENTAS v', 'ROW_NUMBER() OVER(ORDER BY v.FECHA DESC) AS row, v.*', ['ID_VENTA_DOCUMENTO'=>'DESC']));
+    $resultado = json_encode($this->main->getListSelect('PP_VENTAS v', 'ROW_NUMBER() OVER(ORDER BY v.NUMERO_FACTURADO ASC) AS row, v.*'));
 
     $id_menu = intval($this->input->get('vc'));
     $id_usuario = $this->session->id_usuario;

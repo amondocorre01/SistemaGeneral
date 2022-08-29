@@ -206,8 +206,14 @@
                       $this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = SE.ID_EMPLEADO', 'left');
                       $this->db->where('vu.ID_EMPLEADO !=', null);
                       $usuarios = $this->main->getListSelect('SIREPE_EMPLEADO se', 'vu.ID_USUARIO, NOMBRE_COMPLETO', ['NOMBRE_COMPLETO'=>'ASC']);
-
                       $datos['usuarios'] = $this->main->dropdown($usuarios, '');
+                      
+                      $this->db->where('va.ESTADO', 1);
+                      $this->db->where('va.TIPO', 'acceso');
+                      $menus = $this->main->getListSelect('VENTAS_ACCESO va', 'va.ID_VENTAS_ACCESO, NOMBRE', ['NOMBRE'=>'ASC']);
+
+                      $datos['menus'] = $this->main->dropdown($menus, '');
+
                       echo $this->load->view('usuario/boton', $datos, TRUE);
                     break;
 

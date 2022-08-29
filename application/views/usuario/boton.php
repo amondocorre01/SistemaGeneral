@@ -12,26 +12,37 @@
                         
                     </div>
                 </div>
-                <?=form_open('actualizar-permisos', null, ['id_menu'=>$this->input->get('vc')])?>
                     <div class="row">
-
                         <div class="col-1">
                         <?=form_label("Usuarios", 'usuarios');?>
                         </div>
 
-                        <div class="col-4">
+                        <div class="col-3">
                             <?=form_dropdown('usuarios', $usuarios, null,['id'=>'usuarios']);?>
                         </div>
 
-                        <div class="col-4">
-                            <?=form_submit('name', 'Confirmar los cambios', ['class'=>'btn btn-danger btn-xs']);?>
+                        <div class="col-1">
+                        <?=form_label("Menu", 'menu');?>
+                        </div>
+
+                        <div class="col-3">
+                            <?=form_dropdown('menus', $menus, null,['id'=>'menus']);?>
+                        </div>
+
+
+                        <div class="col-2">
+                            <?=form_button('name', 'Buscar', ['id'=>'buscar', 'class'=>'btn btn-danger btn-xs']);?>
                         </div>
                     </div>
-                    <div class="row align-items-center"  id="menu">
-    
-                
-                    </div>
-                <?=form_close();?>
+
+                    <?=form_open('aprobar-cambios-botones', null, ['vc'=>$this->input->post('vc')])?>
+                        <div class="row align-items-center"  id="menu">
+
+
+                    
+                        </div>
+                        <?=form_submit()?>
+                    <?=form_close();?>
             </div>
         </div>
     </div>
@@ -43,14 +54,19 @@ $('#usuarios').select2({
     placeholder: "--- Seleccione una opcion ---"
 });
 
-$('#usuarios').on('change', function(){
+$('#menus').select2({
+    placeholder: "--- Seleccione una opcion ---"
+});
 
-    var id = $( this ).val();
+$('#buscar').on('click', function(){
+
+    var id_menu = $('#menus').val();
+    var id_usuario = $('#usuarios').val();
 
     $.ajax({
         type: "POST",
         url: "<?=site_url('get-permiso-boton')?>",
-        data: { id: id},
+        data: { id_menu: id_menu, id_usuario: id_usuario},
         dataType: "html",
         success: function (response) {
             $('#menu').empty();
