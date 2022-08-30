@@ -37,6 +37,10 @@
 					$this->form_validation->set_rules('sueldo', 'Sueldo', 'trim|required');
 					$this->form_validation->set_rules('afp', 'AFP', 'trim|required');
 					$this->form_validation->set_rules('cuentaban', 'N° cuenta bancaria', 'trim|required');
+					$this->form_validation->set_rules('perfiles', 'Perfil', 'trim|required');
+					$this->form_validation->set_rules('usuario', 'Usuario', 'trim|required');
+
+
 					
 					$validation = $this->form_validation->run();
 

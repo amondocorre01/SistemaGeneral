@@ -12,6 +12,7 @@
                         
                     </div>
                 </div>
+                <?=form_open('aprobar-cambios-botones', null, ['vc'=>$this->input->get('vc')])?>
                     <div class="row">
                         <div class="col-1">
                         <?=form_label("Usuarios", 'usuarios');?>
@@ -35,13 +36,12 @@
                         </div>
                     </div>
 
-                    <?=form_open('aprobar-cambios-botones', null, ['vc'=>$this->input->post('vc')])?>
                         <div class="row align-items-center"  id="menu">
 
 
                     
                         </div>
-                        <?=form_submit()?>
+                        <?=form_submit('send', 'Confirmar cambios', ['class'=>'btn btn-danger'])?>
                     <?=form_close();?>
             </div>
         </div>

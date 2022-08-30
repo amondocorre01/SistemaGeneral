@@ -149,15 +149,20 @@
 
             $id_usuario = $this->input->post('id_usuario');
             $id_menu = $this->input->post('id_menu');
-
-
            
-            $data['botones'] = $this->main->getListSelect('VENTAS_BOTON vb', 'ROW_NUMBER() OVER(ORDER BY ID_VENTAS_BOTON ASC) AS row, ID_VENTAS_BOTON, REFERENCIA_BOTON, ( 
-                SELECT ID_VENTAS_ACCESO_BOTON 
-                FROM VENTAS_ACCESO_BOTON vab 
-                WHERE vab.ID_USUARIO = '.$id_usuario.' AND vab.ID_VENTAS_ACCESO = '.$id_menu.' AND
-                vab.ID_VENTAS_BOTON = vb.ID_VENTAS_BOTON
-            ) AS ACCEDE');
+
+            $this->db->where('vab.ID_USUARIO', $id_usuario);
+            $this->db->where('ID_VENTAS_ACCESO', $id_menu);
+            $this->db->join(' VENTAS_BOTON vb', 'vb.ID_VENTAS_BOTON = vab.ID_VENTAS_BOTON', 'left outer');
+        
+            $data['botones'] = $this->main->getListSelect('VENTAS_BOTON vb', 'ROW_NUMBER() OVER(ORDER BY vb.ID_VENTAS_BOTON ASC) AS row, 
+            vb.REFERENCIA_BOTON, vb.ID_VENTAS_BOTON, (CASE WHEN
+            (
+                SELECT vab.ESTADO FROM VENTAS_ACCESO_BOTON vab
+                WHERE vab.ID_USUARIO = '.$id_usuario.' AND ID_VENTAS_ACCESO = '.$id_menu.' AND  vb.ID_VENTAS_BOTON = vab.ID_VENTAS_BOTON
+            ) IS NULL THEN 0 ELSE 1 END) AS HABILITADO');
+
+            var_dump($data);
 
             echo $this->load->view('usuario/body/boton', $data, TRUE);
             
@@ -168,26 +173,42 @@
 
             $habilitados = $this->input->post('escogidos');
             $user = $this->input->post('usuarios');
+            $menu = $this->input->post('menus');
  
              $this->db->where('ID_USUARIO', $user);
+             $this->db->where('ID_VENTAS_ACCESO', $menu);
              $this->db->delete('VENTAS_ACCESO_BOTON');
  
              $real = [];
              foreach ($habilitados as $value) {
  
                  $temp['ID_USUARIO'] = $user;
-                 $temp['ID_VENTAS_ACCESO_BOTON'] = $value;
+                 $temp['ID_VENTAS_BOTON'] = $value;
                  $temp['ESTADO'] = 1;
+                 $temp['ID_VENTAS_ACCESO'] = $menu;
  
                  array_push($real, $temp);
              }
             
-             $this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $real);
+             $this->db->insert_batch('VENTAS_ACCESO_BOTON', $real);
  
              $this->session->set_flashdata('cambios', 'cambios');
              
              
-             redirect('generico/inicio?vc='.$this->input->post('id_menu'),'refresh');
+             redirect('generico/inicio?vc='.$this->input->post('vc'),'refresh');
+         }
+
+
+         function check() {
+            $posible = $this->input->post('user');
+
+           $cantidad = $this->main->total('VENTAS_USUARIOS', ['USUARIO'=>$posible]);
+
+           if($cantidad){
+                $posible = $posible.$cantidad;
+           }
+
+           echo json_encode(['result'=>$posible]);
          }
     
     }

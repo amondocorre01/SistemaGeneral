@@ -14,7 +14,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <?=form_label("Nombres", 'nombre');?>
-                                <?=form_input('nombre', null, ['class'=>'form-control', 'id'=>'nombre', 'required'=>'required']);?>
+                                <?=form_input('nombre', null, ['class'=>'form-control user', 'id'=>'nombre', 'required'=>'required']);?>
                                 <div class="valid-feedback"></div>
                             </div>
                         </div>
@@ -22,7 +22,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <?=form_label("Apellido Paterno", 'appat');?>
-                                <?=form_input('appat', null, ['class'=>'form-control', 'id'=>'appat']);?>
+                                <?=form_input('appat', null, ['class'=>'form-control user', 'id'=>'appat']);?>
                                 <div class="valid-feedback"></div>
                             </div>
                         </div>
@@ -83,19 +83,17 @@
 
                         <div class="col-md-2">
                             <div class="form-group" >
-                                <?=form_label("Género", 'genero');?>
-                                <?=form_dropdown('genero', [''=>'', 'F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'genero', 'class'=>'form-control']);?>
+                                <?=form_label("Perfil", 'perfiles');?>
+                                <?=form_dropdown('perfiles', $perfiles, null ,['id'=>'perfiles']);?>
                             </div>
                         </div>
 
                         <div class="col-md-2">
                             <div class="form-group" >
-                                <?=form_label("Fecha ingreso", 'ingreso');?>
-                                <?=form_input(['name'=>'ingreso', 'type'=>'date' ,'class'=>'form-control', 'required'=>'required']);?>
+                                <?=form_label("Género", 'genero');?>
+                                <?=form_dropdown('genero', [''=>'', 'F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'genero', 'class'=>'form-control']);?>
                             </div>
-                        </div>
-
-                       
+                        </div>                       
                     </div>
 
                     <div class="row">
@@ -113,8 +111,6 @@
                     </div>
 
                     <div class="row">
-                       
-
                         <div class="col-md-2">
                             <div class="form-group" >
                                 <?=form_label("Sueldo", 'sueldo');?>
@@ -133,6 +129,20 @@
                             <div class="form-group" >
                                 <?=form_label("N° de cuenta", 'cuentaban');?>
                                 <?=form_input(['name'=>'cuentaban', 'type'=>'text' ,'class'=>'form-control', 'required'=>'required']);?>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group" >
+                                <?=form_label("Fecha ingreso", 'ingreso');?>
+                                <?=form_input(['name'=>'ingreso', 'type'=>'date' ,'class'=>'form-control', 'required'=>'required']);?>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group" >
+                                <?=form_label("Usuario", 'usuario');?>
+                                <?=form_input(['name'=>'usuario', 'type'=>'text' ,'class'=>'form-control palette-Yellow-200 bg', 'required'=>'required', 'id'=>'usuario']);?>
                             </div>
                         </div>
                     </div>
@@ -162,6 +172,30 @@
     $('#ubicacion').select2({
         placeholder: "---Seleccione una o varias opciónes---"
     });
+
+    $('#perfiles').select2({
+        placeholder: "---Seleccione una opción---"
+    });
+
+    $('.user').on('input', function(){
+
+        var nombre = $('#nombre').val().substr(0,1).toLowerCase();
+
+        var apellido = $('#appat').val().toLowerCase();
+
+        var usuario = nombre+apellido;
+
+
+        $.post("<?=site_url('check-user')?>", {user:usuario})
+        .done(function (data){
+           
+            valor = JSON.parse(data);
+
+            $('#usuario').val(valor.result);
+        });
+    });
+
+
 
     
 </script>

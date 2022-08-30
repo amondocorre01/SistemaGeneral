@@ -156,6 +156,9 @@
                       $campos_afp = "ID_AFP,	NOMBRE_AFP";
                       $afp = $this->main->getListSelect('SIREPE_AFP', $campos_afp, ['ID_AFP'=>'ASC']);
                       $datos['afp'] = $this->main->dropdown($afp, '--- Seleccione una opcion ---');
+
+                      $perfiles = $this->main->getListSelect('VENTAS_PERFIL', 'ID_VENTAS_PERFIL, PERFIL', ['PERFIL'=>'ASC']);
+                      $datos['perfiles'] = $this->main->dropdown($perfiles, '-- Seleccione una opcion --');
                                       
                                       $this->db->where('ESTADO', 1);
                       $ubicaciones =  $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION, DESCRIPCION', ['DESCRIPCION'=>'ASC']);

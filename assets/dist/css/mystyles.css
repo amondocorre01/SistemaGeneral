@@ -329,6 +329,10 @@ i {
    margin-right: 0.125rem;
 }
 
-
+.form-control {
+   font-weight: 500;
+   font-size: 1.2rem;
+   font-family:  Branding, sans-serif !important;
+}
 
 

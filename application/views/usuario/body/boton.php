@@ -8,6 +8,6 @@
     </div>
     <div class="col-2 border border-bottom border-gray"><p class="lead" style="font-weight: 500;"><?=$value->REFERENCIA_BOTON?></p></div>
     <div class="col-1"> 
-    <input class="align-items-center" name="escogidos[]" value="<?=$value->ID_VENTAS_BOTON?>" type="checkbox" <?=($value->ACCEDE)? 'checked': '' ?>  data-toggle="toggle" data-onstyle="danger" data-offstyle="secondary" data-size="xs" data-on="SI" data-off="NO">
+    <input class="align-items-center" name="escogidos[]" value="<?=$value->ID_VENTAS_BOTON?>" type="checkbox" <?=($value->HABILITADO)? 'checked': '' ?>  data-toggle="toggle" data-onstyle="danger" data-offstyle="secondary" data-size="xs" data-on="SI" data-off="NO">
     </div>
 <?php endforeach;?>

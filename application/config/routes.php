@@ -123,6 +123,8 @@ $route['get-menu'] = 'api/usuarios/menu';
 $route['actualizar-permisos'] = 'api/usuarios/permisos';
 $route['get-permiso-boton'] = 'api/usuarios/boton';
 $route['aprobar-cambios-botones'] = 'api/usuarios/botones';
+$route['check-user'] = 'api/usuarios/check';
+
 
 
 
