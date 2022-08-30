@@ -71,7 +71,7 @@
 						$id = $this->db->insert_id();
 						
 						if($id) {
-							$usuario['USUARIO'] = strtolower( substr(set_value('nombre'),0,1).set_value('appat'));
+							$usuario['USUARIO'] = set_value('usuario');
 							$usuario['CONTRASEÑA'] = strToHex(set_value('dni'));
 							$usuario['ID_EMPLEADO'] = $id;
 							$usuario['ELIMINADO'] = 0;
@@ -85,7 +85,7 @@
 							$usuario['PERMISOS_USUARIOS'] = 0;
 							$usuario['RESET_CONTRASEÑA'] = 0;
 
-							$this->db->insert('VENTAS_USUARIOS', $usuario);
+										  $this->db->insert('VENTAS_USUARIOS', $usuario);
 							$id_usuario = $this->db->insert_id();	
 							
 							if($id_usuario) {
@@ -110,18 +110,9 @@
 										$this->db->or_where('NIVEL_SUPERIOR !=', 23);
 								$menu = $this->main->getListSelect('VENTAS_ACCESO', 'ID_VENTAS_ACCESO');
 
-								$temp = [];
-
-								foreach ($menu as $m) {
-									$temp3 = [];
-									$temp3['ID_USUARIO'] = $id_usuario;
-									$temp3['ID_VENTAS_ACCESO'] = $m->ID_VENTAS_ACCESO;
-									$temp3['ESTADO'] = 0;
-
-									array_push($temp, $temp3);
-								}
-
-								$this->db->insert_batch('VENTAS_PERMISO_SUCURSAL', $temp);
+								$id_perfil = set_value('perfiles');
+								$sql = "EXEC PERMISOS_USUARIOS ".$id_perfil.', '.$id_usuario;
+            					$respuesta = $this->main->getQuery($sql);
 							}
 						}   
 					}
@@ -133,7 +124,6 @@
 					
 					redirect('usuarios');
 				 
-
 				}
 		
 		}
