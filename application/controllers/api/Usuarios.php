@@ -108,7 +108,7 @@
 
             $id = $this->input->post('id');
            
-            $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ROW_NUMBER() OVER(ORDER BY NUMERO_ORDEN ASC) AS row, ID_VENTAS_ACCESO, NOMBRE, NUMERO_ORDEN, ( 
+            $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
                 SELECT ID_VENTAS_ACCESO 
                 FROM VENTAS_USUARIOS_ACCESO vua 
                 WHERE vua.ID_USUARIO = '.$id.' AND 

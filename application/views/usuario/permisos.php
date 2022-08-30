@@ -27,7 +27,7 @@
                             <?=form_submit('name', 'Confirmar los cambios', ['class'=>'btn btn-danger btn-xs']);?>
                         </div>
                     </div>
-                    <div class="row align-items-center"  id="menu">
+                    <div id="menu">
     
                 
                     </div>
