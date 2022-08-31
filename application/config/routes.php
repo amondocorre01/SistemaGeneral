@@ -130,7 +130,8 @@ $route['check-user'] = 'api/usuarios/check';
 $route['get-perfiles'] = 'api/perfiles/index';
 $route['set-perfil'] = 'api/perfiles/aprobar';
 $route['nuevo-perfil'] = 'api/perfiles/create';
-$route['get-perfil'] = 'api/perfiles/get';
+$route['get-perfil'] = 'api/perfiles/menu';
+$route['actualizar-permisos-perfil'] = 'api/perfiles/save';
 
 
 

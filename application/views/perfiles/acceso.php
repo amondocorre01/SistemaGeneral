@@ -12,7 +12,7 @@
                         
                     </div>
                 </div>
-                <?=form_open('actualizar-permisos', null, ['id_menu'=>$this->input->get('vc')])?>
+                <?=form_open('actualizar-permisos-perfil', null, ['id_menu'=>$this->input->get('vc')])?>
                     <div class="row">
 
                         <div class="col-1">
@@ -59,7 +59,7 @@ $('#perfil').on('change', function(){
     });
 });
 
-<?php if($this->session->cambios): ?>
+<?php if($this->session->success): ?>
 
     Swal.fire({
         icon: 'success',

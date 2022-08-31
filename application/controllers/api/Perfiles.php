@@ -52,11 +52,50 @@
             $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
                 SELECT ID_VENTAS_ACCESO 
                 FROM VENTAS_PERMISO_PERFIL vpp 
-                WHERE vpp.ID_VENTAS_PERMISO_PERFIL = '.$id.' AND 
+                WHERE vpp.ID_VENTAS_PERFIL = '.$id.' AND 
                 vpp.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO
             ) AS ACCEDE');
 
-            echo $this->load->view('perfil/body/permisos', $data, TRUE);
+            $data['id'] = $id;
+
+            echo $this->load->view('perfiles/body/permisos', $data, TRUE);
+        }
+
+        public function save() {
+            $perfil = $this->input->post('perfil');
+            $menu = $this->input->post('menu');
+            $escogidos = $this->input->post('escogidos');
+
+            $this->db->where('ID_VENTAS_PERFIL', $perfil);
+            $this->db->delete('VENTAS_PERMISO_PERFIL');
+
+            $permisos = [];
+
+            foreach ($escogidos as $e) {
+                $temp = [];
+                $temp['ID_VENTAS_PERFIL'] = $perfil;
+                $temp['ID_VENTAS_ACCESO'] = $e;
+
+                array_push($permisos, $temp);
+            }
+
+            $this->db->insert_batch('VENTAS_PERMISO_PERFIL', $permisos);
+
+            if($this->db->affected_rows()) {
+                $response = true;
+            }
+            else {
+                $response = false;
+            }
+
+            if($response):
+                $this->session->set_flashdata('success', '1');
+            else:
+                $this->session->set_flashdata('error', '1');
+            endif;
+            
+            
+            redirect('generico/inicio?vc='.$menu,'refresh');
             
         }
 
