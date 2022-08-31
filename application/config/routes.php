@@ -126,6 +126,20 @@ $route['aprobar-cambios-botones'] = 'api/usuarios/botones';
 $route['check-user'] = 'api/usuarios/check';
 
 
+/** API PERFILES */
+$route['get-perfiles'] = 'api/perfiles/index';
+$route['set-perfil'] = 'api/perfiles/aprobar';
+$route['nuevo-perfil'] = 'api/perfiles/create';
+$route['get-perfil'] = 'api/perfiles/get';
+
+
+
+
+
+
+
+
+
 
 
 

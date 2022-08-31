@@ -4,7 +4,7 @@
 
 <?php foreach ($menu as $value): ?>
 
-  <?php if($value->NIVEL_SUPERIOR == 0):?>
+  
     <div class="row">
       <div class="col-6 border border-bottom border-gray"><p class="lead" style="font-weight: 500;"><?=$value->NOMBRE?></p></div>
       <div class="col-2"> 
@@ -13,7 +13,4 @@
     </div>
     <hr>
      <?php $hijos =  $this->main->getQuery('select nombre from ventas_acceso where estado=1 and sistema_general=1 and nivel_superior='.$value->ID_VENTAS_ACCESO)?>
-     
-     
-  <?php endif;?>
 <?php endforeach;?>

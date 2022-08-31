@@ -111,7 +111,7 @@
 								$menu = $this->main->getListSelect('VENTAS_ACCESO', 'ID_VENTAS_ACCESO');
 
 								$id_perfil = set_value('perfiles');
-								$sql = "EXEC PERMISOS_USUARIOS ".$id_perfil.', '.$id_usuario;
+								$sql = "EXEC PERFIL_ ".$id_perfil.', '.$id_usuario;
             					$respuesta = $this->main->getQuery($sql);
 							}
 						}   
