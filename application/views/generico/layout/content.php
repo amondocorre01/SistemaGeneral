@@ -230,6 +230,13 @@
                       echo $this->load->view('facturacion/llave', $datos, TRUE);
                     break;
 
+                    case 'cuis':
+                                    $this->db->where('CODIGO_SUCURSAL !=', null);
+                      $sucursales = $this->main->getListSelect('ID_UBICACION', 'CODIGO_SUCURSAL, DESCRIPCION', ['CODIGO_SUCURSAL'=>'ASC']);
+                      $datos['sucursales'] = $this->main->dropdown($sucursales, '');
+                      echo $this->load->view('facturacion/cuis', $datos, TRUE);
+                    break;
+
                     case 'acceso-perfiles':
                       $this->db->where('vp.ESTADO', 1);
                       $perfiles = $this->main->getListSelect('VENTAS_PERFIL vp', 'vp.ID_VENTAS_PERFIL, PERFIL');
