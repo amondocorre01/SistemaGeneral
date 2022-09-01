@@ -145,6 +145,9 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['activar-key'] = 'facturacion/llave/activate';
     $route['inactivar-key'] = 'facturacion/llave/desactivate';
 
+    /** CUIS */
+    $route['nuevo-cuis'] = 'facturacion/cuis/create';
+
 
     
 
