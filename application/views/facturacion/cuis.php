@@ -137,9 +137,19 @@
         },
         columns: [
             { title: 'N°', width:'8%',data: 'row' },
-            { title: 'Token API', width:'40%' ,data: 'TOKEN_API' },
-            { title: 'Fecha Activacion', width:'15%' ,data: 'FECHA_ACTIVACION' },
-            { title: 'Fecha Vencimiento', width:'15%' ,data: 'FECHA_VENCIMIENTO' },
+            { title: 'codigo Ambiente', width:'40%' ,data: 'CODIGO_AMBIENTE' },
+            { title: 'Codigo Sistema', width:'15%' ,data: 'CODIGO_SISTEMA' },
+            { title: 'Nit', width:'15%' ,data: 'NIT' },
+            { title: 'Codigo Modalidad', width:'15%' ,data: 'CODIGO_MODALIDAD' },
+            { title: 'Codigo Sucursal', width:'15%' ,data: 'CODIGO_SUCURSAL' },
+            { title: 'Codigo Punto Venta', width:'15%' ,data: 'CODIGO_PUNTO_VENTA' },
+            { title: 'Codigo Cuis', width:'15%' ,data: 'CODIGO_CUIS' },
+            { title: 'Fecha Vigencia', width:'15%' ,data: 'FECHA_VIGENCIA' },
+            { title: 'Codigo', width:'15%' ,data: 'CODIGO' },
+            { title: 'Descripcion', width:'45%' ,data: 'DESCRIPCION' },
+            { title: 'Transaccion', width:'15%' ,data: 'TRANSACCION' },
+            
+            
             { title: 'Estado', width:'15%' ,data: null, 
                 render: function (data, type, full, meta) { 
 

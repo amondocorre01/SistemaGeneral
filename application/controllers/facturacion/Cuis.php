@@ -6,7 +6,22 @@
     
         public function index()
         {
-            
+            $campos = "ROW_NUMBER() OVER(ORDER BY ESTADO DESC) AS row, CODIGO_AMBIENTE
+            ,CODIGO_SISTEMA
+            ,NIT
+            ,CODIGO_MODALIDAD
+            ,CODIGO_SUCURSAL
+            ,CODIGO_PUNTO_VENTA
+            ,CODIGO_CUIS
+            ,FECHA_VIGENCIA
+            ,CODIGO
+            ,DESCRIPCION
+            ,TRANSACCION
+            ,ESTADO
+            ,ID_VENTAS_F00_LLAVE";
+            $llaves = $this->main->getListSelect('VENTAS_F01_CUIS', $campos);
+
+            echo json_encode(['data'=>$llaves]);
         }
 
         public function create()
