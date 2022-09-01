@@ -136,6 +136,22 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
 
 
 
+/**  FACTURACION */
+
+    /** LLAVE */
+    $route['get-llaves'] = 'facturacion/llave/index';
+    $route['get-key'] = 'facturacion/llave/get';
+    $route['nueva-llave'] = 'facturacion/llave/create';
+    $route['activar-key'] = 'facturacion/llave/activate';
+    $route['inactivar-key'] = 'facturacion/llave/desactivate';
+
+
+    
+
+
+
+
+
 
 
 

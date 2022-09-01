@@ -225,6 +225,11 @@
                         echo $this->load->view('perfiles/index', $datos, TRUE);
                     break;
 
+                    case 'llave':
+                      $datos = null;
+                      echo $this->load->view('facturacion/llave', $datos, TRUE);
+                    break;
+
                     case 'acceso-perfiles':
                       $this->db->where('vp.ESTADO', 1);
                       $perfiles = $this->main->getListSelect('VENTAS_PERFIL vp', 'vp.ID_VENTAS_PERFIL, PERFIL');

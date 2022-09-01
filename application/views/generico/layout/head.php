@@ -49,6 +49,8 @@
   <script src="<?=base_url('node_modules/datatables.net/js/jquery.dataTables.js')?>"></script>
   <?=link_tag(base_url('node_modules/datatables.net-dt/css/jquery.dataTables.css'))?>
   <script src="<?=base_url('node_modules/datatables-select/dist/js/dataTables.select.js')?>"></script>
+  <?=link_tag('node_modules/datatables.net-responsive-dt/css/responsive.dataTables.css')?>
+  <script src="<?=base_url('node_modules/datatables.net-responsive-dt/js/responsive.dataTables.js')?>"></script>
 
   <!-- SELECT 2 @3.5.3-->
   <?=link_tag(base_url('node_modules/select2/select2.css'))?>
