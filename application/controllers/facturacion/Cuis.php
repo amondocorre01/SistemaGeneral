@@ -163,7 +163,7 @@
             }
           }
           if($save){
-              //$this->saveActividades($id_cuis, $id_ventas_catalogo, $transaccion, $codigoCaeb, $descripcion, $tipoActividad);
+              $this->saveActividades($id_cuis, $id_ventas_catalogo, $transaccion, $codigoCaeb, $descripcion, $tipoActividad);
           }
           // -3 Códigos de Actividades Documento Sector
           $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE ACTIVIDADES DOCUMENTO SECTOR');
@@ -200,23 +200,23 @@
               $codigoActividad = $this->findKey($value,'codigoActividad');
               $codigoDocumentoSector = $this->findKey($value,'codigoDocumentoSector');
               $tipoDocumentoSector = $this->findKey($value,'tipoDocumentoSector');
-              $this->saveActividadesDocumentoSector($id_cuis, $id_ventas_catalogo, $transaccion, $codigoCaeb, $descripcion, $tipoActividad);
+              $this->saveActividadesDocumentoSector($id_cuis, $id_ventas_catalogo, $transaccion, $codigoActividad, $codigoDocumentoSector, $tipoDocumentoSector);
             }
           }
 
         }
 
-        function saveActividades($id_cuis, $id_ventas_catalago, $transaccion, $codigoCaeb, $descripcion, $tipoActividad){
+        function saveActividades($id_cuis, $id_ventas_catalogo, $transaccion, $codigoCaeb, $descripcion, $tipoActividad){
           $res = null;
-          $sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalago', '$codigoCaeb', '$transaccion', '$descripcion', '$tipoActividad', '','';";
+          $sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalogo', '$codigoCaeb', '$transaccion', '$descripcion', '$tipoActividad', '','';";
           $res = $this->main->getQuery2($sql);
           return $res;
         }
 
-        function saveActividadesDocumentoSector($id_cuis, $id_ventas_catalogo, $transaccion, $codigoCaeb, $descripcion, $tipoActividad){
+        function saveActividadesDocumentoSector($id_cuis, $id_ventas_catalogo, $transaccion, $codigoActividad, $codigoDocumentoSector, $tipoDocumentoSector){
           $res = null;
-          //$sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalago', '$codigoCaeb', '$transaccion', '$descripcion', '$tipoActividad', '','';";
-          //$res = $this->main->getQuery2($sql);
+          $sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalogo', '$codigoActividad', '$transaccion', '', '', '$tipoDocumentoSector','$codigoDocumentoSector';";
+          $res = $this->main->getQuery2($sql);
           return $res;
         }
 
