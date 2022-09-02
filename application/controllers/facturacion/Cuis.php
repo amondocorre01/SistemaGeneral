@@ -39,7 +39,6 @@
               $valApikey = $resApikey[0]->APIKEY;
               $valTokenApi = $resApikey[0]->TOKEN_API;
               $apikey = $valApikey.' '.$valTokenApi;
-              echo $apikey;
             }else{
               echo 'error';
               exit();
@@ -58,13 +57,10 @@
             $json = json_encode($xml);
             $responseArray = json_decode($json,true);
             //print_r($responseArray);
-
-            echo 'RespuestaCuis';
             $res_respuestaCuis = $this->showArrayKeySearch($responseArray, 'RespuestaCuis');
             $tam_array = count($res_respuestaCuis);
             $save = false;
             if( $tam_array > 0){
-              print_r($res_respuestaCuis);
               if( $tam_array > 1){
                   $codigo_cuis = $this->findKey($res_respuestaCuis,'codigo');
                   $fecha_vigencia = $this->findKey($res_respuestaCuis,'fechaVigencia');
@@ -74,20 +70,16 @@
                   }else{
                     $transaccion = 0;
                   }
-                  echo 'transaccion:'.$transaccion;
                   if($codigo_cuis){
                     $save = true;
                   }
               }
             }
-
-            echo 'mensajesList';
             $res_mensajesList = $this->showArrayKeySearch($responseArray, 'mensajesList');
             $tam_array = count($res_mensajesList);
             if( $tam_array > 0){
               $codigoMensaje = $this->findKey($res_mensajesList,'codigo');
               $descripcionMensaje = $this->findKey($res_mensajesList,'descripcion');
-              print_r($res_mensajesList);
             }
 
             if($save){
@@ -132,12 +124,12 @@
           }
 
           $wsdlURL= URL_SINCRONIZACION;
+          // -1 Códigos de Actividades
           $venta_catalogo = $this->getCatalogo('LISTADO DE ACTIVIDADES');
           //$metodo = 'sincronizarActividades';
           if(count($venta_catalogo)>0){
             $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
             $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
-            echo $nombre_funcion;
           }else{
             echo 'error';
             exit();
@@ -149,39 +141,83 @@
           $json = json_encode($xml);
           $responseArray = json_decode($json,true);
           $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaActividades');
-            $tam_array = count($res_respuesta);
-            echo $tam_array;
-            $save = false;
-            if( $tam_array > 0){
-                  $transaccion = $this->findKey($res_respuesta,'transaccion');
-                  if($transaccion =='true'){
-                    $transaccion = 1;
-                  }else{
-                    $transaccion = 0;
-                  }
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+                $transaccion = $this->findKey($res_respuesta,'transaccion');
+                if($transaccion =='true'){
+                  $transaccion = 1;
+                }else{
+                  $transaccion = 0;
+                }
+          }
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'listaActividades');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            if( $tam_array > 1){
+                $codigoCaeb = $this->findKey($res_respuesta,'codigoCaeb');
+                $descripcion = $this->findKey($res_respuesta,'descripcion');
+                $tipoActividad = $this->findKey($res_respuesta,'tipoActividad');
+                $save=true;
             }
-            $res_respuesta = $this->showArrayKeySearch($responseArray, 'listaActividades');
-            $tam_array = count($res_respuesta);
-            $save = false;
-            if( $tam_array > 0){
-              if( $tam_array > 1){
-                  $codigoCaeb = $this->findKey($res_respuesta,'codigoCaeb');
-                  $descripcion = $this->findKey($res_respuesta,'descripcion');
-                  $tipoActividad = $this->findKey($res_respuesta,'tipoActividad');
-                  $save=true;
-              }
+          }
+          if($save){
+              //$this->saveActividades($id_cuis, $id_ventas_catalogo, $transaccion, $codigoCaeb, $descripcion, $tipoActividad);
+          }
+          // -3 Códigos de Actividades Documento Sector
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE ACTIVIDADES DOCUMENTO SECTOR');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaActividadesDocumentoSector');
+          //print_r($responseArray);
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+                $transaccion = $this->findKey($res_respuesta,'transaccion');
+                if($transaccion =='true'){
+                  $transaccion = 1;
+                }else{
+                  $transaccion = 0;
+                }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaActividadesDocumentoSector');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoActividad = $this->findKey($value,'codigoActividad');
+              $codigoDocumentoSector = $this->findKey($value,'codigoDocumentoSector');
+              $tipoDocumentoSector = $this->findKey($value,'tipoDocumentoSector');
+              $this->saveActividadesDocumentoSector($id_cuis, $id_ventas_catalogo, $transaccion, $codigoCaeb, $descripcion, $tipoActividad);
             }
-            if($save){
-                $this->saveActividades($id_cuis, $id_ventas_catalogo, $transaccion, $codigoCaeb, $descripcion, $tipoActividad);
-            } 
+          }
 
         }
 
         function saveActividades($id_cuis, $id_ventas_catalago, $transaccion, $codigoCaeb, $descripcion, $tipoActividad){
           $res = null;
-            $sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalago', '$codigoCaeb', '$transaccion', '$descripcion', '$tipoActividad', '','';";
-            $res = $this->main->getQuery2($sql);
-            return $res;
+          $sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalago', '$codigoCaeb', '$transaccion', '$descripcion', '$tipoActividad', '','';";
+          $res = $this->main->getQuery2($sql);
+          return $res;
+        }
+
+        function saveActividadesDocumentoSector($id_cuis, $id_ventas_catalogo, $transaccion, $codigoCaeb, $descripcion, $tipoActividad){
+          $res = null;
+          //$sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalago', '$codigoCaeb', '$transaccion', '$descripcion', '$tipoActividad', '','';";
+          //$res = $this->main->getQuery2($sql);
+          return $res;
         }
 
         function getCatalogo($name){
