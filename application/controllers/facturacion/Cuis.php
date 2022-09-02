@@ -132,7 +132,7 @@
           }
 
           $wsdlURL= URL_SINCRONIZACION;
-          $venta_catalogo = $this->getVentaCatalago();
+          $venta_catalogo = $this->getCatalogo('LISTADO DE ACTIVIDADES');
           //$metodo = 'sincronizarActividades';
           if(count($venta_catalogo)>0){
             $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
@@ -184,9 +184,9 @@
             return $res;
         }
 
-        function getVentaCatalago(){
+        function getCatalogo($name){
           $res = null;
-          $sql="EXEC VENTAS_GET_F02_CATALOGO 'LISTADO DE ACTIVIDADES';";
+          $sql="EXEC VENTAS_GET_F02_CATALOGO '$name';";
           $res = $this->main->getQuery($sql);
           return $res;
         }
