@@ -6,6 +6,11 @@
             <h3 class="card-title"><i class="las la-user-cog"></i>ACCESIBILIDAD</h3>
             </div>
             <div class="card-body">
+                <button class="btn btn-xs edit palette-Green-600 bg" data-toggle="modal" data-target="#nuevo">
+                    <i class="las la-user-plus la-1x"></i> Nuevo Usuario
+                </button>
+                <br> <br>
+
                 <table id="table" class="table table-bordered table-striped dataTable dtr-inline">
 
                 </table>
@@ -13,6 +18,153 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="nuevo" tabindex="-1" role="dialog" aria-labelledby="nombre3" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="nombre3">Nuevo Usuario</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <?=form_label("Nombres", 'new_nombre');?>
+                        <?=form_input('new_nombre', null, ['class'=>'form-control user', 'id'=>'new_nombre', 'required'=>'required']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <?=form_label("Apellido Paterno", 'new_appat');?>
+                        <?=form_input('new_appat', null, ['class'=>'form-control user', 'id'=>'new_appat']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <?=form_label("Apellido Materno", 'new_apmat');?>
+                        <?=form_input('new_apmat', null, ['class'=>'form-control', 'id'=>'new_apmat']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <?=form_label(lang('dni'), 'new_dni');?>
+                        <?=form_input('new_dni', null, ['class'=>'form-control', 'id'=>'new_dni','minlength'=>'5', 'required'=>'required']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("N° Teléfono", 'new_telefono');?>
+                        <?=form_input(['name'=>'new_telefono', 'type'=>'text' ,'class'=>'form-control', 'maxlength'=>'7','pattern'=>'[4]{1}[0-9]{6}']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("N° Celular", 'new_celular');?>
+                        <?=form_input(['name'=>'new_celular', 'type'=>'text' ,'class'=>'form-control','maxlength'=>'8', 'pattern'=>'[6-7]{1}[0-9]{7}', 'required'=>'required' ]);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("Fecha nacimiento", 'new_nacimiento');?>
+                        <?=form_input(['name'=>'new_nacimiento', 'type'=>'date' ,'class'=>'form-control', 'required'=>'required']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("Correo electronico", 'new_email');?>
+                        <?=form_input(['name'=>'new_email', 'type'=>'email' ,'class'=>'form-control']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("Cargo", 'new_cargos');?>
+                        <?=form_dropdown('new_cargos', $cargos, null ,['id'=>'new_cargos']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("Perfil", 'new_perfiles');?>
+                        <?=form_dropdown('new_perfiles', $perfiles, null ,['id'=>'new_perfiles']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("Género", 'new_genero');?>
+                        <?=form_dropdown('new_genero', [''=>'', 'F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'new_genero']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("Sueldo", 'new_sueldo');?>
+                        <?=form_input(['name'=>'new_sueldo', 'type'=>'text' ,'class'=>'form-control', 'pattern'=>'[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)', 'required'=>'required' ]);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("Domicilio", 'new_domicilio');?>
+                        <?=form_input(['name'=>'new_domicilio', 'type'=>'text' ,'class'=>'form-control', 'required'=>'required']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("AFP", 'afp');?>
+                        <?=form_dropdown('afp', $afp, null,['id'=>'afp', 'class'=>'form-control']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("N° de cuenta", 'cuentaban');?>
+                        <?=form_input(['name'=>'cuentaban', 'type'=>'text' ,'class'=>'form-control', 'required'=>'required']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("Fecha ingreso", 'ingreso');?>
+                        <?=form_input(['name'=>'ingreso', 'type'=>'date' ,'class'=>'form-control', 'required'=>'required']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("Usuario", 'usuario');?>
+                        <?=form_input(['name'=>'usuario', 'type'=>'text' ,'class'=>'form-control palette-Yellow-200 bg', 'required'=>'required', 'id'=>'usuario']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <?=form_label( 'Sucursal', 'sucursal'); ?> 
+                    <?=form_dropdown('sucursal', $sucursales, null, ['id'=>'new_sucursal', 'required'=>'required', 'data-user'=>'']); ?>
+                </div>
+        </div>
+           
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-danger" id="confirmar_nuevo">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div class="modal fade" id="operaciones" tabindex="-1" role="dialog" aria-labelledby="nombre" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
@@ -129,7 +281,7 @@
         <div class="col-md-4">
             <div class="form-group" >
                 <?=form_label("Género", 'genero');?>
-                <?=form_dropdown('genero', [''=>'', 'F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'genero', 'class'=>'form-control']);?>
+                <?=form_dropdown('genero', [''=>'', 'F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'genero']);?>
             </div>
         </div>
 
@@ -157,7 +309,7 @@
         <div class="col-md-4">
             <div class="form-group" >
                 <?=form_label("AFP", 'afp');?>
-                <?=form_dropdown('afp', $afp, null,['id'=>'afp', 'class'=>'form-control']);?>
+                <?=form_dropdown('afp', $afp, null,['id'=>'afp']);?>
             </div>
         </div>
 
@@ -189,6 +341,22 @@
     });
 
     $('#cargos').select2({
+        placeholder: "Seleccione una opcion"
+    });
+
+    $('#new_cargos').select2({
+        placeholder: "Seleccione una opcion"
+    });
+
+    $('#new_perfiles').select2({
+        placeholder: "Seleccione una opcion"
+    });
+
+    $('#new_genero').select2({
+        placeholder: "Seleccione una opcion"
+    });
+
+    $('#new_sucursal').select2({
         placeholder: "Seleccione una opcion"
     });
     
@@ -355,4 +523,92 @@
                 });
             });
     }
+
+    $('.user').on('input', function(){
+
+        var nombre = $('#new_nombre').val().substr(0,1).toLowerCase();
+
+        var apellido = $('#new_appat').val().toLowerCase();
+
+        var usuario = nombre+apellido;
+
+
+        $.post("<?=site_url('check-user')?>", {user:usuario})
+        .done(function (data){
+        
+            valor = JSON.parse(data);
+
+            $('#usuario').val(valor.result);
+        });
+    });
+
+    $('#new_dni').on('blur', function(){
+
+        var dni = $('#new_dni').val();
+
+        $.post("<?=site_url('check-dni')?>", {dni:dni})
+        .done(function (data){
+
+            valor = JSON.parse(data);
+
+            if(valor.status == false)
+            Swal.fire({
+                icon: 'error',
+                title: 'El Documento de Identidad ya fue registrado',
+                timer: 4500
+            });
+        });
+    });
+
+
+    $('#confirmar_nuevo').on('click', function(){
+
+        var nombre = $('#new_nombre').val();
+        var appat =  $('#new_appat').val();
+        var apmat = $('#new_apmat').val();
+        var dni = $('#new_dni').val();
+        var celular = $('input[name="new_celular"]').val();
+        var telefono = $('input[name="new_telefono"]').val();
+        var nacimiento = $('input[name="new_nacimiento"]').val();
+        var email = $('input[name="new_email"]').val();
+        var cargo = $('#new_cargos').val();
+        var perfil = $('#new_perfiles').val();
+        var sueldo = $('input[name="new_sueldo"]').val();
+        var domicilio = $('input[name="new_domicilio"]').val();
+        var afp = $('#afp').val();
+        var cuenta = $('input[name="cuentaban"]').val();
+        var ingreso = $('input[name="ingreso"]').val();
+        var usuario = $('#usuario').val();
+        var sucursal = $('#new_sucursal').val();
+        var genero = $('#new_genero').val();
+
+
+
+
+        $('#nuevo').modal('hide');
+
+        if( nombre != '' && dni != '' && perfil > 0 && sucursal > 0) {
+
+            $.post("<?=site_url('nuevo-usuario')?>", 
+                {
+                    nombre:nombre, appat:appat, apmat:apmat, dni:dni, celular:celular, 
+                    telefono:telefono, nacimiento:nacimiento, email:email, cargo:cargo,
+                    perfil:perfil, sueldo:sueldo, domicilio:domicilio, afp:afp, genero:genero,
+                    cuenta:cuenta, ingreso:ingreso, usuario:usuario, sucursal:sucursal })
+            .done(function( data ) {
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Se han realizado todos los cambios solicitados',
+                    timer: 4500
+                });
+
+                table.ajax.reload();
+            });
+        }
+    });
+
+    
+
+
 </script>

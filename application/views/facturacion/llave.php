@@ -62,9 +62,19 @@
       <div class="modal-body">
 
       <div class="row">
+
             <div class="col-md-12">
                 <div class="form-group">
-                    <?=form_label("API Key", 'llave');?>
+                    <?=form_label("API Key", 'apikey');?>
+                    <?=form_input('apikey', null, ['class'=>'form-control', 'placeholder'=>'TokenApi' ,'id'=>'apikey', 'required'=>'required']);?>
+                    <div class="valid-feedback"></div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <?=form_label("Token API", 'llave');?>
                     <?=form_textarea('llave', null, ['class'=>'form-control', 'id'=>'llave', 'required'=>'required']);?>
                     <div class="valid-feedback"></div>
                 </div>
@@ -139,7 +149,7 @@
 
                     var button = '' 
 
-                        button += '<button class="btn btn-xs edit palette-Blue-400 bg" data-toggle="modal" data-target="#eye" onclick="verKey('+row.ID_VENTAS_LLAVE+')">';
+                        button += '<button class="verKey btn btn-xs edit palette-Blue-400 bg" data-toggle="modal" data-target="#eye" onclick="verKey('+row.ID_VENTAS_LLAVE+')">';
                         button +='<i class="las la-eye la-1x"></i>';
                         button += '</button>';
 
@@ -241,6 +251,7 @@
     $('#confirmar_nuevo').on('click', function(){
 
        
+        var apikey =   $('input[name="apikey"]').val();
         var llave =   $('textarea[name="llave"]').val();
         var activacion =   $('input[name="activacion"]').val();
         var vencimiento =   $('input[name="vencimiento"]').val();
@@ -248,9 +259,9 @@
 
         $('#nuevo').modal('hide');
 
-        if(llave != '' && vencimiento != '' && activacion != '' ) {
+        if(apikey != '' && llave != '' && vencimiento != '' && activacion != '' ) {
 
-            $.post("<?=site_url('nueva-llave')?>", {llave:llave, activacion:activacion, vencimiento:vencimiento})
+            $.post("<?=site_url('nueva-llave')?>", {apikey:apikey, llave:llave, activacion:activacion, vencimiento:vencimiento})
             .done(function( data ) {
                 
                 Swal.fire({
@@ -262,5 +273,17 @@
                 table.ajax.reload();
             });
         }
+
+        else 
+        {
+              
+            Swal.fire({
+                    icon: 'error',
+                    title: 'Todos los campos son obligatorios',
+                    timer: 4500
+                });
+        }
     });
+
+    tippy('.verKey', {content: 'Ver Token API' });
 </script>

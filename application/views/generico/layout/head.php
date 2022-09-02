@@ -61,12 +61,6 @@
   <?=link_tag(base_url('node_modules/bootstrap-select/dist/css/bootstrap-select.css'))?>
   <script src="<?=base_url('node_modules/bootstrap-select/dist/js/bootstrap-select.js')?>"></script>
 
-  
-
-
-  
-
-
 
 
 </head>

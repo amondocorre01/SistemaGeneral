@@ -21,61 +21,40 @@
 
 				public function save()
 				{
-				 
-					$this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|min_length[2]|mb_strtoupper');
-					$this->form_validation->set_rules('appat', 'Apellido paterno', 'trim|mb_strtoupper');
-					$this->form_validation->set_rules('apmat', 'Apellido materno', 'trim|mb_strtoupper');
-					$this->form_validation->set_rules('dni', 'N° de Documento', 'trim|required|mb_strtoupper');
-					$this->form_validation->set_rules('nacimiento', 'Fecha de nacimiento', 'trim|required');
-					$this->form_validation->set_rules('email', 'E-mail', 'trim|mb_strtolower');
-					$this->form_validation->set_rules('telefono', 'Telefono', 'trim');
-					$this->form_validation->set_rules('celular', 'Celular', 'trim|required');
-					$this->form_validation->set_rules('cargos', 'Cargo', 'trim|required');
-					$this->form_validation->set_rules('ingreso', 'Ingreso', 'trim|required');
-					$this->form_validation->set_rules('domicilio', 'Domicilio', 'trim|required');
-					$this->form_validation->set_rules('genero', 'Genero', 'trim|required');
-					$this->form_validation->set_rules('sueldo', 'Sueldo', 'trim|required');
-					$this->form_validation->set_rules('afp', 'AFP', 'trim|required');
-					$this->form_validation->set_rules('cuentaban', 'N° cuenta bancaria', 'trim|required');
-					$this->form_validation->set_rules('perfiles', 'Perfil', 'trim|required');
-					$this->form_validation->set_rules('usuario', 'Usuario', 'trim|required');
 
+					$response['status'] = false;
 
-					
-					$validation = $this->form_validation->run();
-
-					if($validation) {
-
-						$registro['NOMBRE'] = set_value('nombre');
-						$registro['AP_PATERNO'] = set_value('appat');
-						$registro['AP_MATERNO'] = set_value('apmat');
-						$registro['CI'] = set_value('dni');
-						$registro['FECHA_NACIMIENTO'] = set_value('nacimiento');
-						$registro['EMAIL'] = set_value('email');
-						$registro['TELEFONO'] = set_value('telefono');
-						$registro['CELULAR'] = set_value('celular');
-						$registro['ID_CARGO'] = set_value('cargos');
-						$registro['FECHA_INGRESO'] = set_value('ingreso');
-						$registro['DIRECCION'] = set_value('domicilio');
-						$registro['SEXO'] = set_value('genero');
-						$registro['SUELDO'] = set_value('sueldo');
-						$registro['ID_AFP'] = set_value('afp');
-						$registro['CUENTA_BANCARIA'] = set_value('cuentaban');
-						$registro['INICIALES'] = substr(set_value('nombre'),0,1).substr(set_value('appat'),0,1).substr(set_value('apmat'),0,1);
-						$registro['NOMBRE_COMPLETO'] = set_value('nombre').' '.set_value('appat').' '.set_value('apmat');
+						$registro['NOMBRE'] = $this->input->post('nombre');
+						$registro['AP_PATERNO'] = $this->input->post('appat');
+						$registro['AP_MATERNO'] = $this->input->post('apmat');
+						$registro['CI'] = $this->input->post('dni');
+						$registro['FECHA_NACIMIENTO'] = $this->input->post('nacimiento');
+						$registro['EMAIL'] = $this->input->post('email');
+						$registro['TELEFONO'] = $this->input->post('telefono');
+						$registro['CELULAR'] = $this->input->post('celular');
+						$registro['ID_CARGO'] = $this->input->post('cargo');
+						$registro['FECHA_INGRESO'] = $this->input->post('ingreso');
+						$registro['DIRECCION'] = $this->input->post('domicilio');
+						$registro['SEXO'] = $this->input->post('genero');
+						$registro['SUELDO'] = $this->input->post('sueldo');
+						$registro['ID_AFP'] = $this->input->post('afp');
+						$registro['CUENTA_BANCARIA'] = $this->input->post('cuenta');
+						$registro['INICIALES'] = substr($this->input->post('nombre'),0,1).substr($this->input->post('appat'),0,1).substr($this->input->post('apmat'),0,1);
+						$registro['NOMBRE_COMPLETO'] = $this->input->post('nombre').' '.$this->input->post('appat').' '.$this->input->post('apmat');
 						$registro['ID_CREADOR'] = $this->session->id_usuario;
 						$registro['FECHA_CREADO'] = date('Y-m-d H:i:s');
 						$registro['EDITABLE'] = 1;
+						$registro['STATUS'] = 1;
 
-									$this->db->insert('SIREPE_EMPLEADO', $registro);
-						$id = $this->db->insert_id();
+
+							$this->db->insert('SIREPE_EMPLEADO', $registro);
+							$id = $this->db->insert_id();
 						
 						if($id) {
-							$usuario['USUARIO'] = set_value('usuario');
+							$usuario['USUARIO'] = $this->input->post('usuario');
 							$usuario['CONTRASEÑA'] = strToHex(set_value('dni'));
 							$usuario['ID_EMPLEADO'] = $id;
 							$usuario['ELIMINADO'] = 0;
-							$usuario['TIPO_USUARIO'] = 'Cajero';
 							$usuario['PRIMER_INGRESO'] = 0;
 							$usuario['VALIDADO'] = 0;
 							$usuario['VENTA'] = 0;
@@ -84,49 +63,45 @@
 							$usuario['REIMPRESION_FACTURAS'] = 0;
 							$usuario['PERMISOS_USUARIOS'] = 0;
 							$usuario['RESET_CONTRASEÑA'] = 0;
+							$usuario['ID_VENTAS_PERFIL'] = $this->input->post('perfil');
+
 
 										  $this->db->insert('VENTAS_USUARIOS', $usuario);
 							$id_usuario = $this->db->insert_id();	
 							
 							if($id_usuario) {
 
-								$ubicaciones = $this->input->post('ubicacion');
+								$permiso['ID_UBICACION'] = $this->input->post('sucursal');
+								$permiso['ID_USUARIO'] = $id_usuario;
+								$permiso['ESTADO']	= 1;
+								$permiso['ID_USUARIO_MODIF'] = $this->session->id_usuario;
 
-								$temp = [];
+								$this->db->insert('VENTAS_PERMISO_SUCURSAL', $permiso);
 
-								foreach ($ubicaciones as $value) {
-									$temp2 = [];
-									$temp2['ID_UBICACION'] = $value;
-									$temp2['ID_USUARIO'] = $id_usuario;
-									$temp2['ESTADO'] = 1;
-									$temp2['ID_USUARIO_MODIF'] = 1;
-
-									array_push($temp, $temp2);
-								}
-
-								$this->db->insert_batch('VENTAS_PERMISO_SUCURSAL', $temp);
-
-										$this->db->where('ID_VENTAS_ACCESO !=', 23);
-										$this->db->or_where('NIVEL_SUPERIOR !=', 23);
-								$menu = $this->main->getListSelect('VENTAS_ACCESO', 'ID_VENTAS_ACCESO');
-
-								$id_perfil = set_value('perfiles');
-								$sql = "EXEC PERFIL_ ".$id_perfil.', '.$id_usuario;
-            					$respuesta = $this->main->getQuery($sql);
 							}
-						}   
-					}
+									  $this->db->where('ID_VENTAS_PERFIL', $this->input->post('perfil'));
+							$acceso = $this->main->getListSelect('VENTAS_PERMISO_PERFIL', 'ID_VENTAS_ACCESO');
 
-					else {
-						$this->session->set_flasdata('error', validation_errors());
+							$autorizado = [];
+							foreach ($acceso as $a) {
+								$temp = [];
+								$temp['ID_USUARIO'] = $id_usuario;
+								$temp['ID_VENTAS_ACCESO'] = $a->ID_VENTAS_ACCESO;
+								$temp['ESTADO'] = 1;
+
+								array_push($autorizado, $temp);
+							}
+
+							$this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $autorizado);
+
+							if($this->db->affected_rows()) {
+								$response['status'] = true;
+							}
+						} 
+						
+						echo json_encode($response);
 					}
-					
-					
-					redirect('usuarios');
-				 
 				}
-		
-		}
 		
 		/* End of file Usuario.php */
 		

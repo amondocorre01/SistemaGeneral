@@ -3,7 +3,7 @@
     <div class="col-md-12">
         <div class="card card-danger">
             <div class="card-header">
-            <h3 class="card-title"><i class="las la-user-plus"></i> Nuevo Usuario</h3>
+            <h3 class="card-title"><i class="las la-user-plus"></i> Acceso de Usuarios</h3>
             </div>
             <div class="card-body">
 
@@ -16,11 +16,11 @@
                     <div class="row">
 
                         <div class="col-1">
-                        <?=form_label("Perfiles", 'perfil');?>
+                        <?=form_label("Usuario", 'usuario');?>
                         </div>
 
                         <div class="col-4">
-                            <?=form_dropdown('perfil', $perfiles, null,['id'=>'perfil']);?>
+                            <?=form_dropdown('usuario', $usuarios, null,['id'=>'usuario']);?>
                         </div>
 
                         <div class="col-4">
@@ -39,17 +39,17 @@
 
 <script>
 
-$('#perfil').select2({
+$('#usuario').select2({
     placeholder: "--- Seleccione una opcion ---"
 });
 
-$('#perfil').on('change', function(){
+$('#usuario').on('change', function(){
 
     var id = $( this ).val();
 
     $.ajax({
         type: "POST",
-        url: "<?=site_url('get-perfil')?>",
+        url: "<?=site_url('get-usuario')?>",
         data: { id: id},
         dataType: "html",
         success: function (response) {

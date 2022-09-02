@@ -109,21 +109,23 @@ $route['abrir-gaveta'] = 'api/impresion/gaveta';
 
 
 /**  USUARIOS */
-$route['nuevo-usuario'] = 'usuario/nuevo';
-$route['guardar-usuario'] = 'usuario/save';
+$route['nuevo-usuario'] = 'usuario/save';
 
 
 /** API USUARIOS */
 $route['get-usuarios'] = 'api/usuarios';
+$route['get-usuario'] = 'api/usuarios/acceso';
 $route['dar-baja'] = 'api/usuarios/baja';
 $route['dar-alta'] = 'api/usuarios/alta';
 $route['set-ubicacion'] = 'api/usuarios/ubicacion';
 $route['get-empleado'] = 'api/usuarios/empleado';
 $route['get-menu'] = 'api/usuarios/menu';
-$route['actualizar-permisos'] = 'api/usuarios/permisos';
+$route['actualizar-permisos-usuarios'] = 'api/usuarios/permisos';
 $route['get-permiso-boton'] = 'api/usuarios/boton';
 $route['aprobar-cambios-botones'] = 'api/usuarios/botones';
 $route['check-user'] = 'api/usuarios/check';
+$route['check-dni'] = 'api/usuarios/dni';
+
 
 
 /** API PERFILES */

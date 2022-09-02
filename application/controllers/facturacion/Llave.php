@@ -19,7 +19,7 @@
             $registro['TOKEN_API'] = $this->input->post('llave');
             $registro['FECHA_ACTIVACION'] = $this->input->post('activacion');
             $registro['FECHA_VENCIMIENTO'] = $this->input->post('vencimiento');
-            $registro['APIKEY'] = APIKEY;
+            $registro['APIKEY'] = $this->input->post('apikey');
             $registro['ESTADO'] = 0;
 
             $this->main->insert('VENTAS_F00_LLAVE', $registro);

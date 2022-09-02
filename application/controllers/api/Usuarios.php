@@ -6,9 +6,29 @@
     
         public function index()
         {
+            $id = $this->session->id_usuario;
+           
+            $ubicaciones = $this->main->getListSelect('VENTAS_PERMISO_SUCURSAL', 'ID_UBICACION', null, ['ID_USUARIO' => $id, 'ESTADO'=>'1']);
+
+            $res = '(';
+            $comas =  count($ubicaciones) - 1;
+
+            foreach($ubicaciones as $u) {
+                   $res.=$u->ID_UBICACION;
+                   if($comas > 0)
+                   {
+                        $res.=',';
+                        $comas--; 
+                   }
+            }
+            $res .= ')';
+          
+            
             $campos = "se.ID_EMPLEADO, ID_STATUS, CONCAT_WS(' ', NOMBRE, AP_PATERNO, AP_MATERNO) AS NOMBRE, CI, CELULAR, AREA, NOMBRE_CARGO, vu.ID_USUARIO, (SELECT DESCRIPCION FROM ID_UBICACION iu, VENTAS_PERMISO_SUCURSAL vps WHERE iu.ID_UBICACION = vps.ID_UBICACION AND vps.ID_USUARIO = vu.ID_USUARIO AND vps.ESTADO = 1 FOR JSON AUTO ) AS SUCURSALES";
                         $this->db->join('SIREPE_CARGOS sc', 'sc.ID_CARGO = se.ID_CARGO', 'left');
                         $this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = se.ID_EMPLEADO', 'left');
+                        $this->db->where('(SELECT ID_UBICACION FROM VENTAS_PERMISO_SUCURSAL vps 
+                        WHERE vps.ID_UBICACION IN '.$res.' AND vps.ID_USUARIO = vu.ID_USUARIO FOR JSON AUTO) !=', null);    
             $usuarios = $this->main->getListSelect('SIREPE_EMPLEADO se', $campos);
 
             echo json_encode(['data'=>$usuarios]);
@@ -122,7 +142,7 @@
         public function permisos() {
 
            $habilitados = $this->input->post('escogidos');
-           $user = $this->input->post('usuarios');
+           $user = $this->input->post('usuario');
 
             $this->db->where('ID_USUARIO', $user);
             $this->db->delete('VENTAS_USUARIOS_ACCESO');
@@ -210,6 +230,39 @@
 
            echo json_encode(['result'=>$posible]);
          }
+
+         function dni() {
+
+            $status = true;
+
+            $posible = $this->input->post('dni');
+
+            $cantidad = $this->main->total('SIREPE_EMPLEADO', ['CI'=>$posible]);
+
+            if($cantidad){
+                $status = false;
+            }
+
+            echo json_encode(['status'=>$status]);
+         }
+
+
+         public function acceso() {
+
+            $id = $this->input->post('id');
+           
+                            $this->db->where('NIVEL_SUPERIOR', 0);
+            $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
+                SELECT ID_VENTAS_ACCESO 
+                FROM VENTAS_USUARIOS_ACCESO vua 
+                WHERE vua.ID_USUARIO = '.$id.' AND 
+                vua.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO
+            ) AS ACCEDE');
+
+            $data['id'] = $id;
+
+            echo $this->load->view('usuario/body/permisos', $data, TRUE);
+        }
     
     }
     
