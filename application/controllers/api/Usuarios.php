@@ -144,8 +144,10 @@
            $habilitados = $this->input->post('escogidos');
            $user = $this->input->post('usuario');
 
+           if($user):
             $this->db->where('ID_USUARIO', $user);
             $this->db->delete('VENTAS_USUARIOS_ACCESO');
+           endif;
 
             $real = [];
             foreach ($habilitados as $value) {
@@ -195,9 +197,11 @@
             $user = $this->input->post('usuarios');
             $menu = $this->input->post('menus');
  
+            if($user):
              $this->db->where('ID_USUARIO', $user);
              $this->db->where('ID_VENTAS_ACCESO', $menu);
              $this->db->delete('VENTAS_ACCESO_BOTON');
+            endif;
  
              $real = [];
              foreach ($habilitados as $value) {

@@ -66,8 +66,10 @@
             $menu = $this->input->post('menu');
             $escogidos = $this->input->post('escogidos');
 
-            $this->db->where('ID_VENTAS_PERFIL', $perfil);
-            $this->db->delete('VENTAS_PERMISO_PERFIL');
+            if($perfil):
+                $this->db->where('ID_VENTAS_PERFIL', $perfil);
+                $this->db->delete('VENTAS_PERMISO_PERFIL');
+            endif;
 
             $permisos = [];
 
