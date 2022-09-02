@@ -137,9 +137,19 @@
         },
         columns: [
             { title: 'N°', width:'8%',data: 'row' },
-            { title: 'Token API', width:'40%' ,data: 'TOKEN_API' },
-            { title: 'Fecha Activacion', width:'15%' ,data: 'FECHA_ACTIVACION' },
-            { title: 'Fecha Vencimiento', width:'15%' ,data: 'FECHA_VENCIMIENTO' },
+            { title: 'codigo Ambiente', width:'40%' ,data: 'CODIGO_AMBIENTE' },
+            { title: 'Codigo Sistema', width:'15%' ,data: 'CODIGO_SISTEMA' },
+            { title: 'Nit', width:'15%' ,data: 'NIT' },
+            { title: 'Codigo Modalidad', width:'15%' ,data: 'CODIGO_MODALIDAD' },
+            { title: 'Codigo Sucursal', width:'15%' ,data: 'CODIGO_SUCURSAL' },
+            { title: 'Codigo Punto Venta', width:'15%' ,data: 'CODIGO_PUNTO_VENTA' },
+            { title: 'Codigo Cuis', width:'15%' ,data: 'CODIGO_CUIS' },
+            { title: 'Fecha Vigencia', width:'15%' ,data: 'FECHA_VIGENCIA' },
+            { title: 'Codigo', width:'15%' ,data: 'CODIGO' },
+            { title: 'Descripcion', width:'45%' ,data: 'DESCRIPCION' },
+            { title: 'Transaccion', width:'15%' ,data: 'TRANSACCION' },
+            
+            
             { title: 'Estado', width:'15%' ,data: null, 
                 render: function (data, type, full, meta) { 
 
@@ -271,15 +281,17 @@
         var nit =   $('input[name="nit"]').val();
         var sucursal =   $('select[name="sucursal"]').val();
         var modalidad =   $('input[name="modalidad"]').val();
+        //console.log(ambiente);
 
 
-        $('#nuevo').modal('hide');
+        //$('#nuevo').modal('hide');
 
         if(ambiente != '' && venta != '' && sistema != '' && nit != '' && sucursal != '' && modalidad != '' ) {
-
+            /*
             $.post("<?=site_url('nuevo-cuis')?>", {ambiente:ambiente, venta:venta, sistema:sistema, nit:nit, sucursal:sucursal, modalidad:modalidad})
             .done(function( data ) {
-                
+                console.log(data);
+                return;
                 Swal.fire({
                     icon: 'success',
                     title: 'Se ha registrado un nuevo CUIS para una sucursal',
@@ -287,10 +299,38 @@
                 });
 
                 table.ajax.reload();
-            });
-        }
+            });*/
+            var datos = new FormData();
+            datos.append("ambiente", ambiente);
+            datos.append("venta", venta);
+            datos.append("sistema", sistema);
+            datos.append("nit", nit);
+            datos.append("sucursal", sucursal);
+            datos.append("modalidad", modalidad);
 
-        else {
+            $.ajax({
+                url: "<?=site_url('nuevo-cuis')?>",
+                method: "POST",
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "html",
+                success:function(respuesta){
+                    console.log(respuesta);
+                    var res = JSON.stringify(respuesta);
+                    if(respuesta){
+
+                    }else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hubo un error , No se ha registrado.',
+                            timer: 3500
+                        });
+                    }
+                }
+            });
+        }else{
             Swal.fire({
                     icon: 'error',
                     title: 'Todos los campos son requeridos',

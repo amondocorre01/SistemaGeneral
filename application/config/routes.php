@@ -149,6 +149,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
 
     /** CUIS */
     $route['nuevo-cuis'] = 'facturacion/cuis/create';
+    $route['get-cuis'] = 'facturacion/cuis/index';
 
 
     

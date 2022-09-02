@@ -224,5 +224,17 @@ class Main_Model extends CI_Model
 		$data = $this->db->query($query) ;
 		$result = $data->result();
 		return $result;
-  	} 
+  	}
+	
+	function getQuery2($query) {
+		$res = false;          
+		try {
+			if($this->db->query($query)){
+				$res = true;
+			}
+		} catch (Exception $e) {
+			return false;
+		}
+		return $res;
+  	}  
 }
