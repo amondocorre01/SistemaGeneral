@@ -127,14 +127,14 @@
         public function menu() {
 
             $id = $this->input->post('id');
-           
+           $data['id']=$id;
             $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
                 SELECT ID_VENTAS_ACCESO 
                 FROM VENTAS_USUARIOS_ACCESO vua 
                 WHERE vua.ID_USUARIO = '.$id.' AND 
                 vua.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO
             ) AS ACCEDE');
-
+            //var_dump($data);
             echo $this->load->view('usuario/body/permisos', $data, TRUE);
             
         }
@@ -144,8 +144,10 @@
            $habilitados = $this->input->post('escogidos');
            $user = $this->input->post('usuario');
 
+           if($user):
             $this->db->where('ID_USUARIO', $user);
             $this->db->delete('VENTAS_USUARIOS_ACCESO');
+           endif;
 
             $real = [];
             foreach ($habilitados as $value) {
@@ -195,9 +197,11 @@
             $user = $this->input->post('usuarios');
             $menu = $this->input->post('menus');
  
+            if($user):
              $this->db->where('ID_USUARIO', $user);
              $this->db->where('ID_VENTAS_ACCESO', $menu);
              $this->db->delete('VENTAS_ACCESO_BOTON');
+            endif;
  
              $real = [];
              foreach ($habilitados as $value) {

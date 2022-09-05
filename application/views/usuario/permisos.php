@@ -12,7 +12,7 @@
                         
                     </div>
                 </div>
-                <?=form_open('actualizar-permisos', null, ['id_menu'=>$this->input->get('vc')])?>
+                <?=form_open('actualizar-permisos-usuarios', null, ['id_menu'=>$this->input->get('vc')])?>
                     <div class="row">
 
                         <div class="col-1">
