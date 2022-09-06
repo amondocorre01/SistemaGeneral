@@ -226,15 +226,12 @@
             echo 'error';
             exit();
           }
-          
           $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
-          
           $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
           $xml = simplexml_load_string($xml);
           $json = json_encode($xml);
           $responseArray = json_decode($json,true);
           $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaActividadesDocumentoSector');
-          //print_r($responseArray);
           $tam_array = count($res_respuesta);
           $save = false;
           if( $tam_array > 0){
@@ -256,7 +253,521 @@
             }
           }
 
+          // 4. Códigos de Leyendas Facturas
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE LEYENDAS DE FACTURAS');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricasLeyendas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaLeyendas');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoActividad = $this->findKey($value,'codigoActividad');
+              $descripcionLeyenda = $this->findKey($value,'descripcionLeyenda');
+              $this->saveCodigosLeyendasFacturas($id_cuis, $id_ventas_catalogo, $transaccion, $codigoActividad, $descripcionLeyenda);
+            }
+          }
+          // 5. Códigos de Mensajes Servicios
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE MENSAJES DE SERVICIOS');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosMensajesServicios($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 6. Códigos de Eventos Significativos
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE EVENTOS SIGNIFICATIVOS');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosEventosSignificativos($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 7. Códigos de Productos y Servicios
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE PRODUCTOS Y SERVICIOS');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaProductos');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoActividad = $this->findKey($value,'codigoActividad');
+              $codigoProducto = $this->findKey($value,'codigoProducto');
+              $descripcionProducto = $this->findKey($value,'descripcionProducto');
+              $this->saveCodigosProductosServicios($id_cuis, $id_ventas_catalogo, $transaccion, $codigoActividad, $codigoProducto, $descripcionProducto);
+            }
+          }
+          ////////////////////////////////////////////////////////////////////////////////////
+          // 8. Códigos de Motivos de Anulacion
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE MOTIVO DE ANULACIÓN');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 9. Códigos de Pais Origen
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE PAÍSES');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 10. Códigos de Tipo Documento Identidad
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE TIPOS DE DOCUMENTO DE IDENTIDAD');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 11. Códigos de Tipos Documento Sector
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE TIPOS DE DOCUMENTO SECTOR');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 12. Códigos de Tipo de Emision
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE TIPO EMISIÓN');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 13. Códigos de Tipo de Habitacion
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE TIPO HABITACIÓN');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 14. Códigos de Tipo Metodo de Pago
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE MÉTODO DE PAGO');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 15. Códigos de Tipo de Moneda
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE TIPOS DE MONEDA');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 16. Códigos de Tipo Punto de Venta
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE TIPOS DE PUNTO DE VENTA');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 17. Códigos de Tipo Factura
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE TIPOS DE FACTURA');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+          // 18. Códigos de Unidades de Medida
+          $venta_catalogo = $this->getCatalogo('LISTADO TOTAL DE UNIDAD DE MEDIDA');
+          if(count($venta_catalogo)>0){
+            $id_ventas_catalogo = $venta_catalogo[0]->ID_VENTAS_F02_CATALOGO;
+            $nombre_funcion = $venta_catalogo[0]->NOMBRE_FUNCION;
+          }else{
+            echo 'error';
+            exit();
+          }
+          $solicitudSincronizacion = $this->solicitudSincronizacion($wsdlURL, $apikey, $nombre_funcion, $codigoAmbiente, $codigoSistema, $nit, $val_cuis, $codigo_sucursal, $codigo_punto_venta);
+          $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $solicitudSincronizacion);
+          $xml = simplexml_load_string($xml);
+          $json = json_encode($xml);
+          $responseArray = json_decode($json,true);
+          $res_respuesta = $this->showArrayKeySearch($responseArray, 'RespuestaListaParametricas');
+          $tam_array = count($res_respuesta);
+          $save = false;
+          if( $tam_array > 0){
+            $transaccion = $this->findKey($res_respuesta,'transaccion');
+            if($transaccion =='true'){
+              $transaccion = 1;
+            }else{
+              $transaccion = 0;
+            }
+          }
+          $res_respuesta = $this->findKey($responseArray,'listaCodigos');
+          $tam_array = count($res_respuesta);
+          if( $tam_array > 0){
+            foreach ($res_respuesta as $key => $value) {
+              $codigoClasificador = $this->findKey($value,'codigoClasificador');
+              $descripcion = $this->findKey($value,'descripcion');
+              $this->saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion);
+            }
+          }
+
         }
+
 
         function saveActividades($id_cuis, $id_ventas_catalogo, $transaccion, $codigoCaeb, $descripcion, $tipoActividad){
           $res = null;
@@ -268,6 +779,41 @@
         function saveActividadesDocumentoSector($id_cuis, $id_ventas_catalogo, $transaccion, $codigoActividad, $codigoDocumentoSector, $tipoDocumentoSector){
           $res = null;
           $sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalogo', '$codigoActividad', '$transaccion', '', '', '$tipoDocumentoSector','$codigoDocumentoSector';";
+          $res = $this->main->getQuery2($sql);
+          return $res;
+        }
+
+        function saveCodigosLeyendasFacturas($id_cuis, $id_ventas_catalogo, $transaccion, $codigoActividad, $descripcionLeyenda){
+          $res = null;
+          $sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalogo', '$codigoActividad', '$transaccion', '$descripcionLeyenda', '', '','';";
+          $res = $this->main->getQuery2($sql);
+          return $res;
+        }
+
+        function saveCodigosMensajesServicios($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion){
+          $res = null;
+          $sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalogo', '$codigoClasificador', '$transaccion', '$descripcion', '', '','';";
+          $res = $this->main->getQuery2($sql);
+          return $res;
+        }
+
+        function saveCodigosEventosSignificativos($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion){
+          $res = null;
+          $sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalogo', '$codigoClasificador', '$transaccion', '$descripcion', '', '','';";
+          $res = $this->main->getQuery2($sql);
+          return $res;
+        }
+
+        function saveCodigosProductosServicios($id_cuis, $id_ventas_catalogo, $transaccion, $codigoActividad, $codigoProducto, $descripcionProducto){
+          $res = null;
+          $sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalogo', '$codigoActividad', '$transaccion', '$descripcionProducto', '', '','$codigoProducto';";
+          $res = $this->main->getQuery2($sql);
+          return $res;
+        }
+
+        function saveCodigosSincronizacion($id_cuis, $id_ventas_catalogo, $transaccion, $codigoClasificador, $descripcion){
+          $res = null;
+          $sql = "EXEC VENTAS_SET_F02_SINCRONIZACION '$id_cuis', '$id_ventas_catalogo', '$codigoClasificador', '$transaccion', '$descripcion', '', '','';";
           $res = $this->main->getQuery2($sql);
           return $res;
         }
