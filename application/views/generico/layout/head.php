@@ -48,7 +48,6 @@
   <!-- DATA TABLES -->
   <script src="<?=base_url('node_modules/datatables.net/js/jquery.dataTables.js')?>"></script>
   <?=link_tag(base_url('node_modules/datatables.net-dt/css/jquery.dataTables.css'))?>
-  <script src="<?=base_url('node_modules/datatables-select/dist/js/dataTables.select.js')?>"></script>
   <?=link_tag('node_modules/datatables.net-responsive-dt/css/responsive.dataTables.css')?>
   <script src="<?=base_url('node_modules/datatables.net-responsive-dt/js/responsive.dataTables.js')?>"></script>
 
@@ -71,6 +70,14 @@
   }
 ?>
 ">
+
+
+
+
+
+
+
+
 <!--<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed ">-->
 <div class="wrapper">
 
@@ -78,3 +85,5 @@
   <div class="preloader flex-column justify-content-center align-items-center">
   <?=img(['src'=>'assets/dist/img/taza.png', 'class'=>'animation__shake', 'alt'=>'Capresso', 'height'=>'60', 'width'=>'60' ]); ?>
   </div>
+
+  

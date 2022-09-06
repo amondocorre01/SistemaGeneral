@@ -6,23 +6,75 @@
     
         public function index()
         {
-            $campos = "ROW_NUMBER() OVER(ORDER BY ESTADO DESC) AS row, CODIGO_AMBIENTE
+            $campos = "ROW_NUMBER() OVER(ORDER BY c.ESTADO DESC) AS row
+            ,CODIGO_AMBIENTE
             ,CODIGO_SISTEMA
             ,NIT
             ,CODIGO_MODALIDAD
-            ,CODIGO_SUCURSAL
+            ,CONCAT_WS('-',u.CODIGO_SUCURSAL,u.DESCRIPCION) AS CODIGO_SUCURSAL
             ,CODIGO_PUNTO_VENTA
             ,CODIGO_CUIS
             ,FECHA_VIGENCIA
             ,CODIGO
-            ,DESCRIPCION
+            ,c.DESCRIPCION
             ,TRANSACCION
-            ,ESTADO
+            ,c.ESTADO
             ,ID_VENTAS_F00_LLAVE";
-            $llaves = $this->main->getListSelect('VENTAS_F01_CUIS', $campos);
+
+                      $this->db->join('ID_UBICACION u', 'u.CODIGO_SUCURSAL = c.CODIGO_SUCURSAL', 'left');
+            $llaves = $this->main->getListSelect('VENTAS_F01_CUIS c', $campos);
 
             echo json_encode(['data'=>$llaves]);
         }
+
+        public function activate() {
+
+          $id = $this->input->post('id');
+
+          $response['message'] = '';
+          $response['status'] = false;
+          $response['icon'] = 'error';
+
+
+          $cant = $this->main->getSelect('VENTAS_F01_CUIS', 'ID_VENTAS_F01_CUIS', ['ESTADO'=>1, ]);
+
+          if($cant) {
+              $response['message'] = 'Solo una llave puede estar activa, primero desactive las otras llaves';
+          }
+          else {
+              $this->main->update('VENTAS_F01_CUIS', ['ESTADO'=>1], ['ID_VENTAS_F01_CUIS'=>$id]);
+
+              if($this->db->affected_rows()) {
+                  $response['status'] = true;
+                  $response['message'] = 'Se ha activado el codigo CUIS';
+                  $response['icon'] = 'success';
+              }
+          }
+
+          echo json_encode($response);
+      }
+
+
+      public function desactivate() {
+
+          $id = $this->input->post('id');
+
+          $response['message'] = '';
+          $response['status'] = false;
+          $response['icon'] = 'error';
+
+
+          $this->main->update('VENTAS_F01_CUIS', ['ESTADO'=>0], ['ID_VENTAS_F01_CUIS'=>$id]);
+
+          if($this->db->affected_rows()) {
+              $response['status'] = true;
+              $response['message'] = 'Se ha desactivado el codigo CUIS';
+              $response['icon'] = 'success';
+          }
+      
+
+          echo json_encode($response);
+      }
 
         public function create(){
             $codigoAmbiente = $this->input->post('ambiente'); 
