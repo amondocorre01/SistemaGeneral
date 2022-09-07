@@ -186,8 +186,8 @@
 										break;
 
 										case 'reimpresion-cine-center':
-											$datos['db'] = 'cineCenter'; 
-											$datos['sucursal'] = 'Cine Center';
+											$datos['db'] = 'ventas'; 
+											$datos['sucursal'] = 'Pruebas';
 										 echo $this->load->view('generico/apertura/reimpresion', $datos, TRUE);
 										break;
 
