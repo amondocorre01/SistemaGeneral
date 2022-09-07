@@ -24,7 +24,8 @@
 
             $id = $this->input->post('id');
             //obtener la factura por id
-            $result = $this->main->get(PRE_SUC.'VENTAS', ['ID_VENTA_DOCUMENTO'=>$id]);
+            
+            $this->getFactura($id);
 
             //Anulando de la base de datos
             $DB2->where('ID_VENTA_DOCUMENTO', $id);
@@ -35,6 +36,23 @@
 
             redirect(site_url('generico/inicio?vc='.$id_menu),'refresh');
         
+        }
+
+        function getFactura($id){
+            $res = 1;
+            $sql = "EXEC GET_VENTA_DOCUMENTO '$id';";
+            $DB2 = $this->load->database('ventas', TRUE);
+            $respuesta = $DB2->query($sql);
+            $respuesta = $respuesta->result();
+            var_dump($respuesta);
+            exit();
+            if(count($respuesta)==1){
+                $res = $respuesta[0]->numero_factura;
+                if($res ==null){
+                    $res=1;
+                }
+            }
+            return $res;
         }
 
         public function copia()
