@@ -20,7 +20,7 @@
 
 
 
-            $DB2 = $this->load->database($db, TRUE);
+            $DB2 = $this->load->database('ventas', TRUE);
 
             $id = $this->input->post('id');
 
