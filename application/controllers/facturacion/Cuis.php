@@ -87,13 +87,14 @@
               if($res){
                 echo 'Se guardo correctamente';
                 //sincronizar catalogos para todas las sucursales
+               /*
                 $codigoAmbiente='2';
                 $codigoSistema='7228C6496C77C09EE700B6F';
                 $nit='4394186018';
                 $cuis='10041EAB';
                 $codigoSucursal='0';
                 $codigoPuntoVenta='1';
-
+*/
                 $this->sincronizarCatalogos($apikey, $codigoSucursal);
 
               }else{
