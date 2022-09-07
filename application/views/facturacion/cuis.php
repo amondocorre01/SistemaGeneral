@@ -320,7 +320,7 @@
                     console.log(respuesta);
                     var res = JSON.stringify(respuesta);
                     if(respuesta){
-
+                        //$('#nuevo').modal('hide'); 
                     }else {
                         Swal.fire({
                             icon: 'error',
