@@ -150,6 +150,16 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     /** CUIS */
     $route['nuevo-cuis'] = 'facturacion/cuis/create';
     $route['get-cuis'] = 'facturacion/cuis/index';
+    $route['ver-cuis'] = 'facturacion/cuis/get';
+    $route['activar-cuis'] = 'facturacion/cuis/activate';
+    $route['inactivar-cuis'] = 'facturacion/cuis/desactivate';
+
+
+    /** EVENTOS */
+    $route['get-eventos'] = 'facturacion/evento/index';
+    $route['nuevo-evento'] = 'facturacion/evento/create';
+
+
 
 
     

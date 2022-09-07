@@ -1,18 +1,18 @@
 <br>
 <div class="row justify-content-center">
-    <div class="col-md-11">
+    <div class="col-md-12">
         <div class="card card-danger">
             <div class="card-header">
             <h3 class="card-title"><i class="las la-key"></i>CUIS</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body table-responsive">
 
             <button class="btn btn-xs edit palette-Green-600 bg" data-toggle="modal" data-target="#nuevo">
                 <i class="las la-key la-1x"></i> Nuevo CUIS
             </button>
             <br> <br>
 
-                <table id="table" class="table table-bordered table-striped dataTable dtr-inline">
+                <table id="table" class="table table-striped table-hover dt-responsive display table-bordered dataTable dtr-inline">
 
                 </table>
             </div>
@@ -65,7 +65,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <?=form_label("Codigo de ambiente", 'ambiente');?>
-                    <?=form_input('ambiente', null, ['class'=>'form-control', 'id'=>'ambiente', 'required'=>'required']);?>
+                    <?=form_input('ambiente', null, ['class'=>'form-control', 'id'=>'ambiente', 'required'=>'required', 'placeholder'=>'2']);?>
                     <div class="valid-feedback"></div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <?=form_label("Punto de Venta", 'venta');?>
-                    <?=form_input('venta', null, ['class'=>'form-control', 'id'=>'venta', 'required'=>'required']);?>
+                    <?=form_input('venta', null, ['class'=>'form-control', 'id'=>'venta', 'placeholder'=>'1' ,'required'=>'required']);?>
                     <div class="valid-feedback"></div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <?=form_label("Codigo de Sistema", 'sistema');?>
-                    <?=form_input('sistema', null, ['class'=>'form-control', 'id'=>'sistema', 'required'=>'required']);?>
+                    <?=form_input('sistema', null, ['class'=>'form-control', 'id'=>'sistema', 'placeholder'=>'7228C6496C77C09EE700B6F' ,'required'=>'required']);?>
                     <div class="valid-feedback"></div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <?=form_label("NIT", 'nit');?>
-                    <?=form_input('nit', null, ['class'=>'form-control', 'id'=>'nit', 'required'=>'required']);?>
+                    <?=form_input('nit', null, ['class'=>'form-control', 'id'=>'nit', 'placeholder'=>'4394186018' ,'required'=>'required']);?>
                     <div class="valid-feedback"></div>
                 </div>
             </div>
@@ -105,7 +105,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <?=form_label("Codigo de Modalidad", 'modalidad');?>
-                    <?=form_input('modalidad', null, ['class'=>'form-control', 'id'=>'modalidad', 'required'=>'required']);?>
+                    <?=form_input('modalidad', null, ['class'=>'form-control', 'placeholder'=>'1' ,'id'=>'modalidad', 'required'=>'required']);?>
                     <div class="valid-feedback"></div>
                 </div>
             </div>
@@ -120,7 +120,20 @@
   </div>
 </div>
 
+
+
 <script>
+
+function loader() {
+
+        Swal.fire({
+    imageUrl: '<?=base_url('assets/dist/img/1amw.gif')?>',
+    imageHeight: 500,
+    imageAlt: 'A tall image',
+    showConfirmButton: false
+    })
+}
+
 
     $('#sucursal').select2({
         placeholder: "Seleccione una sucursal"
@@ -137,20 +150,20 @@
         },
         columns: [
             { title: 'N°', width:'8%',data: 'row' },
-            { title: 'codigo Ambiente', width:'40%' ,data: 'CODIGO_AMBIENTE' },
-            { title: 'Codigo Sistema', width:'15%' ,data: 'CODIGO_SISTEMA' },
-            { title: 'Nit', width:'15%' ,data: 'NIT' },
-            { title: 'Codigo Modalidad', width:'15%' ,data: 'CODIGO_MODALIDAD' },
-            { title: 'Codigo Sucursal', width:'15%' ,data: 'CODIGO_SUCURSAL' },
-            { title: 'Codigo Punto Venta', width:'15%' ,data: 'CODIGO_PUNTO_VENTA' },
-            { title: 'Codigo Cuis', width:'15%' ,data: 'CODIGO_CUIS' },
-            { title: 'Fecha Vigencia', width:'15%' ,data: 'FECHA_VIGENCIA' },
-            { title: 'Codigo', width:'15%' ,data: 'CODIGO' },
-            { title: 'Descripcion', width:'45%' ,data: 'DESCRIPCION' },
-            { title: 'Transaccion', width:'15%' ,data: 'TRANSACCION' },
+            { title: 'Cod. Amb.', width:'8%' ,data: 'CODIGO_AMBIENTE' },
+            { title: 'Codigo Sistema', width:'8%' ,data: 'CODIGO_SISTEMA' },
+            { title: 'NIT', width:'8%' ,data: 'NIT' },
+            { title: 'Cod. Mod.', width:'8%' ,data: 'CODIGO_MODALIDAD' },
+            { title: 'Cod. Suc.', width:'8%' ,data: 'CODIGO_SUCURSAL' },
+            { title: 'Cod. PV.', width:'8%' ,data: 'CODIGO_PUNTO_VENTA' },
+            { title: 'Cod. Cuis', width:'8%' ,data: 'CODIGO_CUIS' },
+            { title: 'Fec. Vig.', width:'8%' ,data: 'FECHA_VIGENCIA' },
+            { title: 'Cod.', width:'15%' ,data: 'CODIGO' },
+            { title: 'Descrip.', width:'20%' ,data: 'DESCRIPCION' },
+            { title: 'Trans.', width:'10%' ,data: 'TRANSACCION' },
             
             
-            { title: 'Estado', width:'15%' ,data: null, 
+            { title: 'Estado', width:'10%' ,data: null, 
                 render: function (data, type, full, meta) { 
 
                     var body = '';
@@ -173,20 +186,20 @@
 
                     var button = '' 
 
-                        button += '<button class="btn btn-xs edit palette-Blue-400 bg" data-toggle="modal" data-target="#eye" onclick="verKey('+row.ID_VENTAS_LLAVE+')">';
+                        button += '<button class="btn btn-xs edit palette-Blue-400 bg" data-toggle="modal" data-target="#eye" onclick="verCUIS('+row.ID_VENTAS_F01_CUIS+')">';
                         button +='<i class="las la-eye la-1x"></i>';
                         button += '</button>';
 
                     if(!row.ESTADO) {
 
-                        button += '<button class="btn btn-xs palette-Green-400 bg" onclick="activarKey('+row.ID_VENTAS_LLAVE+')">';
+                        button += '<button class="btn btn-xs palette-Green-400 bg" onclick="activarKey('+row.ID_VENTAS_F01_CUIS+')">';
                         button +='<i class="las la-toggle-on la-1x"></i>';
                         button += '</button>';
 
                     }
 
                     else {
-                        button += '<button class="btn btn-xs palette-Red-400 bg" onclick="inactivarKey('+row.ID_VENTAS_LLAVE+')">';
+                        button += '<button class="btn btn-xs palette-Red-400 bg" onclick="inactivarKey('+row.ID_VENTAS_F01_CUIS+')">';
                         button +='<i class="las la-toggle-off la-1x"></i>';
                         button += '</button>';
                     }
@@ -198,12 +211,12 @@
     });
 
 
-    function verKey(id) {
+    function verCUIS(id) {
 
-        $.post("<?=site_url('get-key')?>", {id:id})
+        $.post("<?=site_url('ver-cuis')?>", {id:id})
         .done(function(data){
                 dato = JSON.parse(data);
-             var res = dato.response.TOKEN_API;
+             var res = dato.response.CODIGO_CUIS;
 
              $('textarea#key').val(res);
              $('#editar').modal('show');
@@ -212,7 +225,7 @@
 
     function activarKey(id) {
 
-        $.post("<?=site_url('activar-key')?>", {id:id})
+        $.post("<?=site_url('activar-cuis')?>", {id:id})
         .done(function(data){
                 dato = JSON.parse(data);
                var mensaje = dato.message;
@@ -231,7 +244,7 @@
 
     function inactivarKey(id) {
 
-        $.post("<?=site_url('inactivar-key')?>", {id:id})
+        $.post("<?=site_url('inactivar-cuis')?>" ,{id:id}, loader())
         .done(function(data){
                 dato = JSON.parse(data);
             var mensaje = dato.message;
@@ -245,6 +258,9 @@
                 title: mensaje,
                 timer: 4500
             });
+        })
+        .complete(function(){
+            swal.close()
         });
     }
 
@@ -281,25 +297,10 @@
         var nit =   $('input[name="nit"]').val();
         var sucursal =   $('select[name="sucursal"]').val();
         var modalidad =   $('input[name="modalidad"]').val();
-        //console.log(ambiente);
-
-
-        //$('#nuevo').modal('hide');
+        
 
         if(ambiente != '' && venta != '' && sistema != '' && nit != '' && sucursal != '' && modalidad != '' ) {
-            /*
-            $.post("<?=site_url('nuevo-cuis')?>", {ambiente:ambiente, venta:venta, sistema:sistema, nit:nit, sucursal:sucursal, modalidad:modalidad})
-            .done(function( data ) {
-                console.log(data);
-                return;
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Se ha registrado un nuevo CUIS para una sucursal',
-                    timer: 4500
-                });
-
-                table.ajax.reload();
-            });*/
+            
             var datos = new FormData();
             datos.append("ambiente", ambiente);
             datos.append("venta", venta);
@@ -309,6 +310,7 @@
             datos.append("modalidad", modalidad);
 
             $.ajax({
+                beforeSend: loader(),
                 url: "<?=site_url('nuevo-cuis')?>",
                 method: "POST",
                 data: datos,
@@ -317,7 +319,7 @@
                 processData: false,
                 dataType: "html",
                 success:function(respuesta){
-                    console.log(respuesta);
+                    swal.close()
                     var res = JSON.stringify(respuesta);
                     if(respuesta){
                         //$('#nuevo').modal('hide'); 
