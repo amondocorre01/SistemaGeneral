@@ -186,20 +186,20 @@ function loader() {
 
                     var button = '' 
 
-                        button += '<button class="btn btn-xs edit palette-Blue-400 bg" data-toggle="modal" data-target="#eye" onclick="verKey('+row.ID_VENTAS_F00_LLAVE+')">';
+                        button += '<button class="btn btn-xs edit palette-Blue-400 bg" data-toggle="modal" data-target="#eye" onclick="verCUIS('+row.ID_VENTAS_F01_CUIS+')">';
                         button +='<i class="las la-eye la-1x"></i>';
                         button += '</button>';
 
                     if(!row.ESTADO) {
 
-                        button += '<button class="btn btn-xs palette-Green-400 bg" onclick="activarKey('+row.ID_VENTAS_F00_LLAVE+')">';
+                        button += '<button class="btn btn-xs palette-Green-400 bg" onclick="activarKey('+row.ID_VENTAS_F01_CUIS+')">';
                         button +='<i class="las la-toggle-on la-1x"></i>';
                         button += '</button>';
 
                     }
 
                     else {
-                        button += '<button class="btn btn-xs palette-Red-400 bg" onclick="inactivarKey('+row.ID_VENTAS_F00_LLAVE+')">';
+                        button += '<button class="btn btn-xs palette-Red-400 bg" onclick="inactivarKey('+row.ID_VENTAS_F01_CUIS+')">';
                         button +='<i class="las la-toggle-off la-1x"></i>';
                         button += '</button>';
                     }
@@ -211,12 +211,12 @@ function loader() {
     });
 
 
-    function verKey(id) {
+    function verCUIS(id) {
 
-        $.post("<?=site_url('get-cuis')?>", {id:id})
+        $.post("<?=site_url('ver-cuis')?>", {id:id})
         .done(function(data){
                 dato = JSON.parse(data);
-             var res = dato.response.TOKEN_API;
+             var res = dato.response.CODIGO_CUIS;
 
              $('textarea#key').val(res);
              $('#editar').modal('show');
@@ -244,7 +244,7 @@ function loader() {
 
     function inactivarKey(id) {
 
-        $.post("<?=site_url('inactivar-cuis')?>", {id:id})
+        $.post("<?=site_url('inactivar-cuis')?>" ,{id:id}, loader())
         .done(function(data){
                 dato = JSON.parse(data);
             var mensaje = dato.message;
@@ -258,6 +258,9 @@ function loader() {
                 title: mensaje,
                 timer: 4500
             });
+        })
+        .complete(function(){
+            swal.close()
         });
     }
 

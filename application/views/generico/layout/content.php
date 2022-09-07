@@ -232,6 +232,17 @@
 											echo $this->load->view('facturacion/cuis', $datos, TRUE);
 										break;
 
+										case 'evento-significativo':
+
+											
+											$sql = "EXEC GET_EVENTOS_SIGNIFICATIVOS";
+											$DB2 = $this->load->database('default', TRUE);
+											$data['eventos'] = $DB2->query($sql)->result();
+		   
+											
+											echo $this->load->view('facturacion/eventos', $data, TRUE);
+										break;
+
 										case 'acceso-perfiles':
 											$this->db->where('vp.ESTADO', 1);
 											$perfiles = $this->main->getListSelect('VENTAS_PERFIL vp', 'vp.ID_VENTAS_PERFIL, PERFIL');

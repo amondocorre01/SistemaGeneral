@@ -19,7 +19,7 @@
             ,c.DESCRIPCION
             ,TRANSACCION
             ,c.ESTADO
-            ,ID_VENTAS_F00_LLAVE";
+            ,ID_VENTAS_F01_CUIS";
 
                       $this->db->join('ID_UBICACION u', 'u.CODIGO_SUCURSAL = c.CODIGO_SUCURSAL', 'left');
             $llaves = $this->main->getListSelect('VENTAS_F01_CUIS c', $campos);
@@ -52,6 +52,13 @@
           }
 
           echo json_encode($response);
+      }
+
+      public function get() {
+          $id =$this->input->post('id');
+
+          $cuis = $this->main->getSelect('VENTAS_F01_CUIS', 'CODIGO_CUIS', ['ID_VENTAS_F01_CUIS'=>$id]);
+          echo json_encode(['response'=>$cuis]);
       }
 
 

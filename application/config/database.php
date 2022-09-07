@@ -116,3 +116,25 @@ $db['prueba'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+$db['ventas'] = array(
+	'dsn'	=> '',
+	'hostname' => 'capresso.database.windows.net',
+	'username' => 'capresso',
+	'password' => 'Qwerty123',
+	'database' => 'BdVentasSucursalFacturacion',
+	'dbdriver' => 'sqlsrv',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
