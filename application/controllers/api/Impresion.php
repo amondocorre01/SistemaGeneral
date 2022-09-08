@@ -42,12 +42,13 @@
             $codigoPuntoVenta = $cuis_actual[0]->CODIGO_PUNTO_VENTA;
             $nit = $cuis_actual[0]->NIT;
             $cuf = $venta_documento[0]->CODIGO_CUF;
-            $tipoFacturaDocumento = $venta_documento[0]->TIPO_DOCUMENTO;
+            $tipoFacturaDocumento = $venta_documento[0]->TIPO_DOCUMENTO_SECTOR;
             $codigoEmision = $venta_documento[0]->TIPO_EMISION;
             $codigoDocumentoSector = $venta_documento[0]->CODIGO_DOCUMENTO_SECTOR;
             $codigoMotivo = '1';
             $cufd = $cufd_actual[0]->CODIGO_CUFD;
             $respuesta_soap = $this->anularFacturaSoap($cuf,$codigoAmbiente,$codigoEmision,$codigoSistema,$codigoSucursal,$codigoMotivo,$codigoModalidad,$cuis,$codigoPuntoVenta,$tipoFacturaDocumento,$nit,$codigoDocumentoSector,$cufd);
+            //var_dump($respuesta_soap);
             $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $respuesta_soap);
             $xml = simplexml_load_string($xml);
             $json = json_encode($xml);
