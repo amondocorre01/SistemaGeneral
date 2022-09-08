@@ -107,7 +107,7 @@ columns: [
             button += '<form action="'+url_anular+'" method="post" id="anular'+data.ID_VENTA_DOCUMENTO+'">';
                 button += '<input name="id" type="hidden" value="'+data.ID_VENTA_DOCUMENTO+'"/>';
                 button += '<input name="db" type="hidden" value="prueba"/>';
-                button += '<input name="suf_suc" type="hidden" value="PP_"/>';
+                button += '<input name="suf_suc" type="hidden" value="<?=SUF_SUC?>"/>';
                 button += '<input name="id_menu" type="hidden" value="<?=$id_menu?>"/>';
                 button += '<button class="btn btn-primary btn-danger btn-md" type="submit" form="anular'+data.ID_VENTA_DOCUMENTO+'" title="Anular Factura">';
                     button +='<i class="las la-times"></i>';
@@ -184,7 +184,7 @@ $('#fecha').on('change', function(){
 
 
 function copia(id) {
-        $.post("<?=site_url('copia-factura')?>", {id: id,  pre_suc:'PP_'})
+        $.post("<?=site_url('copia-factura')?>", {id: id,  pre_suc:''})
         .done(function( data ) {
             var url= "<?=site_url('imprimir-copia-factura')?>";
             window.open(url,'_blank');

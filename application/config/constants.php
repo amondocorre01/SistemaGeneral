@@ -84,10 +84,10 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
-define('PRE_SUC', 'PP_'); //PARA PROCEDIMIENTOS y VISTAS
-define('SUF_SUC', '_P'); //PARA TABLAS  _P
+define('PRE_SUC', 'FF_'); //PARA PROCEDIMIENTOS y VISTAS
+define('SUF_SUC', '_F'); //PARA TABLAS  _P
 define('BD_SERV_2', 'capresso.database.windows.net');
-define('BD_NAME_2', 'BDVentasSucursalPrueba');
+define('BD_NAME_2', 'BDVentasSucursalFacturacion');
 define('BD_USER_2', 'capresso');
 define('BD_PASS_2', 'Qwerty123');
 define('SUCURSAL', 'Sucursal Prueba');
