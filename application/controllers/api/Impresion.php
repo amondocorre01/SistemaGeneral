@@ -17,8 +17,6 @@
             $db = $this->input->post('db');
             $suf_suc = $this->input->post('suf_suc');
 
-            echo $suf_suc;
-            exit();
             $id_menu = $this->input->post('id_menu');
 
 
@@ -29,11 +27,11 @@
             //obtener la factura por id
             
             $venta_documento = $this->getFactura($id);
-            var_dump($venta_documento);
-            echo '<br><br>';
+            //var_dump($venta_documento);
+            //echo '<br><br>';
             $cuis_actual = $this->getCuisActual(0);
-            var_dump($cuis_actual);
-            echo '<br><br>';
+            //var_dump($cuis_actual);
+            //echo '<br><br>';
             $fecha = date('Y-m-d');
             $cufd_actual = $this->getCufdActual(($cuis_actual[0]->ID_VENTAS_F01_CUIS), $fecha);
             $codigoAmbiente = $cuis_actual[0]->CODIGO_AMBIENTE;
