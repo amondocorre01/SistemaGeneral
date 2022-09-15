@@ -59,6 +59,42 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalAnularFactura">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Anular Factura</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="form-group">
+                    <label>Seleccione el Motivo de Anulacion</label>
+                        <div class="input-group">
+                            <select  class="form-control input-lg motivoAnulacion" name="motivoAnulacion" required style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                <option value="">Seleccionar el motivo</option>
+                                <option value="1">FACTURA MAL EMITIDA</option>
+                                <option value="2">NOTA DE CREDITO-DEBITO MAL EMITIDA</option>
+                                <option value="3">DATOS DE EMISION INCORRECTOS</option>
+                                <option value="4">FACTURA O NOTA DE CREDITO-DEBITO DEVUELTA</option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary btnSaveAnularFactura"  onclick="guardarAnularFactura(this)">Guardar</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+</div>
+
 
 
 <script>
@@ -104,15 +140,9 @@ columns: [
          
         if(anular == true) {
             button += '<div class="btn-group" role="group" aria-label="Basic example">';
-            button += '<form action="'+url_anular+'" method="post" id="anular'+data.ID_VENTA_DOCUMENTO+'">';
-                button += '<input name="id" type="hidden" value="'+data.ID_VENTA_DOCUMENTO+'"/>';
-                button += '<input name="db" type="hidden" value="prueba"/>';
-                button += '<input name="suf_suc" type="hidden" value="<?=SUF_SUC?>"/>';
-                button += '<input name="id_menu" type="hidden" value="<?=$id_menu?>"/>';
-                button += '<button class="btn btn-primary btn-danger btn-md" type="submit" form="anular'+data.ID_VENTA_DOCUMENTO+'" title="Anular Factura">';
+                button += '<button class="btn btn-primary btn-danger btn-md" iden="'+data.ID_VENTA_DOCUMENTO+'" onClick="onClickAnularFactura(this)" data-toggle="modal" data-target="#modalAnularFactura" title="Anular Factura">';
                     button +='<i class="las la-times"></i>';
                 button += '</button>';
-            button += '</form>';
         }
         
         if(ic == true) {
@@ -181,6 +211,116 @@ $('#fecha').on('change', function(){
 
 
 });
+
+function onClickAnularFactura(element){
+    //$('.textarea-msg').val('');
+    var iden = $(element).attr("iden");
+    $('.btnSaveAnularFactura').attr("iden",iden);
+    cargarMotivosAnulacion();
+    //var nameTextSms = '.sms-'+iden;
+    /*var smsText = $(nameTextSms).val();
+    if(smsText != ''){
+        $('.textarea-msg').val(smsText);
+    }else{
+
+    }*/
+}
+function cargarMotivosAnulacion(){
+    $(".motivoAnulacion").empty();
+    var datos = new FormData();
+    datos.append("loadMotivosAnulacion",'1');
+    $.ajax({
+        url: "<?=site_url('motivos-anulacion')?>",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success:function(respuesta){
+            //console.log(respuesta);
+            var res = JSON.stringify(respuesta);
+            if(respuesta){
+                for(var i=0; i<respuesta.length;i++){
+                    var resp=respuesta[i];
+                    var id=resp['CODIGO'];
+                    var descripcion=resp['DESCRIPCION'];
+                    //ponerEstilo(fecha,name_periodo,periodo,texto);
+                    let option="<option value='"+id+"' >"+descripcion+"</option>";
+                    $('.motivoAnulacion').prepend(option);
+                }
+                let option2="<option selected value=''>Seleccione el motivo</option>";
+                $('.motivoAnulacion').prepend(option2);
+            }
+        },
+        error: function (error){
+            console.log(error.responseText);
+        }
+        });
+}
+
+function guardarAnularFactura(element){
+    //$('#modalAnularFactura').modal('toggle');
+    var iden = $(element).attr("iden");
+    var selectMotivo = $('.motivoAnulacion').val();
+    if(selectMotivo === ''){
+        alert('Error: Seleccione un motivo de anulación');
+        return;
+    }
+    var datos = new FormData();
+    datos.append("saveAnulacionFactura",'1');
+    datos.append("id_venta_documento",iden);
+    datos.append("codigo_motivo",selectMotivo);
+    datos.append("suf_suc",'1');
+    datos.append("id_menu",'1');
+    datos.append("db",'1');
+
+    $.ajax({
+        url: "<?=site_url('anular-factura')?>",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success:function(respuesta){
+            //console.log(respuesta);
+            var res = JSON.stringify(respuesta);
+            if(respuesta=='anulado'){
+                location.reload();
+                /*
+                insertHtml = '<label class="btn btn-info gender-label"><span>Anulado</span></label>';
+                Swal.fire({
+                icon: 'success',
+                title: 'Se ha anulado correctamente la factura',
+                timer: 3500
+                });*/
+            }else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hubo un error , No se ha anulado.',
+                    timer: 3500
+                });
+            }
+        },
+        error: function (error){
+            console.log(error.responseText);
+        }
+        });
+
+    /*
+    if(smsText.trim() ==''){
+        $(nameRow).addClass('btnDisable');
+        $(nameRow).removeClass('btn-info');
+        $(nameTextSms).val('');
+    }else{
+        $(`${nameTextSms}`).val(smsText);
+        $(nameRow).addClass('btn-info');
+        $(nameRow).removeClass('btnDisable');
+    }*/
+    
+    //smsText=$('.textarea-msg').val('');
+}
 
 
 function copia(id) {

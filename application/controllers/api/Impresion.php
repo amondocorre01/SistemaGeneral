@@ -11,19 +11,20 @@
             $this->load->library('QRlib/index'); 
         }
         
-    
-        public function anular()
-        {
+        public function motivos(){
+            $res = null;
+            $sql = "select * from VENTAS_F02_SINCRONIZACION vfs where ID_VENTAS_F02_CATALOGOS = 8;";
+            $respuesta = $this->main->getQuery($sql);
+            echo json_encode($respuesta);
+        }
+
+        public function anular(){
             $db = $this->input->post('db');
             $suf_suc = $this->input->post('suf_suc');
-
             $id_menu = $this->input->post('id_menu');
-
-
-
             $DB2 = $this->load->database('ventas', TRUE);
-
-            $id = $this->input->post('id');
+            $id = $this->input->post('id_venta_documento');
+            $codigoMotivo = $this->input->post('codigo_motivo');
             //obtener la factura por id
             
             $venta_documento = $this->getFactura($id);
@@ -45,7 +46,7 @@
             $tipoFacturaDocumento = $venta_documento[0]->TIPO_DOCUMENTO_SECTOR;
             $codigoEmision = $venta_documento[0]->TIPO_EMISION;
             $codigoDocumentoSector = $venta_documento[0]->CODIGO_DOCUMENTO_SECTOR;
-            $codigoMotivo = '1';
+            
             $cufd = $cufd_actual[0]->CODIGO_CUFD;
             $respuesta_soap = $this->anularFacturaSoap($cuf,$codigoAmbiente,$codigoEmision,$codigoSistema,$codigoSucursal,$codigoMotivo,$codigoModalidad,$cuis,$codigoPuntoVenta,$tipoFacturaDocumento,$nit,$codigoDocumentoSector,$cufd);
             //var_dump($respuesta_soap);
@@ -72,11 +73,12 @@
                 $DB2->where('ID_VENTA_DOCUMENTO', $id);
                 $DB2->update('VENTA_DOCUMENTO'.SUF_SUC , ['ANULADO'=>1]);
                 $this->session->set_flashdata('anulado', 'SI');
+                echo json_encode('anulado');
             }else{
                 $this->session->set_flashdata('anulado', 'NO');
+                echo json_encode('error');
             }
-            redirect(site_url('generico/inicio?vc='.$id_menu),'refresh');
-        
+            //redirect(site_url('generico/inicio?vc='.$id_menu),'refresh');
         }
 
         function getCuisActual($codigo_sucursal){
