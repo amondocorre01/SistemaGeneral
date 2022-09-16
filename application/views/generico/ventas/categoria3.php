@@ -12,7 +12,7 @@
     <div class="col-sm-3">
         <button id="volver-categoria-1" class="btn btn-primary palette-Black bg col-xs-12 btn-xs expanded">
             <span style="margin:0.5rem; font-size: 0.7rem; font-weight:600">
-                <i class="las la-angle-double-left"></i>CATEGORIAS
+                <i class="las la-angle-double-left"></i>CATEGORIASSSS
             </span>
         </button>
     </div>
@@ -21,7 +21,7 @@
     <?php foreach($cat3 as $row): ?>
         <?php $productos = json_decode($row->productos)?>
             <?php foreach($productos as $producto): ?>
-
+                <?php var_dump($producto) ?>
                 <div class="col-md-6 col-sm-6 col-12">
                     <div class="info-box">
                     <img width="85" height="95" src="data:image/png;base64,<?=($producto->Imagenes)?$producto->Imagenes:LOGO?>" />
@@ -35,7 +35,7 @@
                                             $idenBtn='btnPro-'.$id_pro;
                                          ?>
                                         <div class="col-md-4">
-                                            <button type="button" iden="<?=$id_pro?>" nombre="<?=$producto->PRODUCTO_MADRE?>" precio_unit="<?=$p->PRECIO?>" tam="<?=$p->TAMAÑO?>" class="btn btn-danger btn-md btnProduct <?=$idenBtn?>">
+                                            <button type="button" act="<?=$producto->CODIGO_ACTIVIDAD_ECONOMICA?>" iden="<?=$id_pro?>" nombre="<?=$producto->PRODUCTO_MADRE?>" precio_unit="<?=$p->PRECIO?>" tam="<?=$p->TAMAÑO?>" class="btn btn-danger btn-md btnProduct <?=$idenBtn?>">
                                                 <?=$p->TAMAÑO?><span class="badge badge-teal"><?=$p->PRECIO.' Bs.'?></span>
                                             </button>
                                         </div>
@@ -53,6 +53,7 @@
         <?php foreach($cat3 as $row): ?>
             <?php $productos = json_decode($row->productos)?>
             <?php foreach($productos as $producto): ?>
+                <?php var_dump($producto) ?>
                 <div class="col-md-6 col-sm-6 col-12">
                     <div class="info-box">
                         <img width="85" height="95" src="data:image/png;base64,<?=($producto->Imagenes)?$producto->Imagenes:LOGO?>" />
@@ -65,7 +66,7 @@
                                         $id_pro = $p->ID_PRODUCTO_UNICO;
                                         $idenBtn='btnPro-'.$id_pro; ?>
                                 <div class="col-md-3">
-                                    <button type="button" iden="<?=$id_pro?>" nombre="<?=$producto->PRODUCTO_MADRE?>" precio_unit="<?=$p->PRECIO?>" tam="<?=$p->TAMAÑO?>" class="btn btn-danger btn-xs btnProduct <?=$idenBtn?>">
+                                    <button type="button" act="<?=$producto->CODIGO_ACTIVIDAD_ECONOMICA?>" iden="<?=$id_pro?>" nombre="<?=$producto->PRODUCTO_MADRE?>" precio_unit="<?=$p->PRECIO?>" tam="<?=$p->TAMAÑO?>" class="btn btn-danger btn-xs btnProduct <?=$idenBtn?>">
                                         <?=$p->TAMAÑO?><span class="badge badge-teal"><?=$p->PRECIO.' Bs.'?></span>
                                     </button>
                                 </div>

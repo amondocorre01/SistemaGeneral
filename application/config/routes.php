@@ -159,8 +159,9 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     /** EVENTOS */
     $route['get-eventos'] = 'facturacion/evento/index';
     $route['nuevo-evento'] = 'facturacion/evento/create';
-
-
+   
+    /** CATEGORIAS */
+    $route['get-categoria-1'] = 'facturacion/categoria/categoria1';
 
 
     

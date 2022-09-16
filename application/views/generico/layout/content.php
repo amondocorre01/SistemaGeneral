@@ -249,6 +249,10 @@
 											$datos['perfiles'] = $this->main->dropdown($perfiles, '');
 											echo $this->load->view('perfiles/acceso', $datos, TRUE);
 										break;
+
+										case 'categoria-1':
+											echo $this->load->view('facturacion/categoria', null, TRUE);
+										break;
 									}
 								}
 							}
