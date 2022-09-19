@@ -167,6 +167,8 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
 
     $route['get-subcategorias'] = 'facturacion/categoria/subcategoria';
     $route['register-producto'] = 'facturacion/categoria/register';
+    $route['get-productos'] = 'facturacion/categoria/index';
+
 
 
     
