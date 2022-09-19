@@ -20,41 +20,12 @@
     </div>
 </div>
 
-<div class="modal fade" id="editar" tabindex="-1" role="dialog" aria-labelledby="nombre2" aria-hidden="true">
-  <div class="modal-dialog modal-xs" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h6 class="modal-title" id="nombre2">Ver API Key</h6>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-      <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <?=form_label("Token Api", 'key');?>
-                <?=form_textarea('key', null, ['class'=>'form-control palette-Yellow-100 bg', 'id'=>'key', 'required'=>'required', 'readonly'=>'readonly', 'style'=>'resize:none']);?>
-                <div class="valid-feedback"></div>
-            </div>
-        </div>
-      </div>
-           
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 <div class="modal fade" id="nuevo" tabindex="-1" role="dialog" aria-labelledby="nombre3" aria-hidden="true">
-  <div class="modal-dialog modal-xs" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h6 class="modal-title" id="nombre3">Nuevo CUIS</h6>
+        <h6 class="modal-title" id="nombre3">Nuevo Producto</h6>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -62,82 +33,217 @@
       <div class="modal-body">
 
       <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <?=form_label("Codigo de ambiente", 'ambiente');?>
-                    <?=form_input('ambiente', null, ['class'=>'form-control', 'id'=>'ambiente', 'required'=>'required', 'placeholder'=>'2']);?>
-                    <div class="valid-feedback"></div>
+                    <?=form_label("Categoria Principal", 'categoria');?>
+                    <select id="categoria" class="select2">
+                        <?php foreach ($categoria as $value) : ?>
+                            <option value="<?=$value->ID_CATEGORIA?>"><?=$value->CATEGORIA?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <?=form_label("Punto de Venta", 'venta');?>
-                    <?=form_input('venta', null, ['class'=>'form-control', 'id'=>'venta', 'placeholder'=>'1' ,'required'=>'required']);?>
-                    <div class="valid-feedback"></div>
+                    <?=form_label("Sub-categoria", 'sub-categoria');?>
+                    <select name="sub-categoria" id="sub-categoria" class="select2">
+                        <option value="">---- Seleccione una categoria Principal Primero----</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-7">
                 <div class="form-group">
-                    <?=form_label("Codigo de Sistema", 'sistema');?>
-                    <?=form_input('sistema', null, ['class'=>'form-control', 'id'=>'sistema', 'placeholder'=>'7228C6496C77C09EE700B6F' ,'required'=>'required']);?>
-                    <div class="valid-feedback"></div>
+                    <?=form_label("Nombre del Producto", 'producto');?>
+                    <?=form_input('producto', null, ['class'=>'form-control', 'id'=>'producto', 'required'=>'required']);?>
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-2">
                 <div class="form-group">
-                    <?=form_label("NIT", 'nit');?>
-                    <?=form_input('nit', null, ['class'=>'form-control', 'id'=>'nit', 'placeholder'=>'4394186018' ,'required'=>'required']);?>
-                    <div class="valid-feedback"></div>
+                    <?=form_label("Orden", 'orden');?>
+                    <?=form_input('orden', null, ['class'=>'form-control', 'id'=>'orden', 'required'=>'required']);?>
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-3">
                 <div class="form-group">
-                    <?=form_label("Sucursal", 'sucursal');?>
-                    <?=form_dropdown('sucursal', $sucursales, null,[ 'id'=>'sucursal', 'required'=>'required']);?>
-                    <div class="valid-feedback"></div>
+                    <?=form_label("Cod. Act. Economica", 'codact');?>
+                    <?=form_input('codact', null, ['class'=>'form-control', 'placeholder'=>'620100' ,'id'=>'codact', 'required'=>'required']);?>
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-3">
                 <div class="form-group">
-                    <?=form_label("Codigo de Modalidad", 'modalidad');?>
-                    <?=form_input('modalidad', null, ['class'=>'form-control', 'placeholder'=>'1' ,'id'=>'modalidad', 'required'=>'required']);?>
-                    <div class="valid-feedback"></div>
+                    <?=form_label("Cod. Producto SIN", 'codsin');?>
+                    <?=form_input('codsin', null, ['class'=>'form-control', 'placeholder'=>'65200' ,'id'=>'codsin', 'required'=>'required']);?>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <?=form_label("Unidad de Medida", 'medida');?>
+                    <select id="medida" class="select2">
+                        <?php foreach ($medidas as $medida) : ?>
+                            <option value="<?=$medida->id?>"><?=$medida->text?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <?=form_label("Tamaño", 'tamanio');?>
+                    <select id="tamanio" class="select2">
+                        <?php foreach ($tamanios as $tamanio) : ?>
+                            <option value="<?=$tamanio->id?>"><?=$tamanio->text?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <?=form_label("Orden de Tamaño", 'orden2');?>
+                    <?=form_input('orden2', null, ['class'=>'form-control', 'id'=>'orden2', 'required'=>'required']);?>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <?=form_label("Estado", 'estado');?>
+                    <?=form_dropdown('estado', ['1'=>'Habilitado', '0'=>'Deshabilitado'] ,null, ['class'=>'form-control', 'id'=>'estado', 'required'=>'required']);?>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <?=form_label("Lista", 'lista');?>
+                    <select id="lista" class="form-control">
+                        <?php foreach ($listas as $lista) : ?>
+                            <option value="<?=$lista->id?>"><?=$lista->text?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <?=form_label("Precio", 'precio');?>
+                    <?=form_input('precio', null, ['class'=>'form-control', 'placeholder'=>'18' ,'id'=>'precio', 'required'=>'required']);?>
                 </div>
             </div>
       </div>
+
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="custom-file-container" data-upload-id="myFirstImage">
+                <label class="custom-file-container__custom-file">
+                    <input type="file" name="imagen" onchange="imageUploaded()" class="custom-file-container__custom-file__custom-file-input" id="customImage" accept="image/*" aria-label="Elegir un archivo">
+                    <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+                    <span class="custom-file-container__custom-file__custom-file-control"></span>
+                </label>
+                <div class="custom-file-container__image-preview"></div>
+                <a href="javascript:void(0)" class="button small expanded registro custom-file-container__image-clear bg palette-Red-700"><i class="las la-trash"></i><?=lang('quitar.foto')?></a>
+            </div>
+        </div>
+    </div>
            
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-danger" id="confirmar_nuevo">Confirmar</button>
+        <button type="button" onclick="guardarProducto()" class="btn btn-danger" id="registrar">Registrar</button>
       </div>
     </div>
   </div>
 </div>
 
+<script>
+    const firstUpload = new FileUploadWithPreview('myFirstImage')
+    const firstUploadInfoButton = document.querySelector('.upload-info-button--first')
+    firstUploadInfoButton.addEventListener('click', function () {
+        console.log('First upload:', firstUpload, firstUpload.cachedFileArray)
+    });
+</script>
 
 
 <script>
 
-function loader() {
+    function guardarProducto(){
+        var subcategoria = $('#sub-categoria').val();
+        var producto = $('#producto').val();
+        var orden = $('#orden').val();
+        var codact = $('#codact').val();
+        var codsin = $('#codsin').val();
+        var medida = $('#medida').val();
+        var tamanio = $('#tamanio').val();
+        var orden2 = $('#orden2').val();
+        var estado = $('#estado').val();
+        var lista = $('#lista').val();
+        var precio = $('#precio').val();
 
-        Swal.fire({
-    imageUrl: '<?=base_url('assets/dist/img/1amw.gif')?>',
-    imageHeight: 500,
-    imageAlt: 'A tall image',
-    showConfirmButton: false
-    })
-}
+        $.post("<?=site_url('register-producto')?>", {subcategoria:subcategoria, producto:producto, orden:orden, codact:codact, codsin:codsin, medida:medida, tamanio:tamanio, orden2:orden2, estado:estado, lista:lista, precio:precio})
+
+        .done(function (data){
+
+            
+
+        }); 
+
+    }
+
+    function imageUploaded() {
+        var file = document.querySelector(
+            'input[type=file]')['files'][0];
+    
+        var reader = new FileReader();
+        console.log("next");
+        
+        reader.onload = function () {
+            base64String = reader.result.replace("data:", "")
+                .replace(/^.+,/, "");
+    
+            imageBase64Stringsep = base64String;
+    
+            // alert(imageBase64Stringsep);
+            console.log(base64String);
+        }
+        reader.readAsDataURL(file);
+    }
+
+</script>
 
 
-    $('#sucursal').select2({
-        placeholder: "Seleccione una sucursal"
+<script>
+$('#categoria').on('change', function(){
+    
+    var id = $(this).val();
+
+    $.post("<?=site_url('get-subcategorias')?>", {id:id})
+
+    .done(function(data){
+
+        var objeto = JSON.parse(data);
+
+        var contenido = '';
+
+        $('#sub-categoria').empty();
+        $.each(objeto.results, function( index, value ) {
+            
+           contenido += '<option value="'+value.id+'">'+value.text+'</option>'; 
+        });
+
+        $('#sub-categoria').append(contenido);
     });
+});
+
+
+    $('.select2').select2({
+        placeholder: "Seleccione una opcion"
+    });
+
+    
     
     var table = $('#table').DataTable({
         responsive: true,

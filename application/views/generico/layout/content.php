@@ -250,8 +250,18 @@
 											echo $this->load->view('perfiles/acceso', $datos, TRUE);
 										break;
 
-										case 'categoria-1':
-											echo $this->load->view('facturacion/categoria', null, TRUE);
+										case 'producto':
+
+											$data['categoria'] = $this->main->getListSelect('VENTAS_CATEGORIA_1', 'ID_CATEGORIA, CATEGORIA');
+											
+															  $this->db->where('ID_VENTAS_F02_CATALOGOS', 18);
+											$data['medidas'] = $this->main->getListSelect('VENTAS_F02_SINCRONIZACION', 'CODIGO AS id, DESCRIPCION AS text');
+											
+											$data['tamanios'] = $this->main->getListSelect('VENTAS_TAMAÑO', 'ID_TAMAÑO AS id, TAMAÑO AS text');
+
+											$data['listas'] = $this->main->getListSelect('VENTAS_NOMBRE_LISTA_PRECIOS', 'ID_NOMBRE_LISTA_PRECIOS AS id, NOMBRE_LISTA_PRECIOS AS text');
+											
+										 echo $this->load->view('facturacion/categoria', $data, TRUE);
 										break;
 									}
 								}

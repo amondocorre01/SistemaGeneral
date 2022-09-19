@@ -56,11 +56,8 @@
   <?=link_tag('assets/plugins/select2-bootstrap4/select2-bootstrap4-theme/select2-bootstrap4.css')?>
   <script src="<?=base_url('node_modules/select2/select2.js')?>"></script>
    
-  <!-- BOOTSTRAP-SELECT -->
-  <?=link_tag(base_url('node_modules/bootstrap-select/dist/css/bootstrap-select.css'))?>
-  <script src="<?=base_url('node_modules/bootstrap-select/dist/js/bootstrap-select.js')?>"></script>
-
-
+  <script src="<?=base_url('node_modules/file-upload-with-preview/dist/file-upload-with-preview.min.js') ?>"></script>
+<?=link_tag('node_modules/file-upload-with-preview/dist/file-upload-with-preview.min.css'); ?>
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed 
