@@ -126,6 +126,60 @@
 										case 'REPORTE_008':
 											echo $this->load->view('excel/reporte_008', null, TRUE);
 											break;
+										case 'REPORTE_01_PANDO':
+											echo $this->load->view('excel/reporte_01_pando', null, TRUE);
+											break;
+										case 'REPORTE_02_PANDO':
+											echo $this->load->view('excel/reporte_02_pando', null, TRUE);
+											break;
+										case 'REPORTE_03_PANDO':
+											echo $this->load->view('excel/reporte_03_pando', null, TRUE);
+											break;
+										case 'REPORTE_04_PANDO':
+											echo $this->load->view('excel/reporte_04_pando', null, TRUE);
+											break;
+										case 'REPORTE_05_PANDO':
+											echo $this->load->view('excel/reporte_05_pando', null, TRUE);
+											break;
+										case 'REPORTE_06_PANDO':
+											echo $this->load->view('excel/reporte_06_pando', null, TRUE);
+											break;
+										case 'REPORTE_07_PANDO':
+											echo $this->load->view('excel/reporte_07_pando', null, TRUE);
+											break;
+										case 'REPORTE_08_PANDO':
+											echo $this->load->view('excel/reporte_08_pando', null, TRUE);
+											break;
+										case 'REPORTE_09_PANDO':
+											echo $this->load->view('excel/reporte_09_pando', null, TRUE);
+											break;
+										case 'REPORTE_10_PANDO':
+											echo $this->load->view('excel/reporte_10_pando', null, TRUE);
+											break;
+										case 'REPORTE_11_PANDO':
+											echo $this->load->view('excel/reporte_11_pando', null, TRUE);
+											break;
+										case 'REPORTE_12_PANDO':
+											echo $this->load->view('excel/reporte_12_pando', null, TRUE);
+											break;
+										case 'REPORTE_13_PANDO':
+											echo $this->load->view('excel/reporte_13_pando', null, TRUE);
+											break;
+										case 'REPORTE_14_PANDO':
+											echo $this->load->view('excel/reporte_14_pando', null, TRUE);
+											break;
+										case 'REPORTE_15_PANDO':
+											echo $this->load->view('excel/reporte_15_pando', null, TRUE);
+											break;
+										case 'REPORTE_16_PANDO':
+											echo $this->load->view('excel/reporte_16_pando', null, TRUE);
+											break;
+										case 'REPORTE_17_PANDO':
+											echo $this->load->view('excel/reporte_17_pando', null, TRUE);
+											break;
+										case 'REPORTE_18_PANDO':
+											echo $this->load->view('excel/reporte_18_pando', null, TRUE);
+											break;
 										case 'ingresos_egresos':
 											echo $this->load->view('generico/apertura/ingreso_egreso', null, TRUE);
 										break;
