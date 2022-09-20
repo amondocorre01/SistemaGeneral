@@ -3,12 +3,12 @@
     <div class="col-md-12">
         <div class="card card-danger">
             <div class="card-header">
-            <h3 class="card-title"><i class="las la-key"></i>CUIS</h3>
+            <h3 class="card-title"><i class="las la-key"></i>Productos</h3>
             </div>
             <div class="card-body table-responsive">
 
             <button class="btn btn-xs edit palette-Green-600 bg" data-toggle="modal" data-target="#nuevo">
-                <i class="las la-key la-1x"></i> Nuevo CUIS
+                <i class="las la-key la-1x"></i> Nuevo Producto
             </button>
             <br> <br>
 
@@ -187,7 +187,7 @@
 
         .done(function (data){
 
-            
+
 
         }); 
 
@@ -247,7 +247,7 @@ $('#categoria').on('change', function(){
     
     var table = $('#table').DataTable({
         responsive: true,
-        ajax: { url: '<?=site_url('get-categoria-1')?>' },
+        ajax: { url: '<?=site_url('get-productos')?>' },
         language:{ search: "Buscar", lengthMenu: "Mostrar _MENU_", previous: "Anterior",
         zeroRecords: "Sin resultados", infoEmpty: "No hay registros disponibles",
         info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
@@ -255,64 +255,12 @@ $('#categoria').on('change', function(){
         oPaginate: {sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },
         },
         columns: [
-            { title: 'N°', width:'8%',data: 'row' },
-            { title: 'Cod. Amb.', width:'8%' ,data: 'CODIGO_AMBIENTE' },
-            { title: 'Codigo Sistema', width:'8%' ,data: 'CODIGO_SISTEMA' },
-            { title: 'NIT', width:'8%' ,data: 'NIT' },
-            { title: 'Cod. Mod.', width:'8%' ,data: 'CODIGO_MODALIDAD' },
-            { title: 'Cod. Suc.', width:'8%' ,data: 'CODIGO_SUCURSAL' },
-            { title: 'Cod. PV.', width:'8%' ,data: 'CODIGO_PUNTO_VENTA' },
-            { title: 'Cod. Cuis', width:'8%' ,data: 'CODIGO_CUIS' },
-            { title: 'Fec. Vig.', width:'8%' ,data: 'FECHA_VIGENCIA' },
-            { title: 'Cod.', width:'15%' ,data: 'CODIGO' },
-            { title: 'Descrip.', width:'20%' ,data: 'DESCRIPCION' },
-            { title: 'Trans.', width:'10%' ,data: 'TRANSACCION' },
-            
-            
-            { title: 'Estado', width:'10%' ,data: null, 
-                render: function (data, type, full, meta) { 
-
-                    var body = '';
-
-                    if(data.ESTADO == 1)
-                    {
-                        body = '<label class="palette-Green-600 bg"><span class="palette-White text">HABILITADO</span></label>';
-                    }
-
-                    else 
-                    {       
-                        body = '<label class="palette-Red-600 bg"><span class="palette-White text">INABILITADO</span></label>';   
-                    }   
-                    
-                   return body;
-                }
-            },
-            { title: 'Opciones', width:'15%', data: null, 
-                render: function (row, type, set) { 
-
-                    var button = '' 
-
-                        button += '<button class="btn btn-xs edit palette-Blue-400 bg" data-toggle="modal" data-target="#eye" onclick="verCUIS('+row.ID_VENTAS_F01_CUIS+')">';
-                        button +='<i class="las la-eye la-1x"></i>';
-                        button += '</button>';
-
-                    if(!row.ESTADO) {
-
-                        button += '<button class="btn btn-xs palette-Green-400 bg" onclick="activarKey('+row.ID_VENTAS_F01_CUIS+')">';
-                        button +='<i class="las la-toggle-on la-1x"></i>';
-                        button += '</button>';
-
-                    }
-
-                    else {
-                        button += '<button class="btn btn-xs palette-Red-400 bg" onclick="inactivarKey('+row.ID_VENTAS_F01_CUIS+')">';
-                        button +='<i class="las la-toggle-off la-1x"></i>';
-                        button += '</button>';
-                    }
-
-                    return button;
-                }
-            }
+            { title: 'N°', width:'10%',data: 'row' },
+            { title: 'Producto', width:'10%' ,data: 'PRODUCTO_MADRE' },
+            { title: 'Sub-categoria', width:'10%' ,data: 'CATEGORIA_2' },
+            { title: 'Categoria', width:'10%' ,data: 'CATEGORIA' },
+            { title: 'Precio', width:'10%' ,data: 'PRECIO' },
+            { title: 'Lista', width:'10%' ,data: 'NOMBRE_LISTA_PRECIOS' },
         ],
     });
 

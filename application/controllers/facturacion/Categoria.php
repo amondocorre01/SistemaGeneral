@@ -3,25 +3,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
     class Categoria extends CI_Controller {
     
-        public function categoria1()
+        public function index()
         {
-            $campos = "ROW_NUMBER() OVER(ORDER BY c.ESTADO DESC) AS row
-            ,CODIGO_AMBIENTE
-            ,CODIGO_SISTEMA
-            ,NIT
-            ,CODIGO_MODALIDAD
-            ,CONCAT_WS('-',u.CODIGO_SUCURSAL,u.DESCRIPCION) AS CODIGO_SUCURSAL
-            ,CODIGO_PUNTO_VENTA
-            ,CODIGO_CUIS
-            ,FECHA_VIGENCIA
-            ,CODIGO
-            ,c.DESCRIPCION
-            ,TRANSACCION
-            ,c.ESTADO
-            ,ID_VENTAS_F01_CUIS";
+            $campos = "ROW_NUMBER() OVER(ORDER BY m.PRODUCTO_MADRE DESC) AS row
+            ,PRODUCTO_MADRE
+            ,CATEGORIA_2
+            ,CATEGORIA
+            ,PRECIO
+            ,NOMBRE_LISTA_PRECIOS
+            ";
 
-                      $this->db->join('ID_UBICACION u', 'u.CODIGO_SUCURSAL = c.CODIGO_SUCURSAL', 'left');
-            $llaves = $this->main->getListSelect('VENTAS_F01_CUIS c', $campos);
+                      $this->db->join('VENTAS_PRODUCTO_UNICO u', 'u.ID_PRODUCTO_MADRE = m.ID_PRODUCTO_MADRE', 'left');
+                      $this->db->join('VENTAS_CATEGORIA_2 c2', 'c2.ID_CATEGORIA_2 = m.ID_CATEGORIA_2', 'left');
+                      $this->db->join('VENTAS_CATEGORIA_1 c1', 'c1.ID_CATEGORIA = c2.ID_CATEGORIA', 'left');
+                      $this->db->join('VENTAS_PRECIO_PRODUCTO_UNICO p', 'p.ID_PRODUCTO_UNICO = u.ID_PRODUCTO_UNICO', 'left');
+                      $this->db->join('VENTAS_NOMBRE_LISTA_PRECIOS n', 'n.ID_NOMBRE_LISTA_PRECIOS = p.ID_NOMBRE_LISTA_PRECIOS', 'left');
+
+            $llaves = $this->main->getListSelect('VENTAS_PRODUCTO_MADRE m', $campos);
 
             echo json_encode(['data'=>$llaves]);
         }
