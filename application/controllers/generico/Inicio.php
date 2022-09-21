@@ -477,6 +477,556 @@ class Inicio extends CI_Controller {
                             $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
                         }
                         break;
+                        case 'REPORTE_01_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_01_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;
+                            case 'REPORTE_02_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_02_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;
+                            case 'REPORTE_03_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_03_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_04_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_04_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_05_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_05_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_06_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_06_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_07_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_07_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_08_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_08_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_09_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_09_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_10_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_10_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_11_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_11_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_12_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_12_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_13_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_13_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_14_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_14_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_15_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_15_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_16_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_16_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_17_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_17_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;case 'REPORTE_18_SALAMANCA':
+                            if(isset($_POST['form_date'])){
+                                $f_ini = $_POST['f_inicio'];
+                                $f_fin = $_POST['f_fin'];
+                                $name_procedimiento='REPORTE_18_SALAMANCA';
+                                $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                $res = $this->main->getQuery($sql);
+                                $data['campos_excel'] = $res;
+                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            }
+                            break;
+                            case 'REPORTE_01_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_01_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;
+                                case 'REPORTE_02_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_02_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;
+                                case 'REPORTE_03_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_03_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_04_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_04_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_05_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_05_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_06_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_06_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_07_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_07_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_08_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_08_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_09_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_09_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_10_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_10_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_11_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_11_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_12_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_12_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_13_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_13_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_14_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_14_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_15_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_15_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_16_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_16_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;case 'REPORTE_17_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_17_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;
+                                case 'REPORTE_18_JORDAN':
+                                if(isset($_POST['form_date'])){
+                                    $f_ini = $_POST['f_inicio'];
+                                    $f_fin = $_POST['f_fin'];
+                                    $name_procedimiento='REPORTE_18_JORDAN';
+                                    $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                    $res = $this->main->getQuery($sql);
+                                    $data['campos_excel'] = $res;
+                                    $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                }
+                                break;
+                                case 'REPORTE_01_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_01_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;
+                                    case 'REPORTE_02_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_02_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;
+                                    case 'REPORTE_03_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_03_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_04_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_04_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_05_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_05_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_06_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_06_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_07_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_07_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_08_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_08_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_09_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_09_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_10_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_10_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_11_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_11_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_12_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_12_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_13_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_13_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_14_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_14_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_15_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_15_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_16_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_16_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_17_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_17_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;case 'REPORTE_18_LINCOLN':
+                                    if(isset($_POST['form_date'])){
+                                        $f_ini = $_POST['f_inicio'];
+                                        $f_fin = $_POST['f_fin'];
+                                        $name_procedimiento='REPORTE_18_LINCOLN';
+                                        $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
+                                        $res = $this->main->getQuery($sql);
+                                        $data['campos_excel'] = $res;
+                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                    }
+                                    break;
                         
                       }
                 }

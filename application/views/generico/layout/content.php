@@ -180,6 +180,168 @@
 										case 'REPORTE_18_PANDO':
 											echo $this->load->view('excel/reporte_18_pando', null, TRUE);
 											break;
+										case 'REPORTE_01_SALAMANCA':
+											echo $this->load->view('excel/reporte_01_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_02_SALAMANCA':
+											echo $this->load->view('excel/reporte_02_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_03_SALAMANCA':
+											echo $this->load->view('excel/reporte_03_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_04_SALAMANCA':
+											echo $this->load->view('excel/reporte_04_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_05_SALAMANCA':
+											echo $this->load->view('excel/reporte_05_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_06_SALAMANCA':
+											echo $this->load->view('excel/reporte_06_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_07_SALAMANCA':
+											echo $this->load->view('excel/reporte_07_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_08_SALAMANCA':
+											echo $this->load->view('excel/reporte_08_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_09_SALAMANCA':
+											echo $this->load->view('excel/reporte_09_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_10_SALAMANCA':
+											echo $this->load->view('excel/reporte_10_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_11_SALAMANCA':
+											echo $this->load->view('excel/reporte_11_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_12_SALAMANCA':
+											echo $this->load->view('excel/reporte_12_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_13_SALAMANCA':
+											echo $this->load->view('excel/reporte_13_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_14_SALAMANCA':
+											echo $this->load->view('excel/reporte_14_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_15_SALAMANCA':
+											echo $this->load->view('excel/reporte_15_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_16_SALAMANCA':
+											echo $this->load->view('excel/reporte_16_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_17_SALAMANCA':
+											echo $this->load->view('excel/reporte_17_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_18_SALAMANCA':
+											echo $this->load->view('excel/reporte_18_salamanca', null, TRUE);
+											break;
+										case 'REPORTE_01_JORDAN':
+											echo $this->load->view('excel/reporte_01_JORDAN', null, TRUE);
+											break;
+										case 'REPORTE_02_JORDAN':
+											echo $this->load->view('excel/reporte_02_JORDAN', null, TRUE);
+											break;
+										case 'REPORTE_03_JORDAN':
+											echo $this->load->view('excel/reporte_03_jordan', null, TRUE);
+											break;
+										case 'REPORTE_04_JORDAN':
+											echo $this->load->view('excel/reporte_04_jordan', null, TRUE);
+											break;
+										case 'REPORTE_05_JORDAN':
+											echo $this->load->view('excel/reporte_05_jordan', null, TRUE);
+											break;
+										case 'REPORTE_06_JORDAN':
+											echo $this->load->view('excel/reporte_06_jordan', null, TRUE);
+											break;
+										case 'REPORTE_07_JORDAN':
+											echo $this->load->view('excel/reporte_07_jordan', null, TRUE);
+											break;
+										case 'REPORTE_08_JORDAN':
+											echo $this->load->view('excel/reporte_08_jordan', null, TRUE);
+											break;
+										case 'REPORTE_09_JORDAN':
+											echo $this->load->view('excel/reporte_09_jordan', null, TRUE);
+											break;
+										case 'REPORTE_10_JORDAN':
+											echo $this->load->view('excel/reporte_10_jordan', null, TRUE);
+											break;
+										case 'REPORTE_11_JORDAN':
+											echo $this->load->view('excel/reporte_11_jordan', null, TRUE);
+											break;
+										case 'REPORTE_12_JORDAN':
+											echo $this->load->view('excel/reporte_12_jordan', null, TRUE);
+											break;
+										case 'REPORTE_13_JORDAN':
+											echo $this->load->view('excel/reporte_13_jordan', null, TRUE);
+											break;
+										case 'REPORTE_14_JORDAN':
+											echo $this->load->view('excel/reporte_14_jordan', null, TRUE);
+											break;
+										case 'REPORTE_15_JORDAN':
+											echo $this->load->view('excel/reporte_15_jordan', null, TRUE);
+											break;
+										case 'REPORTE_16_JORDAN':
+											echo $this->load->view('excel/reporte_16_jordan', null, TRUE);
+											break;
+										case 'REPORTE_17_JORDAN':
+											echo $this->load->view('excel/reporte_17_jordan', null, TRUE);
+											break;
+										case 'REPORTE_18_JORDAN':
+											echo $this->load->view('excel/reporte_18_jordan', null, TRUE);
+											break;
+										case 'REPORTE_01_LINCOLN':
+											echo $this->load->view('excel/reporte_01_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_02_LINCOLN':
+											echo $this->load->view('excel/reporte_02_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_03_LINCOLN':
+											echo $this->load->view('excel/reporte_03_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_04_LINCOLN':
+											echo $this->load->view('excel/reporte_04_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_05_LINCOLN':
+											echo $this->load->view('excel/reporte_05_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_06_LINCOLN':
+											echo $this->load->view('excel/reporte_06_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_07_LINCOLN':
+											echo $this->load->view('excel/reporte_07_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_08_LINCOLN':
+											echo $this->load->view('excel/reporte_08_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_09_LINCOLN':
+											echo $this->load->view('excel/reporte_09_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_10_LINCOLN':
+											echo $this->load->view('excel/reporte_10_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_11_LINCOLN':
+											echo $this->load->view('excel/reporte_11_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_12_LINCOLN':
+											echo $this->load->view('excel/reporte_12_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_13_LINCOLN':
+											echo $this->load->view('excel/reporte_13_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_14_LINCOLN':
+											echo $this->load->view('excel/reporte_14_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_15_LINCOLN':
+											echo $this->load->view('excel/reporte_15_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_16_LINCOLN':
+											echo $this->load->view('excel/reporte_16_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_17_LINCOLN':
+											echo $this->load->view('excel/reporte_17_LINCOLN', null, TRUE);
+											break;
+										case 'REPORTE_18_LINCOLN':
+											echo $this->load->view('excel/reporte_18_LINCOLN', null, TRUE);
+											break;
 										case 'ingresos_egresos':
 											echo $this->load->view('generico/apertura/ingreso_egreso', null, TRUE);
 										break;
