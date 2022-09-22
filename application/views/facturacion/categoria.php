@@ -182,8 +182,9 @@
         var estado = $('#estado').val();
         var lista = $('#lista').val();
         var precio = $('#precio').val();
+        var imagen = imageUploaded();
 
-        $.post("<?=site_url('register-producto')?>", {subcategoria:subcategoria, producto:producto, orden:orden, codact:codact, codsin:codsin, medida:medida, tamanio:tamanio, orden2:orden2, estado:estado, lista:lista, precio:precio})
+        $.post("<?=site_url('register-producto')?>", {subcategoria:subcategoria, producto:producto, orden:orden, codact:codact, codsin:codsin, medida:medida, tamanio:tamanio, orden2:orden2, estado:estado, lista:lista, precio:precio, imagen:imagen})
 
         .done(function (data){
 
@@ -210,6 +211,8 @@
             console.log(base64String);
         }
         reader.readAsDataURL(file);
+
+        return base64String;
     }
 
 </script>
@@ -262,61 +265,7 @@ $('#categoria').on('change', function(){
             { title: 'Precio', width:'10%' ,data: 'PRECIO' },
             { title: 'Lista', width:'10%' ,data: 'NOMBRE_LISTA_PRECIOS' },
         ],
-    });
-
-
-    function verCUIS(id) {
-
-        $.post("<?=site_url('ver-cuis')?>", {id:id})
-        .done(function(data){
-                dato = JSON.parse(data);
-             var res = dato.response.CODIGO_CUIS;
-
-             $('textarea#key').val(res);
-             $('#editar').modal('show');
-        });
-    }
-
-    function activarKey(id) {
-
-        $.post("<?=site_url('activar-cuis')?>", {id:id})
-        .done(function(data){
-                dato = JSON.parse(data);
-               var mensaje = dato.message;
-               var status = dato.status;
-               var icon = dato.icon;
-
-               table.ajax.reload();
-
-               Swal.fire({
-                        icon: icon,
-                        title: mensaje,
-                        timer: 4500
-                    });
-        });
-    }
-
-    function inactivarKey(id) {
-
-        $.post("<?=site_url('inactivar-cuis')?>" ,{id:id}, loader())
-        .done(function(data){
-                dato = JSON.parse(data);
-            var mensaje = dato.message;
-            var status = dato.status;
-            var icon = dato.icon;
-
-            table.ajax.reload();
-
-            Swal.fire({
-                icon: icon,
-                title: mensaje,
-                timer: 4500
-            });
-        })
-        .complete(function(){
-            swal.close()
-        });
-    }
+    });   
 
     $('#confirmar').on('click', function(){
 
@@ -339,59 +288,6 @@ $('#categoria').on('change', function(){
 
                 table.ajax.reload();
             });
-        }
-    });
-
-    $('#confirmar_nuevo').on('click', function(){
-
-       
-        var ambiente =   $('input[name="ambiente"]').val();
-        var venta =   $('input[name="venta"]').val();
-        var sistema =   $('input[name="sistema"]').val();
-        var nit =   $('input[name="nit"]').val();
-        var sucursal =   $('select[name="sucursal"]').val();
-        var modalidad =   $('input[name="modalidad"]').val();
-        
-
-        if(ambiente != '' && venta != '' && sistema != '' && nit != '' && sucursal != '' && modalidad != '' ) {
-            
-            var datos = new FormData();
-            datos.append("ambiente", ambiente);
-            datos.append("venta", venta);
-            datos.append("sistema", sistema);
-            datos.append("nit", nit);
-            datos.append("sucursal", sucursal);
-            datos.append("modalidad", modalidad);
-
-            $.ajax({
-                beforeSend: loader(),
-                url: "<?=site_url('nuevo-cuis')?>",
-                method: "POST",
-                data: datos,
-                cache: false,
-                contentType: false,
-                processData: false,
-                dataType: "html",
-                success:function(respuesta){
-                    swal.close()
-                    var res = JSON.stringify(respuesta);
-                    if(respuesta){
-                        //$('#nuevo').modal('hide'); 
-                    }else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Hubo un error , No se ha registrado.',
-                            timer: 3500
-                        });
-                    }
-                }
-            });
-        }else{
-            Swal.fire({
-                    icon: 'error',
-                    title: 'Todos los campos son requeridos',
-                    timer: 4500
-                });
         }
     });
 </script>

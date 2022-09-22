@@ -109,9 +109,7 @@
         public function copia()
         {
             $id = $this->input->post('id');
-            $pre_suc = $this->input->post('pre_suc');
-
-            $result = $this->main->get('FF_VENTAS', ['ID_VENTA_DOCUMENTO'=>$id]);
+            $result = $this->main->get(PRE_SUC.'VENTAS', ['ID_VENTA_DOCUMENTO'=>$id]);
 
             $literal = convertir($result->TOTAL_A_PAGAR);
     
@@ -125,7 +123,7 @@
         public function original()
         {
             $id = $this->input->post('id');
-            $result = $this->main->get('FF_VENTAS', ['ID_VENTA_DOCUMENTO'=>$id]);
+            $result = $this->main->get(PRE_SUC.'VENTAS', ['ID_VENTA_DOCUMENTO'=>$id]);
 
 
             $literal = convertir($result->TOTAL_A_PAGAR);

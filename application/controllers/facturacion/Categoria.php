@@ -51,6 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $estado = $this->input->post('estado');
             $lista = $this->input->post('lista');
             $precio = $this->input->post('precio');
+            $imagen = $this->input->post('imagen');
 
             $sql = "EXEC SET_PRODUCTO_NUEVO '".$producto."',".$subcategoria.", null, detalle, 0,".$orden.",".$codact.",".$codsin.",".$medida.",".$tamanio.",".$orden2.",0,".$lista.",".$precio.",".$estado.",0.5, 0.2" ;
 		    $res = $this->main->getQuery($sql);

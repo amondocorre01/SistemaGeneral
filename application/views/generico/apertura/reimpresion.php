@@ -17,7 +17,7 @@
     }
 
    
-    $resultado = json_encode($this->main->getListSelect('FF_VENTAS v', 'ROW_NUMBER() OVER(ORDER BY v.NUMERO_FACTURADO ASC) AS row, v.*'));
+    $resultado = json_encode($this->main->getListSelect(PRE_SUC.'VENTAS v', 'ROW_NUMBER() OVER(ORDER BY v.NUMERO_FACTURADO ASC) AS row, v.*'));
 
     $id_menu = intval($this->input->get('vc'));
     $id_usuario = $this->session->id_usuario;
@@ -38,7 +38,7 @@
     <div class="col-md-12">
         <div class="card card-danger">
         <div class="card-header">
-            <h3 class="card-title"> Anulacion</h3>
+            <h3 class="card-title">Reimpresion o Anulacion</h3>
         </div>
         <div class="card-body">
         <div class="row">
