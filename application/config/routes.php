@@ -173,6 +173,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     /** DOSIFICACION */
 
     $route['get-dosificacion'] = 'configuraciones/dosificacion/index';
+    $route['save-impresion'] = 'configuraciones/dosificacion/impresion';
 
 
 

@@ -45,10 +45,17 @@
   <script src="<?=base_url('assets/dist/js/export-excel/FileSaver.min.js')?>"></script>
   <script src="<?=base_url('assets/dist/js/export-excel/tableexport.min.js')?>"></script>
 
-  <!-- DATA TABLES -->
+  <script src="<?=base_url('node_modules/jquery/dist/jquery.js')?>"></script>
+  <?=link_tag('node_modules/datatables/media/css/jquery.dataTables.css'); ?>
+  <?=link_tag('node_modules/datatables.net-responsive-bs/css/responsive.bootstrap.css'); ?>
   <script src="<?=base_url('node_modules/datatables.net/js/jquery.dataTables.js')?>"></script>
-  <?=link_tag('assets/dist/css/datatableresponsive.css'); ?>
-	<script src="<?= base_url('node_modules/datatables.net-responsive/js/dataTables.responsive.js') ?>"></script>
+  <script src="<?=base_url('node_modules/datatables.net-bs/js/dataTables.bootstrap.js')?>"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.js"></script>
+	<script src="<?= base_url('node_modules/datatables.net-responsive-bs/js/responsive.bootstrap.js') ?>"></script> 
+
+  
+ 
+  
 
   <!-- SELECT 2 @3.5.3-->
   <?=link_tag(base_url('node_modules/select2/select2.css'))?>

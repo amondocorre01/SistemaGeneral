@@ -3,6 +3,7 @@
     "@icon/ionicons": "^5.4.0-alpha.0",
     "datatables": "^1.10.18",
     "datatables.net-responsive": "^2.3.0",
+    "datatables.net-responsive-bs": "^2.3.0",
     "file-upload-with-preview": "^4.3.0",
     "font-awesome": "^4.7.0",
     "foundation-sites": "^6.7.5",

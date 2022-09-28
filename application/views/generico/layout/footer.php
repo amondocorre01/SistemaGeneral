@@ -47,10 +47,8 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 
 <!-- DAataTables-->
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  <?=link_tag('https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css')?>
+<!-- DATA TABLES -->
 
-   
 
    
 

@@ -30,13 +30,28 @@
               <li><a href="#opcion-2-<?=$sucursal->ID_UBICACION?>"> Impresion </a></li>
               <li><a href="#opcion-3-<?=$sucursal->ID_UBICACION?>"> Venta Programada </a></li>
           </ul>
+
+          <?php $columns = $this->db->query("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='DOSIFICACION_F'")->result() ?>
     
           <div id="opcion-1-<?=$sucursal->ID_UBICACION?>"> 
-            <table id="table-<?=$sucursal->ID_UBICACION?>" class="table table-bordered table-striped dataTable dtr-inline">
 
-            </table>
+            <div class="row">
+              <div class="col-12">
+              <table id="table-<?=$sucursal->ID_UBICACION?>" class="table   table-bordered table-striped dataTable dtr-inline responsive">
+
+                </table>
+              </div>
+            </div>
+
+            
           </div>
-          <div id="opcion-2-<?=$sucursal->ID_UBICACION?>"> 
+          <div id="opcion-2-<?=$sucursal->ID_UBICACION?>">
+
+              <?php $data['columns'] = $columns ?>
+              <?php $data['id'] = $sucursal->ID_UBICACION?>
+              <?php echo $this->load->view('configuracion/sucursal/impresion', $data, TRUE);
+              ?>
+
          </div>
           <div id="opcion-3-<?=$sucursal->ID_UBICACION?>"> 
         
@@ -64,7 +79,7 @@
 </div>
 <!-- /.card -->
 
-<?php $columns = $this->db->query("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='DOSIFICACION_F'")->result() ?>
+
 
 
 <script>
@@ -74,7 +89,7 @@
 
 var table = $('#table-4').DataTable({
         responsive: true,
-        ajax: { url: '<?=site_url('get-dosificacion')?>' },
+        ajax: { url: '<?=site_url('get-dosificacion')?>', dataSrc:"" },
         language:{ search: "Buscar", lengthMenu: "Mostrar _MENU_", previous: "Anterior",
         zeroRecords: "Sin resultados", infoEmpty: "No hay registros disponibles",
         info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
