@@ -480,6 +480,7 @@
         });
         mensajes.forEach(element => {
             listMensajes.push(element.value);
+            
         });
         recibos.forEach(element => {
             listRecibos.push(element.value);
@@ -590,7 +591,7 @@ $("#responseCliente").on('change', function(){
 
 $('.micliente').on('input', function(){
     $('#row_1').hide();
-    $('#row_2').show('slow');
+    $('#row_2').show('slow');     
 });
 
 $('#res_facturar_a').on('input', function(){

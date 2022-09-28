@@ -170,6 +170,11 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['get-productos'] = 'facturacion/categoria/index';
 
 
+    /** DOSIFICACION */
+
+    $route['get-dosificacion'] = 'configuraciones/dosificacion/index';
+
+
 
     
 

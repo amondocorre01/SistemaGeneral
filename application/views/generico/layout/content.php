@@ -1,3 +1,4 @@
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 		<!-- Content Header (Page header) -->
@@ -145,6 +146,12 @@
 
 										case 'reimpresion':
 												echo $this->load->view('generico/apertura/reimpresion', null, TRUE);
+										break;
+
+										case 'config-sucursales':
+																		$this->db->where('ESTADO', 1);
+											$data['sucursales'] = $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION, CODIGO, DESCRIPCION', ['ID_UBICACION'=>'ASC']);
+											echo $this->load->view('configuraciones/sucursal', $data, TRUE);
 										break;
 										
 										case 'acceso-usuarios':

@@ -47,9 +47,8 @@
 
   <!-- DATA TABLES -->
   <script src="<?=base_url('node_modules/datatables.net/js/jquery.dataTables.js')?>"></script>
-  <?=link_tag(base_url('node_modules/datatables.net-dt/css/jquery.dataTables.css'))?>
-  <?=link_tag('node_modules/datatables.net-responsive-dt/css/responsive.dataTables.css')?>
-  <script src="<?=base_url('node_modules/datatables.net-responsive-dt/js/responsive.dataTables.js')?>"></script>
+  <?=link_tag('assets/dist/css/datatableresponsive.css'); ?>
+	<script src="<?= base_url('node_modules/datatables.net-responsive/js/dataTables.responsive.js') ?>"></script>
 
   <!-- SELECT 2 @3.5.3-->
   <?=link_tag(base_url('node_modules/select2/select2.css'))?>
@@ -58,6 +57,11 @@
    
   <script src="<?=base_url('node_modules/file-upload-with-preview/dist/file-upload-with-preview.min.js') ?>"></script>
 <?=link_tag('node_modules/file-upload-with-preview/dist/file-upload-with-preview.min.css'); ?>
+
+<!-- RESPONSIVE TABS -->
+<script src="<?=base_url('node_modules/responsive-tabs/js/jquery.responsiveTabs.js')?>"></script>
+  <?=link_tag('node_modules/responsive-tabs/css/responsive-tabs.css')?>
+  <?=link_tag('node_modules/responsive-tabs/css/style.css')?>
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed 
