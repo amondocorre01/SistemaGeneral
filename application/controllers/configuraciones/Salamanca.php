@@ -2,20 +2,20 @@
    
    defined('BASEPATH') OR exit('No direct script access allowed');
    
-   class Dosificacion extends CI_Controller {
+   class Salamanca extends CI_Controller {
    
       public function index()
       {
-         $DB2 = $this->load->database('ventas', TRUE);
+         $DB2 = $this->load->database('salamanca', TRUE);
          
-         $sql = 'EXEC FF_GET_DOSIFICACION';
+         $sql = 'EXEC SS_GET_DOSIFICACION';
          $res = $DB2->query($sql)->result();
          echo json_encode($res);
       }
 
-      public function impresion()
+      public function nueva()
       {
-         $DB2 = $this->load->database('ventas', TRUE);
+         $DB2 = $this->load->database('salamanca', TRUE);
 
          $correo = $this->input->post('correo');
          $nit=$this->input->post('nit'); 
@@ -32,7 +32,7 @@
          $direccion=$this->input->post('direccion'); 
          $telefono=$this->input->post('telefono'); $departamento=$this->input->post('departamento');
          
-         $sql = "EXEC FF_SET_DOSIFICACION '$correo',$nit,'$razon','$autorizacion','$actividad','$sistema','$dias','$fecha','$leyenda','$llave','$estado','$matriz','$sucursal','$direccion','$telefono','$departamento'";
+         $sql = "EXEC SS_SET_DOSIFICACION '$correo',$nit,'$razon','$autorizacion','$actividad','$sistema','$dias','$fecha','$leyenda','$llave','$estado','$matriz','$sucursal','$direccion','$telefono','$departamento'";
 
          $res = $DB2->query($sql);
          

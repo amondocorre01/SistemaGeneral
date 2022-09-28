@@ -172,9 +172,13 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
 
     /** DOSIFICACION */
 
-    $route['get-dosificacion'] = 'configuraciones/dosificacion/index';
-    $route['save-impresion'] = 'configuraciones/dosificacion/impresion';
+        /** PANDO */
+    $route['get-pando'] = 'configuraciones/pando/index';
+    $route['nueva-pando'] = 'configuraciones/pando/nueva';
 
+     /** PANDO */
+     $route['get-salamanca'] = 'configuraciones/salamanca/index';
+     $route['nueva-salamanca'] = 'configuraciones/salamanca/nueva';
 
 
     
