@@ -115,13 +115,6 @@
         oPaginate: {sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },
         },
         columns: [
-<<<<<<< HEAD
-            <?php foreach ($columns as $column) : ?>
-              { title: '<?=$column->COLUMN_NAME?>', data:'<?=$column->COLUMN_NAME?>' },
-            <?php endforeach;?>
-           
-            { title: 'Estado', data: null, 
-=======
 
           { title: 'Opciones', data: null, 
                 render: function (row, type, set) { 
@@ -151,7 +144,6 @@
             },
 
             { title: 'Estado' ,data: null, 
->>>>>>> 74cf67bc0f6a2945d786b10d224c2da572a64275
                 render: function (data, type, full, meta) { 
 
                     var body = '';
@@ -169,12 +161,7 @@
                    return body;
                 }
             },
-<<<<<<< HEAD
-            { title: 'Opciones', data: null, 
-                render: function (row, type, set) { 
-=======
->>>>>>> 74cf67bc0f6a2945d786b10d224c2da572a64275
-
+            
             <?php foreach ($columns as $column) : ?>
               <?php if($column->COLUMN_NAME != 'ID_DOSIFICACION' AND $column->COLUMN_NAME != 'ESTADO'): ?>
               { title: '<?=$column->COLUMN_NAME?>', data:'<?=$column->COLUMN_NAME?>' },
