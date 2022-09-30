@@ -111,7 +111,7 @@
               { title: '<?=$column->COLUMN_NAME?>', data:'<?=$column->COLUMN_NAME?>' },
             <?php endforeach;?>
            
-            { title: 'Estado', width:'10%' ,data: null, 
+            { title: 'Estado', data: null, 
                 render: function (data, type, full, meta) { 
 
                     var body = '';
@@ -129,7 +129,7 @@
                    return body;
                 }
             },
-            { title: 'Opciones', width:'15%', data: null, 
+            { title: 'Opciones',  data: null, 
                 render: function (row, type, set) { 
 
                     var button = '' 

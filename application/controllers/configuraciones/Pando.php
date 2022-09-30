@@ -37,10 +37,6 @@
          $res = $DB2->query($sql);
          echo json_encode($res);
       }
-
-      public function update()
-      {
-      }
    
    }
    
