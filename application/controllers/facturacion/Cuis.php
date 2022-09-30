@@ -15,7 +15,7 @@
             ,CODIGO_PUNTO_VENTA
             ,CODIGO_CUIS
             ,FECHA_VIGENCIA
-            ,CODIGO
+            ,c.CODIGO
             ,c.DESCRIPCION
             ,TRANSACCION
             ,c.ESTADO

@@ -37,6 +37,19 @@
          $res = $DB2->query($sql);
          echo json_encode($res);
       }
+
+      public function activar()
+      {  
+         $id = $this->input->post('id');
+         $estado = $this->input->post('estado');
+
+         $DB2 = $this->load->database('pando', TRUE);
+         
+         $sql = "EXEC SP_UPDATE_DOSIFICACION ".$id.",".$estado;
+         $res = $DB2->query($sql);
+         
+         echo json_encode($res);
+      }
    
    }
    

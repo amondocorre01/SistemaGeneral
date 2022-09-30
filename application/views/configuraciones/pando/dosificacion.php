@@ -29,6 +29,7 @@
           </div>
           <div id="opcion-2-pando<?=$id?>">
 
+             <?php echo $this->load->view('configuraciones/pando/impresion', null, TRUE);?> 
               
          </div>
           <div id="opcion-3-pando<?=$id?>"> 
@@ -127,14 +128,14 @@
                                             
                       if(row.ESTADO == 0) {
 
-                          button += '<button class="btn btn-xs palette-Green-400 bg" onclick="activarDosificacion('+row.ID_DOSIFICACION+')">';
+                          button += '<button class="btn btn-xs palette-Green-400 bg" onclick="activarDosificacion('+row.ID_DOSIFICACION+',1)">';  
                           button +='<i class="las la-toggle-on la-1x"></i>';
                           button += '</button>';
 
                       }
 
                       else {
-                          button += '<button class="btn btn-xs palette-Red-400 bg" onclick="inactivarDosificacion('+row.ID_DOSIFICACION+')">';
+                          button += '<button class="btn btn-xs palette-Red-400 bg" onclick="inactivarDosificacion('+row.ID_DOSIFICACION+',1)">';
                           button +='<i class="las la-toggle-off la-1x"></i>';
                           button += '</button>';
                       }
@@ -170,11 +171,11 @@
         ],
     });
 
-    function activarDosificacion(id) {
+    function activarDosificacion(id, estado) {
 
-      $.post('<?=site_url('activar-dosificacion')?>', {id:id})
+      $.post('<?=site_url('act-dos-sp')?>', {id:id, estado:estado})
       .done(function(data) {
-          
+        table_pando.ajax.reload();
       });
 
     }

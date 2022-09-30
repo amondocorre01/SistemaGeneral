@@ -18,12 +18,20 @@
         <?php endforeach; ?>
       </ul>
 
+    <?php
+        $sql_cat = "EXEC GET_CATEGORIAS ";
+        $res_cat = $this->db->query($sql_cat)->result();
+    ?>      
+
   <?php foreach ($sucursales as $sucursal) : ?>
     <?php switch ($sucursal->ID_UBICACION) {
       case '2':
         $data['columns'] = $this->db->query("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='DOSIFICACION_F'")->result();
         $data['nombre_sucursal'] = $sucursal->DESCRIPCION;
         $data['id']= $sucursal->ID_UBICACION;
+        $data['categorias'] = $res_cat;
+
+        
         $this->load->view('configuraciones/pando/dosificacion', $data, FALSE);
       break;
 

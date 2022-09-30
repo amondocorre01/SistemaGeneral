@@ -48,10 +48,11 @@
   <script src="<?=base_url('node_modules/jquery/dist/jquery.js')?>"></script>
   <?=link_tag('node_modules/datatables/media/css/jquery.dataTables.css'); ?>
   <?=link_tag('node_modules/datatables.net-responsive-bs/css/responsive.bootstrap.css'); ?>
+  <?=link_tag('node_modules/datatables.net-responsive-dt/css/responsive.dataTables.css'); ?>
   <script src="<?=base_url('node_modules/datatables.net/js/jquery.dataTables.js')?>"></script>
   <script src="<?=base_url('node_modules/datatables.net-bs/js/dataTables.bootstrap.js')?>"></script>
-  <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.js"></script>
-	<script src="<?= base_url('node_modules/datatables.net-responsive-bs/js/responsive.bootstrap.js') ?>"></script> 
+  <script src="<?=base_url('node_modules/datatables.net-responsive/js/dataTables.responsive.js')?>"></script>
+	<script src="<?= base_url('node_modules/datatables.net-responsive-dt/js/responsive.dataTables.js') ?>"></script> 
 
   
  
