@@ -38,6 +38,10 @@
          
          echo json_encode($res);
       }
+
+      public function update()
+      {
+      }
    
    }
    
