@@ -35,7 +35,6 @@
          $sql = "EXEC SP_SET_DOSIFICACION '$correo',$nit,'$razon','$autorizacion','$actividad','$sistema','$dias','$fecha','$leyenda','$llave','$estado','$matriz','$sucursal','$direccion','$telefono','$departamento'";
 
          $res = $DB2->query($sql);
-         
          echo json_encode($res);
       }
 
