@@ -103,6 +103,8 @@
             startCollapsed: 'accordion'
         });
 
+        var show_update = 0;
+
         var table_pando = $('#table-pando').DataTable({
         responsive: true,
         ajax: { url: '<?=site_url('get-pando')?>', dataSrc:"" },
@@ -113,11 +115,43 @@
         oPaginate: {sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },
         },
         columns: [
+<<<<<<< HEAD
             <?php foreach ($columns as $column) : ?>
               { title: '<?=$column->COLUMN_NAME?>', data:'<?=$column->COLUMN_NAME?>' },
             <?php endforeach;?>
            
             { title: 'Estado', data: null, 
+=======
+
+          { title: 'Opciones', data: null, 
+                render: function (row, type, set) { 
+
+                  show_update++;
+
+                    var button = '' 
+
+                    if (show_update <= 2) {
+                                            
+                      if(row.ESTADO == 0) {
+
+                          button += '<button class="btn btn-xs palette-Green-400 bg" onclick="activarDosificacion('+row.ID_DOSIFICACION+')">';
+                          button +='<i class="las la-toggle-on la-1x"></i>';
+                          button += '</button>';
+
+                      }
+
+                      else {
+                          button += '<button class="btn btn-xs palette-Red-400 bg" onclick="inactivarDosificacion('+row.ID_DOSIFICACION+')">';
+                          button +='<i class="las la-toggle-off la-1x"></i>';
+                          button += '</button>';
+                      }
+                    }
+                    return button;
+                }
+            },
+
+            { title: 'Estado' ,data: null, 
+>>>>>>> 74cf67bc0f6a2945d786b10d224c2da572a64275
                 render: function (data, type, full, meta) { 
 
                     var body = '';
@@ -135,32 +169,26 @@
                    return body;
                 }
             },
+<<<<<<< HEAD
             { title: 'Opciones', data: null, 
                 render: function (row, type, set) { 
+=======
+>>>>>>> 74cf67bc0f6a2945d786b10d224c2da572a64275
 
-                    var button = '' 
-
-                        button += '<button class="btn btn-xs edit palette-Blue-400 bg" data-toggle="modal" data-target="#eye" onclick="verCUIS('+row.ID_VENTAS_F01_CUIS+')">';
-                        button +='<i class="las la-eye la-1x"></i>';
-                        button += '</button>';
-
-                    if(!row.ESTADO) {
-
-                        button += '<button class="btn btn-xs palette-Green-400 bg" onclick="activarKey('+row.ID_VENTAS_F01_CUIS+')">';
-                        button +='<i class="las la-toggle-on la-1x"></i>';
-                        button += '</button>';
-
-                    }
-
-                    else {
-                        button += '<button class="btn btn-xs palette-Red-400 bg" onclick="inactivarKey('+row.ID_VENTAS_F01_CUIS+')">';
-                        button +='<i class="las la-toggle-off la-1x"></i>';
-                        button += '</button>';
-                    }
-
-                    return button;
-                }
-            }
+            <?php foreach ($columns as $column) : ?>
+              <?php if($column->COLUMN_NAME != 'ID_DOSIFICACION' AND $column->COLUMN_NAME != 'ESTADO'): ?>
+              { title: '<?=$column->COLUMN_NAME?>', data:'<?=$column->COLUMN_NAME?>' },
+              <?php endif;?>
+            <?php endforeach;?>
         ],
     });
+
+    function activarDosificacion(id) {
+
+      $.post('<?=site_url('activar-dosificacion')?>', {id:id})
+      .done(function(data) {
+          
+      });
+
+    }
       </script>
