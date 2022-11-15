@@ -59,8 +59,6 @@
 
                     <div class="box-body">
                         <?=form_open(current_url(), 'data-abide data-live-validate="true" novalidate ', ['lat'=>'', 'lng'=>'', 'id'=>'0']);?>
-                            
-
                             <div class="row">
                                 <div class="large-8 medium-12 column">
                                     <div class="row">
@@ -80,7 +78,7 @@
                                                 <span class="input-group-label">
                                                     <i class="las la-user"></i>
                                                 </span>
-                                                <?=form_input(['name'=>'nombre','class'=>'input-group-field letras','id'=>'nombre', 'maxlength'=>'100', 'minlength'=>'5', 'required'=>'required', 'autocomplete'=>'off']); ?>
+                                                <?=form_input(['name'=>'nombre','class'=>'input-group-field letras','id'=>'nombre', 'maxlength'=>'100', 'minlength'=>'2', 'required'=>'required', 'autocomplete'=>'off']); ?>
                                             </div>
 
                                             <span class="form-error" data-form-error-for="nombre">
@@ -96,7 +94,7 @@
                                                 <span class="input-group-label">
                                                     <i class="las la-id-card"></i>
                                                 </span>
-                                                <?=form_input(['name'=>'dni','class'=>'input-group-field numeros', 'id'=>'dni', 'maxlength'=>'9', 'minlength'=>'5', 'required'=>'required', 'autocomplete'=>'off']); ?>
+                                                <?=form_input(['name'=>'dni','class'=>'input-group-field numeros', 'id'=>'dni', 'maxlength'=>'50', 'minlength'=>'5', 'readonly'=>'readonly','required'=>'required', 'autocomplete'=>'off'] ); ?>
                                             </div>
 
                                             <span class="form-error" data-form-error-for="dni">
@@ -136,7 +134,7 @@
                                                 <span class="input-group-label">
                                                     <i class="las la-hand-holding-usd"></i>
                                                 </span>
-                                                <?=form_input(['name'=>'nit','class'=>'input-group-field numeros', 'id'=>'nit', 'maxlength'=>'13', 'minlength'=>'9']); ?>
+                                                <?=form_input(['name'=>'nit','class'=>'input-group-field numeros', 'id'=>'nit', 'maxlength'=>'15', 'minlength'=>'5']); ?>
                                             </div>
                                         </div>
 
@@ -146,7 +144,7 @@
                                                 <span class="input-group-label">
                                                     <i class="las la-user"></i>
                                                 </span>
-                                                <?=form_input(['name'=>'nombre_factura','class'=>'input-group-field letras','id'=>'nombre_factura', 'maxlength'=>'30', 'pattern'=>'[a-zA-Z ]{3,80}', 'required'=>'required']); ?>
+                                                <?=form_input(['name'=>'nombre_factura','class'=>'input-group-field letras','id'=>'nombre_factura', 'maxlength'=>'30', 'pattern'=>'[a-zA-ZáÁéÉíÍóÓúÚñÑ\.\&]{3,100}', 'required'=>'required']); ?>
                                             </div>
 
                                             <span class="form-error" data-form-error-for="nombre_factura">
@@ -268,7 +266,7 @@
     });
 
     $("input.letras").bind('keypress', function(event) {
-        var regex = new RegExp("^[a-zA-ZáéíóúñÁÉÍÓÚÑ ]+$");
+        var regex = new RegExp("^[a-zA-ZáéíóúñÁÉÍÓÚÑ\.\& ]+$");
         var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
         if (!regex.test(key)) {
             event.preventDefault();
@@ -341,11 +339,11 @@
                 });
             <?php } ?>
 
-            <?php if( $this->session->flashdata('success') ) { ?>
+            <?php if( $this->session->flashdata('update') ) { ?>
     
                 Swal.fire({
                     icon: 'success',
-                    title: 'Se ha registrado correctamente',
+                    title: 'Se ha actualizado correctamente al cliente',
                     timer: 4500
                 });
             <?php } ?>
@@ -374,9 +372,7 @@
             });
 
             $("#responseCliente").on('change', function(){
-    
                 var id = $("#responseCliente").val();
-                
                 cliente(id);
             });
 

@@ -67,7 +67,7 @@
                                                 <span class="input-group-label">
                                                     <i class="las la-user"></i>
                                                 </span>
-                                                <?=form_input(['name'=>'nombre','class'=>'input-group-field letras','id'=>'nombre', 'maxlength'=>'100', 'minlength'=>'5', 'required'=>'required', 'autocomplete'=>'off']); ?>
+                                                <?=form_input(['name'=>'nombre','class'=>'input-group-field letras','id'=>'nombre', 'maxlength'=>'100', 'minlength'=>'4', 'required'=>'required', 'autocomplete'=>'off']); ?>
                                             </div>
 
                                             <span class="form-error" data-form-error-for="nombre">
@@ -77,13 +77,37 @@
                                     </div>
 
                                     <div class="row">
+
+                                    <?php   $sql = 'EXEC GET_DOCUMENTO_IDENTIDAD'; 
+                                            $documentos = $this->main->getQuery($sql);
+                                    ?>
+
                                         <div class="large-4 medium-4 small-12 columns">
+                                            <?=form_label( 'Tipo de Documento', 'tipo'); ?> 
+                                            <div class="input-group">
+                                                <span class="input-group-label">
+                                                    <i class="las la-id-card"></i>
+                                                </span>
+                                                <select name="tipo" required>
+                                                    <?php foreach ($documentos as $value): ?>
+                                                       <option value="<?=$value->CODIGO?>"><?=$value->DESCRIPCION?></option>
+                                                    <?php endforeach?>
+                                                </select>
+                                            </div>
+
+                                            <span class="form-error" data-form-error-for="tipo">
+                                                <?=lang('campo.requerido')?>
+                                            </span>
+                                        </div>
+
+
+                                        <div class="large-3 medium-3 small-12 columns">
                                             <?=form_label( lang('dni'), 'dni'); ?> 
                                             <div class="input-group">
                                                 <span class="input-group-label">
                                                     <i class="las la-id-card"></i>
                                                 </span>
-                                                <?=form_input(['name'=>'dni','class'=>'input-group-field numeros', 'id'=>'dni', 'maxlength'=>'9', 'minlength'=>'5', 'required'=>'required', 'autocomplete'=>'off']); ?>
+                                                <?=form_input(['name'=>'dni','class'=>'input-group-field numeros', 'id'=>'dni', 'maxlength'=>'50', 'minlength'=>'5', 'required'=>'required', 'autocomplete'=>'off']); ?>
                                             </div>
 
                                             <span class="form-error" data-form-error-for="dni">
@@ -91,7 +115,7 @@
                                             </span>
                                         </div>
 
-                                        <div class="large-4 medium-4 small-12 columns">
+                                        <div class="large-2 medium-2 small-12 columns">
                                             <?=form_label( lang('complemento'), 'complemento'); ?> 
                                             <div class="input-group">
                                                 <span class="input-group-label">
@@ -101,7 +125,9 @@
                                             </div>
                                         </div>
 
-                                        <div class="large-4 medium-4 small-12 columns">
+                                        
+
+                                        <div class="large-3 medium-3 small-12 columns">
                                             <?=form_label( lang('expedido'), 'expedido'); ?> 
                                             <div class="input-group">
                                                 <span class="input-group-label">
@@ -123,7 +149,7 @@
                                                 <span class="input-group-label">
                                                     <i class="las la-hand-holding-usd"></i>
                                                 </span>
-                                                <?=form_input(['name'=>'nit','class'=>'input-group-field numeros', 'id'=>'nit', 'maxlength'=>'13', 'minlength'=>'9']); ?>
+                                                <?=form_input(['name'=>'nit','class'=>'input-group-field numeros', 'id'=>'nit', 'maxlength'=>'15', 'minlength'=>'5']); ?>
                                             </div>
                                         </div>
 
@@ -133,11 +159,11 @@
                                                 <span class="input-group-label">
                                                     <i class="las la-user"></i>
                                                 </span>
-                                                <?=form_input(['name'=>'nombre_factura','class'=>'input-group-field letras','id'=>'nombre_factura', 'maxlength'=>'30', 'pattern'=>'[a-zA-Z]{3,80}', 'required'=>'required']); ?>
+                                                <?=form_input(['name'=>'nombre_factura','class'=>'input-group-field letras','id'=>'nombre_factura', 'maxlength'=>'100', 'pattern'=>'[a-zA-ZáÁéÉíÍóÓúÚñÑ\.\&]{3,100}', 'required'=>'required']); ?>
                                             </div>
 
                                             <span class="form-error" data-form-error-for="nombre_factura">
-                                                Este campo es obligatorio
+                                                No cumple con las restricciones
                                             </span>
                                         </div>
                                     </div>
@@ -149,7 +175,7 @@
                                                 <span class="input-group-label">
                                                     <i class="las la-map-signs"></i>
                                                 </span>
-                                                <?=form_input(['name'=>'direccion','class'=>'input-group-field','id'=>'direccion', 'maxlength'=>'150', 'required'=>'required']); ?>
+                                                <?=form_input(['name'=>'direccion','class'=>'input-group-field','id'=>'direccion', 'maxlength'=>'150']); ?>
                                             </div>
 
                                             <span class="form-error" data-form-error-for="direccion">
@@ -226,6 +252,16 @@
 <script>
     $(document).foundation();
 
+    $('#nombre').on('input', function(){
+        var nuevo = $(this).val();
+        $('#nombre_factura').val(nuevo);
+    });
+
+    $('#dni').on('input', function(){
+        var nuevo = $(this).val();
+        $('#nit').val(nuevo);
+    });
+
     $("#dni").on('blur', function(event){
 
       
@@ -246,6 +282,11 @@
                         timer: 4500
                     });
 
+                    $('#send').attr('disabled', 'disabled');
+                }
+
+                else {
+                    $('#send').removeAttr('disabled');
                 }
                 
             }
@@ -255,7 +296,7 @@
     });
 
     $("input.letras").bind('keypress', function(event) {
-        var regex = new RegExp("^[a-zA-ZáéíóúñÁÉÍÓÚÑ ]+$");
+        var regex = new RegExp("^[a-zA-ZáéíóúñÁÉÍÓÚÑ\.\& ]+$");
         var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
         if (!regex.test(key)) {
             event.preventDefault();
@@ -296,7 +337,7 @@
 		}).addTo(map);
 
 
-        var marker = L.marker([latitud, longitud],
+            var marker = L.marker([latitud, longitud],
 		    {draggable: true}).addTo(map);
 
 		    marker.on('dragend', function(event) {

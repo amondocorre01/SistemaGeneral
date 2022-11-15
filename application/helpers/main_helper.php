@@ -142,6 +142,16 @@ if(!function_exists('strToHex')) {
 		return strToUpper($hex);
 	}
 }
+if(!function_exists('getSucursal')) {
+	function getSucursal($codigo){
+		$CI =& get_instance();
+		$res = null;
+		$sql="select * FROM ID_UBICACION WHERE CODIGO = '$codigo';";
+		$res = $CI->main->getQuery($sql);
+		$res = $res[0];
+		return $res;
+	}
+}
 
 
 

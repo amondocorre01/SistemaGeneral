@@ -181,6 +181,12 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
      $route['get-salamanca'] = 'configuraciones/salamanca/index';
      $route['nueva-salamanca'] = 'configuraciones/salamanca/nueva';
 
+     $route['imprimir-comanda/(:any)'] = 'api/impresion/imprimirComanda/$1';
+    $route['reimprimir-factura-carta/(:any)'] = 'api/impresion/reimprimirFacturaCarta/$1';
+    $route['reimprimir-factura-rollo/(:any)'] = 'api/impresion/reimprimirFacturaRollo/$1';
+    $route['imprimir-factura-anulada-carta/(:any)'] = 'api/impresion/imprimirFacturaAnuladaCarta/$1';
+    $route['imprimir-factura-anulada-rollo/(:any)'] = 'api/impresion/imprimirFacturaAnuladaRollo/$1';
+
 
     
 
