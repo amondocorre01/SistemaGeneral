@@ -154,8 +154,6 @@ columns: [
        if(data.ANULADO == 0){
         if(anular == true) {
 
-          //  var pv = '<?=$this->session->cuis->ID_VENTAS_F01_CUIS?>';
-
            // var pv2 = data.ID_CUIS;
            // var pv_current='';
            // if(pv==pv2){
