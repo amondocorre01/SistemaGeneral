@@ -116,7 +116,7 @@ $db['prueba'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-
+//
 $db['ventas'] = array(
 	'dsn'	=> '',
 	'hostname' => 'capresso.database.windows.net',
