@@ -1,17 +1,14 @@
 <br>
-<br>
 <?php 
-    
-
     $resultado = null;
-    $codigo_sucursal = 'salamanca';
-    $DB2 = $this->load->database($codigo_sucursal, TRUE);
-    $datos_sucursal= getSucursal($codigo_sucursal);
-    //var_dump($datos_sucursal);
-
+    $nombre_codigo_sucursal = $sucursal;
+    $DB2 = $this->load->database($nombre_codigo_sucursal, TRUE);
+    $datos_sucursal= getSucursal($nombre_codigo_sucursal);
     $prefix = $datos_sucursal->PREFIJO;
     $sufix = $datos_sucursal->SUFIJO;
-    $name_impresora = $datos_sucursal->IMPRESORA;
+    $cod_id_sucursal = $datos_sucursal->CODIGO_SUCURSAL;
+    //$name_impresora = $datos_sucursal->IMPRESORA;
+    $name_impresora = IMPRESORA_LOCAL;
     $descripcion_sucursal = $datos_sucursal->DESCRIPCION;
     $this->session->set_userdata('ubicacion_seleccionada', $datos_sucursal);
    
@@ -116,7 +113,6 @@
    $(document).ready(function(){
 
     var datos = <?=json_encode($botones)?>;
-    console.log('datos',datos);
 
     let puede_a = datos.find(el => el.ID_VENTAS_BOTON == 1);
     var anular = puede_a['ESTADO'];
@@ -248,7 +244,6 @@ function cargarMotivosAnulacion(){
         processData: false,
         dataType: "json",
         success:function(respuesta){
-            //console.log(respuesta);
             var res = JSON.stringify(respuesta);
             if(respuesta){
                 for(var i=0; i<respuesta.length;i++){
@@ -273,70 +268,62 @@ function guardarAnularFactura(element){
     //$('#modalAnularFactura').modal('toggle');
     var iden = $(element).attr("iden");
     var selectMotivo = $('.motivoAnulacion').val();
-    if(selectMotivo === ''){
+    if(selectMotivo == '' || selectMotivo == null){
         alert('Error: Seleccione un motivo de anulación');
         return;
     }
-    return;
-    swal({
+    swal.fire({
         title: "¿Estás seguro?",
         text: "Estás por anular una factura, este no se podrá recuperar más adelante.",
-        type: "warning",
         showCancelButton: true,
         cancelButtonText: "Cancelar",
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Continuar",
-        closeOnConfirm: false
-        },
-        function (isConfirm) {
-            if(isConfirm){
-                var datos = new FormData();
-                datos.append("saveAnulacionFactura",'1');
-                datos.append("id_venta_documento",iden);
-                datos.append("codigo_motivo",selectMotivo);
-                datos.append("suf_suc",'1');
-                datos.append("id_menu",'1');
-                datos.append("db",'1');
+        confirmButtonText: "Continuar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var datos = new FormData();
+            datos.append("saveAnulacionFactura",'1');
+            datos.append("id_venta_documento",iden);
+            datos.append("codigo_motivo",selectMotivo);
+            datos.append("cod_id_sucursal","<?=$cod_id_sucursal?>");
+            datos.append("nombre_codigo_sucursal","<?=$nombre_codigo_sucursal?>");
+            datos.append("prefijo_sucursal","<?=$prefix?>");
+            datos.append("sufijo_sucursal","<?=$sufix?>");
 
-                $.ajax({
-                    url: "<?=site_url('anular-factura')?>",
-                    method: "POST",
-                    data: datos,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    dataType: "json",
-                    success:function(respuesta){
-                        //console.log(respuesta);
-                        var res = JSON.stringify(respuesta);
-                        if(respuesta != 'error'){
-                            var url= "<?=site_url('imprimir-factura-anulada-carta')?>"+"/"+respuesta;
-                            window.open(url,'_blank');
-                            var url= "<?=site_url('imprimir-factura-anulada-rollo')?>"+"/"+respuesta;
-                            window.open(url,'_blank');
-                            swal({
-                                title: "Anulado",
-                                text: "Anulaste una factura.",
-                                type: "success"
-                            });
-                            location.reload();
-                        }else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Hubo un error , No se ha anulado.',
-                                timer: 3500
-                            });
-                        }
-                    },
-                    error: function (error){
-                        console.log(error.responseText);
+            $.ajax({
+                url: "<?=site_url('anular-factura')?>",
+                method: "POST",
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success:function(respuesta){
+                    if(respuesta == 'anulado'){
+                        
+                        var url= "<?=site_url('imprimir-factura-anulada-carta')?>"+"/"+iden;
+                        window.open(url,'_blank');
+                        var url= "<?=site_url('imprimir-factura-anulada-rollo')?>"+"/"+iden;
+                        window.open(url,'_blank');
+                        swal.fire({
+                            title: "Anulado",
+                            text: "Anulaste una factura.",
+                        });
+                        location.reload();
+                    }else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hubo un error , No se ha anulado.',
+                            timer: 3500
+                        });
                     }
-                });
-                
-            }else{
-                swal("El registro NO ha sido anulado.");
-                delay(2000);
-            }
+                },
+                error: function (error){
+                    console.log(error.responseText);
+                }
+            });
+            //Swal.fire('Saved!', '', 'success')
+        }
     });
 
    }
@@ -348,11 +335,46 @@ function guardarAnularFactura(element){
     }
     
     function imprimirFacturaRolloLocal(id){
-        var impresora = $('#name_impresora').val();
-        console.log('obteniendo datos',impresora);
+        var datos = new FormData();
+        datos.append("obtenerFactura",'1');
+        datos.append("id_venta_documento",id);
+        datos.append("nombre_codigo_sucursal","<?=$nombre_codigo_sucursal?>");
+        datos.append("prefijo_sucursal","<?=$prefix?>");
+        datos.append("sufijo_sucursal","<?=$sufix?>");
+
+        $.ajax({
+            url: "<?=site_url('obtener-objeto-factura')?>"+"/"+id,
+            method: "POST",
+            data: datos,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success:function(respuesta){
+                if(respuesta){
+                    res= JSON.parse(respuesta);
+                    imprimirFactura(res);
+                }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hubo un error.',
+                        timer: 3500
+                    });
+                }
+            },
+            error: function (error){
+                console.log(error.responseText);
+            }
+        });
     }
 
-    async function imprimirFactura(nro_factura, datos){
+    async function imprimirFactura(datos){
+        //console.log(datos);
+        var impresora = $('#name_impresora').val();
+        datos.impresora_local= impresora;
+        //console.log(datos);
+        datos = JSON.stringify(datos);
+        
         await setTimeout(async() =>{ 
             const rawResponse = await fetch('https://capresso.local/printFacturaComanda', {
             method: 'POST',

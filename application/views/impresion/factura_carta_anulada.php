@@ -77,7 +77,13 @@ $pdf->setLanguageArray($l);
 }
 
 // ---------------------------------------------------------
-
+$texto_sucursal='';
+$codigo_sucursal = $factura->datos_factura->codigo_sucursal;
+if($codigo_sucursal == '0'){
+    $texto_sucursal = 'Casa Matriz';
+}else{ 
+    $texto_sucursal = 'Sucursal No. '.$codigo_sucursal;
+}
 // set default font subsetting mode
 $pdf->setFontSubsetting(true);
 
@@ -85,12 +91,11 @@ $pdf->setFontSubsetting(true);
 // This method has several options, check the source code documentation for more information.
 $pdf->AddPage('P', 'LETTER');
 
-
 $pdf->SetFont('helvetica', 'B', 9);
-$pdf->MultiCell(60, 10, 'CAPRESSO S.R.L.'."\n".'CASA MATRIZ', 0, 'C', 0, 1, 15, 25, true, 0, false, true, 10, 'T', true);
+$pdf->MultiCell(60, 10, "".$factura->datos_factura->razon_social_emisor."\n".$texto_sucursal, 0, 'C', 0, 1, 15, 25, true, 0, false, true, 10, 'T', true);
 
 $pdf->SetFont('helvetica', '', 8);
-$pdf->MultiCell(60, 20, 'No. Punto de Venta '.$factura->datos_factura->punto_venta."\n"."CALLE 23 DE SEPTIEMBRE NRO.6 ZONA RUMY MAYU"."\n".'Teléfono: 75934443'."\n".'Cochabamba - Bolivia', 0, 'C', 0, 1, 15, 35, true, 0, false, true, 10, 'T', true);
+$pdf->MultiCell(60, 20, 'No. Punto de Venta '.$factura->datos_factura->punto_venta."\n".$factura->datos_factura->direccion_emisor."\n"."Teléfono: ".$factura->datos_factura->telefono_emisor."\n".$factura->datos_factura->municipio_emisor, 0, 'C', 0, 1, 15, 35, true, 0, false, true, 10, 'T', true);
 
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->MultiCell(40, 20, 'NIT'."\n".'FACTURA N°'."\n".'CÓD. AUTORIZACIÓN', 0, 'L', 0, 1, 130, 25, true, 0, false, true, 25, 'T', true);
@@ -98,10 +103,8 @@ $pdf->MultiCell(40, 20, 'NIT'."\n".'FACTURA N°'."\n".'CÓD. AUTORIZACIÓN', 0, 
 $pdf->SetFont('helvetica', '', 9);
 $pdf->MultiCell(35, 20,  $factura->datos_factura->nit_emisor."\n".$factura->datos_factura->numero_factura."\n".$factura->datos_factura->codigoCuf, 0, 'L', 0, 1, 170, 25, true, 0, false, true, 25, 'T', true);
 
-
 $pdf->SetFont('helvetica', 'B', 14);
 $pdf->MultiCell(60, 10,  'FACTURA', 0, 'C', 0, 1, 75, 60, true, 0, false, true, 25, 'T', true);
-
 
 $pdf->SetFont('helvetica', '', 10);
 $pdf->MultiCell(60, 10,  '(Con Derecho a Crédito Fiscal)', 0, 'C', 0, 1, 75, 65, true, 0, false, true, 10, 'T', true);
@@ -157,7 +160,7 @@ $pdf->write2DBarcode(($factura->datos_factura->url_siat), 'QRCODE,L', $pdf->getX
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
 $nro_factura = $factura->datos_factura->numero_factura;
-$pdf->Output(NAME_DIR.'assets/facturas/pdf/'.$nro_factura.'.pdf', 'F');
+$pdf->Output(NAME_DIR.'assets/facturas/pdf/factura.pdf', 'F');
 $pdf->Output(($factura->datos_factura->numero_factura).'.pdf', 'I');
 
 ?>

@@ -80,19 +80,26 @@ $pdf->setFontSubsetting(true);
 // This method has several options, check the source code documentation for more information.
 $pdf->AddPage('P');
 
-
 $pdf->setCellPaddings(0,0,0,0);
 
 $pdf->SetFont('helvetica', 'B', 8);
 $pdf->MultiCell(0, 10,  'FACTURA'."\n".'CON DERECHO A CRÉDITO FISCAL', 0, 'C', 0, 1, 2, 10, true, 0, false, true, 10, 'T', true);
 
+$texto_sucursal='';
+$codigo_sucursal = $factura->datos_factura->codigo_sucursal;
+if($codigo_sucursal == '0'){
+    $texto_sucursal = 'Casa Matriz';
+}else{ 
+    $texto_sucursal = 'Sucursal No. '.$codigo_sucursal;
+}
 $pdf->SetFont('helvetica', '', 8);
-$pdf->MultiCell(0, 30, 'CAPRESSO S.R.L.'."\n", 0, 'C', 0, 1, 2, 18, true, 0, false, true, 10, 'T', true);
-$pdf->MultiCell(0, 30, 'Casa Matriz'."\n", 0, 'C', 0, 1, 2, 22, true, 0, false, true, 10, 'T', true);
+$pdf->MultiCell(0, 30, $factura->datos_factura->razon_social_emisor."\n", 0, 'C', 0, 1, 2, 18, true, 0, false, true, 10, 'T', true);
+$pdf->MultiCell(0, 30, $texto_sucursal."\n", 0, 'C', 0, 1, 2, 22, true, 0, false, true, 10, 'T', true);
+
 $pdf->MultiCell(0, 30, 'No. Punto de Venta '.$factura->datos_factura->punto_venta."\n", 0, 'C', 0, 1, 2, 26, true, 0, false, true, 10, 'T', true);
-$pdf->MultiCell(0, 30, 'CALLE 23 DE SEPTIEMBRE NRO.6 ZONA RUMY MAYU'."\n", 0, 'C', 0, 1, 6, 30, true, 0, false, true, 10, 'T', true);
-$pdf->MultiCell(0, 30, 'Tel. 75934443'."\n", 0, 'C', 0, 1, 2, 38, true, 0, false, true, 10, 'T', true);
-$pdf->MultiCell(0, 30, 'Cochabamba - Bolivia', 0, 'C', 0, 1, 2, 42, true, 0, false, true, 10, 'T', true);
+$pdf->MultiCell(0, 30, $factura->datos_factura->direccion_emisor."\n", 0, 'C', 0, 1, 6, 30, true, 0, false, true, 10, 'T', true);
+$pdf->MultiCell(0, 30, $factura->datos_factura->telefono_emisor."\n", 0, 'C', 0, 1, 2, 38, true, 0, false, true, 10, 'T', true);
+$pdf->MultiCell(0, 30, $factura->datos_factura->municipio_emisor."\n", 0, 'C', 0, 1, 2, 42, true, 0, false, true, 10, 'T', true);
 $pdf->MultiCell(0, 30, '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 0, 'C', 0, 1, 2, 46, true, 0, false, true, 10, 'T', true);
 $pdf->SetFont('helvetica', 'B', 8);
 $pdf->MultiCell(0, 10,  'NIT'."\n", 0, 'C', 0, 1, 2, 50, true, 0, false, true, 10, 'T', true);
@@ -113,16 +120,18 @@ $pdf->MultiCell(38, 10,'NOMBRE/RAZÓN SOCIAL:', 0, 'R', 0, 1, 2, 82, true, 0, fa
 $pdf->SetFont('helvetica', '', 8);
 $pdf->MultiCell(36, 10,$factura->datos_factura->facturar_cliente_a, 0, 'L', 0, 1, 42, 82, true, 0, false, true, 10, 'T', true);
 $pdf->SetFont('helvetica', 'B', 8);
-$pdf->MultiCell(38, 20,'NIT/CI/CEX:'."\n"."COD. CLIENTE:"."\n"."FECHA DE EMISIÓN:", 0, 'R', 0, 1, 2, 86, true, 0, false, true, 10, 'T', true);
+$y=$pdf->getY();
+$pdf->MultiCell(38, 20,'NIT/CI/CEX:'."\n"."COD. CLIENTE:"."\n"."FECHA DE EMISIÓN:", 0, 'R', 0, 1, 2, $y-2, true, 0, false, true, 10, 'T', true);
 $time = strtotime($factura->datos_factura->datetime);
 $new_time= date('d/m/Y H:i A',$time);
 
 $pdf->SetFont('helvetica', '', 8);
-$pdf->MultiCell(38, 20,$factura->datos_factura->nit_cliente."\n".$factura->datos_factura->id_cliente."\n". $new_time, 0, 'L', 0, 1, 42, 86, true, 0, false, true, 10, 'T', true);
-$pdf->MultiCell(0, 30, '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 0, 'C', 0, 1, 2, 96, true, 0, false, true, 10, 'T', true);
+$pdf->MultiCell(38, 20,$factura->datos_factura->nit_cliente."\n".$factura->datos_factura->id_cliente."\n". $new_time, 0, 'L', 0, 1, 42, $y-2, true, 0, false, true, 10, 'T', true);
+$y=$pdf->getY();
+$pdf->MultiCell(0, 30, '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 0, 'C', 0, 1, 2, $y-10, true, 0, false, true, 10, 'T', true);
 
 $pdf->SetFont('helvetica', 'B', 8);
-$pdf->MultiCell(0, 10,  'DETALLE', 0, 'C', 0, 1, 2, 100, true, 0, false, true, 10, 'T', true);
+$pdf->MultiCell(0, 10,  'DETALLE', 0, 'C', 0, 1, 2, $y-5, true, 0, false, true, 10, 'T', true);
 
 mb_internal_encoding("UTF-8");
 $pdf->SetFont('dejavusans', '', 7.2, '', true);
@@ -180,8 +189,10 @@ $pdf->MultiCell(32, 20, number_format($this->session->resumen['monto_sujeto_iva'
 
 
 $pdf->SetFont('helvetica', '', 8);
-$pdf->MultiCell(122, 10,  'Son: '.ucfirst(($factura->datos_factura->literal)).' 00/100 Bolivianos', 0, 'L', 0, 1, $x, $y+12, true, 0, false, true, 10, 'T', true);
-$pdf->MultiCell(0, 30, '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 0, 'C', 0, 1, 2, $y+16, true, 0, false, true, 10, 'T', true);
+$literal='Son: '.ucfirst(($factura->datos_factura->literal)).' '.$factura->datos_factura->fraccion.'/100 Bolivianos';
+
+$pdf->MultiCell(70, 15,  $literal, 0, 'L', 0, 1, $x, $y+12, true, 0, false, true, 10, 'T', true);
+$pdf->MultiCell(0, 30, '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', 0, 'C', 0, 1, 2, $y+18, true, 0, false, true, 10, 'T', true);
 
 $pdf->SetFont('helvetica', '', 7);
 $pdf->MultiCell(0, 20,  'ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAÍS, EL USO ILÍCITO SERÁ SANCIONADO PENALMENTE DE ACUERDO A LEY', 0, 'C', 0, 1, 4, $y+16, true, 0, false, true, 10, 'M', true);
@@ -194,12 +205,15 @@ $pdf->MultiCell(0, 15, $factura->datos_factura->leyenda_on_off, 0, 'C', 0, 1, 6,
 
 $pdf->write2DBarcode(($factura->datos_factura->url_siat), 'QRCODE,L', $pdf->getX()+20, $pdf->getY()+1, 30, 30, null, 'N');
 
+$pdf->SetFont('helvetica', '', 7);
+$pdf->MultiCell(0, 30,  'No Pedido: '.$factura->datos_factura->numero_pedido, 0, 'C', 0, 1, 4, $pdf->getY()+1, true, 0, false, true, 10, 'T', true);
+
 
 
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
 $nro_factura = $factura->datos_factura->numero_factura;
-$pdf->Output(NAME_DIR.'assets/facturas/pdf_rollo/'.$nro_factura.'.pdf', 'F');
+//$pdf->Output(NAME_DIR.'assets/facturas/pdf_rollo/factura.pdf', 'F');
 $pdf->Output(($factura->datos_factura->numero_factura).'.pdf', 'I');
 
 ?>

@@ -364,29 +364,36 @@
 												echo $this->load->view('generico/apertura/reimpresion', null, TRUE);
 										break;
 										case 'VENTAS_PANDO':
-											echo $this->load->view('generico/ventas/reimpresion_pando', null, TRUE);
+											$data['sucursal'] = 'pando';
+											echo $this->load->view('generico/ventas/reimpresion_sucursal', $data, TRUE);
 										break;
 										case 'VENTAS_SALAMANCA':
-											$codigo = 'salamanca';
-											echo $this->load->view('generico/ventas/reimpresion_salamanca', null, TRUE);
+											$data['sucursal'] = 'salamanca';
+											echo $this->load->view('generico/ventas/reimpresion_sucursal', $data, TRUE);
 										break;
 										case 'VENTAS_AMERICA_E':
-											echo $this->load->view('generico/ventas/reimpresion_america_e', null, TRUE);
+											$data['sucursal'] = 'aeste';
+											echo $this->load->view('generico/ventas/reimpresion_sucursal', $data, TRUE);
 										break;
 										case 'VENTAS_HUPERMALL':
-											echo $this->load->view('generico/ventas/reimpresion_hupermall', null, TRUE);
+											$data['sucursal'] = 'hupermall';
+											echo $this->load->view('generico/ventas/reimpresion_sucursal', $data, TRUE);
 										break;
 										case 'VENTAS_LINCOLN':
-											echo $this->load->view('generico/ventas/reimpresion_lincoln', null, TRUE);
+											$data['sucursal'] = 'lincoln';
+											echo $this->load->view('generico/ventas/reimpresion_sucursal', $data, TRUE);
 										break;
 										case 'VENTAS_JORDAN':
-											echo $this->load->view('generico/ventas/reimpresion_jordan', null, TRUE);
+											$data['sucursal'] = 'jordan';
+											echo $this->load->view('generico/ventas/reimpresion_sucursal', $data, TRUE);
 										break;
 										case 'VENTAS_AMERICA_OE':
-											echo $this->load->view('generico/ventas/reimpresion_america_oe', null, TRUE);
+											$data['sucursal'] = 'aoeste';
+											echo $this->load->view('generico/ventas/reimpresion_sucursal', $data, TRUE);
 										break;
 										case 'VENTAS_CENTER':
-											echo $this->load->view('generico/ventas/reimpresion_center', null, TRUE);
+											$data['sucursal'] = 'center';
+											echo $this->load->view('generico/ventas/reimpresion_sucursal', $data, TRUE);
 										break;
 
 										case 'config-sucursales':

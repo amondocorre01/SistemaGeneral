@@ -58,7 +58,13 @@ $pdf->setLanguageArray($l);
 }
 
 // ---------------------------------------------------------
-
+$texto_sucursal='';
+$codigo_sucursal = $factura->datos_factura->codigo_sucursal;
+if($codigo_sucursal == '0'){
+    $texto_sucursal = 'Casa Matriz';
+}else{ 
+    $texto_sucursal = 'Sucursal No. '.$codigo_sucursal;
+}
 // set default font subsetting mode
 $pdf->setFontSubsetting(true);
 
@@ -67,7 +73,7 @@ $pdf->setFontSubsetting(true);
 $pdf->AddPage('P', 'LETTER');
 
 $pdf->SetFont('helvetica', 'B', 9);
-$pdf->MultiCell(60, 10, "".$factura->datos_factura->razon_social_emisor."\n".'CASA MATRIZ', 0, 'C', 0, 1, 15, 25, true, 0, false, true, 10, 'T', true);
+$pdf->MultiCell(60, 10, "".$factura->datos_factura->razon_social_emisor."\n".$texto_sucursal, 0, 'C', 0, 1, 15, 25, true, 0, false, true, 10, 'T', true);
 
 $pdf->SetFont('helvetica', '', 8);
 $pdf->MultiCell(60, 20, 'No. Punto de Venta '.$factura->datos_factura->punto_venta."\n".$factura->datos_factura->direccion_emisor."\n"."Teléfono: ".$factura->datos_factura->telefono_emisor."\n".$factura->datos_factura->municipio_emisor, 0, 'C', 0, 1, 15, 35, true, 0, false, true, 10, 'T', true);

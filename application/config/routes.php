@@ -105,6 +105,7 @@ $route['imprimir-egreso'] = 'api/impresion/egreso';
 $route['imprimir-abrir-caja'] = 'api/impresion/abrirCaja';
 $route['imprimir-cierre-caja'] = 'api/impresion/cierreCaja';
 $route['reimprimir-factura'] = 'api/impresion/reimprimirFactura';
+$route['imprimir-factura'] = 'api/impresion/imprimirFacturaAnulada';
 $route['imprimir-copia-factura'] = 'api/impresion/imprimirCopiaFactura';
 $route['abrir-gaveta'] = 'api/impresion/gaveta';
 
@@ -186,6 +187,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['reimprimir-factura-rollo/(:any)'] = 'api/impresion/reimprimirFacturaRollo/$1';
     $route['imprimir-factura-anulada-carta/(:any)'] = 'api/impresion/imprimirFacturaAnuladaCarta/$1';
     $route['imprimir-factura-anulada-rollo/(:any)'] = 'api/impresion/imprimirFacturaAnuladaRollo/$1';
+    $route['obtener-objeto-factura/(:any)'] = 'api/impresion/obtenerObjetoFactura/$1';
 
 
     
