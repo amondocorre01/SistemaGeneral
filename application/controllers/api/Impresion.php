@@ -624,9 +624,8 @@
             $this->load->view('impresion/factura_carta_anulada', $data, FALSE);
             
             if($tipo_emision == '1'){
-                if(!isset($_SESSION['registroModoOffline'])){
+                    $email_cliente='goe.alcon@gmail.com';
                     $this->enviarCorreoAnulado($telefono_emisor, $correo_info, $direccion_info, $pagina_web, $numero_factura, $email_cliente,$codigoCuf);
-                }
           }
         }
         function imprimirFacturaAnuladaRollo($id_venta){

@@ -90,9 +90,9 @@ class EnviarMail
             //echo getcwd().$rutaXml;
             /*chmod(getcwd().$rutaXml,  0666);
             chmod(getcwd().$rutaPdf,  0666);*/
-            chmod($rutaXml,  0666);
+            //chmod($rutaXml,  0666);
             chmod($rutaPdf,  0666);
-            $mail->addAttachment($rutaXml, 'Factura_'.$nroFactura.'.xml');
+            //$mail->addAttachment($rutaXml, 'Factura_'.$nroFactura.'.xml');
             $mail->addAttachment($rutaPdf, 'Factura_'.$nroFactura.'.pdf');
             
             //echo getcwd().'<br>';
