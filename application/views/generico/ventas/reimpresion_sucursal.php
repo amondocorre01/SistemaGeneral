@@ -177,6 +177,9 @@ columns: [
         button += '<button class="btn btn-info btn-md palette-Red-600 bg" onclick="detalle(\''+data.ID_VENTA_DOCUMENTO+'\',\''+oculta+'\')" title="Ver Detalle">';
                 button +='<i class="las la-eye"></i>';
             button += '</button>';
+        button += '<a class="btn btn-info btn-sm btn-enlace-siat" target="_blank" href="'+data.URL_FACTURA+'" title="Ver Factura en el SIAT">';
+            button +='<i class="las la-eye"></i>';
+        button += '</a>';
 
             if(data.MONTO_INGRESADO != null) {
             

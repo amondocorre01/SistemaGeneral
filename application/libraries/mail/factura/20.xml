@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<facturaElectronicaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaCompraVenta.xsd">
+  <cabecera>
+    <nitEmisor>4394186018</nitEmisor>
+    <razonSocialEmisor>CAPRESSO S.R.L.</razonSocialEmisor>
+    <municipio>Cochabamba - Bolivia</municipio>
+    <telefono>79966599</telefono>
+    <numeroFactura>7</numeroFactura>
+    <cuf>12CA99394E6BE9AADC89859FC850096486C13A72E689456EAABCEC6D74</cuf>
+    <cufd>BQT5CKHBuRUE=NzzA5RUU3MDBCNkY=Qj4zbXlCSUpXVUFIyOEM2NDk2Qzc3Q</cufd>
+    <codigoSucursal>0</codigoSucursal>
+    <direccion>CALLE 23 DE SEPTIEMBRE NRO.6 ZONA RUMY MAYU</direccion>
+    <codigoPuntoVenta>0</codigoPuntoVenta>
+    <fechaEmision>2022-09-07T09:23:00.000</fechaEmision>
+    <nombreRazonSocial>Ramiro Ruben Montaño Vasquez</nombreRazonSocial>
+    <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+    <numeroDocumento>798465139K</numeroDocumento>
+    <complemento xsi:nil="true"/>
+    <codigoCliente>0</codigoCliente>
+    <codigoMetodoPago>1</codigoMetodoPago>
+    <numeroTarjeta xsi:nil="true"/>
+    <montoTotal>1050</montoTotal>
+    <montoTotalSujetoIva>1050</montoTotalSujetoIva>
+    <codigoMoneda>1</codigoMoneda>
+    <tipoCambio>1</tipoCambio>
+    <montoTotalMoneda>1050</montoTotalMoneda>
+    <montoGiftCard xsi:nil="true"/>
+    <descuentoAdicional xsi:nil="true"/>
+    <codigoExcepcion>1</codigoExcepcion>
+    <cafc xsi:nil="true"/>
+    <leyenda>Ley N° 453: Tienes derecho a un trato equitativo sin discriminación en la oferta de servicios.</leyenda>
+    <usuario>ADOLFO MONDOCORRE</usuario>
+    <codigoDocumentoSector>1</codigoDocumentoSector>
+  </cabecera>
+  <detalle>
+    <actividadEconomica>620100</actividadEconomica>
+    <codigoProductoSin>99100</codigoProductoSin>
+    <codigoProducto>164</codigoProducto>
+    <descripcion>Torta Chocolate-Entero</descripcion>
+    <cantidad>1</cantidad>
+    <unidadMedida>47</unidadMedida>
+    <precioUnitario>150</precioUnitario>
+    <montoDescuento>0</montoDescuento>
+    <subTotal>150</subTotal>
+    <numeroSerie>0</numeroSerie>
+    <numeroImei>0</numeroImei>
+  </detalle>
+  <detalle>
+    <actividadEconomica>620100</actividadEconomica>
+    <codigoProductoSin>99100</codigoProductoSin>
+    <codigoProducto>241</codigoProducto>
+    <descripcion>Torta Capuccino-Entero</descripcion>
+    <cantidad>1</cantidad>
+    <unidadMedida>47</unidadMedida>
+    <precioUnitario>150</precioUnitario>
+    <montoDescuento>0</montoDescuento>
+    <subTotal>150</subTotal>
+    <numeroSerie>0</numeroSerie>
+    <numeroImei>0</numeroImei>
+  </detalle>
+  <detalle>
+    <actividadEconomica>620100</actividadEconomica>
+    <codigoProductoSin>99100</codigoProductoSin>
+    <codigoProducto>244</codigoProducto>
+    <descripcion>Torta Selva negra-Entero</descripcion>
+    <cantidad>1</cantidad>
+    <unidadMedida>47</unidadMedida>
+    <precioUnitario>150</precioUnitario>
+    <montoDescuento>0</montoDescuento>
+    <subTotal>150</subTotal>
+    <numeroSerie>0</numeroSerie>
+    <numeroImei>0</numeroImei>
+  </detalle>
+  <detalle>
+    <actividadEconomica>620100</actividadEconomica>
+    <codigoProductoSin>99100</codigoProductoSin>
+    <codigoProducto>240</codigoProducto>
+    <descripcion>Torta Caramelo-Entero</descripcion>
+    <cantidad>1</cantidad>
+    <unidadMedida>47</unidadMedida>
+    <precioUnitario>150</precioUnitario>
+    <montoDescuento>0</montoDescuento>
+    <subTotal>150</subTotal>
+    <numeroSerie>0</numeroSerie>
+    <numeroImei>0</numeroImei>
+  </detalle>
+  <detalle>
+    <actividadEconomica>620100</actividadEconomica>
+    <codigoProductoSin>99100</codigoProductoSin>
+    <codigoProducto>245</codigoProducto>
+    <descripcion>Torta Red velvet-Entero</descripcion>
+    <cantidad>1</cantidad>
+    <unidadMedida>47</unidadMedida>
+    <precioUnitario>150</precioUnitario>
+    <montoDescuento>0</montoDescuento>
+    <subTotal>150</subTotal>
+    <numeroSerie>0</numeroSerie>
+    <numeroImei>0</numeroImei>
+  </detalle>
+  <detalle>
+    <actividadEconomica>620100</actividadEconomica>
+    <codigoProductoSin>99100</codigoProductoSin>
+    <codigoProducto>166</codigoProducto>
+    <descripcion>Torta Zanahoria-Entero</descripcion>
+    <cantidad>1</cantidad>
+    <unidadMedida>47</unidadMedida>
+    <precioUnitario>150</precioUnitario>
+    <montoDescuento>0</montoDescuento>
+    <subTotal>150</subTotal>
+    <numeroSerie>0</numeroSerie>
+    <numeroImei>0</numeroImei>
+  </detalle>
+  <detalle>
+    <actividadEconomica>620100</actividadEconomica>
+    <codigoProductoSin>99100</codigoProductoSin>
+    <codigoProducto>238</codigoProducto>
+    <descripcion>Torta Tres leches-Entero</descripcion>
+    <cantidad>1</cantidad>
+    <unidadMedida>47</unidadMedida>
+    <precioUnitario>150</precioUnitario>
+    <montoDescuento>0</montoDescuento>
+    <subTotal>150</subTotal>
+    <numeroSerie>0</numeroSerie>
+    <numeroImei>0</numeroImei>
+  </detalle>
+</facturaElectronicaCompraVenta>
