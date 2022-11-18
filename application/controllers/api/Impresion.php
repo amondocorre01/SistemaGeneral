@@ -47,9 +47,7 @@
             $codigoEmision = $venta_documento->TIPO_EMISION;
             $codigoDocumentoSector = $venta_documento->CODIGO_DOCUMENTO_SECTOR;
             $cufd = $cufd_actual->CODIGO_CUFD;
-            echo json_encode('anulado');
-            exit();
-            /*
+            
             $respuesta_soap = $this->anularFacturaSoap($cuf,$codigoAmbiente,$codigoEmision,$codigoSistema,$codigoSucursal,$codigoMotivo,$codigoModalidad,$cuis,$codigoPuntoVenta,$tipoFacturaDocumento,$nit,$codigoDocumentoSector,$cufd);
             
             $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $respuesta_soap);
@@ -80,7 +78,7 @@
             }else{
                 $this->session->set_flashdata('anulado', 'NO');
                 echo json_encode('error');
-            }*/
+            }
         }
 
         function getCuisActualSucursal($cod_id_sucursal){
