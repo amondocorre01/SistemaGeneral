@@ -44,7 +44,7 @@
             $nit = $cuis_actual->NIT;
             $cuf = $venta_documento->CODIGO_CUF;
             $tipoFacturaDocumento = $venta_documento->TIPO_DOCUMENTO_SECTOR;
-            $codigoEmision = $venta_documento->TIPO_EMISION;
+            $codigoEmision = 1;//$venta_documento->TIPO_EMISION;
             $codigoDocumentoSector = $venta_documento->CODIGO_DOCUMENTO_SECTOR;
             $cufd = $cufd_actual->CODIGO_CUFD;
             
