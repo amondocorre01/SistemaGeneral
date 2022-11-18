@@ -153,6 +153,15 @@ if(!function_exists('getSucursal')) {
 	}
 }
 
+if(!function_exists('getTokenApi')) {
+	function getTokenApi(){
+		$CI =& get_instance();
+		$sql = "select * from VENTAS_F00_LLAVE vfl WHERE ESTADO = 1; ";
+		$respuesta = $CI->main->getQuery($sql);
+		return 'TokenApi '.$respuesta[0]->TOKEN_API;
+	}
+  }
+
 
 
   
