@@ -170,6 +170,7 @@
         
         function anularFacturaSoap($cuf,$codigoAmbiente,$codigoEmision,$codigoSistema,$codigoSucursal,$codigoMotivo,$codigoModalidad,$cuis,$codigoPuntoVenta,$tipoFacturaDocumento,$nit,$codigoDocumentoSector,$cufd){
             $wsdlURL = URL_COMPRA_VENTA;
+            $token_api= $_SESSION['token_api'];
             $XMLString = '<?xml version="1.0" encoding="UTF-8"?>
             <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:siat="https://siat.impuestos.gob.bo/">
             <soapenv:Header/>
@@ -206,7 +207,7 @@
             CURLOPT_HTTPHEADER => [
                 "Authorization: Basic Og==",
                 "Content-Type: application/xml",
-                "apikey: TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJSb25hbGRtZW4wMTgiLCJjb2RpZ29TaXN0ZW1hIjoiNzIyOEM2NDk2Qzc3QzA5RUU3MDBCNkYiLCJuaXQiOiJINHNJQUFBQUFBQUFBRE14dGpReHREQXpNTFFBQUxxbGd4SUtBQUFBIiwiaWQiOjMwMTQ1OTYsImV4cCI6MTY5MjE0NDAwMCwiaWF0IjoxNjYwNjc4NzU0LCJuaXREZWxlZ2FkbyI6NDM5NDE4NjAxOCwic3Vic2lzdGVtYSI6IlNGRSJ9.vHJD3ipob2kLbhpAs51a25TRKnAUaC_q-bzCtQC42iLQpTrHMS-TgJwN_pQePO1022TdUL4fn55IbkxuEIEHtA"
+                "apikey: ".$token_api
             ],
             ]);
 

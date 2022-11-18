@@ -69,7 +69,8 @@ class Login extends CI_Controller {
 					'nombre' => $nombre_usuario.' '.$apellido_p_usuario,
 					'loggin' => TRUE
 				  ];
-				 
+				  $tokenApi = getTokenApi();
+				  $this->session->set_userdata('token_api', $tokenApi);
 					$this->session->set_userdata($data);
 				
 					redirect('generico/inicio','refresh');
