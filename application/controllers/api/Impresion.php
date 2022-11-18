@@ -90,7 +90,8 @@
 
         function getCufdActualSucursal($nombre_codigo_sucursal,$prefijo_sucursal,$sufijo_sucursal,$id_cuis){
             $res = null;
-            $sql = "select * from VENTAS_F03_CUFD".$sufijo_sucursal." where ID_VENTAS_F01_CUIS='$id_cuis' and ESTADO = '1' ;";
+            $date= date('Y-m-d');
+            $sql = "select * from VENTAS_F03_CUFD".$sufijo_sucursal." where ID_VENTAS_F01_CUIS='$id_cuis' and ESTADO = '1' and fecha='$date';";
             $DB2 = $this->load->database($nombre_codigo_sucursal, TRUE);
             $respuesta = $DB2->query($sql);
             $respuesta = $respuesta->result();
