@@ -49,7 +49,7 @@
             $cufd = $cufd_actual->CODIGO_CUFD;
             
             $respuesta_soap = $this->anularFacturaSoap($cuf,$codigoAmbiente,$codigoEmision,$codigoSistema,$codigoSucursal,$codigoMotivo,$codigoModalidad,$cuis,$codigoPuntoVenta,$tipoFacturaDocumento,$nit,$codigoDocumentoSector,$cufd);
-            var_dump($respuesta_soap);
+            //var_dump($respuesta_soap);
             $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $respuesta_soap);
             $xml = simplexml_load_string($xml);
             $json = json_encode($xml);
