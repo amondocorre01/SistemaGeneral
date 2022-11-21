@@ -105,6 +105,7 @@
           <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
           </div>
+          <a>V. 2.1 General</a>
           <!-- /.col -->
         </div>
       </form>
