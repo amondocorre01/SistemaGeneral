@@ -202,6 +202,9 @@ columns: [
        else {
 
         button += '<label class="btn btn-info gender-label"><span>Anulado</span></label>';
+        button += '<a class="btn btn-info btn-sm btn-enlace-siat-an" target="_blank" href="'+data.URL_FACTURA+'" title="Ver Factura en el SIAT">';
+            button +='<i class="las la-eye"></i>';
+        button += '</a>';
 
        }
 
