@@ -304,11 +304,11 @@ function guardarAnularFactura(element){
                 dataType: "json",
                 success:function(respuesta){
                     if(respuesta == 'anulado'){
-                        
+                        /*
                         var url= "<?=site_url('imprimir-factura-anulada-carta')?>"+"/"+iden;
                         window.open(url,'_blank');
                         var url= "<?=site_url('imprimir-factura-anulada-rollo')?>"+"/"+iden;
-                        window.open(url,'_blank');
+                        window.open(url,'_blank');*/
                         swal.fire({
                             title: "Anulado",
                             text: "Anulaste una factura.",
