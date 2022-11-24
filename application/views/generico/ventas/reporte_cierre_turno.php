@@ -15,6 +15,9 @@
     $descripcion_sucursal = $datos_sucursal->DESCRIPCION;
     $this->session->set_userdata('ubicacion_seleccionada', $datos_sucursal);
    
+    //$usuarios = getUsuarios();
+    $usuarios = $this->session->userdata('usuarios');
+    $usuarios_encode = json_encode($usuarios);
     /*
     $fecha =$this->input->get('fecha');
     if($fecha)
@@ -32,12 +35,17 @@
     $resultado =  $DB2->get($prefix.'VENTAS v');*/
     $fecha_inicial = $this->input->get('fecha_inicial');
     $fecha_final = $this->input->get('fecha_final');
+    $usuario_seleccionado = $this->input->get('usuario');
     if(!$fecha_inicial){
         $fecha_inicial = date('Y-m-d');
         $fecha_final = date('Y-m-d');
-        echo 'aaa';
     }
-    $sql = "select * from CIERRE_APERTURA_TURNO".$sufix." where FECHA BETWEEN '$fecha_inicial' and '$fecha_final';";
+    if($usuario_seleccionado){
+        $sql = "select * from CIERRE_APERTURA_TURNO".$sufix." where ID_USUARIO='$usuario_seleccionado' and FECHA BETWEEN '$fecha_inicial' and '$fecha_final';";
+    }else{
+        $sql = "select * from CIERRE_APERTURA_TURNO".$sufix." where FECHA BETWEEN '$fecha_inicial' and '$fecha_final';";
+    }
+    
     $respuesta = $DB2->query($sql);
     //$respuesta = $respuesta->result();
     //
@@ -84,11 +92,21 @@
             <div class="col-md-3">
                 <div class="form-group">
                   <label>Seleccione Usuario</label>
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">Seleccione el usuario</option>
-                    <option>Juan Perez</option>
-                    <option>Alvaro Mendez</option>
-                    <option>Ronald Portillo</option>
+                  <select name="usuario" class="form-control select2" style="width: 100%;">
+                    <option value="" selected="selected">Seleccione el usuario</option>
+                    <?php
+                        foreach ($usuarios as $key => $value) {
+                            # code...
+                            $usuario = $value->NOMBRE.' '.$value->AP_PATERNO.' '.$value->AP_MATERNO;
+                            $sel='';
+                            if($usuario_seleccionado){
+                                if($usuario_seleccionado == $value->ID_USUARIO){
+                                    $sel = 'selected="selected"';
+                                }
+                            }
+                            echo '<option '.$sel.' value="'.$value->ID_USUARIO.'">'.$usuario.'</option>';
+                        }
+                    ?>
                   </select>
                 </div>
             </div>

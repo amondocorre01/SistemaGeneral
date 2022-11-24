@@ -72,8 +72,9 @@ class Login extends CI_Controller {
 				  $tokenApi = getTokenApi();
 				  $this->session->set_userdata('token_api', $tokenApi);
 					$this->session->set_userdata($data);
-				
-					redirect('generico/inicio','refresh');
+				  $usuarios = getUsuarios();
+				  $this->session->set_userdata('usuarios', $usuarios);
+				  redirect('generico/inicio','refresh');
 			}else{
 				$this->session->set_flashdata('msg', 'Escribir correctamente su usuario o contraseña');
 				redirect('login/index', 'refresh');

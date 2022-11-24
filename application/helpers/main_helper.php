@@ -161,6 +161,15 @@ if(!function_exists('getTokenApi')) {
 		return 'TokenApi '.$respuesta[0]->TOKEN_API;
 	}
   }
+  if(!function_exists('getUsuarios')) {
+	function getUsuarios(){
+		$CI =& get_instance();
+		$res = null;
+		$sql="select ID_USUARIO , USUARIO ,TIPO_USUARIO ,CI,NOMBRE,AP_PATERNO,AP_MATERNO,CELULAR FROM VENTAS_USUARIOS vu, SIREPE_EMPLEADO se  WHERE se.ID_EMPLEADO = vu.ID_EMPLEADO ";
+		$res = $CI->main->getQuery($sql);
+		return $res;
+	}
+}
 
 
 
