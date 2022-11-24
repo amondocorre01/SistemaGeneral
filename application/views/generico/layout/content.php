@@ -395,6 +395,10 @@
 											$data['sucursal'] = 'center';
 											echo $this->load->view('generico/ventas/reimpresion_sucursal', $data, TRUE);
 										break;
+										case 'REP-CT-PANDO':
+											$data['sucursal'] = 'pando';
+											echo $this->load->view('generico/ventas/reporte_cierre_turno', $data, TRUE);
+										break;
 
 										case 'config-sucursales':
 																		$this->db->where('ESTADO', 1);

@@ -59,9 +59,13 @@
   
 
   <!-- SELECT 2 @3.5.3-->
+  <!--
   <?=link_tag(base_url('node_modules/select2/select2.css'))?>
   <?=link_tag('assets/plugins/select2-bootstrap4/select2-bootstrap4-theme/select2-bootstrap4.css')?>
-  <script src="<?=base_url('node_modules/select2/select2.js')?>"></script>
+  <script src="<?=base_url('node_modules/select2/select2.js')?>"></script>-->
+  
+  <?=link_tag(base_url('assets/plugins/select2/css/select2.min.css'))?>
+  <?=link_tag(base_url('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css'))?>
    
   <script src="<?=base_url('node_modules/file-upload-with-preview/dist/file-upload-with-preview.min.js') ?>"></script>
 <?=link_tag('node_modules/file-upload-with-preview/dist/file-upload-with-preview.min.css'); ?>

@@ -1,4 +1,7 @@
 <br>
+<!-- Select2 -->
+<link rel="stylesheet" href="<?=base_url('assets/plugins/select2/css/select2.min.css')?>">
+<link rel="stylesheet" href="<?=base_url('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')?>">
 <?php 
     $resultado = null;
     $nombre_codigo_sucursal = $sucursal;
@@ -12,6 +15,7 @@
     $descripcion_sucursal = $datos_sucursal->DESCRIPCION;
     $this->session->set_userdata('ubicacion_seleccionada', $datos_sucursal);
    
+    /*
     $fecha =$this->input->get('fecha');
     if($fecha)
     {
@@ -25,16 +29,25 @@
     }
 
     $DB2->select('ROW_NUMBER() OVER(ORDER BY v.NUMERO_FACTURADO ASC) AS row, v.*');
-    //$DB2->select('ROW_NUMBER() OVER(ORDER BY v.NUMERO_VENTA_DIA ASC) AS row, v.*');
-    $resultado =  $DB2->get($prefix.'VENTAS v');
+    $resultado =  $DB2->get($prefix.'VENTAS v');*/
+    $fecha_inicial = $this->input->get('fecha_inicial');
+    $fecha_final = $this->input->get('fecha_final');
+    if(!$fecha_inicial){
+        $fecha_inicial = date('Y-m-d');
+        $fecha_final = date('Y-m-d');
+        echo 'aaa';
+    }
+    $sql = "select * from CIERRE_APERTURA_TURNO".$sufix." where FECHA BETWEEN '$fecha_inicial' and '$fecha_final';";
+    $respuesta = $DB2->query($sql);
+    //$respuesta = $respuesta->result();
     //
     
    
-    $resultado = json_encode($resultado->result());
+    $resultado = json_encode($respuesta->result());
 
     $id_menu = intval($this->input->get('vc'));
     $id_usuario = $this->session->id_usuario;
-
+    /*
     $sql = "SELECT (SELECT vab.ID_VENTAS_BOTON, vab.ESTADO
             FROM VENTAS_ACCESO_BOTON vab, VENTAS_BOTON vb
             WHERE vab.ID_VENTAS_BOTON = vb.ID_VENTAS_BOTON AND 
@@ -43,23 +56,54 @@
 
     $botones = $data->result();
     $botones = $botones[0]->BOTONES; 
-    $botones = json_decode($botones);
+    $botones = json_decode($botones);*/
 ?>
 
 <div class="row">
     <div class="col-md-12">
         <div class="card card-danger">
         <div class="card-header">
-            <h3 class="card-title">Reimpresion o Anulacion - <?=$descripcion_sucursal?></h3>
+            <h3 class="card-title">Reporte Cierre de Turno - <?=$descripcion_sucursal?></h3>
         </div>
+        
         <div class="card-body">
+        <form action="<?=current_url()?>" method="GET" id="form_fecha">
+        <div class="row">
+        
+            <div class="col-offset-1 col-md-3">
+                <label for="">Fecha Inicial</label>
+                <input class="form-control" type="date" name="fecha_inicial" value="<?=$fecha_inicial?>" >
+            </div>
+                
+
+            <div class="col-md-3">
+                <label for="">Fecha Final</label>
+                <input class="form-control" type="date" name="fecha_final" value="<?=$fecha_final?>"  >
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                  <label>Seleccione Usuario</label>
+                  <select class="form-control select2" style="width: 100%;">
+                    <option selected="selected">Seleccione el usuario</option>
+                    <option>Juan Perez</option>
+                    <option>Alvaro Mendez</option>
+                    <option>Ronald Portillo</option>
+                  </select>
+                </div>
+            </div>
+
+                <div class="col-md-3">
+                <input  name="vc" type="hidden" id="fecha" value="<?=$this->input->get('vc')?>">
+                    <input class="btn btn-primary btn-form-search" type="submit" value="Buscar" name="buscar" >
+                </div>
+            
+        
+        </div>
+        </form>
         <div class="row">
             <div class="col-offset-3 col-md-3">
-                <form action="<?=current_url()?>" method="GET" id="form_fecha">
-                    <input name="fecha" type="date" class="form-control" id="fecha_inicial" onchange="send()">
-                    <input  name="vc" type="hidden" id="fecha" value="<?=$this->input->get('vc')?>">
-                    <input  name="name_impresora" type="hidden" id="name_impresora" value="<?=$name_impresora?>">
-                </form>
+                
             </div>
         </div>
         <br>
@@ -110,8 +154,8 @@
 <script>
    $(document).ready(function(){
 
-    var datos = <?=json_encode($botones)?>;
-
+    var datos = '';
+/*
     let puede_a = datos.find(el => el.ID_VENTAS_BOTON == 1);
     var anular = puede_a['ESTADO'];
 
@@ -119,7 +163,7 @@
     var ic = puede_ic['ESTADO'];
 
     let puede_io = datos.find(el => el.ID_VENTAS_BOTON == 3);
-    var io = puede_io['ESTADO'];
+    var io = puede_io['ESTADO'];*/
 
 	   var table = $('#table').dataTable({
 	   data: <?php echo $resultado ?>,
@@ -135,8 +179,15 @@ language:{ search: "Buscar", lengthMenu: "Mostrar _MENU_", zeroRecords: "No se e
         },      
 
 columns: [
-
-{ title:"Accion", className: 'check-boy', data: null, orderable: false, className: 'text-center',
+{ title: "Usuario", className: 'text-center', data: "ID_USUARIO", width: "5%"},
+{ title: "Monto de apertura", className: 'text-center', data: "MONTO_APERTURA", width: "10%"},
+{ title: "Monto de cierre", className: 'text-center', data: "MONTO_CIERRE", width: "10%"},
+{ title: "Total ventas efectivo", className: 'text-center', data: "MONTO_TOTAL_VENTAS_EFECTIVO", width: "8%"},
+{ title: "Total ventas no efectivo", className: 'text-center', data: "MONTO_TOTAL_VENTAS_NO_EFECTIVO", width: "5%"},
+{ title: "Fecha", className: 'text-center', data: "FECHA", width: "5%"},
+{ title: "Hora de apertura", className: 'text-center', data: "HORA_APERTURA", width: "10%"},
+{ title: "Hora de cierre", className: 'text-center', data: "HORA_CIERRE", width: "10%"},
+{ title:"Accion", className: 'check-boy', data: null, orderable: false, className: 'text-center'/*,
     render: function (data, type, full, meta) 
     {
       
@@ -146,29 +197,22 @@ columns: [
 
 
        if(data.ANULADO == 0){
-        if(anular == true) {
 
-           // var pv2 = data.ID_CUIS;
-           // var pv_current='';
-           // if(pv==pv2){
-                button += '<div class="btn-group" role="group" aria-label="Basic example">';
-                button += '<button class="btn btn-primary btn-danger btn-md" iden="'+data.ID_VENTA_DOCUMENTO+'" onClick="onClickAnularFactura(this)" data-toggle="modal" data-target="#modalAnularFactura" title="Anular Factura">';
-                    button +='<i class="las la-times"></i>';
-                button += '</button>';
-            //}
-        }
+            button += '<div class="btn-group" role="group" aria-label="Basic example">';
+            button += '<button class="btn btn-primary btn-danger btn-md" iden="'+data.ID_VENTA_DOCUMENTO+'" onClick="onClickAnularFactura(this)" data-toggle="modal" data-target="#modalAnularFactura" title="Anular Factura">';
+                button +='<i class="las la-times"></i>';
+            button += '</button>';
+
         
-        if(ic == true) {
             button += '<button class="btn btn-primary btn-success btn-md" onclick="reimprimirFacturaRollo('+data.ID_VENTA_DOCUMENTO+');imprimirFacturaRolloLocal('+data.ID_VENTA_DOCUMENTO+')" title="Imprimir factura rollo">';
                 button +='<i class="las la-copy"></i>';
             button += '</button>';
-        }
 
-        if(io == true) {
+
             button += '<button class="btn btn-primary btn-info btn-md" onclick="reimprimirFacturaCarta('+data.ID_VENTA_DOCUMENTO+')" title="Imprimir factura carta">';
                 button +='<i class="las la-check-circle"></i>';
             button += '</button>';
-        }
+        
 
         var oculta = btoa(data.DETALLE);
 
@@ -211,15 +255,8 @@ columns: [
 
         return button;
     },
-    width: "15%"
+    width: "15%" */
 },
-{ title: "Nº", className: 'text-center', data: "row", width: "5%" },
-{ title: "Nº de Factura", className: 'text-center', data: "NUMERO_FACTURADO", width: "5%"},
-{ title: "Fecha y Hora", className: 'text-center', data: "FECHA", width: "5%"},
-{ title: "Cliente", className: 'text-center', data: "cliente", width: "10%"},
-{ title: "NIT", className: 'text-center', data: "NIT", width: "8%"},
-{ title: "Total a pagar", className: 'text-center', data: "TOTAL_A_PAGAR", width: "5%"},
-{ title: "Detalle", className: 'text-center', data: "NOMBRE_LISTA_PRECIOS", width: "10%"},
 
 
 ]});
@@ -639,6 +676,11 @@ function guardarAnularFactura(element){
         });
         }, 1000);
     }
+
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+    });
 
 </script>
 

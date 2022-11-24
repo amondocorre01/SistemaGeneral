@@ -366,4 +366,12 @@ i {
    margin-top: -5px;
  }
 
+ .select2-container--default .select2-selection--single .select2-selection__rendered{
+   line-height: unset !important;
+ }
+
+ .btn-form-search{
+   margin-top: 20px;
+ }
+
 
