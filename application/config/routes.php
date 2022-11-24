@@ -191,6 +191,9 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['obtener-objeto-factura/(:any)'] = 'api/impresion/obtenerObjetoFactura/$1';
 
 
+    $route['reset-password'] = 'api/usuarios/reset';
+
+
     
 
 

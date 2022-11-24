@@ -267,6 +267,16 @@
 
             echo $this->load->view('usuario/body/permisos', $data, TRUE);
         }
+
+        public function reset() {
+
+            $id = $this->input->post('id');
+
+            $this->db->where('ID_USUARIO', $id);
+            $this->main->update('VENTAS_USUARIOS', ['CONTRASEÑA'=>'436170726573736F']);
+        
+            echo json_encode(['result'=>true]);
+        }
     
     }
     

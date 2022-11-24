@@ -509,6 +509,13 @@
 											echo $this->load->view('perfiles/acceso', $datos, TRUE);
 										break;
 
+										case 'reset-pasword':
+											$this->db->where('vu.ELIMINADO', 0);
+											$datos['usuarios'] = $this->main->getListSelect('VENTAS_USUARIOS vu', 'vu.ID_USUARIO AS id, USUARIO as text');
+									
+											echo $this->load->view('generico/apertura/reset', $datos, TRUE);
+										break;
+
 										case 'producto':
 
 											$data['categoria'] = $this->main->getListSelect('VENTAS_CATEGORIA_1', 'ID_CATEGORIA, CATEGORIA');
