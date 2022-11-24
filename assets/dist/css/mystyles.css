@@ -357,4 +357,21 @@ i {
    100% { transform: rotate(360deg); }
  }
 
+ .btn-enlace-siat{
+   margin-top: 10px;
+   margin-right: 10px;
+ }
+ .btn-enlace-siat-an{
+   margin-left: 5px;
+   margin-top: -5px;
+ }
+
+ .select2-container--default .select2-selection--single .select2-selection__rendered{
+   line-height: unset !important;
+ }
+
+ .btn-form-search{
+   margin-top: 20px;
+ }
+
 

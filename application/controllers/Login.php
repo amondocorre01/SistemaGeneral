@@ -33,8 +33,7 @@ class Login extends CI_Controller {
 		if ($this->form_validation->run() == TRUE) {
 			$usuario = set_value('usuario');
 			$password = set_value('password');
-			$password = $this->strToHex(trim($password));
-			$opcionTurno = set_value('abrirTurno');
+			$password = strToHex(trim($password));
 
 			$sql="select * FROM VENTAS_USUARIOS vu, SIREPE_EMPLEADO se  WHERE se.ID_EMPLEADO = vu.ID_EMPLEADO AND se.ID_STATUS = 1  AND USUARIO = '$usuario' COLLATE SQL_Latin1_General_CP1_CS_AS AND CONTRASEÑA='$password';";
 			$res = $this->main->getQuery($sql);
@@ -57,7 +56,7 @@ class Login extends CI_Controller {
 			}
 			
 			if(!$acceso){
-				$this->session->set_flashdata('msg', 'Acceso denegado');
+				$this->session->set_flashdata('msg', 'Usuario no encontrado, verifique usuario y contraseña');
 					redirect('login/index', 'refresh');
 			}
 
@@ -70,10 +69,12 @@ class Login extends CI_Controller {
 					'nombre' => $nombre_usuario.' '.$apellido_p_usuario,
 					'loggin' => TRUE
 				  ];
-				 
+				  $tokenApi = getTokenApi();
+				  $this->session->set_userdata('token_api', $tokenApi);
 					$this->session->set_userdata($data);
-				
-					redirect('generico/inicio','refresh');
+				  $usuarios = getUsuarios();
+				  $this->session->set_userdata('usuarios', $usuarios);
+				  redirect('generico/inicio','refresh');
 			}else{
 				$this->session->set_flashdata('msg', 'Escribir correctamente su usuario o contraseña');
 				redirect('login/index', 'refresh');
@@ -91,138 +92,4 @@ class Login extends CI_Controller {
 		$this->session->sess_destroy();
 		redirect('login/index');
 	}
-
-	public function loggedin()
-	{
-		return (bool) $this->session->userdata('loggin');
-	}
-
-	function strToHex($string){
-		$hex = '';
-		for ($i=0; $i<strlen($string); $i++){
-			$ord = ord($string[$i]);
-			$hexCode = dechex($ord);
-			$hex .= substr('0'.$hexCode, -2);
-		}
-		return strToUpper($hex);
-	}
-
-	function getDatosUbicacion(){
-		$sql="select * from ID_UBICACION;";
-		$res = $this->main->getQuery($sql);
-        return $res;
-	}
-
-	public function verificarEstadoTurno(){
-		$sql = 'EXEC '.PRE_SUC.'VERIFICA_ESTADO_TURNO';
-		$res = $this->main->getQuery($sql);
-        return $res;
-    }
-
-	public function verificarUsuarioTurno($id_usuario){
-		$sql = "EXEC ".PRE_SUC."GET_ID_USUARIO_TURNO ".$id_usuario;
-		$res = $this->main->getQuery($sql);
-        return $res;
-    }
-
-	function getIdAperturaTurno(){
-		$res = null;
-		$sql= "EXEC ".PRE_SUC."GET_CIERRE_APERTURA_TURNO";
-		$respuesta = $this->main->getQuery($sql);
-		if(count($respuesta)==1){
-			$res = $respuesta[0]->ID_CIERRE_APERTURA_TURNO;
-		}
-		return $res;
-	}
-
-	function getPermisoSucursal($id_ubicacion,$id_usuario){
-		$respuesta = false;
-		$sql="select * FROM VENTAS_PERMISO_SUCURSAL WHERE ID_UBICACION = '$id_ubicacion' and ID_USUARIO = '$id_usuario' and ESTADO = 1;";
-		$res = $this->main->getQuery($sql);
-		if(count($res)>=1){
-			$respuesta = true;
-		}
-		return $respuesta;
-	}
-
-	function getCierreAperturaTurno(){
-		$res=null;
-		$id_usuario = $this->session->userdata('id_usuario');
-		$sql = "EXEC ".PRE_SUC."GET_DATOS_TURNO ;";
-		$respuesta = $this->main->getQuery($sql);
-		return $respuesta;
-	}
-
-	function getDosificacion(){
-		$fecha= date('Y-m-d');
-		$sql = "EXEC ".PRE_SUC."GET_MAX_DOSIFICACION '$fecha';";
-		$respuesta = $this->main->getQuery($sql);
-		return $respuesta;
-	}
-
-	function abrirSesion($id_usuario){
-		$res=false;
-		try
-            {
-                $conn = $this->OpenConnection();
-                $sql = "insert INTO SESION_USUARIO".SUF_SUC." (ID_USUARIO,ESTADO) VALUES('$id_usuario','1');";
-                if(sqlsrv_query($conn, $sql)){
-					$res= true;
-                }
-                sqlsrv_close($conn);
-            }
-            catch(Exception $e)
-            {
-                echo("Error!");
-            }
-		return $res;
-	}
-
-	function cantidadSesiones(){
-		$res=0;
-		try
-            {
-                $conn = $this->OpenConnection();
-                $sql = "select count(*) as CANTIDAD from SESION_USUARIO".SUF_SUC." ;";
-                $result = sqlsrv_query($conn, $sql);
-				while( $obj = sqlsrv_fetch_object( $result )) {
-					$res = $obj->CANTIDAD.'<br />';
-			 	 }
-                sqlsrv_close($conn);
-            }
-            catch(Exception $e)
-            {
-                echo("Error!");
-            }
-		return $res;
-	}
-	function eliminarSesion(){
-		$res=false;
-		try
-            {
-                $conn = $this->OpenConnection();
-                $sql = "delete from SESION_USUARIO".SUF_SUC." ;";
-                if(sqlsrv_query($conn, $sql)){
-					$res= true;
-                }
-                sqlsrv_close($conn);
-            }
-            catch(Exception $e)
-            {
-                echo("Error!");
-            }
-		return $res;
-	}
-
-	function OpenConnection()
-        {   
-            $serverName = BD_SERV_2;
-            $connectionOptions = array("Database"=>BD_NAME_2,
-                "Uid"=>BD_USER_2, "PWD"=>BD_PASS_2, "CharacterSet" =>"UTF-8");
-            $conn = sqlsrv_connect($serverName, $connectionOptions);
-            if($conn == false)
-                die(FormatErrors(sqlsrv_errors()));
-            return $conn;
-        }
-
 }

@@ -142,6 +142,34 @@ if(!function_exists('strToHex')) {
 		return strToUpper($hex);
 	}
 }
+if(!function_exists('getSucursal')) {
+	function getSucursal($codigo){
+		$CI =& get_instance();
+		$res = null;
+		$sql="select * FROM ID_UBICACION WHERE CODIGO = '$codigo';";
+		$res = $CI->main->getQuery($sql);
+		$res = $res[0];
+		return $res;
+	}
+}
+
+if(!function_exists('getTokenApi')) {
+	function getTokenApi(){
+		$CI =& get_instance();
+		$sql = "select * from VENTAS_F00_LLAVE vfl WHERE ESTADO = 1; ";
+		$respuesta = $CI->main->getQuery($sql);
+		return 'TokenApi '.$respuesta[0]->TOKEN_API;
+	}
+  }
+  if(!function_exists('getUsuarios')) {
+	function getUsuarios(){
+		$CI =& get_instance();
+		$res = null;
+		$sql="select ID_USUARIO , USUARIO ,TIPO_USUARIO ,CI,NOMBRE,AP_PATERNO,AP_MATERNO,CELULAR FROM VENTAS_USUARIOS vu, SIREPE_EMPLEADO se  WHERE se.ID_EMPLEADO = vu.ID_EMPLEADO ";
+		$res = $CI->main->getQuery($sql);
+		return $res;
+	}
+}
 
 
 

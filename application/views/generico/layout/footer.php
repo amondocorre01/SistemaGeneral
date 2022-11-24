@@ -25,6 +25,8 @@
 <!-- Bootstrap 4 -->
 <script src="<?=base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')?>"></script>
 <!-- Sparkline -->
+<script src="<?=base_url('assets/plugins/select2/js/select2.full.min.js')?>"></script>
+
 <script src="<?=base_url('assets/plugins/sparklines/sparkline.js')?>"></script>
 <!-- JQVMap -->
 <script src="<?=base_url('assets/plugins/jqvmap/jquery.vmap.min.js')?>"></script>
@@ -47,6 +49,8 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 
 <!-- DAataTables-->
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <?=link_tag('https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css')?>
 <!-- DATA TABLES -->
 
 
