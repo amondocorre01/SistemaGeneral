@@ -176,6 +176,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['get-pando'] = 'configuraciones/pando/index';
     $route['nueva-pando'] = 'configuraciones/pando/nueva';
     $route['act-dos-sp']  = 'configuraciones/pando/activar';
+    $route['comanda-pando'] = 'configuraciones/pando/comanda';
 
      /** PANDO */
      $route['get-salamanca'] = 'configuraciones/salamanca/index';
