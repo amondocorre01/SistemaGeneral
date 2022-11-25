@@ -399,9 +399,38 @@
 											$data['sucursal'] = 'pando';
 											echo $this->load->view('generico/ventas/reporte_cierre_turno', $data, TRUE);
 										break;
+										
+										case 'REP-CT-SALAMANCA':
+											$data['sucursal'] = 'salamanca';
+											echo $this->load->view('generico/ventas/reporte_cierre_turno', $data, TRUE);
+										break;
+										case 'REP-CT-AMERICA_E':
+											$data['sucursal'] = 'aeste';
+											echo $this->load->view('generico/ventas/reporte_cierre_turno', $data, TRUE);
+										break;
+										case 'REP-CT-HUPERMALL':
+											$data['sucursal'] = 'hupermall';
+											echo $this->load->view('generico/ventas/reporte_cierre_turno', $data, TRUE);
+										break;
+										case 'REP-CT-LINCOLN':
+											$data['sucursal'] = 'lincoln';
+											echo $this->load->view('generico/ventas/reporte_cierre_turno', $data, TRUE);
+										break;
+										case 'REP-CT-JORDAN':
+											$data['sucursal'] = 'jordan';
+											echo $this->load->view('generico/ventas/reporte_cierre_turno', $data, TRUE);
+										break;
+										case 'REP-CT-AMERICA_OE':
+											$data['sucursal'] = 'aoeste';
+											echo $this->load->view('generico/ventas/reporte_cierre_turno', $data, TRUE);
+										break;
+										case 'REP-CT-CENTER':
+											$data['sucursal'] = 'center';
+											echo $this->load->view('generico/ventas/reporte_cierre_turno', $data, TRUE);
+										break;
 
 										case 'config-sucursales':
-																		$this->db->where('ESTADO', 1);
+											$this->db->where('ESTADO', 1);
 											$data['sucursales'] = $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION, CODIGO, DESCRIPCION', ['ID_UBICACION'=>'ASC']);
 											echo $this->load->view('configuraciones/sucursal', $data, TRUE);
 										break;
