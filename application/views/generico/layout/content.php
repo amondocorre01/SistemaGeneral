@@ -509,6 +509,16 @@
 											echo $this->load->view('perfiles/acceso', $datos, TRUE);
 										break;
 
+										case 'reset-pasword':
+											
+											$campos = "vu.ID_USUARIO AS id, CONCAT_WS(' ', se.NOMBRE, se.AP_PATERNO, se.AP_MATERNO) AS text";
+											$this->db->where('vu.ELIMINADO', 0);
+											$this->db->join('SIREPE_EMPLEADO se', 'se.ID_EMPLEADO = vu.ID_EMPLEADO', 'left');
+											$datos['usuarios'] = $this->main->getListSelect('VENTAS_USUARIOS vu', $campos);
+									
+											echo $this->load->view('generico/apertura/reset', $datos, TRUE);
+										break;
+
 										case 'producto':
 
 											$data['categoria'] = $this->main->getListSelect('VENTAS_CATEGORIA_1', 'ID_CATEGORIA, CATEGORIA');

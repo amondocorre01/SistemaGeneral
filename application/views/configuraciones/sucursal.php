@@ -1,11 +1,9 @@
 <br>
 <div class="card card-outline card-danger">
   <div class="card-header">
-    <h3 class="card-title">Default Card Example</h3>
+    <h3 class="card-title">Configuracion</h3>
     <div class="card-tools">
       <!-- Buttons, labels, and many other things can be placed here! -->
-      <!-- Here is a label for example -->
-      <span class="badge badge-primary">Label</span>
     </div>
     <!-- /.card-tools -->
   </div>
@@ -51,11 +49,6 @@
    
 </div>
   </div>
-  <!-- /.card-body -->
-  <div class="card-footer">
-    The footer of the card
-  </div>
-  <!-- /.card-footer -->
 </div>
 <!-- /.card -->
 

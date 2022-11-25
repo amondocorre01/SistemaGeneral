@@ -50,6 +50,28 @@
          
          echo json_encode($res);
       }
+
+      public function comanda()
+      {  
+         $categoria = $this->input->post('categoria');
+         $valor = $this->input->post('valor');
+
+         $DB2 = $this->load->database('pando', TRUE);
+         
+         $sql = "DELETE FROM IMPRESION_SP WHERE ID_CATEGORIA= $categoria";
+         $DB2->query($sql);
+
+         $sql_2 = "INSERT INTO IMPRESION_SP(ID_CATEGORIA, COMANDA_$valor) VALUES ($categoria, 1)";
+         $DB2->query($sql_2);
+         
+         echo 'OK';
+      }
+
+      public function mensajes() {
+
+         
+
+      }
    
    }
    
