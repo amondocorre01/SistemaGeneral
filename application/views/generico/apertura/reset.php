@@ -35,7 +35,7 @@
                 <div class="offset-md-2 col-md-8">
                     <div class="row">
                         <div class="col-6">
-                            <button type="button" id="registrar" onclick="resetPassword()" class="btn btn-block btn-success btn-sm">Enviar</button>
+                            <button type="button" id="registrar" onclick="resetPassword()" class="btn btn-block btn-success btn-sm">Reset</button>
                         </div>
                         <div class="col-6">
                             <button type="button" id="reset"  onclick="returnInicio()" class="btn btn-block btn-danger btn-sm">Cancelar</button>
@@ -48,6 +48,10 @@
 </div>
 
 <script>
+
+    $('#usuario').select2({
+        placeholder: "Seleccione un Usuario"
+    });
 
     function resetPassword() {
 
