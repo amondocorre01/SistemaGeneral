@@ -373,5 +373,8 @@ i {
  .btn-form-search{
    margin-top: 20px;
  }
+ .tablaDetalleTurno td{
+   padding: 0.15rem !important;
+ }
 
 
