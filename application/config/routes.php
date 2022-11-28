@@ -108,6 +108,7 @@ $route['imprimir-cierre-caja'] = 'api/impresion/cierreCaja';
 $route['reimprimir-factura'] = 'api/impresion/reimprimirFactura';
 $route['imprimir-factura'] = 'api/impresion/imprimirFacturaAnulada';
 $route['imprimir-copia-factura'] = 'api/impresion/imprimirCopiaFactura';
+$route['imprimir-detalle-turno'] = 'api/impresion/imprimirDetalleTurno';
 $route['abrir-gaveta'] = 'api/impresion/gaveta';
 
 

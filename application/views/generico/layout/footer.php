@@ -47,6 +47,10 @@
       "autoWidth": true,
       "responsive": true,
     });
+    $(function () {
+      $('.select2').select2()
+    });
+
     /*
     $("#example1").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,

@@ -252,6 +252,7 @@
 
         function ver_detalle_turno(){
             $id_turno = $this->input->post('turno');
+            $usuario = $this->input->post('usuario');
             $bd = $this->input->post('bd');
             $sufijo = $this->input->post('sufijo');
             $prefijo = $this->input->post('prefijo');
@@ -296,7 +297,7 @@
             
             echo "<center><b>CAPRESSO S.R.L";
             echo '<br>';
-            echo "Sucursal: ".$descripcion_sucursal;
+            echo $descripcion_sucursal;
             echo '<br>';
             echo "ARQUEO DE CAJA POR TURNO";
             echo '</b><br>';
@@ -306,7 +307,7 @@
             echo '<table border="1" class="table table-bordered table-striped tablaDetalleTurno">
                     <tr>
                         <td><b>Usuario</b></td>
-                        <td>'.$turno->ID_USUARIO.'</td>
+                        <td>'.$usuario.'</td>
                     </tr>
                     <tr>
                         <td><b>Fecha/Hora Ingreso: </b></td>
