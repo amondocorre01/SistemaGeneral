@@ -173,21 +173,14 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['get-productos'] = 'facturacion/categoria/index';
 
 
-    /** DOSIFICACION */
+    /** CONFIGURACION */
 
-        /** PANDO */
         $route['get-pando'] = 'configuraciones/pando/index';
         $route['nueva-pando'] = 'configuraciones/pando/nueva';
         $route['act-dos-sp']  = 'configuraciones/pando/activar';
         $route['comanda-pando'] = 'configuraciones/pando/comanda';
-        $route['set-message-pando'] = 'configuraciones/pando/message';
-
-        /** SALAMANCA */
-        $route['get-salamanca'] = 'configuraciones/salamanca/index';
-        $route['nueva-salamanca'] = 'configuraciones/salamanca/nueva';
-        $route['act-dos-ss']  = 'configuraciones/salamanca/activar';
-        $route['comanda-salamanca'] = 'configuraciones/salamanca/comanda';
-        $route['set-message-salamanca'] = 'configuraciones/salamanca/message';
+        $route['set-message'] = 'configuraciones/sucursal/message';
+        $route['set-impresora'] = 'configuraciones/sucursal/impresora';
 
 
 
