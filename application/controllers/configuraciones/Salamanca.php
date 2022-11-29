@@ -38,7 +38,48 @@
          
          echo json_encode($res);
       }
-   
+
+      public function activar()
+      {  
+         $id = $this->input->post('id');
+         $estado = $this->input->post('estado');
+
+         $DB2 = $this->load->database('salamanca', TRUE);
+         
+         $sql = "EXEC SS_UPDATE_DOSIFICACION ".$id.",".$estado;
+         $res = $DB2->query($sql);
+         
+         echo json_encode($res);
+      }
+
+      public function comanda()
+      {  
+         $categoria = $this->input->post('categoria');
+         $valor = $this->input->post('valor');
+
+         $DB2 = $this->load->database('salamanca', TRUE);
+         
+         $sql = "DELETE FROM IMPRESION_SS WHERE ID_CATEGORIA= $categoria";
+         $DB2->query($sql);
+
+         $sql_2 = "INSERT INTO IMPRESION_SS(ID_CATEGORIA, COMANDA_$valor) VALUES ($categoria, 1)";
+         $DB2->query($sql_2);
+         
+         echo 'OK';
+      }
+
+      public function message() {
+
+         $dato['MENSAJE_FACTURA'] = $this->input->post('factura');
+         $dato['MENSAJE_COMANDA'] = $this->input->post('comanda');
+         $dato['MENSAJE_RECIBO'] = $this->input->post('recibo');
+         $id = $this->input->post('id');
+
+         $this->main->update('ID_UBICACION', $dato, ['ID_UBICACION'=>$id]);
+
+         echo json_encode(['status'=>'OK']);
+
+      }
    }
    
    /* End of file Dosificacion.php */

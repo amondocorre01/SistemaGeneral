@@ -651,3 +651,6 @@ span i {
    color: #f8f9fa;
 }
 
+r-tabs .r-tabs-accordion-title .r-tabs-anchor {
+   background-color: #e12129 !important;
+ }
