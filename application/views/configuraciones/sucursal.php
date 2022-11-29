@@ -16,137 +16,34 @@
         <?php endforeach; ?>
       </ul>
 
-    <?php
-        $sql_cat = "EXEC GET_CATEGORIAS ";
-        $res_cat = $this->db->query($sql_cat)->result();
-    ?>      
+        <?php
+            $sql_cat = "EXEC GET_CATEGORIAS ";
+            $res_cat = $this->db->query($sql_cat)->result();
+        ?>      
 
-  <?php foreach ($sucursales as $sucursal) : ?>
-    <?php switch ($sucursal->ID_UBICACION) {
-      case '2':
-        $data['columns'] = $this->db->query("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='DOSIFICACION_F'")->result();
-        $data['nombre_sucursal'] = $sucursal->DESCRIPCION;
-        $data['id']= $sucursal->ID_UBICACION;
-        $data['categorias'] = $res_cat;
-
-        $data['factura'] = $sucursal->MENSAJE_FACTURA;
-        $data['recibo'] = $sucursal->MENSAJE_RECIBO;
-        $data['comanda'] = $sucursal->MENSAJE_COMANDA;
-
+      <?php foreach ($sucursales as $sucursal) : ?>
         
-        $this->load->view('configuraciones/pando/dosificacion', $data, FALSE);
-      break;
+      <?php     
+            $data['nombre_sucursal'] = $sucursal->DESCRIPCION;
+            $data['codigo'] = $sucursal->CODIGO;
+            $data['id']= $sucursal->ID_UBICACION;
+            $data['categorias'] = $res_cat;
 
-      case '4':
-        $data['columns'] = $this->db->query("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='DOSIFICACION_F'")->result();
-        $data['nombre_sucursal'] = $sucursal->DESCRIPCION;
-        $data['id']= $sucursal->ID_UBICACION;
-
-        $data['categorias'] = $res_cat;
-
-        $data['factura'] = $sucursal->MENSAJE_FACTURA;
-        $data['recibo'] = $sucursal->MENSAJE_RECIBO;
-        $data['comanda'] = $sucursal->MENSAJE_COMANDA;
-
-        $this->load->view('configuraciones/salamanca/dosificacion', $data, FALSE);
-      break;
-
-      case '5':
-        $data['columns'] = $this->db->query("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='DOSIFICACION_F'")->result();
-        $data['nombre_sucursal'] = $sucursal->DESCRIPCION;
-        $data['id']= $sucursal->ID_UBICACION;
-
-        $data['categorias'] = $res_cat;
-
-        $data['factura'] = $sucursal->MENSAJE_FACTURA;
-        $data['recibo'] = $sucursal->MENSAJE_RECIBO;
-        $data['comanda'] = $sucursal->MENSAJE_COMANDA;
-
-        $this->load->view('configuraciones/americao/dosificacion', $data, FALSE);
-      break;
-
-
-      case '6':
-        $data['columns'] = $this->db->query("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='DOSIFICACION_F'")->result();
-        $data['nombre_sucursal'] = $sucursal->DESCRIPCION;
-        $data['id']= $sucursal->ID_UBICACION;
-
-        $data['categorias'] = $res_cat;
-
-        $data['factura'] = $sucursal->MENSAJE_FACTURA;
-        $data['recibo'] = $sucursal->MENSAJE_RECIBO;
-        $data['comanda'] = $sucursal->MENSAJE_COMANDA;
-
-        $this->load->view('configuraciones/hupermall/dosificacion', $data, FALSE);
-      break;
-
-      case '11':
-        $data['columns'] = $this->db->query("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='DOSIFICACION_F'")->result();
-        $data['nombre_sucursal'] = $sucursal->DESCRIPCION;
-        $data['id']= $sucursal->ID_UBICACION;
-
-        $data['categorias'] = $res_cat;
-
-        $data['factura'] = $sucursal->MENSAJE_FACTURA;
-        $data['recibo'] = $sucursal->MENSAJE_RECIBO;
-        $data['comanda'] = $sucursal->MENSAJE_COMANDA;
-
-        $this->load->view('configuraciones/lincoln/dosificacion', $data, FALSE);
-      break;
-
-      case '12':
-        $data['columns'] = $this->db->query("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='DOSIFICACION_F'")->result();
-        $data['nombre_sucursal'] = $sucursal->DESCRIPCION;
-        $data['id']= $sucursal->ID_UBICACION;
-
-        $data['categorias'] = $res_cat;
-
-        $data['factura'] = $sucursal->MENSAJE_FACTURA;
-        $data['recibo'] = $sucursal->MENSAJE_RECIBO;
-        $data['comanda'] = $sucursal->MENSAJE_COMANDA;
-
-        $this->load->view('configuraciones/jordan/dosificacion', $data, FALSE);
-      break;
-
-      case '13':
-        $data['columns'] = $this->db->query("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='DOSIFICACION_F'")->result();
-        $data['nombre_sucursal'] = $sucursal->DESCRIPCION;
-        $data['id']= $sucursal->ID_UBICACION;
-
-        $data['categorias'] = $res_cat;
-
-        $data['factura'] = $sucursal->MENSAJE_FACTURA;
-        $data['recibo'] = $sucursal->MENSAJE_RECIBO;
-        $data['comanda'] = $sucursal->MENSAJE_COMANDA;
-
-        $this->load->view('configuraciones/americae/dosificacion', $data, FALSE);
-      break;
-
-      case '18':
-        $data['columns'] = $this->db->query("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='DOSIFICACION_F'")->result();
-        $data['nombre_sucursal'] = $sucursal->DESCRIPCION;
-        $data['id']= $sucursal->ID_UBICACION;
-
-        $data['categorias'] = $res_cat;
-
-        $data['factura'] = $sucursal->MENSAJE_FACTURA;
-        $data['recibo'] = $sucursal->MENSAJE_RECIBO;
-        $data['comanda'] = $sucursal->MENSAJE_COMANDA;
-
-        $this->load->view('configuraciones/megacenter/dosificacion', $data, FALSE);
-      break;
-      
-    } ?>
-  <?php endforeach; ?>      
+            $data['factura'] = $sucursal->MENSAJE_FACTURA;
+            $data['recibo'] = $sucursal->MENSAJE_RECIBO;
+            $data['comanda'] = $sucursal->MENSAJE_COMANDA;
+            $data['impresora'] = $sucursal->IMPRESORA;
+            
+            $this->load->view('configuraciones/sucursal/dosificacion', $data, FALSE);
+        ?>  
+      <?php endforeach; ?>
+        
 </div>
    
 </div>
   </div>
 </div>
 <!-- /.card -->
-
-
-
 
 <script>
   $('#responsiveTabsDemo').responsiveTabs({
