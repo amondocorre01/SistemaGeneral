@@ -2,20 +2,20 @@
    
    defined('BASEPATH') OR exit('No direct script access allowed');
    
-   class Pando extends CI_Controller {
+   class Jordan extends CI_Controller {
    
       public function index()
       {
-         $DB2 = $this->load->database('pando', TRUE);
+         $DB2 = $this->load->database('jordan', TRUE);
          
-         $sql = 'EXEC SP_GET_DOSIFICACION';
+         $sql = 'EXEC SJ_GET_DOSIFICACION';
          $res = $DB2->query($sql)->result();
          echo json_encode($res);
       }
 
       public function nueva()
       {
-         $DB2 = $this->load->database('pando', TRUE);
+         $DB2 = $this->load->database('jordan', TRUE);
 
          $correo = $this->input->post('correo');
          $nit=$this->input->post('nit'); 
@@ -32,7 +32,7 @@
          $direccion=$this->input->post('direccion'); 
          $telefono=$this->input->post('telefono'); $departamento=$this->input->post('departamento');
          
-         $sql = "EXEC SP_SET_DOSIFICACION '$correo',$nit,'$razon','$autorizacion','$actividad','$sistema','$dias','$fecha','$leyenda','$llave','$estado','$matriz','$sucursal','$direccion','$telefono','$departamento'";
+         $sql = "EXEC SJ_SET_DOSIFICACION '$correo',$nit,'$razon','$autorizacion','$actividad','$sistema','$dias','$fecha','$leyenda','$llave','$estado','$matriz','$sucursal','$direccion','$telefono','$departamento'";
 
          $res = $DB2->query($sql);
          echo json_encode($res);
@@ -43,9 +43,9 @@
          $id = $this->input->post('id');
          $estado = $this->input->post('estado');
 
-         $DB2 = $this->load->database('pando', TRUE);
+         $DB2 = $this->load->database('jordan', TRUE);
          
-         $sql = "EXEC SP_UPDATE_DOSIFICACION ".$id.",".$estado;
+         $sql = "EXEC SJ_UPDATE_DOSIFICACION ".$id.",".$estado;
          $res = $DB2->query($sql);
          
          echo json_encode($res);
@@ -56,12 +56,12 @@
          $categoria = $this->input->post('categoria');
          $valor = $this->input->post('valor');
 
-         $DB2 = $this->load->database('pando', TRUE);
+         $DB2 = $this->load->database('jordan', TRUE);
          
-         $sql = "DELETE FROM IMPRESION_SP WHERE ID_CATEGORIA= $categoria";
+         $sql = "DELETE FROM IMPRESION_SJ WHERE ID_CATEGORIA= $categoria";
          $DB2->query($sql);
 
-         $sql_2 = "INSERT INTO IMPRESION_SP(ID_CATEGORIA, COMANDA_$valor) VALUES ($categoria, 1)";
+         $sql_2 = "INSERT INTO IMPRESION_SJ(ID_CATEGORIA, COMANDA_$valor) VALUES ($categoria, 1)";
          $DB2->query($sql_2);
          
          echo 'OK';

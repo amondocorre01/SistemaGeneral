@@ -430,8 +430,8 @@
 										break;
 
 										case 'config-sucursales':
-											$this->db->where('ESTADO', 1);
-											$data['sucursales'] = $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION, CODIGO, DESCRIPCION', ['ID_UBICACION'=>'ASC']);
+																		$this->db->where('ESTADO', 1);
+											$data['sucursales'] = $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION, CODIGO, DESCRIPCION, MENSAJE_FACTURA, MENSAJE_RECIBO,MENSAJE_COMANDA', ['ID_UBICACION'=>'ASC']);
 											echo $this->load->view('configuraciones/sucursal', $data, TRUE);
 										break;
 										

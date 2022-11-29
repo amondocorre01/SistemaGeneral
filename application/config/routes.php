@@ -176,14 +176,91 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     /** DOSIFICACION */
 
         /** PANDO */
-    $route['get-pando'] = 'configuraciones/pando/index';
-    $route['nueva-pando'] = 'configuraciones/pando/nueva';
-    $route['act-dos-sp']  = 'configuraciones/pando/activar';
-    $route['comanda-pando'] = 'configuraciones/pando/comanda';
+        $route['get-pando'] = 'configuraciones/pando/index';
+        $route['nueva-pando'] = 'configuraciones/pando/nueva';
+        $route['act-dos-sp']  = 'configuraciones/pando/activar';
+        $route['comanda-pando'] = 'configuraciones/pando/comanda';
+        $route['set-message-pando'] = 'configuraciones/pando/message';
 
-     /** PANDO */
-     $route['get-salamanca'] = 'configuraciones/salamanca/index';
-     $route['nueva-salamanca'] = 'configuraciones/salamanca/nueva';
+        /** SALAMANCA */
+        $route['get-salamanca'] = 'configuraciones/salamanca/index';
+        $route['nueva-salamanca'] = 'configuraciones/salamanca/nueva';
+        $route['act-dos-ss']  = 'configuraciones/salamanca/activar';
+        $route['comanda-salamanca'] = 'configuraciones/salamanca/comanda';
+        $route['set-message-salamanca'] = 'configuraciones/salamanca/message';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+
+
+    /** AMERICA OESTE */
+    $route['get-americao'] = 'configuraciones/americao/index';
+    $route['nueva-americao'] = 'configuraciones/americao/nueva';
+    $route['act-dos-sao']  = 'configuraciones/americao/activar';
+    $route['comanda-americao'] = 'configuraciones/americao/comanda';
+    $route['set-message-americao'] = 'configuraciones/americao/message';
+
+
+    /** HUPERMALL */
+    $route['get-hupermall'] = 'configuraciones/hupermall/index';
+    $route['nueva-hupermall'] = 'configuraciones/hupermall/nueva';
+    $route['act-dos-sh']  = 'configuraciones/hupermall/activar';
+    $route['comanda-hupermall'] = 'configuraciones/hupermall/comanda';
+    $route['set-message-hupermall'] = 'configuraciones/hupermall/message';
+
+
+    /** AMERICA ESTE */
+    $route['get-americae'] = 'configuraciones/americae/index';
+    $route['nueva-americae'] = 'configuraciones/americae/nueva';
+    $route['act-dos-sae']  = 'configuraciones/americae/activar';
+    $route['comanda-americae'] = 'configuraciones/americae/comanda';
+    $route['set-message-americae'] = 'configuraciones/americae/message';
+
+
+    /** AMERICA ESTE */
+    $route['get-americae'] = 'configuraciones/americae/index';
+    $route['nueva-americae'] = 'configuraciones/americae/nueva';
+    $route['act-dos-sae']  = 'configuraciones/americae/activar';
+    $route['comanda-americae'] = 'configuraciones/americae/comanda';
+    $route['set-message-americae'] = 'configuraciones/americae/message';
+
+    
+    /** AMERICA ESTE */
+    $route['get-americae'] = 'configuraciones/americae/index';
+    $route['nueva-americae'] = 'configuraciones/americae/nueva';
+    $route['act-dos-sae']  = 'configuraciones/americae/activar';
+    $route['comanda-americae'] = 'configuraciones/americae/comanda';
+    $route['set-message-americae'] = 'configuraciones/americae/message';
+
+
+    /** AMERICA ESTE */
+    $route['get-americae'] = 'configuraciones/americae/index';
+    $route['nueva-americae'] = 'configuraciones/americae/nueva';
+    $route['act-dos-sae']  = 'configuraciones/americae/activar';
+    $route['comanda-americae'] = 'configuraciones/americae/comanda';
+    $route['set-message-americae'] = 'configuraciones/americae/message';
+
 
      $route['imprimir-comanda/(:any)'] = 'api/impresion/imprimirComanda/$1';
     $route['reimprimir-factura-carta/(:any)'] = 'api/impresion/reimprimirFacturaCarta/$1';
@@ -194,6 +271,10 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
 
 
     $route['reset-password'] = 'api/usuarios/reset';
+
+
+
+   
 
 
     
