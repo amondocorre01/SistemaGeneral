@@ -85,6 +85,7 @@ $route['apertura-caja-pendiente'] = 'api/aperturacaja/pendiente';
 
 /**CIERRE DE CAJA */
 $route['cierre-caja'] = 'api/cierrecaja/register';
+$route['detalle-turno'] = 'api/cierrecaja/ver_detalle_turno';
 
 
 /** GET CLIENTE */

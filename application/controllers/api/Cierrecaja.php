@@ -29,7 +29,9 @@
             $objetoCierreCaja->usuario = $nombre_usuario;
 
             $turno=$this->getCierreAperturaTurno();
-            $rangoFacturas = $this->rangoFacturas();
+            $bd='ventas';
+            $sufijo = SUF_SUC;
+            $rangoFacturas = $this->rangoFacturas($bd, $sufijo, $id_ca);
             $cantidadRecibos = $this->cantidadRecibos();
             $totalVentasTarjetaDC = $this->totalVentasTarjetaDC();
 
@@ -97,10 +99,13 @@
             return $conn;
         }
 
-        function getIngresos($id){
+        function getIngresos($bd, $prefijo, $sufijo, $id){
             $res=0;
-            $sql = "EXEC ".PRE_SUC."SUMA_INGRESOS '$id';";
-            $respuesta = $this->main->getQuery($sql);
+            $sql = "EXEC ".$prefijo."SUMA_INGRESOS '$id';";
+            //$respuesta = $this->main->getQuery($sql);
+            $DB2 = $this->load->database($bd, TRUE);
+            $respuesta = $DB2->query($sql);
+            $respuesta = $respuesta->result();
             if(count($respuesta)==1){
                 $res = $respuesta[0]->ingresos;
                 if($res ==null){
@@ -110,10 +115,13 @@
             return $res;
         }
 
-        function getEgresos($id){
+        function getEgresos($bd, $prefijo, $sufijo, $id){
             $res=0;
-            $sql = "EXEC ".PRE_SUC."SUMA_EGRESOS '$id';";
-            $respuesta = $this->main->getQuery($sql);
+            $sql = "EXEC ".$prefijo."SUMA_EGRESOS '$id';";
+            //$respuesta = $this->main->getQuery($sql);
+            $DB2 = $this->load->database($bd, TRUE);
+            $respuesta = $DB2->query($sql);
+            $respuesta = $respuesta->result();
             if(count($respuesta)==1){
                 $res = $respuesta[0]->egresos;
                 if($res ==null){
@@ -164,11 +172,13 @@
             return $res;
         }
 
-        function rangoFacturas(){
-            $id_turno = $this->session->userdata('id_apertura_turno');
+        function rangoFacturas($bd, $sufijo, $id_turno){
             $res='';
-            $sql = "select ISNULL(MIN(NUMERO_FACTURADO),0) as MINIMO, ISNULL(MAX(NUMERO_FACTURADO),0) as MAXIMO FROM VENTA_DOCUMENTO".SUF_SUC."  WHERE ID_TURNO = '$id_turno' AND FACTURADO = 1 ;";
-            $respuesta = $this->main->getQuery($sql);
+            $sql = "select ISNULL(MIN(NUMERO_FACTURADO),0) as MINIMO, ISNULL(MAX(NUMERO_FACTURADO),0) as MAXIMO FROM VENTA_DOCUMENTO".$sufijo."  WHERE ID_TURNO = '$id_turno' AND FACTURADO = 1 ;";
+            //$respuesta = $this->main->getQuery($sql);
+            $DB2 = $this->load->database($bd, TRUE);
+            $respuesta = $DB2->query($sql);
+            $respuesta = $respuesta->result();
             if(count($respuesta)==1){
                 $min = $respuesta[0]->MINIMO;
                 $max = $respuesta[0]->MAXIMO;
@@ -177,11 +187,13 @@
             return $res;
         }
         
-        function cantidadRecibos(){
-            $id_turno = $this->session->userdata('id_apertura_turno');
+        function cantidadRecibos($bd, $sufijo, $id_turno){
             $res=0;
-            $sql = "select count(*) as CANTIDAD_RECIBOS from VENTA_DOCUMENTO".SUF_SUC." WHERE ID_TURNO = '$id_turno' and FACTURADO =0;";
-            $respuesta = $this->main->getQuery($sql);
+            $sql = "select count(*) as CANTIDAD_RECIBOS from VENTA_DOCUMENTO".$sufijo." WHERE ID_TURNO = '$id_turno' and FACTURADO =0;";
+            //$respuesta = $this->main->getQuery($sql);
+            $DB2 = $this->load->database($bd, TRUE);
+            $respuesta = $DB2->query($sql);
+            $respuesta = $respuesta->result();
             if(count($respuesta)==1){
                 $res = $respuesta[0]->CANTIDAD_RECIBOS;
             }
@@ -237,5 +249,171 @@
                 }
             return $res;
         }
+
+        function ver_detalle_turno(){
+            $id_turno = $this->input->post('turno');
+            $bd = $this->input->post('bd');
+            $sufijo = $this->input->post('sufijo');
+            $prefijo = $this->input->post('prefijo');
+            $descripcion_sucursal = $this->input->post('descripcion_sucursal');
+            $turno = $this->getTurno($bd, $sufijo, $id_turno);
+            $rangoFacturas = $this->rangoFacturas($bd, $sufijo, $id_turno);
+            $cantidadRecibos = $this->cantidadRecibos($bd, $sufijo, $id_turno);
+            $monto_apertura = floatval($turno->MONTO_APERTURA);
+            $monto_total_ingresos = floatval($this->getIngresos($bd, $prefijo, $sufijo, $id_turno));
+            $monto_total_egresos = floatval($this->getEgresos($bd, $prefijo, $sufijo, $id_turno));
+
+            $fecha_apertura = $turno->FECHA;
+            $fecha = explode("-", $fecha_apertura);
+            $ges=$fecha[0];
+            $mes=$fecha[1];
+            $dia=$fecha[2];
+            $fecha_apertura= $dia.'/'.$mes.'/'.$ges;
+            $horario_apertura = $turno->HORA_APERTURA;
+            $monto_cierre = $turno->MONTO_CIERRE;
+            $fecha_cierre = $turno->FECHA_CIERRE;
+            if($fecha_cierre){
+                $fecha = explode("-", $fecha_cierre);
+                $ges=$fecha[0];
+                $mes=$fecha[1];
+                $dia=$fecha[2];
+                $fecha_cierre= $dia.'/'.$mes.'/'.$ges;
+                $hora_cierre = $turno->HORA_CIERRE;
+            }else{
+                $fecha_cierre ='';
+                $hora_cierre = '';
+            }
+            $monto_total_ventas_efectivo = floatval($this->getTotalTurno($bd, $sufijo, $id_turno,'EFECTIVO'));
+            $monto_total_ventas_no_efectivo = floatval($this->getTotalTurnoNoEfectivo($bd, $sufijo, $id_turno));
+            $monto_total_ventas_pago_qr = floatval($this->getTotalTurno($bd, $sufijo, $id_turno,'PAGO ONLINE'));
+            $monto_total_ventas_tarjeta = floatval($this->getTotalTurno($bd, $sufijo, $id_turno,'TARJETA'));
+            $monto_total_ventas_transferencia_bancaria = floatval($this->getTotalTurno($bd, $sufijo, $id_turno,'TRANSFERENCIA BANCARIA'));
+            $monto_total_ventas_cupon_pedidos_ya = floatval($this->getTotalCupon($bd, $sufijo, $id_turno));
+            $monto_total_ventas_gift_card = floatval($this->getTotalTurno($bd, $sufijo, $id_turno,'GIFT-CARD'));
+            $saldo_teorico = $monto_apertura+$monto_total_ingresos-$monto_total_egresos+$monto_total_ventas_efectivo;
+            $monto_cierre = floatval($monto_cierre);
+            $descuadre = $monto_cierre - $saldo_teorico;
+            
+            echo "<center><b>CAPRESSO S.R.L";
+            echo '<br>';
+            echo "Sucursal: ".$descripcion_sucursal;
+            echo '<br>';
+            echo "ARQUEO DE CAJA POR TURNO";
+            echo '</b><br>';
+            
+            echo "--------------------------------------";
+            echo '<br></center>';
+            echo '<table border="1" class="table table-bordered table-striped tablaDetalleTurno">
+                    <tr>
+                        <td><b>Usuario</b></td>
+                        <td>'.$turno->ID_USUARIO.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Fecha/Hora Ingreso: </b></td>
+                        <td>'.$fecha_apertura."  ".$horario_apertura.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Fecha/Hora Salida: </b></td>
+                        <td>'.$fecha_cierre."  ".$hora_cierre.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Rango de facturas: </b></td>
+                        <td>'.$rangoFacturas.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Cantidad de Recibos: </b></td>
+                        <td>'.$cantidadRecibos.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Monto inicial de turno: </b></td>
+                        <td>'.$monto_apertura.'</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><b>Total Ingresos: </b></td>
+                        <td>'.$monto_total_ingresos.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Total Egresos: </b></td>
+                        <td>'.$monto_total_egresos.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Total ventas en efectivo: </b></td>
+                        <td>'.$monto_total_ventas_efectivo.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Total ventas en QR: </b></td>
+                        <td>'.$monto_total_ventas_pago_qr.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Total ventas Tarj. Deb/Cred: </b></td>
+                        <td>'.$monto_total_ventas_tarjeta.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Total ventas Transferencia: </b></td>
+                        <td>'.$monto_total_ventas_transferencia_bancaria.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Total cupones Pedidos Ya: </b></td>
+                        <td>'.$monto_total_ventas_cupon_pedidos_ya.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Saldo teorico: </b></td>
+                        <td>'.$saldo_teorico.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Dinero entregado: </b></td>
+                        <td>'.$monto_cierre.'</td>
+                    </tr>
+                    <tr>
+                        <td><b>Descuadre: </b></td>
+                        <td>'.$descuadre.'</td>
+                    </tr>
+                </table>';
+        }
+        function getTurno($bd, $sufijo_sucursal, $id_turno){
+            $res=null;
+            $sql = "select * from CIERRE_APERTURA_TURNO".$sufijo_sucursal." where ID_CIERRE_APERTURA_TURNO = '$id_turno' ;";
+            $DB2 = $this->load->database($bd, TRUE);
+            $respuesta = $DB2->query($sql);
+            $respuesta = $respuesta->result();
+            return $respuesta[0];
+        }
+
+        function getTotalTurno($bd, $sufijo_sucursal, $id_turno, $filtro){
+            $res=0;
+            $sql = "select CASE WHEN (SUM(monto)) IS NULL THEN 0 ELSE (SUM(monto)) END as TOTAL from VENTA_PAGO".$sufijo_sucursal." vps where DESCRIPCION_PAGO ='$filtro' and  vps.ID_VENTA_DOCUMENTO in (select ID_VENTA_DOCUMENTO  from VENTA_DOCUMENTO".$sufijo_sucursal." vds where ANULADO='0' and ID_TURNO = '$id_turno');";
+            $DB2 = $this->load->database($bd, TRUE);
+            $respuesta = $DB2->query($sql);
+            $respuesta = $respuesta->result();
+            if(count($respuesta)==1){
+                $res = $respuesta[0]->TOTAL;
+            }
+            return $res;
+        }
+        function getTotalCupon($bd, $sufijo_sucursal, $id_turno){
+            $res=0;
+            $sql = "select CASE WHEN (SUM(monto)) IS NULL THEN 0 ELSE (SUM(monto)) END as TOTAL from VENTA_PAGO".$sufijo_sucursal." vps where DESCRIPCION_PAGO like '%CUPON%' and  vps.ID_VENTA_DOCUMENTO in (select ID_VENTA_DOCUMENTO  from VENTA_DOCUMENTO".$sufijo_sucursal." vds where ANULADO='0' and ID_TURNO = '$id_turno');";
+            $DB2 = $this->load->database($bd, TRUE);
+            $respuesta = $DB2->query($sql);
+            $respuesta = $respuesta->result();
+            if(count($respuesta)==1){
+                $res = $respuesta[0]->TOTAL;
+            }
+            return $res;
+        }
+
+        function getTotalTurnoNoEfectivo($bd, $sufijo_sucursal, $id_turno){
+            $res=0;
+            $sql = "select CASE WHEN (SUM(monto)) IS NULL THEN 0 ELSE (SUM(monto)) END as TOTAL from VENTA_PAGO".$sufijo_sucursal." vps where DESCRIPCION_PAGO !='EFECTIVO' and  vps.ID_VENTA_DOCUMENTO in (select ID_VENTA_DOCUMENTO  from VENTA_DOCUMENTO".$sufijo_sucursal." vds where ANULADO='0' and ID_TURNO = '$id_turno');";
+            $DB2 = $this->load->database($bd, TRUE);
+            $respuesta = $DB2->query($sql);
+            $respuesta = $respuesta->result();
+            if(count($respuesta)==1){
+                $res = $respuesta[0]->TOTAL;
+            }
+            return $res;
+        }
+
 
     }
