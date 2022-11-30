@@ -6,32 +6,31 @@
             <h3 class="card-title"><i class="las la-user-plus"></i> Acceso de Usuarios</h3>
             </div>
             <div class="card-body">
-
                 <div class="row">
-                    <div class="col-md-4">
-                        
+                    <div class="col-1">
+                    <?=form_label("Usuario", 'usuario');?>
+                    </div>
+
+                    <div class="col-4">
+                        <select name="usuario" id="usuario" class="form-control">
+                            <option value="">--- Seleccione un Usuario ---</option>
+
+                            <?php foreach ($usuarios as $usuario):?>
+                                <option value="<?=$usuario->ID_USUARIO?>"><?=$usuario->NOMBRE_COMPLETO?></option>
+                            <?php endforeach; ?>
+
+                        </select>
+                    </div>
+
+                    <div class="col-4">
+                        <?=form_button('name', 'Buscar', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'searchAcceso()']);?>
                     </div>
                 </div>
-                <?=form_open('actualizar-permisos-usuarios', null, ['id_menu'=>$this->input->get('vc')])?>
-                    <div class="row">
 
-                        <div class="col-1">
-                        <?=form_label("Usuario", 'usuario');?>
-                        </div>
-
-                        <div class="col-4">
-                            <?=form_dropdown('usuario', $usuarios, null,['id'=>'usuario']);?>
-                        </div>
-
-                        <div class="col-4">
-                            <?=form_submit('name', 'Confirmar los cambios', ['class'=>'btn btn-danger btn-xs']);?>
-                        </div>
-                    </div>
                     <div id="menu">
     
                 
                     </div>
-                <?=form_close();?>
             </div>
         </div>
     </div>
@@ -39,9 +38,23 @@
 
 <script>
 
-$('#usuario').select2({
-    placeholder: "--- Seleccione una opcion ---"
-});
+    function searchAcceso() {
+
+        var id = $('#usuario').val();
+
+        $.ajax({
+            type: "POST",
+            url: "<?=site_url('get-usuario')?>",
+            data: { id: id},
+            dataType: "html",
+            success: function (response) {
+                $('#menu').empty();
+                $('#menu').append(response);
+            }
+        });
+    }
+
+
 
 $('#usuario').on('change', function(){
 

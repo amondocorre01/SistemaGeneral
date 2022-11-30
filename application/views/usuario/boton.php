@@ -3,7 +3,7 @@
     <div class="col-md-12">
         <div class="card card-danger">
             <div class="card-header">
-            <h3 class="card-title"><i class="las la-user-plus"></i> Nuevo Usuario</h3>
+            <h3 class="card-title"><i class="las la-user-plus"></i> Permisos de Boton a Usuarios</h3>
             </div>
             <div class="card-body">
 
@@ -12,14 +12,17 @@
                         
                     </div>
                 </div>
-                <?=form_open('aprobar-cambios-botones', null, ['vc'=>$this->input->get('vc')])?>
+                
                     <div class="row">
                         <div class="col-1">
                         <?=form_label("Usuarios", 'usuarios');?>
                         </div>
-
                         <div class="col-3">
-                            <?=form_dropdown('usuarios', $usuarios, null,['id'=>'usuarios']);?>
+                            <select name="usuarios" id="usuarios" class="form-control">
+                                <?php foreach ($usuarios as $usuario): ?>
+                                    <option value="<?=$usuario->ID_USUARIO?>"><?=$usuario->NOMBRE_COMPLETO?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
 
                         <div class="col-1">
@@ -27,7 +30,11 @@
                         </div>
 
                         <div class="col-3">
-                            <?=form_dropdown('menus', $menus, null,['id'=>'menus']);?>
+                            <select name="menus" id="menus" class="form-control">
+                                    <?php foreach ($menus as $menu): ?>
+                                        <option value="<?=$menu->ID_VENTAS_ACCESO?>"><?=$menu->NOMBRE?></option>
+                                    <?php endforeach; ?>
+                            </select>
                         </div>
 
 
@@ -36,27 +43,17 @@
                         </div>
                     </div>
 
-                        <div class="row align-items-center"  id="menu">
+                        <div  id="menu">
 
 
                     
-                        </div>
-                        <?=form_submit('send', 'Confirmar cambios', ['class'=>'btn btn-danger'])?>
-                    <?=form_close();?>
+                        </div>                   
             </div>
         </div>
     </div>
 </div>
 
 <script>
-
-$('#usuarios').select2({
-    placeholder: "--- Seleccione una opcion ---"
-});
-
-$('#menus').select2({
-    placeholder: "--- Seleccione una opcion ---"
-});
 
 $('#buscar').on('click', function(){
 
@@ -66,7 +63,7 @@ $('#buscar').on('click', function(){
     $.ajax({
         type: "POST",
         url: "<?=site_url('get-permiso-boton')?>",
-        data: { id_menu: id_menu, id_usuario: id_usuario},
+        data: { id_menu: id_menu, id_usuario: id_usuario, url:'<?=current_url()?>', vc:'<?=$this->input->get('vc')?>'},
         dataType: "html",
         success: function (response) {
             $('#menu').empty();

@@ -181,6 +181,12 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
         $route['comanda-pando'] = 'configuraciones/pando/comanda';
         $route['set-message'] = 'configuraciones/sucursal/message';
         $route['set-impresora'] = 'configuraciones/sucursal/impresora';
+        $route['set-estado-boton'] = 'configuraciones/boton/estado';
+        $route['set-estado-botones'] = 'configuraciones/boton/todos';
+
+
+
+    
 
 
 
