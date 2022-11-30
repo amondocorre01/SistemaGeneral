@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@icon/ionicons": "^5.4.0-alpha.0",
+    "bootstrap4-toggle": "^3.6.1",
     "datatables": "^1.10.18",
     "datatables.net": "^1.12.1",
     "datatables.net-responsive": "^2.3.0",
