@@ -184,6 +184,132 @@ if(!function_exists('searchUsuario')) {
 		return $res;
 	}
 }
+if(!function_exists('rangoFacturas')) {
+function rangoFacturas($bd, $sufijo, $id_turno){
+	$res='';
+	$sql = "select ISNULL(MIN(NUMERO_FACTURADO),0) as MINIMO, ISNULL(MAX(NUMERO_FACTURADO),0) as MAXIMO FROM VENTA_DOCUMENTO".$sufijo."  WHERE ID_TURNO = '$id_turno' AND FACTURADO = 1 ;";
+	$CI =& get_instance();
+	$DB2 = $CI->load->database($bd, TRUE);
+	$respuesta = $DB2->query($sql);
+	$respuesta = $respuesta->result();
+	if(count($respuesta)==1){
+		$min = $respuesta[0]->MINIMO;
+		$max = $respuesta[0]->MAXIMO;
+		$res= $min.'-'.$max;
+	}
+	return $res;
+}
+}
+
+if(!function_exists('getIngresos')) {
+function getIngresos($bd, $prefijo, $sufijo, $id){
+	$res=0;
+	$sql = "EXEC ".$prefijo."SUMA_INGRESOS '$id';";
+	$CI =& get_instance();
+	$DB2 = $CI->load->database($bd, TRUE);
+	$respuesta = $DB2->query($sql);
+	$respuesta = $respuesta->result();
+	if(count($respuesta)==1){
+		$res = $respuesta[0]->ingresos;
+		if($res ==null){
+			$res=0;
+		}
+	}
+	return $res;
+}
+}
+
+if(!function_exists('getEgresos')) {
+function getEgresos($bd, $prefijo, $sufijo, $id){
+	$res=0;
+	$sql = "EXEC ".$prefijo."SUMA_EGRESOS '$id';";
+	$CI =& get_instance();
+	$DB2 = $CI->load->database($bd, TRUE);
+	$respuesta = $DB2->query($sql);
+	$respuesta = $respuesta->result();
+	if(count($respuesta)==1){
+		$res = $respuesta[0]->egresos;
+		if($res ==null){
+			$res=0;
+		}
+	}
+	return $res;
+}
+}
+
+
+if(!function_exists('cantidadRecibos')) {
+function cantidadRecibos($bd, $sufijo, $id_turno){
+	$res=0;
+	$sql = "select count(*) as CANTIDAD_RECIBOS from VENTA_DOCUMENTO".$sufijo." WHERE ID_TURNO = '$id_turno' and FACTURADO =0;";
+	$CI =& get_instance();
+	$DB2 = $CI->load->database($bd, TRUE);
+	$respuesta = $DB2->query($sql);
+	$respuesta = $respuesta->result();
+	if(count($respuesta)==1){
+		$res = $respuesta[0]->CANTIDAD_RECIBOS;
+	}
+	return $res;
+}
+}
+
+if(!function_exists('getTurno')) {
+function getTurno($bd, $sufijo_sucursal, $id_turno){
+	$res=null;
+	$sql = "select * from CIERRE_APERTURA_TURNO".$sufijo_sucursal." where ID_CIERRE_APERTURA_TURNO = '$id_turno' ;";
+	$CI =& get_instance();
+	$DB2 = $CI->load->database($bd, TRUE);
+	$respuesta = $DB2->query($sql);
+	$respuesta = $respuesta->result();
+	return $respuesta[0];
+}
+}
+
+if(!function_exists('getTotalTurno')) {
+function getTotalTurno($bd, $sufijo_sucursal, $id_turno, $filtro){
+	$res=0;
+	$sql = "select CASE WHEN (SUM(monto)) IS NULL THEN 0 ELSE (SUM(monto)) END as TOTAL from VENTA_PAGO".$sufijo_sucursal." vps where DESCRIPCION_PAGO ='$filtro' and  vps.ID_VENTA_DOCUMENTO in (select ID_VENTA_DOCUMENTO  from VENTA_DOCUMENTO".$sufijo_sucursal." vds where ANULADO='0' and ID_TURNO = '$id_turno');";
+	$CI =& get_instance();
+	$DB2 = $CI->load->database($bd, TRUE);
+	$respuesta = $DB2->query($sql);
+	$respuesta = $respuesta->result();
+	if(count($respuesta)==1){
+		$res = $respuesta[0]->TOTAL;
+	}
+	return $res;
+}
+}
+
+if(!function_exists('getTotalCupon')) {
+function getTotalCupon($bd, $sufijo_sucursal, $id_turno){
+	$res=0;
+	$sql = "select CASE WHEN (SUM(monto)) IS NULL THEN 0 ELSE (SUM(monto)) END as TOTAL from VENTA_PAGO".$sufijo_sucursal." vps where DESCRIPCION_PAGO like '%CUPON%' and  vps.ID_VENTA_DOCUMENTO in (select ID_VENTA_DOCUMENTO  from VENTA_DOCUMENTO".$sufijo_sucursal." vds where ANULADO='0' and ID_TURNO = '$id_turno');";
+	$CI =& get_instance();
+	$DB2 = $CI->load->database($bd, TRUE);
+	$respuesta = $DB2->query($sql);
+	$respuesta = $respuesta->result();
+	if(count($respuesta)==1){
+		$res = $respuesta[0]->TOTAL;
+	}
+	return $res;
+}
+}
+
+if(!function_exists('getTotalTurnoNoEfectivo')) {
+function getTotalTurnoNoEfectivo($bd, $sufijo_sucursal, $id_turno){
+	$res=0;
+	$sql = "select CASE WHEN (SUM(monto)) IS NULL THEN 0 ELSE (SUM(monto)) END as TOTAL from VENTA_PAGO".$sufijo_sucursal." vps where DESCRIPCION_PAGO !='EFECTIVO' and  vps.ID_VENTA_DOCUMENTO in (select ID_VENTA_DOCUMENTO  from VENTA_DOCUMENTO".$sufijo_sucursal." vds where ANULADO='0' and ID_TURNO = '$id_turno');";
+	$CI =& get_instance();
+	$DB2 = $CI->load->database($bd, TRUE);
+	$respuesta = $DB2->query($sql);
+	$respuesta = $respuesta->result();
+	if(count($respuesta)==1){
+		$res = $respuesta[0]->TOTAL;
+	}
+	
+	return $res;
+}
+}
 
 
   
