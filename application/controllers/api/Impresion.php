@@ -721,6 +721,11 @@
             $ress=$this->enviarmail->enviarCorreoAnulado($nroFactura,$nombreEmpresa,$telefono_emisor,$correo_info,$direccion_info,$ciudad,$pagina_web,$email_cliente,$correoEmpresa,$rutaXml,$rutaPdf,$codigoCuf);
          }
 
+
+         function imprimirDetalleTurno(){
+            $data = null;
+            $this->load->view('impresion/detalle_turno', $data, FALSE);
+         }
         
     
     }

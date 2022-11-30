@@ -172,6 +172,19 @@ if(!function_exists('getTokenApi')) {
 }
 
 
+if(!function_exists('searchUsuario')) {
+	function searchUsuario($array,$id){
+		$res='';
+		foreach ($array as $key => $value) {
+			if($id == ($value->ID_USUARIO) ){
+				$res = $value->NOMBRE.' '.$value->AP_PATERNO.' '.$value->AP_MATERNO;
+				return $res;
+			}
+		}
+		return $res;
+	}
+}
+
 
   
 

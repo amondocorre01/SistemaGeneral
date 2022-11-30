@@ -117,10 +117,10 @@
                   <tbody>
                     <?php
                         foreach ($respuesta as $key => $value) {
-                            # code...
+                            $name_usuario = searchUsuario($usuarios, $value->ID_USUARIO);
                             echo '<tr>
-                            <td><a class="btn btn-primary btn-info btn-xs" turno="'.$value->ID_CIERRE_APERTURA_TURNO.'" data-toggle="modal" data-target="#modalVerDetalleTurno" onclick="abrirDetalleTurno(this)" title="Ver Detalle"><i class="las la-eye"></i></a></td>
-                            <td>'.$value->ID_USUARIO.'</td>
+                            <td><a class="btn btn-primary btn-info btn-xs" usuario="'.$name_usuario.'" turno="'.$value->ID_CIERRE_APERTURA_TURNO.'" data-toggle="modal" data-target="#modalVerDetalleTurno" onclick="abrirDetalleTurno(this)" title="Ver Detalle"><i class="las la-eye"></i></a></td>
+                            <td>'.$name_usuario.'</td>
                             <td>'.$value->FECHA.'</td>
                             <td>'.$value->HORA_APERTURA.'</td>
                             <td>'.$value->HORA_CIERRE.'</td>
@@ -149,8 +149,10 @@
                 <div class="box-body detalleTurno">
                 </div>
             </div>
+            
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+              <!--<button type="button" class="btn btn-primary"  onclick="imprimirDetalleTurno()">Imprimir</button>-->
             </div>
           </div>
           <!-- /.modal-content -->
@@ -161,12 +163,14 @@
 <script>
 
 function abrirDetalleTurno(element){
-    $('.detalleTurno').html("");
+    $('.detalleTurno').html("<center>Cargando datos...</center>");
     var turno = $(element).attr('turno');
+    var usuario = $(element).attr('usuario');
     //console.log('Hello world',turno);
     var datos = new FormData();
     datos.append("loadDetalleTurno",'1');
     datos.append("turno",turno);
+    datos.append("usuario",usuario);
     datos.append("bd","<?=$nombre_codigo_sucursal?>");
     datos.append("sufijo","<?=$sufix?>");
     datos.append("prefijo","<?=$prefix?>");
@@ -190,6 +194,18 @@ function abrirDetalleTurno(element){
             console.log(error.responseText);
         }
     });
+}
+
+function imprimirDetalleTurno(){
+  /*
+     var contenido=$('.detalleTurno').html();
+     var contenidoOriginal= document.body.innerHTML;
+     document.body.innerHTML = contenido;
+     window.print();
+     document.body.innerHTML = contenidoOriginal;
+     window.location.reload();*/
+  var url= "<?=site_url('imprimir-detalle-turno')?>";
+  window.open(url,'_blank');
 }
 
 </script>
