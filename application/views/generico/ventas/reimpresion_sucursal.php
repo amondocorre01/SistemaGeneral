@@ -151,10 +151,12 @@ columns: [
            // var pv2 = data.ID_CUIS;
            // var pv_current='';
            // if(pv==pv2){
+            if(data.NUMERO_FACTURADO != '0') {
                 button += '<div class="btn-group" role="group" aria-label="Basic example">';
                 button += '<button class="btn btn-primary btn-danger btn-md" iden="'+data.ID_VENTA_DOCUMENTO+'" onClick="onClickAnularFactura(this)" data-toggle="modal" data-target="#modalAnularFactura" title="Anular Factura">';
                     button +='<i class="las la-times"></i>';
                 button += '</button>';
+            }
             //}
         }
         
@@ -163,11 +165,12 @@ columns: [
                 button +='<i class="las la-copy"></i>';
             button += '</button>';
         }
-
-        if(io == true) {
-            button += '<button class="btn btn-primary btn-info btn-md" onclick="reimprimirFacturaCarta('+data.ID_VENTA_DOCUMENTO+')" title="Imprimir factura carta">';
-                button +='<i class="las la-check-circle"></i>';
-            button += '</button>';
+        if(data.NUMERO_FACTURADO != 0) {
+            if(io == true) {
+                button += '<button class="btn btn-primary btn-info btn-md" onclick="reimprimirFacturaCarta('+data.ID_VENTA_DOCUMENTO+')" title="Imprimir factura carta">';
+                    button +='<i class="las la-check-circle"></i>';
+                button += '</button>';
+            }
         }
 
         var oculta = btoa(data.DETALLE);
@@ -175,9 +178,11 @@ columns: [
         button += '<button class="btn btn-info btn-md palette-Red-600 bg" onclick="detalle(\''+data.ID_VENTA_DOCUMENTO+'\',\''+oculta+'\')" title="Ver Detalle">';
                 button +='<i class="las la-eye"></i>';
             button += '</button>';
-        button += '<a class="btn btn-info btn-sm btn-enlace-siat" target="_blank" href="'+data.URL_FACTURA+'" title="Ver Factura en el SIAT">';
-            button +='<i class="las la-eye"></i>';
-        button += '</a>';
+            if(data.NUMERO_FACTURADO != 0) {
+                button += '<a class="btn btn-info btn-sm btn-enlace-siat" target="_blank" href="'+data.URL_FACTURA+'" title="Ver Factura en el SIAT">';
+                    button +='<i class="las la-eye"></i>';
+                button += '</a>';
+            }
 
             if(data.MONTO_INGRESADO != null) {
             
@@ -202,9 +207,11 @@ columns: [
        else {
 
         button += '<label class="btn btn-info gender-label"><span>Anulado</span></label>';
-        button += '<a class="btn btn-info btn-sm btn-enlace-siat-an" target="_blank" href="'+data.URL_FACTURA+'" title="Ver Factura en el SIAT">';
-            button +='<i class="las la-eye"></i>';
-        button += '</a>';
+        if(data.NUMERO_FACTURADO != 0) {
+            button += '<a class="btn btn-info btn-sm btn-enlace-siat-an" target="_blank" href="'+data.URL_FACTURA+'" title="Ver Factura en el SIAT">';
+                button +='<i class="las la-eye"></i>';
+            button += '</a>';
+        }
 
        }
 

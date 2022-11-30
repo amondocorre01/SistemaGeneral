@@ -364,6 +364,9 @@
             }else{
                 $leyenda_on_off = $leyenda_offline;
             }
+            if($numero_factura == ''){
+                $numero_factura='0';
+            }
             $data['json']='{"datos_factura":{"ver_pdf_rollo":"'.$ver_pdf_rollo.'","descripcion_sucursal":"'.$descripcion_sucursal.'","razon_social_emisor":"'.$descripcion_sucursal.'","razon_social_emisor":"'.$razon_social_emisor.'","municipio_emisor":"'.$municipio_emisor.'","nit_emisor":"'.$nit_emisor.'","direccion_emisor":"'.$direccion_emisor.'","telefono_emisor":"'.$telefono_emisor.'","punto_venta":'.$punto_venta.',"id_producto":'.$id_producto.',"numero_factura":'.$numero_factura.',"numero_pedido":'.$numero_pedido.',"fecha_hora":"'.$fecha_hora.'","nombre_usuario":"'.$nombre_usuario.'","facturar_cliente_a":"'.$facturar_cliente_a.'","nombre_cliente":"'.$nombre_cliente.'","nit_cliente":"'.$nit_cliente.'","importe_total":'.$importe_total.',"subtotal":'.$subtotal.',"descuento":'.$descuento.',"total":'.$total.',"monto_gift_card":'.$monto_gift_card.',"monto_pagar":'.$monto_pagar.',"monto_sujeto_iva":'.$monto_sujeto_iva.',"descripcion_moneda":"'.$descripcion_moneda.'","tipo_cambio":"'.$tipo_cambio.'","literal":"'.$literal.'","fraccion":"'.$fraccion.'","llamar_por":"'.$llamar_por.'","fecha":"'.$fecha.'","leyenda":"'.$leyenda.'","datetime":"'.$dateTime.'","nit_emisor":"'.$nit_emisor.'","codigoCuf":"'.$codigoCuf.'","id_cliente":"'.$id_cliente.'","url_siat":"'.$urlSiat.'","leyenda_on_off":"'.$leyenda_on_off.'"},"detalle_productos":'.$listProductos.'}';
 
             $this->load->view('impresion/comanda', $data, FALSE);
@@ -473,6 +476,13 @@
             $direccion_emisor = $datos_factura->direccion_emisor;
             $telefono_emisor = $datos_factura->telefono_emisor;
             $codigo_sucursal = $datos_factura->codigo_sucursal;
+            $descripcion_sucursal = $datos_factura->descripcion_sucursal;
+            
+            if(isset($datos_factura->name_page_sucursal)){
+                $name_page_sucursal = $datos_factura->name_page_sucursal;
+            }else{
+                $name_page_sucursal = '';
+            }
 
             $correo_info = $datos_factura->correo_info;
             $direccion_info = $datos_factura->direccion_info;
@@ -536,9 +546,17 @@
             }else{
                 $leyenda_on_off = $leyenda_offline;
             }
-            $data['json']='{"datos_factura":{"ver_pdf_rollo":"'.$ver_pdf_rollo.'","codigo_sucursal":"'.$codigo_sucursal.'","razon_social_emisor":"'.$razon_social_emisor.'","municipio_emisor":"'.$municipio_emisor.'","nit_emisor":"'.$nit_emisor.'","direccion_emisor":"'.$direccion_emisor.'","telefono_emisor":"'.$telefono_emisor.'","punto_venta":'.$punto_venta.',"id_producto":'.$id_producto.',"numero_factura":'.$numero_factura.',"numero_pedido":'.$numero_pedido.',"fecha_hora":"'.$fecha_hora.'","nombre_usuario":"'.$nombre_usuario.'","facturar_cliente_a":"'.$facturar_cliente_a.'","nombre_cliente":"'.$nombre_cliente.'","nit_cliente":"'.$nit_cliente.'","importe_total":'.$importe_total.',"subtotal":'.$subtotal.',"descuento":'.$descuento.',"total":'.$total.',"monto_gift_card":'.$monto_gift_card.',"monto_pagar":'.$monto_pagar.',"monto_sujeto_iva":'.$monto_sujeto_iva.',"descripcion_moneda":"'.$descripcion_moneda.'","tipo_cambio":"'.$tipo_cambio.'","literal":"'.$literal.'","fraccion":"'.$fraccion.'","llamar_por":"'.$llamar_por.'","fecha":"'.$fecha.'","leyenda":"'.$leyenda.'","datetime":"'.$dateTime.'","nit_emisor":"'.$nit_emisor.'","codigoCuf":"'.$codigoCuf.'","id_cliente":"'.$id_cliente.'","url_siat":"'.$urlSiat.'","leyenda_on_off":"'.$leyenda_on_off.'"},"detalle_productos":'.$listProductos.'}';
+            if($numero_factura == ''){
+                $numero_factura = '0';
+            }
+            $data['json']='{"datos_factura":{"ver_pdf_rollo":"'.$ver_pdf_rollo.'","codigo_sucursal":"'.$codigo_sucursal.'","descripcion_sucursal":"'.$descripcion_sucursal.'","name_page_sucursal":"'.$name_page_sucursal.'","razon_social_emisor":"'.$razon_social_emisor.'","municipio_emisor":"'.$municipio_emisor.'","nit_emisor":"'.$nit_emisor.'","direccion_emisor":"'.$direccion_emisor.'","telefono_emisor":"'.$telefono_emisor.'","punto_venta":'.$punto_venta.',"id_producto":'.$id_producto.',"numero_factura":'.$numero_factura.',"numero_pedido":'.$numero_pedido.',"fecha_hora":"'.$fecha_hora.'","nombre_usuario":"'.$nombre_usuario.'","facturar_cliente_a":"'.$facturar_cliente_a.'","nombre_cliente":"'.$nombre_cliente.'","nit_cliente":"'.$nit_cliente.'","importe_total":'.$importe_total.',"subtotal":'.$subtotal.',"descuento":'.$descuento.',"total":'.$total.',"monto_gift_card":'.$monto_gift_card.',"monto_pagar":'.$monto_pagar.',"monto_sujeto_iva":'.$monto_sujeto_iva.',"descripcion_moneda":"'.$descripcion_moneda.'","tipo_cambio":"'.$tipo_cambio.'","literal":"'.$literal.'","fraccion":"'.$fraccion.'","llamar_por":"'.$llamar_por.'","fecha":"'.$fecha.'","leyenda":"'.$leyenda.'","datetime":"'.$dateTime.'","nit_emisor":"'.$nit_emisor.'","codigoCuf":"'.$codigoCuf.'","id_cliente":"'.$id_cliente.'","url_siat":"'.$urlSiat.'","leyenda_on_off":"'.$leyenda_on_off.'"},"detalle_productos":'.$listProductos.'}';
 
-            $this->load->view('impresion/termico', $data, FALSE);
+            if($numero_factura == '0'){
+                $this->load->view('impresion/recibo_rollo', $data, FALSE);
+            }else{
+                $this->load->view('impresion/termico', $data, FALSE);
+            }
+            
         }
 
         function imprimirFacturaAnuladaCarta($id_venta){
