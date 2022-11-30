@@ -1,6 +1,6 @@
 <br>
 <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-9">
         <div class="card card-danger">
             <div class="card-header">
             <h3 class="card-title"><i class="las la-user-cog"></i>PERFILES</h3>
@@ -46,7 +46,7 @@
         <div class="col-md-12">
             <div class="form-group" >
                 <?=form_label("Estado", 'estado');?>
-                <?=form_dropdown('estado', ['1'=>'HABILITADO', '0'=>'INHABILITADO'], null ,['id'=>'estado']);?>
+                <?=form_dropdown('estado', ['1'=>'HABILITADO', '0'=>'INHABILITADO'], null ,['id'=>'estado', 'class'=>'form-control']);?>
             </div>
         </div>
       </div>
@@ -92,10 +92,6 @@
 </div>
 
 <script>
-
-    $('#estado').select2({
-        placeholder: "Seleccione una opcion"
-    });
     
     var table = $('#table').DataTable({
         ajax: { url: '<?=site_url('get-perfiles')?>' },
@@ -106,9 +102,9 @@
         oPaginate: {sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },
         },
         columns: [
-            { title: 'N°', width:'10%',data: 'row' },
-            { title: 'Nombre de Perfil', width:'30%' ,data: 'PERFIL' },
-            { title: 'Estado', width:'15%' ,data: null, 
+            { title: 'N°', width:'15%',data: 'row' },
+            { title: 'Nombre de Perfil', width:'40%' ,data: 'PERFIL' },
+            { title: 'Estado', width:'20%' ,data: null, 
                 render: function (data, type, full, meta) { 
 
                     var body = '';

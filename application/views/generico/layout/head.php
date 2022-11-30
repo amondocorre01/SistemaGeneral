@@ -45,14 +45,22 @@
   <script src="<?=base_url('assets/dist/js/export-excel/FileSaver.min.js')?>"></script>
   <script src="<?=base_url('assets/dist/js/export-excel/tableexport.min.js')?>"></script>
 
-  <script src="<?=base_url('node_modules/jquery/dist/jquery.js')?>"></script>
-  <?=link_tag('node_modules/datatables/media/css/jquery.dataTables.css'); ?>
-  <?=link_tag('node_modules/datatables.net-responsive-bs/css/responsive.bootstrap.css'); ?>
-  <?=link_tag('node_modules/datatables.net-responsive-dt/css/responsive.dataTables.css'); ?>
+  <!-- DATA TABLES -->
   <script src="<?=base_url('node_modules/datatables.net/js/jquery.dataTables.js')?>"></script>
-  <script src="<?=base_url('node_modules/datatables.net-bs/js/dataTables.bootstrap.js')?>"></script>
+  <?=link_tag(base_url('node_modules/datatables.net-dt/css/jquery.dataTables.css'))?>
+  <?=link_tag('node_modules/datatables.net-responsive-dt/css/responsive.dataTables.css')?>
+  <script src="<?=base_url('node_modules/datatables.net/js/jquery.dataTables.js')?>"></script>
+  
   <script src="<?=base_url('node_modules/datatables.net-responsive/js/dataTables.responsive.js')?>"></script>
-	<script src="<?= base_url('node_modules/datatables.net-responsive-dt/js/responsive.dataTables.js') ?>"></script> 
+
+  <script src="<?=base_url('node_modules/datatables.net-responsive-dt/js/responsive.dataTables.js')?>"></script>
+
+  <script src="<?=base_url('node_modules/datatables.net-responsive/js/dataTables.responsive.js')?>"></script>
+	<script src="<?= base_url('node_modules/datatables.net-responsive-dt/js/responsive.dataTables.js') ?>"></script>
+
+  <script src="<?= base_url('node_modules/datatables.net-buttons/js/dataTables.buttons.js') ?>"></script>
+
+  <script src="<?= base_url('node_modules/datatables.net-buttons/js/buttons.html5.js') ?>"></script> 
 
   
  
