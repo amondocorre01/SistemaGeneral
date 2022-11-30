@@ -1,24 +1,20 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-		<!-- Content Header (Page header) -->
-		<!-- /.content-header -->
-		<!-- Main content -->
-		<section class="content">
-			<!--<a href="<?php echo base_url('assets/factura/print.php'); ?>" target="display-frame">Imprimir Factura</a>-->
-			
-			<div class="container-fluid">
+	<section class="content">			
+		<div class="container-fluid">
 			<div class="contenedor-responsivo">
-			<?php if ($this->session->flashdata('msg-success')): ?>
-										<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-										<?= $this->session->flashdata('msg-success') ?>
-										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-										</button>
-										</div>
-								<?php endif ?>
-			<?php
-				switch ($page) {
+				<?php if ($this->session->flashdata('msg-success')): ?>
+					<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+						<?=$this->session->flashdata('msg-success') ?>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+					</div>
+				<?php endif ?>
+
+				<?php
+					switch ($page) {
 					case 'menu_ventas':
 						$tipo_usuario = $this->session->userdata('tipo_usuario'); 
 						if($tipo_usuario != 'Global'){
@@ -480,8 +476,9 @@
 										break;
 
 										case 'permisos':
-																			$this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = SE.ID_EMPLEADO', 'left');
-																			$this->db->where('vu.ID_EMPLEADO !=', null);
+											$this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = SE.ID_EMPLEADO', 'left');
+											
+											$this->db->where('vu.ID_EMPLEADO !=', null);
 											$usuarios = $this->main->getListSelect('SIREPE_EMPLEADO se', 'vu.ID_USUARIO, NOMBRE_COMPLETO', ['NOMBRE_COMPLETO'=>'ASC']);
 
 											$datos['usuarios'] = $this->main->dropdown($usuarios, '');
@@ -531,12 +528,12 @@
 											echo $this->load->view('facturacion/eventos', $data, TRUE);
 										break;
 
-										case 'acceso-perfiles':
-											$this->db->where('vp.ESTADO', 1);
-											$perfiles = $this->main->getListSelect('VENTAS_PERFIL vp', 'vp.ID_VENTAS_PERFIL, PERFIL');
-											$datos['perfiles'] = $this->main->dropdown($perfiles, '');
-											echo $this->load->view('perfiles/acceso', $datos, TRUE);
-										break;
+	case 'acceso-perfiles':
+
+		$data['perfiles'] = $this->main->getListSelect('VENTAS_PERFIL', 'ID_VENTAS_PERFIL AS id, PERFIL AS text', ['ID_VENTAS_PERFIL'=>'ASC']);
+
+		echo $this->load->view('perfiles/acceso', $data, TRUE);
+	break;
 
 										case 'reset-pasword':
 											
