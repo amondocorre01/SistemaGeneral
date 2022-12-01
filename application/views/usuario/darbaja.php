@@ -90,21 +90,32 @@
                 <div class="col-md-4">
                     <div class="form-group" >
                         <?=form_label("Cargo", 'new_cargos');?>
-                        <?=form_dropdown('new_cargos', $cargos, null ,['id'=>'new_cargos']);?>
+
+                        <select name="new_cargos" id="new_cargos" class="form-control">
+                            <option value="">--- Seleccione una opcion ---</option>
+                            <?php foreach ($cargos as $cargo) : ?>
+                                <option value="<?=$cargo->ID?>"><?=$cargo->TEXT?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group" >
                         <?=form_label("Perfil", 'new_perfiles');?>
-                        <?=form_dropdown('new_perfiles', $perfiles, null ,['id'=>'new_perfiles']);?>
+                        <select name="new_perfiles" id="new_perfiles" class="form-control">
+                            <option value="">--- Seleccione una opcion ---</option>
+                            <?php foreach ($perfiles as $perfil) : ?>
+                                <option value="<?=$perfil->ID?>"><?=$perfil->TEXT?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group" >
                         <?=form_label("Género", 'new_genero');?>
-                        <?=form_dropdown('new_genero', [''=>'', 'F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'new_genero']);?>
+                        <?=form_dropdown('new_genero', [''=>'', 'F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'new_genero', 'class'=>'form-control']);?>
                     </div>
                 </div>
 
@@ -125,7 +136,12 @@
                 <div class="col-md-4">
                     <div class="form-group" >
                         <?=form_label("AFP", 'afp');?>
-                        <?=form_dropdown('afp', $afp, null,['id'=>'afp', 'class'=>'form-control']);?>
+                        <select name="afp" id="afp" class="form-control">
+                            <option value="">--- Seleccione una opcion ---</option>
+                            <?php foreach ($afp as $a) : ?>
+                                <option value="<?=$a->ID_AFP?>"><?=$a->NOMBRE_AFP?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
@@ -151,8 +167,13 @@
                 </div>
 
                 <div class="col-md-4">
-                    <?=form_label( 'Sucursal', 'sucursal'); ?> 
-                    <?=form_dropdown('sucursal', $sucursales, null, ['id'=>'new_sucursal', 'required'=>'required', 'data-user'=>'']); ?>
+                    <?=form_label( 'Sucursal', 'sucursal'); ?>
+                    <select name="sucursal" id="new_sucursal" class="form-control">
+                        <option value="">--- Seleccione una opcion ---</option>
+                        <?php foreach ($sucursales as $sucursal) : ?>
+                            <option value="<?=$sucursal->ID_UBICACION?>"><?=$sucursal->DESCRIPCION?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
         </div>
            
@@ -179,13 +200,18 @@
 
       <div class="row">
         <div class="col-12">
-            <?=form_label( 'Sucursal', 'sucursal'); ?> 
-            <?=form_dropdown('sucursal', $sucursales, null, ['id'=>'sucursal', 'required'=>'required', 'data-user'=>'']); ?>
+            <?=form_label( 'Sucursal', 'sucursal'); ?>
+            <select name="sucursal" id="sucursal" class="form-control" data-user="" class="form-control">
+                <option value="">--- Seleccione una opcion ---</option>
+                <?php foreach ($sucursales as $sucursal) : ?>
+                    <option value="<?=$sucursal->ID_UBICACION?>"><?=$sucursal->DESCRIPCION?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
         <div class="col-12">
             <?=form_label( 'Operacion', 'operacion'); ?> 
-            <?=form_dropdown('operacion', [''=>'', '1'=>'Asignar', '2'=>'Retirar'], null, ['id'=>'operacion', 'required'=>'required']); ?>
+            <?=form_dropdown('operacion', [''=>'', '1'=>'Asignar', '2'=>'Retirar'], null, ['id'=>'operacion', 'required'=>'required', 'class'=>'form-control']); ?>
         </div>
       </div>
            
@@ -274,14 +300,19 @@
         <div class="col-md-4">
             <div class="form-group" >
                 <?=form_label("Cargo", 'cargos');?>
-                <?=form_dropdown('cargos', $cargos, null ,['id'=>'cargos']);?>
+                <select name="cargos" id="cargos" class="form-control">
+                    <option value="">--- Seleccione una opcion ---</option>
+                    <?php foreach($cargos AS $cargo):?>
+                        <option value="<?=$cargo->ID?>"><?=$cargo->TEXT?></option>
+                    <?php endforeach;?>
+                </select>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="form-group" >
                 <?=form_label("Género", 'genero');?>
-                <?=form_dropdown('genero', [''=>'', 'F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'genero']);?>
+                <?=form_dropdown('genero', [''=>'', 'F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'genero', 'class'=>'form-control']);?>
             </div>
         </div>
 
@@ -309,7 +340,12 @@
         <div class="col-md-4">
             <div class="form-group" >
                 <?=form_label("AFP", 'afp');?>
-                <?=form_dropdown('afp', $afp, null,['id'=>'afp']);?>
+                <select name="afp" id="afp" class="form-control">
+                    <option value="">--- Selecione una opcion ---</option>
+                <?php foreach ($afp as $a) : ?>
+                    <option value="<?=$a->ID_AFP?>"><?=$a->NOMBRE_AFP?></option>
+                <?php endforeach; ?>
+                </select>
             </div>
         </div>
 
@@ -332,34 +368,7 @@
 
 <script>
 
-    $('#sucursal').select2({
-        placeholder: "Seleccione una opcion"
-    });
-
-    $('#operacion').select2({
-        placeholder: "Seleccione una opcion"
-    });
-
-    $('#cargos').select2({
-        placeholder: "Seleccione una opcion"
-    });
-
-    $('#new_cargos').select2({
-        placeholder: "Seleccione una opcion"
-    });
-
-    $('#new_perfiles').select2({
-        placeholder: "Seleccione una opcion"
-    });
-
-    $('#new_genero').select2({
-        placeholder: "Seleccione una opcion"
-    });
-
-    $('#new_sucursal').select2({
-        placeholder: "Seleccione una opcion"
-    });
-    
+       
     var table = $('#table').DataTable({
         ajax: { url: '<?=site_url('get-usuarios')?>' },
         language:{ search: "Buscar", lengthMenu: "Mostrar _MENU_", previous: "Anterior",

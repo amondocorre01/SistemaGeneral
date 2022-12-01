@@ -441,33 +441,29 @@
 											$this->load->view('usuario/acceso', $datos, FALSE);
 										break;
 
-										case 'accesibilidad':
-																$this->db->join('ID_UBICACION u', 'u.ID_UBICACION = vps.ID_UBICACION', 'left');
-																$this->db->where('ID_USUARIO', $this->session->id_usuario);
-											$sucursales =  $this->main->getListSelect('VENTAS_PERMISO_SUCURSAL vps', 'u.ID_UBICACION, u.DESCRIPCION', ['u.DESCRIPCION'=>'ASC'], ['vps.ESTADO'=>1, 'u.ESTADO'=>1 ]);
+	case 'accesibilidad':
+		$this->db->join('ID_UBICACION u', 'u.ID_UBICACION = vps.ID_UBICACION', 'left');
+		$this->db->where('ID_USUARIO', $this->session->id_usuario);
+		$datos['sucursales'] =  $this->main->getListSelect('VENTAS_PERMISO_SUCURSAL vps', 'u.ID_UBICACION, u.DESCRIPCION', ['u.DESCRIPCION'=>'ASC'], ['vps.ESTADO'=>1, 'u.ESTADO'=>1 ]);
 
-											$campos = "ID_CARGO AS ID, CONCAT_WS('-', AREA, NOMBRE_CARGO) AS TEXT";
+		$campos = "ID_CARGO AS ID, CONCAT_WS('-', AREA, NOMBRE_CARGO) AS TEXT";
+		$datos['cargos'] = $this->main->getListSelect('SIREPE_CARGOS', $campos, ['TEXT'=>'ASC']);
+											 
+		$campos_afp = "ID_AFP,	NOMBRE_AFP";
+		$datos['afp'] = $this->main->getListSelect('SIREPE_AFP', $campos_afp, ['ID_AFP'=>'ASC']);
+											
+		$campos_menu = "ID_VENTAS_ACCESO AS tt_key, NIVEL_SUPERIOR AS tt_parent, NOMBRE AS name";
 
-											$cargos = $this->main->getListSelect('SIREPE_CARGOS', $campos, ['TEXT'=>'ASC']);
-											$datos['cargos'] = $this->main->dropdown($cargos, '');
+		$this->db->where('ESTADO', 1);
+		$menu = $this->main->getListSelect('VENTAS_ACCESO', $campos_menu, ['tt_parent'=>'ASC']);
+											
+		$datos['menuMain']  = json_encode($menu);
 
-											$campos_afp = "ID_AFP,	NOMBRE_AFP";
-											$afp = $this->main->getListSelect('SIREPE_AFP', $campos_afp, ['ID_AFP'=>'ASC']);
-											$datos['afp'] = $this->main->dropdown($afp, '');
-
-											$datos['sucursales'] = $this->main->dropdown($sucursales, '');
-
-											$campos_menu = "ID_VENTAS_ACCESO AS tt_key, NIVEL_SUPERIOR AS tt_parent, NOMBRE AS name";
-
-											$this->db->where('ESTADO', 1);
-											$menu = $this->main->getListSelect('VENTAS_ACCESO', $campos_menu, ['tt_parent'=>'ASC']);
-											$datos['menuMain']  = json_encode($menu);
-
-											$perfiles = $this->main->getListSelect('VENTAS_PERFIL', 'ID_VENTAS_PERFIL, PERFIL', ['PERFIL'=>'ASC']);
-											$datos['perfiles'] = $this->main->dropdown($perfiles, '-- Seleccione una opcion --');
-
-											$this->load->view('usuario/darbaja', $datos, FALSE);
-										break;
+		$datos['perfiles'] = $this->main->getListSelect('VENTAS_PERFIL', 'ID_VENTAS_PERFIL, PERFIL', ['PERFIL'=>'ASC']);
+											 
+		$this->load->view('usuario/darbaja', $datos, FALSE);
+	
+	break;
 
 										case 'reimpresion-cine-center':
 											$datos['db'] = 'ventas'; 
