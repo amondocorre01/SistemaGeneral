@@ -171,6 +171,26 @@ if(!function_exists('getTokenApi')) {
 	}
 }
 
+if(!function_exists('getUsuariosSucursal')) {
+	function getUsuariosSucursal($id_ubicacion){
+		$CI =& get_instance();
+		$res = null;
+		$sql = "select ID_USUARIO , USUARIO ,TIPO_USUARIO ,CI,NOMBRE,AP_PATERNO,AP_MATERNO,CELULAR FROM VENTAS_USUARIOS vu, SIREPE_EMPLEADO se  WHERE se.ID_EMPLEADO = vu.ID_EMPLEADO and vu.TIPO_USUARIO = 'cajero' and vu.ID_USUARIO in (select distinct(ID_USUARIO) from VENTAS_PERMISO_SUCURSAL where ID_UBICACION='$id_ubicacion')";
+		$res = $CI->main->getQuery($sql);
+		return $res;
+	}
+}
+
+if(!function_exists('getUsuariosSucursalUsuario')) {
+	function getUsuariosSucursalUsuario($id_usuario, $id_ubicacion){
+		$CI =& get_instance();
+		$res = null;
+		$sql = "select ID_USUARIO , USUARIO ,TIPO_USUARIO ,CI,NOMBRE,AP_PATERNO,AP_MATERNO,CELULAR FROM VENTAS_USUARIOS vu, SIREPE_EMPLEADO se  WHERE se.ID_EMPLEADO = vu.ID_EMPLEADO and vu.TIPO_USUARIO = 'cajero' and vu.ID_USUARIO='$id_usuario' and vu.ID_USUARIO in (select distinct(ID_USUARIO) from VENTAS_PERMISO_SUCURSAL where ID_UBICACION='$id_ubicacion')";
+		$res = $CI->main->getQuery($sql);
+		return $res;
+	}
+}
+
 
 if(!function_exists('searchUsuario')) {
 	function searchUsuario($array,$id){

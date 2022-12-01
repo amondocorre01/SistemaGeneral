@@ -12,15 +12,25 @@
     $nombre_codigo_sucursal = $sucursal;
     $DB2 = $this->load->database($nombre_codigo_sucursal, TRUE);
     $datos_sucursal= getSucursal($nombre_codigo_sucursal);
+    $id_ubicacion = $datos_sucursal->ID_UBICACION;
     $prefijo = $datos_sucursal->PREFIJO;
     $sufijo = $datos_sucursal->SUFIJO;
     $cod_id_sucursal = $datos_sucursal->CODIGO_SUCURSAL;
     $name_impresora = IMPRESORA_LOCAL;
     $descripcion_sucursal = $datos_sucursal->DESCRIPCION;
     $this->session->set_userdata('ubicacion_seleccionada', $datos_sucursal);
-   
+
+    if($_SESSION['tipo_usuario'] == 'cajero'){
+      $id_usuario = $_SESSION['id_usuario'];
+      $usuarios_sucursal = getUsuariosSucursalUsuario($id_usuario, $id_ubicacion);
+    }else{
+      $usuarios_sucursal = getUsuariosSucursal($id_ubicacion);
+    }
+
     $usuarios = $this->session->userdata('usuarios');
     $usuarios_encode = json_encode($usuarios);
+
+    
     
     $fecha_inicial = $this->input->get('fecha_inicial');
     $fecha_final = $this->input->get('fecha_final');
@@ -74,7 +84,7 @@
                   <select name="usuario" class="form-control select2" style="width: 100%;">
                     <option value="" selected="selected">Seleccione el usuario</option>
                     <?php
-                        foreach ($usuarios as $key => $value) {
+                        foreach ($usuarios_sucursal as $key => $value) {
                             $usuario = $value->NOMBRE.' '.$value->AP_PATERNO.' '.$value->AP_MATERNO;
                             $sel='';
                             if($id_usuario_seleccionado){
