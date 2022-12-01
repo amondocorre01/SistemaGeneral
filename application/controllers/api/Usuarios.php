@@ -25,6 +25,10 @@
           
             
             $campos = "se.ID_EMPLEADO, ID_STATUS, CONCAT_WS(' ', NOMBRE, AP_PATERNO, AP_MATERNO) AS NOMBRE, CI, CELULAR, AREA, NOMBRE_CARGO, vu.ID_USUARIO, (SELECT DESCRIPCION FROM ID_UBICACION iu, VENTAS_PERMISO_SUCURSAL vps WHERE iu.ID_UBICACION = vps.ID_UBICACION AND vps.ID_USUARIO = vu.ID_USUARIO AND vps.ESTADO = 1 FOR JSON AUTO ) AS SUCURSALES";
+
+            
+
+
                         $this->db->join('SIREPE_CARGOS sc', 'sc.ID_CARGO = se.ID_CARGO', 'left');
                         $this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = se.ID_EMPLEADO', 'left');
                         $this->db->where('(SELECT ID_UBICACION FROM VENTAS_PERMISO_SUCURSAL vps 
