@@ -20,6 +20,7 @@
     }
 
     else {
+        $fecha='';
         $DB2->where('FECHA2 >=', date('Y-m-d').' 00:00:00');
         $DB2->where('FECHA2 <=', date('Y-m-d').' 23:59:59');
     }
@@ -56,7 +57,7 @@
         <div class="row">
             <div class="col-offset-3 col-md-3">
                 <form action="<?=current_url()?>" method="GET" id="form_fecha">
-                    <input name="fecha" type="date" class="form-control" id="fecha_inicial" onchange="send()">
+                    <input name="fecha" value="<?=$fecha?>" type="date" class="form-control" id="fecha_inicial" onchange="send()">
                     <input  name="vc" type="hidden" id="fecha" value="<?=$this->input->get('vc')?>">
                     <input  name="name_impresora" type="hidden" id="name_impresora" value="<?=$name_impresora?>">
                 </form>
