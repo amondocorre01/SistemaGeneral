@@ -197,10 +197,10 @@ class Main_Model extends CI_Model
 		}
 		foreach ($list as $item){
 			if($type){
-				$options[] = array('key'=>$item, 'value'=>end($item));
+				$options[] = array('key'=>$item->id, 'value'=>$item->text);
 			}
 			else{
-				$options[current($item)] = end($item);
+				$options[$item->id] = $item->text;
 			}
 		}
 		return $options;
