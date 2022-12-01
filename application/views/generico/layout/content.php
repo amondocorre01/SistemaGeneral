@@ -489,6 +489,8 @@
 											
 											$this->db->where('va.ESTADO', 1);
 											$this->db->where('va.TIPO', 'acceso');
+											$this->db->where('va.ACCESO_BOTON', 1);
+
 											$datos['menus'] = $this->main->getListSelect('VENTAS_ACCESO va', 'va.ID_VENTAS_ACCESO, NOMBRE', ['NOMBRE'=>'ASC']);
 
 											echo $this->load->view('usuario/boton', $datos, TRUE);
