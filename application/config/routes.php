@@ -183,82 +183,9 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
         $route['set-impresora'] = 'configuraciones/sucursal/impresora';
         $route['set-estado-boton'] = 'configuraciones/boton/estado';
         $route['set-estado-botones'] = 'configuraciones/boton/todos';
+        $route['get-acceso-botones'] = 'configuraciones/boton/sucursal';
+        $route['set-configuracion-boton'] = 'configuraciones/boton/save';
 
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     
-
-
-    /** AMERICA OESTE */
-    $route['get-americao'] = 'configuraciones/americao/index';
-    $route['nueva-americao'] = 'configuraciones/americao/nueva';
-    $route['act-dos-sao']  = 'configuraciones/americao/activar';
-    $route['comanda-americao'] = 'configuraciones/americao/comanda';
-    $route['set-message-americao'] = 'configuraciones/americao/message';
-
-
-    /** HUPERMALL */
-    $route['get-hupermall'] = 'configuraciones/hupermall/index';
-    $route['nueva-hupermall'] = 'configuraciones/hupermall/nueva';
-    $route['act-dos-sh']  = 'configuraciones/hupermall/activar';
-    $route['comanda-hupermall'] = 'configuraciones/hupermall/comanda';
-    $route['set-message-hupermall'] = 'configuraciones/hupermall/message';
-
-
-    /** AMERICA ESTE */
-    $route['get-americae'] = 'configuraciones/americae/index';
-    $route['nueva-americae'] = 'configuraciones/americae/nueva';
-    $route['act-dos-sae']  = 'configuraciones/americae/activar';
-    $route['comanda-americae'] = 'configuraciones/americae/comanda';
-    $route['set-message-americae'] = 'configuraciones/americae/message';
-
-
-    /** AMERICA ESTE */
-    $route['get-americae'] = 'configuraciones/americae/index';
-    $route['nueva-americae'] = 'configuraciones/americae/nueva';
-    $route['act-dos-sae']  = 'configuraciones/americae/activar';
-    $route['comanda-americae'] = 'configuraciones/americae/comanda';
-    $route['set-message-americae'] = 'configuraciones/americae/message';
-
-    
-    /** AMERICA ESTE */
-    $route['get-americae'] = 'configuraciones/americae/index';
-    $route['nueva-americae'] = 'configuraciones/americae/nueva';
-    $route['act-dos-sae']  = 'configuraciones/americae/activar';
-    $route['comanda-americae'] = 'configuraciones/americae/comanda';
-    $route['set-message-americae'] = 'configuraciones/americae/message';
-
-
-    /** AMERICA ESTE */
-    $route['get-americae'] = 'configuraciones/americae/index';
-    $route['nueva-americae'] = 'configuraciones/americae/nueva';
-    $route['act-dos-sae']  = 'configuraciones/americae/activar';
-    $route['comanda-americae'] = 'configuraciones/americae/comanda';
-    $route['set-message-americae'] = 'configuraciones/americae/message';
 
 
      $route['imprimir-comanda/(:any)'] = 'api/impresion/imprimirComanda/$1';

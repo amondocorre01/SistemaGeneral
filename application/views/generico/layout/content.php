@@ -496,6 +496,14 @@
 											echo $this->load->view('usuario/boton', $datos, TRUE);
 										break;
 
+	case 'permisos-boton-sucursal':
+		
+		$datos['sucursales'] = $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION AS ID, DESCRIPCION AS TEXT', ['ID_UBICACION' => 'ASC'], ['ESTADO' => 1]);
+
+		echo $this->load->view('configuraciones/sucursal/boton', $datos, TRUE);
+
+	break;
+
 										case 'perfiles':
 												$datos = null;
 												echo $this->load->view('perfiles/index', $datos, TRUE);
