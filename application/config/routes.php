@@ -97,6 +97,7 @@ $route['mis-clientes'] = 'api/cliente/search';
 /** IMPRESION O ANULACION */
 $route['motivos-anulacion'] = 'api/impresion/motivos';
 $route['anular-factura'] = 'api/impresion/anular';
+$route['anular-recibo'] = 'api/impresion/anularRecibo';
 $route['copia-factura'] = 'api/impresion/copia';
 $route['original-factura'] = 'api/impresion/copia';
 $route['imprimir-factura/(:any)'] = 'api/impresion/factura/$1';

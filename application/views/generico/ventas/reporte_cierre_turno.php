@@ -23,8 +23,10 @@
     if($_SESSION['tipo_usuario'] == 'cajero'){
       $id_usuario = $_SESSION['id_usuario'];
       $usuarios_sucursal = getUsuariosSucursalUsuario($id_usuario, $id_ubicacion);
+      $id_usuario_seleccionado = $id_usuario;
     }else{
       $usuarios_sucursal = getUsuariosSucursal($id_ubicacion);
+      $id_usuario_seleccionado = $this->input->get('usuario');
     }
 
     $usuarios = $this->session->userdata('usuarios');
@@ -34,7 +36,7 @@
     
     $fecha_inicial = $this->input->get('fecha_inicial');
     $fecha_final = $this->input->get('fecha_final');
-    $id_usuario_seleccionado = $this->input->get('usuario');
+    //$id_usuario_seleccionado = $this->input->get('usuario');
     if(!$fecha_inicial){
         $fecha_inicial = date('Y-m-d');
         $fecha_final = date('Y-m-d');

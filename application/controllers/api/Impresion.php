@@ -17,6 +17,20 @@
             echo json_encode($respuesta);
         }
 
+        public function anularRecibo(){
+            $id = $this->input->post('id_venta_documento');
+            $cod_id_sucursal = $this->input->post('cod_id_sucursal');
+            $nombre_codigo_sucursal = $this->input->post('nombre_codigo_sucursal');
+            $prefijo_sucursal = $this->input->post('prefijo_sucursal');
+            $sufijo_sucursal = $this->input->post('sufijo_sucursal');
+
+            $DB2 = $this->load->database($nombre_codigo_sucursal, TRUE);
+            $DB2->where('ID_VENTA_DOCUMENTO', $id);
+            $DB2->update('VENTA_DOCUMENTO'.$sufijo_sucursal , ['ANULADO'=>1]);
+            $this->session->set_flashdata('anulado', 'SI');
+            echo json_encode('anulado');
+        }
+
         public function anular(){
             $db = $this->input->post('db');
             $cod_id_sucursal = $this->input->post('cod_id_sucursal');

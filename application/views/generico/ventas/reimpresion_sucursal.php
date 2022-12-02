@@ -157,6 +157,11 @@ columns: [
                 button += '<button class="btn btn-primary btn-danger btn-md" iden="'+data.ID_VENTA_DOCUMENTO+'" onClick="onClickAnularFactura(this)" data-toggle="modal" data-target="#modalAnularFactura" title="Anular Factura">';
                     button +='<i class="las la-times"></i>';
                 button += '</button>';
+            }else{
+                button += '<div class="btn-group" role="group" aria-label="Basic example">';
+                button += '<button class="btn btn-primary btn-warning btn-md" iden="'+data.ID_VENTA_DOCUMENTO+'" onClick="onClickAnularRecibo(this)" title="Anular Recibo">';
+                    button +='<i class="las la-times"></i>';
+                button += '</button>';
             }
             //}
         }
@@ -242,6 +247,56 @@ function onClickAnularFactura(element){
     var iden = $(element).attr("iden");
     $('.btnSaveAnularFactura').attr("iden",iden);
     cargarMotivosAnulacion();
+}
+function onClickAnularRecibo(element){
+    var iden = $(element).attr("iden");
+    swal.fire({
+        title: "¿Estás seguro?",
+        text: "Estás por anular un recibo, este no se podrá recuperar más adelante.",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Continuar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var datos = new FormData();
+            datos.append("saveAnulacionRecibo",'1');
+            datos.append("id_venta_documento",iden);
+            datos.append("cod_id_sucursal","<?=$cod_id_sucursal?>");
+            datos.append("nombre_codigo_sucursal","<?=$nombre_codigo_sucursal?>");
+            datos.append("prefijo_sucursal","<?=$prefix?>");
+            datos.append("sufijo_sucursal","<?=$sufix?>");
+
+            $.ajax({
+                url: "<?=site_url('anular-recibo')?>",
+                method: "POST",
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success:function(respuesta){
+                    if(respuesta == 'anulado'){
+                        swal.fire({
+                            title: "Anulado",
+                            text: "Anulaste un recibo.",
+                        });
+                        location.reload();
+                    }else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hubo un error , No se ha anulado.',
+                            timer: 3500
+                        });
+                    }
+                },
+                error: function (error){
+                    console.log(error.responseText);
+                }
+            });
+            //Swal.fire('Saved!', '', 'success')
+        }
+    });
 }
 function cargarMotivosAnulacion(){
     $(".motivoAnulacion").empty();
@@ -405,7 +460,7 @@ function guardarAnularFactura(element){
             {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Se ha anulado la factura correctamente',
+                    title: 'Se ha anulado correctamente',
                     timer: 3500
                 });
             }
