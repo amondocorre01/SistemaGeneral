@@ -112,14 +112,13 @@
             $date= date('Y-m-d');
             $sql = "select * from VENTAS_F03_CUFD".$sufijo_sucursal." where ID_VENTAS_F01_CUIS='$id_cuis' and ESTADO = '1' and fecha='$date';";
             $DB2 = $this->load->database($nombre_codigo_sucursal, TRUE);
-            
             try {
-                if($respuesta = $DB2->query($sql)){
+                $respuesta = $DB2->query($sql);
+                if($respuesta->result()){
                     $respuesta = $respuesta->result();
                     $respuesta = $respuesta[0];
-                    return $respuesta;
-                }    
-
+                    return $respuesta; 
+                }
             } catch (\Throwable $th) {
                 return false;
             }
