@@ -331,6 +331,17 @@ function getTotalTurnoNoEfectivo($bd, $sufijo_sucursal, $id_turno){
 }
 }
 
+if(!function_exists('getUltimoCUFDBD')) {
+	function getUltimoCUFDBD($bd, $sufijo_sucursal, $id) {
+		$CI =& get_instance();
+		$DB2 = $CI->load->database($bd, TRUE);
+		$sql = "select * from VENTAS_F03_CUFD".$sufijo_sucursal." where ID_VENTAS_F01_CUIS='$id' and ESTADO = 1 order by ID_VENTAS_F03_CUF desc;";
+		$respuesta = $DB2->query($sql);
+		$respuesta = $respuesta->result();
+		return $respuesta[0];
+	}
+}
+
 
   
 

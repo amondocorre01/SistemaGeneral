@@ -48,7 +48,14 @@
             
             $fecha = date('Y-m-d');
             $cufd_actual = $this->getCufdActualSucursal($nombre_codigo_sucursal,$prefijo_sucursal,$sufijo_sucursal,$id_cuis);
-            
+            if(!$cufd_actual){
+                $cufd_actual= getUltimoCUFDBD($nombre_codigo_sucursal,$sufijo_sucursal,$id_cuis);
+                if(!isset($cufd_actual->CODIGO_CUFD)){
+                    $this->session->set_flashdata('msg', 'Ocurrio un error, CUFD no encontrado');
+                    echo json_encode('error no se encontro CUFD');
+                    exit();
+                }
+            }
             $codigoAmbiente = $cuis_actual->CODIGO_AMBIENTE;
             $codigoSistema = $cuis_actual->CODIGO_SISTEMA;
             $codigoSucursal = $cuis_actual->CODIGO_SUCURSAL;
@@ -105,9 +112,17 @@
             $date= date('Y-m-d');
             $sql = "select * from VENTAS_F03_CUFD".$sufijo_sucursal." where ID_VENTAS_F01_CUIS='$id_cuis' and ESTADO = '1' and fecha='$date';";
             $DB2 = $this->load->database($nombre_codigo_sucursal, TRUE);
-            $respuesta = $DB2->query($sql);
-            $respuesta = $respuesta->result();
-            return $respuesta[0];
+            
+            try {
+                if($respuesta = $DB2->query($sql)){
+                    $respuesta = $respuesta->result();
+                    $respuesta = $respuesta[0];
+                    return $respuesta;
+                }    
+
+            } catch (\Throwable $th) {
+                return false;
+            }
         }
 
         function getFactura($id,$codigo_sucursal,$prefijo_sucursal,$sufijo_sucursal){
