@@ -120,6 +120,8 @@ $route['nuevo-usuario'] = 'usuario/save';
 /** API USUARIOS */
 $route['get-usuarios'] = 'api/usuarios';
 $route['get-usuario'] = 'api/usuarios/acceso';
+$route['get-usuario-venta'] = 'api/usuarios/acceso_ventas';
+
 $route['dar-baja'] = 'api/usuarios/baja';
 $route['dar-alta'] = 'api/usuarios/alta';
 $route['set-ubicacion'] = 'api/usuarios/ubicacion';
@@ -204,6 +206,9 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
 
 
     $route['reset-password'] = 'api/usuarios/reset';
+
+
+    $route['update-permiso'] = 'api/usuarios/permiso';
 
 
 

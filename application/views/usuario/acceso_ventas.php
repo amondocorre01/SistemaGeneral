@@ -3,7 +3,7 @@
     <div class="col-md-12">
         <div class="card card-danger">
             <div class="card-header">
-            <h3 class="card-title"><i class="las la-user-plus"></i> Acceso de Usuarios - Sistema General</h3>
+            <h3 class="card-title"><i class="las la-user-plus"></i> Acceso de Usuarios - Sistema de Ventas</h3>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -44,7 +44,7 @@
 
         $.ajax({
             type: "POST",
-            url: "<?=site_url('get-usuario')?>",
+            url: "<?=site_url('get-usuario-venta')?>",
             data: { id: id},
             dataType: "html",
             success: function (response) {
@@ -63,7 +63,7 @@ $('#usuario').on('change', function(){
 
     $.ajax({
         type: "POST",
-        url: "<?=site_url('get-usuario')?>",
+        url: "<?=site_url('get-usuario-venta')?>",
         data: { id: id},
         dataType: "html",
         success: function (response) {
