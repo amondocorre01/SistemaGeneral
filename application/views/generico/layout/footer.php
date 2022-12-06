@@ -64,7 +64,7 @@
     
   <?php 
   $this->session->unset_userdata('datatable');
-  endif; ?>
+  endif; 
 ?>
 
 <!-- Sparkline -->

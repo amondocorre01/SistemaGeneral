@@ -430,14 +430,17 @@
 											$data['sucursales'] = $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION, CODIGO, DESCRIPCION, MENSAJE_FACTURA, MENSAJE_RECIBO,MENSAJE_COMANDA, IMPRESORA', ['ID_UBICACION'=>'ASC']);
 											echo $this->load->view('configuraciones/sucursal', $data, TRUE);
 										break;
-										
+										case 'CONF-PRODUCTS':
+											$datos['primeraCategoria'] = getPrimeraCategoria();
+											//$datos['segundaCategoria'] = getSegundaCategoria();
+											//$datos['productoMadre'] = getProductoMadre();
+											$this->load->view('configuraciones/productos/productos', $datos, FALSE);
+										break;
 case 'acceso-usuarios-sistema-general':
 	
 	$this->db->join('SIREPE_EMPLEADO se', 'se.ID_EMPLEADO = vu.ID_EMPLEADO', 'left');
 	$this->db->where('se.ID_STATUS', 1);
 	$datos['usuarios'] = $this->main->getListSelect('VENTAS_USUARIOS vu', 'vu.ID_USUARIO, se.NOMBRE_COMPLETO');
-	
-
 	$this->load->view('usuario/acceso', $datos, FALSE);
 break;
 
