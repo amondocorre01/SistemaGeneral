@@ -255,15 +255,15 @@
          public function acceso() {
 
             $id = $this->input->post('id');
-           
+    
                             $this->db->where('NIVEL_SUPERIOR', 0);
+                            $this->db->where('SISTEMA_GENERAL', 1);
+
             $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
-                SELECT ID_VENTAS_ACCESO 
+                SELECT ESTADO 
                 FROM VENTAS_USUARIOS_ACCESO vua 
                 WHERE vua.ID_USUARIO = '.$id.' AND 
-                vua.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO
-            ) AS ACCEDE');
-
+                vua.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO) AS ACCEDE'); 
             $data['id'] = $id;
 
             echo $this->load->view('usuario/body/permisos', $data, TRUE);
@@ -277,6 +277,28 @@
             $this->main->update('VENTAS_USUARIOS', ['CONTRASEÑA'=>'436170726573736F']);
         
             echo json_encode(['result'=>true]);
+        }
+
+
+        public function permiso() {
+        
+            $id = $this->input->post('id');
+            $usuario = $this->input->post('usuario');
+            $estado = $this->input->post('estado');
+
+
+            // Existe?
+            
+            $accede = $this->main->get('VENTAS_USUARIOS_ACCESO', ['ID_VENTAS_ACCESO'=>$id, 'ID_USUARIO'=>$usuario]);
+
+            if(!$accede) {
+                $this->main->insert('VENTAS_USUARIOS_ACCESO', ['ID_USUARIO'=>$usuario, 'ID_VENTAS_ACCESO'=>$id,	'ESTADO'=>$estado]);
+            }
+
+            else {
+                $this->main->update('VENTAS_USUARIOS_ACCESO', ['ESTADO'=>$estado], ['ID_VENTAS_USUARIO_ACCESO'=>$accede->ID_VENTAS_USUARIO_ACCESO]);
+            }
+        
         }
     
     }

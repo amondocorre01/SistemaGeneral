@@ -431,15 +431,25 @@
 											echo $this->load->view('configuraciones/sucursal', $data, TRUE);
 										break;
 										
-										case 'acceso-usuarios':
-											
-											$this->db->join('SIREPE_EMPLEADO se', 'se.ID_EMPLEADO = vu.ID_EMPLEADO', 'left');
-											$this->db->where('se.ID_STATUS', 1);
-											$datos['usuarios'] = $this->main->getListSelect('VENTAS_USUARIOS vu', 'vu.ID_USUARIO, se.NOMBRE_COMPLETO');
-											
+case 'acceso-usuarios-sistema-general':
+	
+	$this->db->join('SIREPE_EMPLEADO se', 'se.ID_EMPLEADO = vu.ID_EMPLEADO', 'left');
+	$this->db->where('se.ID_STATUS', 1);
+	$datos['usuarios'] = $this->main->getListSelect('VENTAS_USUARIOS vu', 'vu.ID_USUARIO, se.NOMBRE_COMPLETO');
+	
 
-											$this->load->view('usuario/acceso', $datos, FALSE);
-										break;
+	$this->load->view('usuario/acceso', $datos, FALSE);
+break;
+
+case 'acceso-usuarios-sistema-ventas':
+	
+	$this->db->join('SIREPE_EMPLEADO se', 'se.ID_EMPLEADO = vu.ID_EMPLEADO', 'left');
+	$this->db->where('se.ID_STATUS', 1);
+	$datos['usuarios'] = $this->main->getListSelect('VENTAS_USUARIOS vu', 'vu.ID_USUARIO, se.NOMBRE_COMPLETO');
+	
+
+	$this->load->view('usuario/acceso_ventas', $datos, FALSE);
+break;
 
 	case 'accesibilidad':
 		$this->db->join('ID_UBICACION u', 'u.ID_UBICACION = vps.ID_UBICACION', 'left');
@@ -459,7 +469,7 @@
 											
 		$datos['menuMain']  = json_encode($menu);
 
-		$datos['perfiles'] = $this->main->getListSelect('VENTAS_PERFIL', 'ID_VENTAS_PERFIL, PERFIL', ['PERFIL'=>'ASC']);
+		$datos['perfiles'] = $this->main->getListSelect('VENTAS_PERFIL', 'ID_VENTAS_PERFIL AS ID, PERFIL AS TEXT', ['PERFIL'=>'ASC']);
 											 
 		$this->load->view('usuario/darbaja', $datos, FALSE);
 	

@@ -44,8 +44,7 @@
 						$registro['ID_CREADOR'] = $this->session->id_usuario;
 						$registro['FECHA_CREADO'] = date('Y-m-d H:i:s');
 						$registro['EDITABLE'] = 1;
-						$registro['STATUS'] = 1;
-
+						$registro['ID_STATUS'] = 1;
 
 							$this->db->insert('SIREPE_EMPLEADO', $registro);
 							$id = $this->db->insert_id();
@@ -92,7 +91,7 @@
 								array_push($autorizado, $temp);
 							}
 
-							$this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $autorizado);
+							//$this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $autorizado);
 
 							if($this->db->affected_rows()) {
 								$response['status'] = true;
