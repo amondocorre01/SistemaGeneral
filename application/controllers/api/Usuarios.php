@@ -269,6 +269,25 @@
             echo $this->load->view('usuario/body/permisos', $data, TRUE);
         }
 
+
+        public function acceso_ventas() {
+
+            $id = $this->input->post('id');
+    
+                            $this->db->where('NIVEL_SUPERIOR', 0);
+                            $this->db->where('SISTEMA_VENTAS', 1);
+
+            $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
+                SELECT ESTADO 
+                FROM VENTAS_USUARIOS_ACCESO vua 
+                WHERE vua.ID_USUARIO = '.$id.' AND 
+                vua.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO) AS ACCEDE'); 
+            $data['id'] = $id;
+
+            echo $this->load->view('usuario/body/permisos', $data, TRUE);
+        }
+
+
         public function reset() {
 
             $id = $this->input->post('id');
