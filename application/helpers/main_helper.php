@@ -342,6 +342,32 @@ if(!function_exists('getUltimoCUFDBD')) {
 	}
 }
 
+if(!function_exists('getPrimeraCategoria')) {
+	function getPrimeraCategoria(){
+		$CI =& get_instance();
+		$sql = "select * from VENTAS_CATEGORIA_1; ";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta;
+	}
+}
+
+if(!function_exists('getSegundaCategoria')) {
+	function getSegundaCategoria($id){
+		$CI =& get_instance();
+		$sql = "select * from VENTAS_CATEGORIA_2 where ID_CATEGORIA='$id'; ";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta;
+	}
+}
+if(!function_exists('getProductoMadre')) {
+	function getProductoMadre($id){
+		$CI =& get_instance();
+		$sql = "select * from VENTAS_PRODUCTO_MADRE where ID_CATEGORIA_2='$id'; ";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta;
+	}
+}
+
 
   
 

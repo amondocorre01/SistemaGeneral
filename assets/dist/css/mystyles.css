@@ -377,4 +377,8 @@ i {
    padding: 0.15rem !important;
  }
 
+ .btnShowProducts{
+   cursor:pointer;
+ }
+
 

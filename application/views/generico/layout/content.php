@@ -440,6 +440,12 @@
 
 											$this->load->view('usuario/acceso', $datos, FALSE);
 										break;
+										case 'CONF-PRODUCTS':
+											$datos['primeraCategoria'] = getPrimeraCategoria();
+											//$datos['segundaCategoria'] = getSegundaCategoria();
+											//$datos['productoMadre'] = getProductoMadre();
+											$this->load->view('configuraciones/productos/productos', $datos, FALSE);
+										break;
 
 	case 'accesibilidad':
 		$this->db->join('ID_UBICACION u', 'u.ID_UBICACION = vps.ID_UBICACION', 'left');

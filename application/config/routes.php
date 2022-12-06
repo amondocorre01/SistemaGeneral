@@ -187,6 +187,12 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
         $route['get-acceso-botones'] = 'configuraciones/boton/sucursal';
         $route['set-configuracion-boton'] = 'configuraciones/boton/save';
 
+    /** PRODUCTOS */
+    $route['productos-segunda-categoria'] = 'configuraciones/producto/productos_segunda_categoria';
+    $route['productos-madre'] = 'configuraciones/producto/productos_madre';
+    $route['guardar-primera-categoria'] = 'configuraciones/producto/guardar_primera_categoria';
+    $route['guardar-segunda-categoria'] = 'configuraciones/producto/guardar_segunda_categoria';
+    
 
 
      $route['imprimir-comanda/(:any)'] = 'api/impresion/imprimirComanda/$1';

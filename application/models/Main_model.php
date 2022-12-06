@@ -236,5 +236,13 @@ class Main_Model extends CI_Model
 			return false;
 		}
 		return $res;
-  	}  
+  	}
+	
+	  function executeQuery($query) {          
+		if($this->db->query($query)){
+			return 'ok';
+		}else{
+			return 'error';
+		}
+  	} 
 }
