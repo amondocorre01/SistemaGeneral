@@ -205,6 +205,9 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['update-permiso'] = 'api/usuarios/permiso';
 
 
+    $route['change-password'] = 'api/venta/changePassword';
+
+
 
    
 

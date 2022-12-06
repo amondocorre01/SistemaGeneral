@@ -278,7 +278,7 @@
                             $this->db->where('SISTEMA_VENTAS', 1);
 
             $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
-                SELECT ESTADO 
+                SELECT DISTINCT ESTADO 
                 FROM VENTAS_USUARIOS_ACCESO vua 
                 WHERE vua.ID_USUARIO = '.$id.' AND 
                 vua.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO) AS ACCEDE'); 
