@@ -1,4 +1,3 @@
-<!-- BOOTSTRAP SWITCH-->
 <?=link_tag('node_modules/bootstrap4-toggle/css/bootstrap4-toggle.min.css')?>
   <script src="<?=base_url('node_modules/bootstrap4-toggle/js/bootstrap4-toggle.min.js')?>"></script>
 
@@ -6,16 +5,21 @@
     <div class="row palette-Red-200 bg">
       <div class="col-9"><p class="lead" style="font-weight: 500;"><?=$value->NOMBRE?></p></div>
       <div class="col-3"> 
-      <input name="escogidos[]" value="<?=$value->ID_VENTAS_ACCESO?>" type="checkbox" <?=($value->ACCEDE)? 'checked': '' ?>  data-toggle="toggle" data-onstyle="danger" data-offstyle="secondary" data-size="xs" data-on="SI" data-off="NO">
+
+      <select class="form-control level1" id="nivel<?=$value->ID_VENTAS_ACCESO?>" onchange="activar(<?=$value->ID_VENTAS_ACCESO?>)" >
+        <option <?=($value->ACCEDE) ? 'selected' : '' ?> value="1"> ACTIVO </option>
+        <option <?=($value->ACCEDE == NULL) ? 'selected' : '' ?> value="0"> INACTIVO </option>
+      </select>
       </div>
     </div>
-     <?php  $this->db->where('NIVEL_SUPERIOR', $value->ID_VENTAS_ACCESO);
+     <?php  
+            $this->db->order_by('NUMERO_ORDEN', 'ASC');
+            $this->db->where('NIVEL_SUPERIOR', $value->ID_VENTAS_ACCESO);
             $hijos = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
-                SELECT ID_VENTAS_ACCESO 
-                FROM VENTAS_PERMISO_PERFIL vpp 
-                WHERE vpp.ID_VENTAS_PERFIL = '.$id.' AND 
-                vpp.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO
-            ) AS ACCEDE');
+              SELECT ESTADO FROM VENTAS_PERMISO_PERFIL vpp 
+              WHERE vpp.ID_VENTAS_PERFIL = '.$id.' AND 
+              vpp.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO
+          ) AS ACCEDE');
     ?>
     <div class="row">
         <div class="col-12">
@@ -24,16 +28,22 @@
                         <div class="col-1"></div>
                         <div class="col-8"><p class="lead" style="font-weight: 500;"><?=$hijo->NOMBRE?></p></div>
                         <div class="col-3"> 
-                            <input name="escogidos[]" value="<?=$hijo->ID_VENTAS_ACCESO?>" type="checkbox" <?=($hijo->ACCEDE)? 'checked': '' ?>  data-toggle="toggle" data-onstyle="danger" data-offstyle="secondary" data-size="xs" data-on="SI" data-off="NO">
+                            <select class="form-control level1" id="nivel<?=$hijo->ID_VENTAS_ACCESO?>" onchange="activar(<?=$hijo->ID_VENTAS_ACCESO?>)" >
+                                <option <?=($hijo->ACCEDE) ? 'selected' : '' ?> value="1"> ACTIVO </option>
+                                <option <?=($hijo->ACCEDE == NULL) ? 'selected' : '' ?> value="0"> INACTIVO </option>
+                            </select>
                         </div>
 
-                        <?php  $this->db->where('NIVEL_SUPERIOR', $hijo->ID_VENTAS_ACCESO);
+                        <?php  
+                               
+                                $this->db->order_by('NUMERO_ORDEN', 'ASC');
+                                $this->db->where('NIVEL_SUPERIOR', $hijo->ID_VENTAS_ACCESO);
                                 $nietos = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
-                                    SELECT ID_VENTAS_ACCESO 
-                                    FROM VENTAS_PERMISO_PERFIL vpp 
-                                    WHERE vpp.ID_VENTAS_PERFIL = '.$id.' AND 
-                                    vpp.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO
-                                ) AS ACCEDE');
+                                  SELECT ESTADO 
+                                  FROM VENTAS_PERMISO_PERFIL vpp 
+                                  WHERE vpp.ID_VENTAS_PERFIL = '.$id.' AND 
+                                  vpp.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO
+                              ) AS ACCEDE');
                         ?>
                         <?php if($nietos): ?>
                         <div class="row">
@@ -43,15 +53,21 @@
                                 </div>
                                 <div class="col-6"><p class="lead" style="font-weight: 500;"><?=$nieto->NOMBRE?></p></div>
                                 <div class="col-3"> 
-                                <input name="escogidos[]" value="<?=$nieto->ID_VENTAS_ACCESO?>" type="checkbox" <?=($nieto->ACCEDE)? 'checked': '' ?>  data-toggle="toggle" data-onstyle="danger" data-offstyle="secondary" data-size="xs" data-on="SI" data-off="NO">
+                                <select class="form-control" id="nivel<?=$nieto->ID_VENTAS_ACCESO?>" onchange="activar(<?=$nieto->ID_VENTAS_ACCESO?>)" >
+                                    <option <?=($nieto->ACCEDE) ? 'selected' : '' ?> value="1"> ACTIVO </option>
+                                    <option <?=($nieto->ACCEDE == NULL) ? 'selected' : '' ?> value="0"> INACTIVO </option>
+                                </select>
                                 </div>
-                                <?php  $this->db->where('NIVEL_SUPERIOR', $nieto->ID_VENTAS_ACCESO);
+                                <?php  
+                                    
+                                    $this->db->order_by('NUMERO_ORDEN', 'ASC');
+                                    $this->db->where('NIVEL_SUPERIOR', $nieto->ID_VENTAS_ACCESO);
                                         $bisnietos = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
-                                            SELECT ID_VENTAS_ACCESO 
-                                            FROM VENTAS_PERMISO_PERFIL vpp 
-                                            WHERE vpp.ID_VENTAS_PERFIL = '.$id.' AND 
-                                            vpp.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO
-                                        ) AS ACCEDE');
+                                          SELECT ESTADO 
+                                          FROM VENTAS_PERMISO_PERFIL vpp 
+                                          WHERE vpp.ID_VENTAS_PERFIL = '.$id.' AND 
+                                          vpp.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO
+                                      ) AS ACCEDE');
                                 ?>
                                 
 
@@ -65,7 +81,10 @@
 
                                         <div class="col-5"><p class="lead" style="font-weight: 500;"><?=$bisnieto->NOMBRE?></p></div>
                                         <div class="col-3"> 
-                                            <input name="escogidos[]" value="<?=$bisnieto->ID_VENTAS_ACCESO?>" type="checkbox" <?=($bisnieto->ACCEDE)? 'checked': '' ?>  data-toggle="toggle" data-onstyle="danger" data-offstyle="secondary" data-size="xs" data-on="SI" data-off="NO">
+                                            <select class="form-control" id="nivel<?=$bisnieto->ID_VENTAS_ACCESO?>" onchange="activar(<?=$bisnieto->ID_VENTAS_ACCESO?>)" >
+                                                <option <?=($bisnieto->ACCEDE) ? 'selected' : '' ?> value="1"> ACTIVO </option>
+                                                <option <?=($bisnieto->ACCEDE == NULL) ? 'selected' : '' ?> value="0"> INACTIVO </option>
+                                            </select>
                                         </div>
 
                                     </div>
@@ -79,3 +98,25 @@
         </div>
     </div>
 <?php endforeach;?>
+
+
+<script>
+    function activar(id) {
+
+        var estado = $('#nivel'+id).val();
+        var perfil = $('#perfil').val();
+
+        $.post("<?=site_url('update-permiso-perfil')?>", {estado:estado, perfil:perfil, id:id})
+        
+        .done(function( data ) {
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Se ha guardado el cambio solicitado',
+                timer: 3500
+            });
+
+        });
+
+    }
+</script>

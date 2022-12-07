@@ -204,14 +204,11 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['imprimir-factura-anulada-rollo/(:any)'] = 'api/impresion/imprimirFacturaAnuladaRollo/$1';
     $route['obtener-objeto-factura/(:any)'] = 'api/impresion/obtenerObjetoFactura/$1';
 
-
     $route['reset-password'] = 'api/usuarios/reset';
-
-
     $route['update-permiso'] = 'api/usuarios/permiso';
-
-
     $route['change-password'] = 'api/venta/changePassword';
+    $route['get-acceso-perfil'] = 'api/perfiles/acceso';
+    $route['update-permiso-perfil'] = 'api/perfiles/update';
 
 
 

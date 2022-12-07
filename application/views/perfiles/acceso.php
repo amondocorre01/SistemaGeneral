@@ -4,26 +4,32 @@
         <div class="card card-danger">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="las la-user-plus"></i> Acceso de Perfiles
+                    <i class="las la-users la-2x"></i> Acceso de Perfiles
                 </h3>
             </div>
             <div class="card-body">
 
                 <div class="row">
                     <div class="col-1">
-                       
+                    
                     </div>
 
                     <div class="col-3">
-                        <?=form_label("Perfiles", 'perfil');?>
+                    <?=form_label("Perfiles", 'perfil');?>
                         <select name="" id="perfil" class="form-control">
                             <?php foreach ($perfiles as  $perfil): ?>
                                 <option value="<?=$perfil->id?>"><?=$perfil->text?></option>
                             <?php endforeach;?>
                         </select>
+                    </div>
 
+                    <div class="col-2">
                         <?=form_button('send', 'Buscar accesos', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'getAcessos()']);?>
                     </div>
+                </div>
+
+                <div id="menu">
+                    
                 </div>
             </div>
         </div>
