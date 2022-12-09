@@ -129,7 +129,7 @@
                     <textarea class="form-control input-lg textarea-msg" rows="4" required name="mensaje" placeholder="Ingrese el mensaje (*)"><?php echo strip_tags('');?></textarea>
                 </div>
                 </div>
-            </div>
+                </div>
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

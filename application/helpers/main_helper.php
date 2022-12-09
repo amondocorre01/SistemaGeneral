@@ -299,6 +299,22 @@ function getTotalTurno($bd, $sufijo_sucursal, $id_turno, $filtro){
 	return $res;
 }
 }
+if(!function_exists('getTotalTurnoTransporte')) {
+function getTotalTurnoTransporte($bd, $sufijo_sucursal, $id_turno, $filtro){
+	$res=0;
+	$sql = "select CASE WHEN (SUM(VP.MONTO)+SUM(CAST(VD.PRECIO_TRANSPORTE AS float))) IS NULL THEN 0 ELSE (SUM(VP.MONTO)+SUM(CAST(VD.PRECIO_TRANSPORTE AS float))) END AS TOTAL
+	from VENTA_PAGO".$sufijo_sucursal." VP, VENTA_DOCUMENTO".$sufijo_sucursal." VD
+	WHERE DESCRIPCION_PAGO='$filtro' AND VD.ID_VENTA_DOCUMENTO=VP.ID_VENTA_DOCUMENTO AND VD.ANULADO=0 AND ID_TURNO = '$id_turno';";
+	$CI =& get_instance();
+	$DB2 = $CI->load->database($bd, TRUE);
+	$respuesta = $DB2->query($sql);
+	$respuesta = $respuesta->result();
+	if(count($respuesta)==1){
+		$res = $respuesta[0]->TOTAL;
+	}
+	return $res;
+}
+}
 
 if(!function_exists('getTotalCupon')) {
 function getTotalCupon($bd, $sufijo_sucursal, $id_turno){
@@ -368,6 +384,32 @@ if(!function_exists('getProductoMadre')) {
 	}
 }
 
+if(!function_exists('getTamProductos')) {
+	function getTamProductos(){
+		$CI =& get_instance();
+		$sql = "select * from VENTAS_TAMAÑO; ";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta;
+	}
+}
+
+if(!function_exists('getNombresListasPrecios')) {
+	function getNombresListasPrecios(){
+		$CI =& get_instance();
+		$sql = "select * from VENTAS_NOMBRE_LISTA_PRECIOS; ";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta;
+	}
+}
+
+if(!function_exists('getUnidadesMedida')) {
+	function getUnidadesMedida(){
+		$CI =& get_instance();
+		$sql = "select * from VENTAS_F02_SINCRONIZACION where ID_VENTAS_F02_CATALOGOS='18'; ";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta;
+	}
+}
 
   
 

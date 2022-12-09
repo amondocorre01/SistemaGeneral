@@ -432,6 +432,9 @@
 										break;
 										case 'CONF-PRODUCTS':
 											$datos['primeraCategoria'] = getPrimeraCategoria();
+											$datos['tamProductos'] = getTamProductos();
+											$datos['listasPrecios'] = getNombresListasPrecios();
+											$datos['unidadesMedida'] = getUnidadesMedida();
 											//$datos['segundaCategoria'] = getSegundaCategoria();
 											//$datos['productoMadre'] = getProductoMadre();
 											$this->load->view('configuraciones/productos/productos', $datos, FALSE);

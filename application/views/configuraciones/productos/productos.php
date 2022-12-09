@@ -72,27 +72,122 @@
         </div>
     </div>
 </div>
-<!--
+
 <div class="card">
   <div class="card-body">
-    <table id="example1" class="table table-bordered table-striped">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Producto</label>
+          <input type="text" class="form-control" name="producto" id="producto" placeholder="Nombre del producto">
+        </div>
+        <div class="form-group">
+        <label>Detalle del producto</label>
+              <textarea class="form-control input-sm " rows="2" name="detalle" placeholder="Ingrese el detalle."><?php echo strip_tags('');?></textarea>
+        </div>
+
+        
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Seleccione unidad de medida</label>
+          <select name="unidadMedida" id="unidadMedida" class="form-control select2" style="width: 100%;">
+            <option value="" selected="selected">Seleccione unidad de medida</option>
+            <?php
+            foreach ($unidadesMedida as $key => $value) {
+              echo '<option id="udMedida_'.$key.'" value="'.$value->CODIGO.'" >'.$value->DESCRIPCION.'</option>';
+            }
+            ?>
+          </select>
+        </div>
+        <br>
+        <div class="row">
+          <label class="col-sm-12 ">¿Incluirá transporte?</label>
+          <div class="form-group col-sm-4">
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="radio" name="tieneTransporte" id="transporteSi" value="1">
+              <label for="transporteSi" class="custom-control-label">SI</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="radio" name="tieneTransporte" id="transporteNo" value="0" checked>
+              <label for="transporteNo" class="custom-control-label">NO</label>
+            </div>
+          </div>
+          <div class="form-group col-md-8 inputPrecioTransporte">
+            <input type="number" class="form-control input-sm" name="precioTransporte" id="precioTransporte" placeholder="Precio">
+          </div>
+        </div>
+        
+
+        
+        
+        
+
+      </div>  
+      <div class="col-md-3">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label>Cod. Act. Económica</label>
+            <input type="text" class="form-control" name="actividadEconomica" id="actividadEconomica" placeholder="620100">
+          </div>
+          <div class="form-group col-md-6">
+            <label>Cod. Producto SIN</label>
+            <input type="text" class="form-control" name="productoSIN" id="productoSIN" placeholder="65200">
+          </div>
+        </div>
+            
+       
+
+        <div class="select2-purple">
+          <label>Seleccione tamaños del producto:</label>
+          <select class="select2" id="selectTam" name="selectTam" multiple="multiple" data-placeholder="Seleccione..." data-dropdown-css-class="select2-purple" style="width: 100%;">
+            <?php
+            foreach ($tamProductos as $key => $value) {
+              echo '<option id="costos_'.$key.'" value="'.$value->ID_TAMAÑO.'" >'.$value->TAMAÑO.'</option>';
+            }
+            ?>
+          </select>
+        </div>
+
+        
+        
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Subir Imagen del Producto:</label>
+          <input type="file" id="nuevaFoto" name="nuevaFoto">
+          <!--<p class="help-block"><br/>Peso máximo: 2 MB - Dimensiones : 200 x 200 o similar.</p>-->
+        </div>
+        <center>
+          <img src="<?=base_url('assets/dist/img/default-image.jpg')?>" class="img-thumbnail previsualizar" width="120px">
+        </center>
+      </div>
+    </div>
+    
+
+    <table id="tablaProductos" class="table table-bordered table-striped">
       <thead>
       <tr>
-        <th>Usuario</th>
+        <th class="text-center">Tamaño</th>
+        <th class="text-center">Frutas</th>
+        <?php
+          foreach ($listasPrecios as $key => $value) {
+            echo '<th class="text-center">'.$value->NOMBRE_LISTA_PRECIOS.'</th>';
+          }
+        ?>
+        <th class="text-center">Acciones</th>
       </tr>
       </thead>
       <tbody>
-        <?php
-        $respuesta=[];
-            foreach ($respuesta as $key => $turno) {
-                echo '<tr>
-                <td></td>
-                </tr>';
-            }
-        ?>
-      </tfoot>
+      </tbody>
+    </table>
+    <div> 
+      <center>
+        <button class="btn btn-primary">Guardar cambios</button>
+      </center>
+    </div>
   </div>
-</div>-->
+</div>
 
 <div class="modal fade" id="modalAgregarPrimeraCategoria">
   <div class="modal-dialog">
@@ -150,31 +245,67 @@
   </div>
 </div>
 
-<div class="modal fade" id="modalAgregarProductoMadre">
+<div class="modal fade" id="modalAgregarCostos">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Agregar producto madre</h4>
+        <h4 class="modal-title">Agregar frutas y precios</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
           <div class="box-body">
-          <div class="form-group">
-              <label>Primera categoria</label>
-              <input type="text" class="form-control" name="primeraCategoria" id="priCategoriaM3C" readonly placeholder="Ingrese la categoria">
+          
+          <input type="hidden" id="idTamProducto" class="form-control" placeholder="">
+          <div class="form-group row">
+                <label class="col-sm-6 col-form-label">Tamaño seleccionado:</label>
+                <div class="col-sm-6">
+                <input type="text" readonly id="textTamProducto" class="form-control" placeholder="">
+                </div>
+              </div>
+          <div class="form-group row">
+            <label class="col-sm-6 col-form-label">¿Incluirá frutas?</label>
+            <div class="form-group col-sm-2">
+              <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="radio" name="tieneFrutas" id="frutasSi" value="1">
+                <label for="frutasSi" class="custom-control-label">SI</label>
+              </div>
+              <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="radio" name="tieneFrutas" id="frutasNo" value="0" checked>
+                <label for="frutasNo" class="custom-control-label">NO</label>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Segunda categoria</label>
-              <input type="text" class="form-control" name="segundaCategoria" id="segCategoriaM3C" readonly placeholder="Ingrese la categoria">
+            <div class="form-group col-sm-4 cantidadFrutasModal">
+              <select name="cantidadFrutasModal" id="cantidadFrutasModal" class="form-control select2" style="width: 100%;">
+                <option value="" selected="selected">Cantidad</option>
+                <option value="1" >1</option>
+                <option value="2" >2</option>
+                <option value="3" >3</option>
+                <option value="4" >4</option>
+              </select>
             </div>
+          </div>
+            <?php
+              foreach ($listasPrecios as $key => $value) {
+                echo '
+                <div class="form-group row">
+                    <label class="col-sm-6 col-form-label">Costo '.$value->NOMBRE_LISTA_PRECIOS.'</label>
+                    <div class="col-sm-6">
+                      <input type="number" iden="'.$value->ID_NOMBRE_LISTA_PRECIOS.'" name="modalCostos" value="0" class="form-control modalCostos" placeholder="">
+                    </div>
+                  </div>
+                ';
+              }
+            ?>
+            
           </div>
       </div>
       
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary"  onclick="guardarProductoMadre()">Guardar</button>
+        <button type="button" class="btn btn-primary" id="guardarProductoMadre" >Agregar</button>
+        <button type="button" class="btn btn-primary" id="guardarEditarProductoMadre" >Modificar</button>
       </div>
     </div>
   </div>
@@ -195,6 +326,8 @@ $(document).ready(function(){
     $('.btnAgregarPM').hide();
     $('.btnEditarPM').hide();
     $('.btnEliminarPM').hide();
+
+    $('.inputPrecioTransporte').hide();
 
     $('#productoCategoria1').on('change',function(){
         var primera_categoria_id = $(this).val();
@@ -303,7 +436,222 @@ $(document).ready(function(){
         }
     });
 
+    $('#selectTam').on('change',function(){
+      var seleccion = this.selectedIndex;
+      var text = $("#selectTam option:selected").val();
+      var listaPreciosSeleccionados = new Array();
+      $("#selectTam :selected").each(function() {
+        listaPreciosSeleccionados.push(this.value);
+        });
+      
+      var listaPreciosSeleccionadosText = new Array();
+      $("#selectTam :selected").each(function() {
+        listaPreciosSeleccionadosText.push(this.text);
+      });
+      
+        for (let i = 0; i < listaPreciosSeleccionados.length; i++) {
+          const listaPrecios = document.getElementsByName("listaPrecios");
+          const listaPreciosTabla = new Array();
+            listaPrecios.forEach(element => {
+              listaPreciosTabla.push(element.value);
+            });
+          const incluye = listaPreciosTabla.includes(listaPreciosSeleccionados[i]);
+          if(incluye == false){
+            $( "#guardarEditarProductoMadre" ).prop( "disabled", true );
+            $( "#guardarProductoMadre" ).prop( "disabled", false );
+            $("#guardarProductoMadre").css('display', 'block');
+            $("#guardarEditarProductoMadre").css('display', 'none');
+            $('#idTamProducto').val(listaPreciosSeleccionados[i]);
+            $('#textTamProducto').val(listaPreciosSeleccionadosText[i]);
+            $("#modalAgregarCostos").modal("show");
+            $(".modalCostos").val('0');
+            $("#frutasNo").prop('checked', true);
+            $("#frutasSi").prop('checked',false);
+            $(".cantidadFrutasModal").hide();
+            $("#cantidadFrutasModal").val('');
+            $('#cantidadFrutasModal').select2();
+            /*
+            let row = `
+            <td><input type="hidden" name="listaPrecios" value="${listaPreciosSeleccionados[i]}" />${listaPreciosSeleccionadosText[i]}</td>
+            <td><input type="number" min='0' name="listaPrecios_1" /></td>
+            <td><input type="number" min='0' name="listaPrecios_2" /></td>
+            <td><input type="number" min='0' name="listaPrecios_3" /></td>
+            <td><input type="number" min='0' name="listaPrecios_4" /></td>
+            <td><input type="number" min='0' name="listaPrecios_5" /></td>
+            <td><input type="number" min='0' name="listaPrecios_6" /></td>
+            <td><input type="number" min='0' name="listaPrecios_7" /></td>
+            `;
+            $("#tablaProductos>tbody").append(`
+            <tr id="products-tr-${listaPreciosSeleccionados[i]}">
+            ${row}
+            <td><a class="btnShowProducts btn-danger deleteRow btn-xs" iden="${listaPreciosSeleccionados[i]}"><i class="fa fa-times"></i></a></td>
+            </tr>
+            `);*/
+            i= listaPreciosSeleccionados.length;
+          }
+        }
+        //eliminarFilas
+        const listaPrecios = document.getElementsByName("listaPrecios"); 
+        const listaPreciosTabla = new Array();
+            listaPrecios.forEach(element => {
+              listaPreciosTabla.push(element.value);
+            });
+        for (let j = 0; j < listaPreciosTabla.length; j++) {
+          const element = listaPreciosTabla[j];
+          const incluye = listaPreciosSeleccionados.includes(listaPreciosTabla[j]);
+          if(incluye == false){
+            var text_id= `#products-tr-${listaPreciosTabla[j]}`;
+            $(text_id).remove();
+          }
+        }
+    });
+
+    $("#modalAgregarCostos").on('hidden.bs.modal', function () {
+      var listaPreciosSeleccionados = new Array();
+      $("#selectTam :selected").each(function() {
+        listaPreciosSeleccionados.push(this.value);
+        });
+      const listaPrecios = document.getElementsByName("listaPrecios"); 
+      const listaPreciosTabla = new Array();
+          listaPrecios.forEach(element => {
+            listaPreciosTabla.push(element.value);
+          });
+      for (let i = 0; i < listaPreciosSeleccionados.length; i++) {
+        const element = listaPreciosSeleccionados[i];
+        const incluye = listaPreciosTabla.includes(element);
+          if(incluye == false){
+            $('#selectTam option[value="'+element+'"]').prop("selected", false);
+            $("#selectTam").css('display', 'none');
+            $("#selectTam").css('display', 'block');
+            $('#selectTam').select2();
+          }
+      }
+
+    });
+
+    $('input[type=radio][name=tieneFrutas]').change(function() {
+      if(this.value == '1'){
+          $(".cantidadFrutasModal").show();
+      }
+      else {
+        $("#cantidadFrutasModal").val('');
+        $(".cantidadFrutasModal").hide();
+        $('#cantidadFrutasModal').select2();
+      }
+    });
+
+    $('input[type=radio][name=tieneTransporte]').change(function() {
+      if(this.value == '1'){
+          $(".inputPrecioTransporte").show();
+      }
+      else {
+        $("#precioTransporte").val('');
+        $(".inputPrecioTransporte").hide();
+      }
+    });
+
+    $('#guardarProductoMadre').on('click',function(){
+      var idTamProducto = $('#idTamProducto').val();
+      var textTamProducto = $('#textTamProducto').val();
+      var cantFrutas = $('#cantidadFrutasModal').val();
+      if(cantFrutas == ''){
+        cantFrutas ='0';
+      }
+      const modalPrecios = document.getElementsByName("modalCostos"); 
+      var rowsPrecio='';
+      modalPrecios.forEach(element => {
+        var costoElement = element.value;
+        var iden = $(element).attr('iden');
+        rowsPrecio = `${rowsPrecio}'<td align="center"><input class="in-cant listaPreciosTabla-${idTamProducto}" type="hidden" value="${costoElement}" min='0' name="listaCostos_${iden}" />${costoElement}</td>`;
+      });
+      let row = `
+      <td align="center"><input type="hidden" name="listaPrecios" value="${idTamProducto}" />${textTamProducto}</td>
+      <td align="center"><input type="hidden" name="cantidadFrutas" value="${cantFrutas}" />${cantFrutas}</td>
+      ${rowsPrecio}
+      `;
+      $("#tablaProductos>tbody").prepend(`
+      <tr id="products-tr-${idTamProducto}">
+      ${row}
+      <td align="center">
+        <a class="btnShowProducts btn-warning editRow btn-xs" iden="${idTamProducto}" textTam="${textTamProducto}"><i class="fa fa-pencil"></i></a>  
+        <a class="btnShowProducts btn-danger deleteRow btn-xs" iden="${idTamProducto}"><i class="fa fa-times"></i></a>
+      </td>
+      </tr>
+      `);
+      $("#modalAgregarCostos").modal("hide");
+    });
+
+    $('#guardarEditarProductoMadre').on('click',function(){
+      var idTamProducto = $('#idTamProducto').val();
+      var text_id= `#products-tr-${idTamProducto}`;
+      $(text_id).remove();
+      var textTamProducto = $('#textTamProducto').val();
+      var cantFrutas = $('#cantidadFrutasModal').val();
+      if(cantFrutas == ''){
+        cantFrutas ='0';
+      }
+      const modalPrecios = document.getElementsByName("modalCostos"); 
+      var rowsPrecio='';
+      modalPrecios.forEach(element => {
+        var costoElement = element.value;
+        var iden = $(element).attr('iden');
+        rowsPrecio = `${rowsPrecio}'<td align="center"><input class="in-cant listaPreciosTabla-${idTamProducto}" type="hidden" value="${costoElement}" min='0' name="listaCostos_${iden}" />${costoElement}</td>`;
+      });
+      let row = `
+      <td align="center"><input type="hidden" name="listaPrecios" value="${idTamProducto}" />${textTamProducto}</td>
+      <td align="center"><input type="hidden" name="cantidadFrutas" value="${cantFrutas}" />${cantFrutas}</td>
+      ${rowsPrecio}
+      `;
+      $("#tablaProductos>tbody").prepend(`
+      <tr id="products-tr-${idTamProducto}">
+      ${row}
+      <td align="center">
+        <a class="btnShowProducts btn-warning editRow btn-xs" iden="${idTamProducto}" textTam="${textTamProducto}"><i class="fa fa-pencil"></i></a>  
+        <a class="btnShowProducts btn-danger deleteRow btn-xs" iden="${idTamProducto}"><i class="fa fa-times"></i></a>
+      </td>
+      </tr>
+      `);
+      $("#modalAgregarCostos").modal("hide");
+    });
+
 });
+
+$('body').on('click', 'a.deleteRow', function() {
+  var iden = $(this).attr('iden');  
+  $('#selectTam option[value="'+iden+'"]').prop("selected", false);
+  $("#selectTam").css('display', 'none');
+  $("#selectTam").css('display', 'block');
+  $('#selectTam').select2();
+  $(this).parents('tr').remove();
+});
+
+$('body').on('click', 'a.editRow', function() {
+  $( "#guardarEditarProductoMadre" ).prop( "disabled", false );
+  $( "#guardarProductoMadre" ).prop( "disabled", true );
+  $("#guardarProductoMadre").css('display', 'none');
+  $("#guardarEditarProductoMadre").css('display', 'block');
+  var iden = $(this).attr('iden');
+  var textTam = $(this).attr('textTam');
+  $('#idTamProducto').val(iden);
+  $('#textTamProducto').val(textTam);
+  $(".modalCostos").val('0');
+  //agregar costos al modal
+  //var listaPreciosTabla = $('.listaPreciosTabla-'+iden).val();
+  const listaPreciosTabla = document.getElementsByClassName('listaPreciosTabla-'+iden);
+  var arraylistaPreciosTabla = new Array();
+  for (let item of listaPreciosTabla) {
+    arraylistaPreciosTabla.push(item.value);
+  }
+  const listaPreciosModal = document.getElementsByName("modalCostos"); 
+  for (let i = 0; i < arraylistaPreciosTabla.length; i++) {
+    const element = arraylistaPreciosTabla[i];
+    listaPreciosModal[i].value=element;
+  }
+  
+  $("#modalAgregarCostos").modal("show");
+ 
+});
+
 
 $('.btnAgregarSC').on('click',function(){
   var texto_seleccionado = $('#productoCategoria1 option:selected').html();
@@ -320,7 +668,6 @@ $('.btnAgregarPM').on('click',function(){
 function guardarPrimeraCategoria(){
   var primera_categoria = $('#primeraCategoriaMPC').val();
   if(primera_categoria){
-    console.log(primera_categoria);
     var datos = new FormData();
     datos.append("nombre_pc",primera_categoria);
     $.ajax({
@@ -332,7 +679,6 @@ function guardarPrimeraCategoria(){
         processData: false,
         dataType: "json",
         success:function(respuesta){
-          console.log(respuesta);
           if(respuesta == 'ok'){
             Swal.fire({
               icon: 'success',
@@ -351,7 +697,6 @@ function guardarSegundaCategoria(){
   var primera_categoria = $('#productoCategoria1').val();
   var segunda_categoria = $('#segundaCategoriaMSC').val();
   if(segunda_categoria){
-    console.log(segunda_categoria);
     var datos = new FormData();
     datos.append("categoria_1",primera_categoria);
     datos.append("nombre_sc",segunda_categoria);
@@ -364,7 +709,6 @@ function guardarSegundaCategoria(){
         processData: false,
         dataType: "json",
         success:function(respuesta){
-          console.log(respuesta);
           if(respuesta == 'ok'){
             Swal.fire({
               icon: 'success',
@@ -378,6 +722,43 @@ function guardarSegundaCategoria(){
   }
   
 }
+
+$("#nuevaFoto").change(function(){
+  var img = $('#nuevaFoto').val();
+  if(img == ''){
+    var rutaImagen = "<?=base_url('assets/dist/img/default-image.jpg')?>";
+    $(".previsualizar").attr("src", rutaImagen);
+    return;
+  }
+var imagen = this.files[0];
+/*=============================================
+  VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
+  =============================================*/
+  if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
+    $(".nuevaFoto").val("");
+     swal({
+        title: "Error al subir la imagen",
+        text: "¡La imagen debe estar en formato JPG o PNG!",
+        type: "error",
+        confirmButtonText: "¡Cerrar!"
+      });
+  }else if(imagen["size"] > 2000000){
+    $(".nuevaFoto").val("");
+     swal({
+        title: "Error al subir la imagen",
+        text: "¡La imagen no debe pesar más de 2MB!",
+        type: "error",
+        confirmButtonText: "¡Cerrar!"
+      });
+  }else{
+    var datosImagen = new FileReader;
+    datosImagen.readAsDataURL(imagen);
+    $(datosImagen).on("load", function(event){
+      var rutaImagen = event.target.result;
+      $(".previsualizar").attr("src", rutaImagen);
+    })
+  }
+})
 
 function imprimirDetalleTurno(){
   var url= "<?=site_url('imprimir-detalle-turno')?>";

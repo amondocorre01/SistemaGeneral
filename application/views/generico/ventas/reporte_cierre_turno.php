@@ -169,9 +169,9 @@
                             }
                             $monto_total_ventas_efectivo = floatval(getTotalTurno($nombre_codigo_sucursal, $sufijo, $id_turno,'EFECTIVO'));
                             $monto_total_ventas_no_efectivo = floatval(getTotalTurnoNoEfectivo($nombre_codigo_sucursal, $sufijo, $id_turno));
-                            $monto_total_ventas_pago_qr = floatval(getTotalTurno($nombre_codigo_sucursal, $sufijo, $id_turno,'PAGO ONLINE'));
-                            $monto_total_ventas_tarjeta = floatval(getTotalTurno($nombre_codigo_sucursal, $sufijo, $id_turno,'TARJETA'));
-                            $monto_total_ventas_transferencia_bancaria = floatval(getTotalTurno($nombre_codigo_sucursal, $sufijo, $id_turno,'TRANSFERENCIA BANCARIA'));
+                            $monto_total_ventas_pago_qr = floatval(getTotalTurnoTransporte($nombre_codigo_sucursal, $sufijo, $id_turno,'PAGO ONLINE'));
+                            $monto_total_ventas_tarjeta = floatval(getTotalTurnoTransporte($nombre_codigo_sucursal, $sufijo, $id_turno,'TARJETA'));
+                            $monto_total_ventas_transferencia_bancaria = floatval(getTotalTurnoTransporte($nombre_codigo_sucursal, $sufijo, $id_turno,'TRANSFERENCIA BANCARIA'));
                             $monto_total_ventas_cupon_pedidos_ya = floatval(getTotalCupon($nombre_codigo_sucursal, $sufijo, $id_turno));
                             $monto_total_ventas_gift_card = floatval(getTotalTurno($nombre_codigo_sucursal, $sufijo, $id_turno,'GIFT-CARD'));
                             $saldo_teorico = $monto_apertura+$monto_total_ingresos-$monto_total_egresos+$monto_total_ventas_efectivo;
