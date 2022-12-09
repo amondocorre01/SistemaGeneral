@@ -91,7 +91,7 @@
 								array_push($autorizado, $temp);
 							}
 
-							//$this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $autorizado);
+							$this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $autorizado);
 
 							if($this->db->affected_rows()) {
 								$response['status'] = true;

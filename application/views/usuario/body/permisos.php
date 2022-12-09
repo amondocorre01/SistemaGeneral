@@ -12,7 +12,10 @@
       </select>
       </div>
     </div>
-     <?php  $this->db->where('NIVEL_SUPERIOR', $value->ID_VENTAS_ACCESO);
+     <?php  
+            $this->db->where($sistema, 1);
+            $this->db->order_by('NUMERO_ORDEN', 'ASC');
+            $this->db->where('NIVEL_SUPERIOR', $value->ID_VENTAS_ACCESO);
             $hijos = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
               SELECT ESTADO FROM VENTAS_USUARIOS_ACCESO vua 
               WHERE vua.ID_USUARIO = '.$id.' AND 
@@ -32,7 +35,10 @@
                             </select>
                         </div>
 
-                        <?php  $this->db->where('NIVEL_SUPERIOR', $hijo->ID_VENTAS_ACCESO);
+                        <?php  
+                                $this->db->where($sistema, 1);
+                                $this->db->order_by('NUMERO_ORDEN', 'ASC');
+                                $this->db->where('NIVEL_SUPERIOR', $hijo->ID_VENTAS_ACCESO);
                                 $nietos = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
                                   SELECT ESTADO 
                                   FROM VENTAS_USUARIOS_ACCESO vua 
@@ -53,7 +59,10 @@
                                     <option <?=($nieto->ACCEDE == NULL) ? 'selected' : '' ?> value="0"> INACTIVO </option>
                                 </select>
                                 </div>
-                                <?php  $this->db->where('NIVEL_SUPERIOR', $nieto->ID_VENTAS_ACCESO);
+                                <?php  
+                                    $this->db->where($sistema, 1);
+                                    $this->db->order_by('NUMERO_ORDEN', 'ASC');
+                                    $this->db->where('NIVEL_SUPERIOR', $nieto->ID_VENTAS_ACCESO);
                                         $bisnietos = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
                                           SELECT ESTADO 
                                           FROM VENTAS_USUARIOS_ACCESO vua 

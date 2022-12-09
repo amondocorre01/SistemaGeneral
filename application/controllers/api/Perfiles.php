@@ -101,6 +101,47 @@
             
         }
 
+
+
+        public function acceso() {
+
+            $id = $this->input->post('id');
+    
+                            $this->db->where('NIVEL_SUPERIOR', 0);
+                            $this->db->order_by('NUMERO_ORDEN', 'ASC');
+                            
+            $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
+                SELECT DISTINCT ESTADO 
+                FROM VENTAS_PERMISO_PERFIL vpp 
+                WHERE vpp.ID_VENTAS_PERFIL = '.$id.' AND 
+                vpp.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO) AS ACCEDE'); 
+            $data['id'] = $id;
+
+            echo $this->load->view('perfiles/body/permisos', $data, TRUE);
+        }
+
+
+        public function update(){
+
+            $id = $this->input->post('id');
+            $perfil = $this->input->post('perfil');
+            $estado = $this->input->post('estado');
+
+
+            // Existe?
+            
+            $accede = $this->main->get('VENTAS_PERMISO_PERFIL', ['ID_VENTAS_ACCESO'=>$id, 'ID_VENTAS_PERFIL'=>$perfil]);
+
+            if(!$accede) {
+                $this->main->insert('VENTAS_PERMISO_PERFIL', ['ID_VENTAS_PERFIL'=>$perfil, 'ID_VENTAS_ACCESO'=>$id,	'ESTADO'=>$estado]);
+            }
+
+            else {
+                $this->main->update('VENTAS_PERMISO_PERFIL', ['ESTADO'=>$estado], ['ID_VENTAS_PERMISO_PERFIL'=>$accede->ID_VENTAS_PERMISO_PERFIL]);
+            }
+
+        }
+
     }
 
 /* End of file Perfiles.php */

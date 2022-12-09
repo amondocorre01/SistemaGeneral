@@ -367,6 +367,50 @@
             return $respuesta;
         }
 
+
+        public function changePassword(){
+
+            $response['actual'] = false;
+            $response['iguales'] = false;
+
+            $user =  $this->input->post('usuario');
+            $actual = $this->input->post('password-actual');
+            $newpass = $this->input->post('password-new');
+            $newpassrepeat = $this->input->post('repeat-password-new');
+
+                        $this->db->where('USUARIO', $user);
+            $datos = $this->main->getSelect('VENTAS_USUARIOS', 'CONTRASEÑA');
+
+
+            if($datos->CONTRASEÑA === strToHex($actual)) {
+
+                $response['actual'] = true;
+            }
+
+            if(strToHex($newpass) === strToHex($newpassrepeat)) {
+
+                $response['iguales'] = true;
+            }
+
+
+            if ($response['actual'] AND $response['iguales']) {
+
+
+                $this->db->where('USUARIO', $user);
+                $this->main->update('VENTAS_USUARIOS', ['CONTRASEÑA'=>strToHex($newpass)]);
+                
+                $this->session->sess_destroy();
+		        redirect('login/index');
+            }
+
+            else {
+                
+                echo json_encode($response);
+            
+            }
+
+        }
+
     
     }
     

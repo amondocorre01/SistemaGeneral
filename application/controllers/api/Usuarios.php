@@ -257,6 +257,7 @@
             $id = $this->input->post('id');
     
                             $this->db->where('NIVEL_SUPERIOR', 0);
+                            $this->db->order_by('NUMERO_ORDEN', 'ASC');
                             $this->db->where('SISTEMA_GENERAL', 1);
 
             $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
@@ -265,6 +266,8 @@
                 WHERE vua.ID_USUARIO = '.$id.' AND 
                 vua.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO) AS ACCEDE'); 
             $data['id'] = $id;
+
+            $data['sistema'] = 'SISTEMA_GENERAL';
 
             echo $this->load->view('usuario/body/permisos', $data, TRUE);
         }
@@ -275,14 +278,17 @@
             $id = $this->input->post('id');
     
                             $this->db->where('NIVEL_SUPERIOR', 0);
+                            $this->db->order_by('NUMERO_ORDEN', 'ASC');
                             $this->db->where('SISTEMA_VENTAS', 1);
 
             $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
-                SELECT ESTADO 
+                SELECT DISTINCT ESTADO 
                 FROM VENTAS_USUARIOS_ACCESO vua 
                 WHERE vua.ID_USUARIO = '.$id.' AND 
                 vua.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO) AS ACCEDE'); 
             $data['id'] = $id;
+
+            $data['sistema'] = 'SISTEMA_VENTAS';
 
             echo $this->load->view('usuario/body/permisos', $data, TRUE);
         }
