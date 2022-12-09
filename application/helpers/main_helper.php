@@ -375,8 +375,8 @@ if(!function_exists('getSegundaCategoria')) {
 		return $respuesta;
 	}
 }
-if(!function_exists('getProductoMadre')) {
-	function getProductoMadre($id){
+if(!function_exists('getProductosMadre')) {
+	function getProductosMadre($id){
 		$CI =& get_instance();
 		$sql = "select * from VENTAS_PRODUCTO_MADRE where ID_CATEGORIA_2='$id'; ";
 		$respuesta = $CI->main->getQuery($sql);
@@ -410,6 +410,16 @@ if(!function_exists('getUnidadesMedida')) {
 		return $respuesta;
 	}
 }
+
+if(!function_exists('getProductoMadre')) {
+	function getProductoMadre($id){
+		$CI =& get_instance();
+		$sql = "select (select * from VENTAS_PRODUCTO_MADRE vpm where ID_PRODUCTO_MADRE ='$id' FOR JSON AUTO) as resultado";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta[0];
+	}
+}
+
 
   
 

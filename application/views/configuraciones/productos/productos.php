@@ -26,10 +26,10 @@
             <div class="col-md-3">
                 
                 <div class="form-group">
-                  <label>Primera categoria</label>
-                  <a class="btnShowProducts btn-info btn-xs btnAgregarPC" title="Agregar 1ra categoria" data-toggle="modal" data-target="#modalAgregarPrimeraCategoria"><i class="fa fa-plus"></i></a>
-                  <a class="btnShowProducts btn-warning btn-xs btnEditarPC" title="Editar 1ra categoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-pencil"></i></a>
-                  <a class="btnShowProducts btn-danger btn-xs btnEliminarPC" title="Eliminar 1ra categoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-times"></i></a>
+                  <label>Categoria</label>
+                  <a class="btnShowProducts btn-info btn-xs btnAgregarPC" title="Agregar categoria" data-toggle="modal" data-target="#modalAgregarPrimeraCategoria"><i class="fa fa-plus"></i></a>
+                  <a class="btnShowProducts btn-warning btn-xs btnEditarPC" title="Editar categoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-pencil"></i></a>
+                  <a class="btnShowProducts btn-danger btn-xs btnEliminarPC" title="Eliminar categoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-times"></i></a>
                   <select name="productoCategoria1" id="productoCategoria1" class="form-control select2" style="width: 100%;">
                     <option value="" selected="selected">Seleccione la primera categoria</option>
                     <?php
@@ -42,10 +42,10 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                  <label>Segunda categoria</label>
-                  <a class="btnShowProducts btn-info btn-xs btnAgregarSC" title="Agregar 2da categoria" data-toggle="modal" data-target="#modalAgregarSegundaCategoria"><i class="fa fa-plus"></i></a>
-                  <a class="btnShowProducts btn-warning btn-xs btnEditarSC" title="Editar 2da categoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-pencil"></i></a>
-                  <a class="btnShowProducts btn-danger btn-xs btnEliminarSC" title="Eliminar 2da categoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-times"></i></a>
+                  <label>Subcategoria</label>
+                  <a class="btnShowProducts btn-info btn-xs btnAgregarSC" title="Agregar Subcategoria" data-toggle="modal" data-target="#modalAgregarSegundaCategoria"><i class="fa fa-plus"></i></a>
+                  <a class="btnShowProducts btn-warning btn-xs btnEditarSC" title="Editar Subcategoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-pencil"></i></a>
+                  <a class="btnShowProducts btn-danger btn-xs btnEliminarSC" title="Eliminar Subcategoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-times"></i></a>
                   <select name="productoCategoria2" id="productoCategoria2" class="form-control select2" style="width: 100%;">
                     <option value="" selected="selected">Seleccione la segunda categoria</option>
                   </select>
@@ -54,9 +54,9 @@
             <div class="col-md-3">
                 <div class="form-group">
                   <label>Seleccione el producto</label>
-                  <a class="btnShowProducts btn-info btn-xs btnAgregarPM" title="Agregar producto madre" data-toggle="modal" data-target="#modalAgregarProductoMadre"><i class="fa fa-plus"></i></a>
-                  <a class="btnShowProducts btn-warning btn-xs btnEditarPM" title="Editar producto madre" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-pencil"></i></a>
-                  <a class="btnShowProducts btn-danger btn-xs btnEliminarPM" title="Eliminar producto madre" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-times"></i></a>
+                  <a class="btnShowProducts btn-info btn-xs btnAgregarPM" title="Agregar producto "><i class="fa fa-plus"></i></a>
+                  <a class="btnShowProducts btn-warning btn-xs btnEditarPM" title="Editar producto " ><i class="fa fa-pencil"></i></a>
+                  <a class="btnShowProducts btn-danger btn-xs btnEliminarPM" title="Eliminar producto " data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-times"></i></a>
                   <select name="productoMadre" id="productoMadre" class="form-control select2" style="width: 100%;">
                     <option value="" selected="selected">Seleccione el producto</option>
                   </select>
@@ -73,7 +73,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card" id="agregarEditarProducto">
   <div class="card-body">
     <div class="row">
       <div class="col-md-3">
@@ -313,6 +313,7 @@
 
 <script>
 $(document).ready(function(){
+    $('#agregarEditarProducto').hide();
     $('#productoCategoria2').prop( "disabled", true );
     $('#productoMadre').prop( "disabled", true );
     $('.btnAgregarPC').show();
@@ -332,6 +333,8 @@ $(document).ready(function(){
     $('#productoCategoria1').on('change',function(){
         var primera_categoria_id = $(this).val();
         var texto_seleccionado = $('#productoCategoria1 option:selected').html();
+        $('#agregarEditarProducto').hide();
+
         $('.btnEditarSC').hide();
         $('.btnEliminarSC').hide();
 
@@ -385,6 +388,7 @@ $(document).ready(function(){
     $('#productoCategoria2').on('change',function(){
         var segunda_categoria_id = $(this).val();
         var texto_seleccionado = $('#productoCategoria2 option:selected').html();
+        $('#agregarEditarProducto').hide();
         $('.btnEditarPM').hide();
         $('.btnEliminarPM').hide();
         if(segunda_categoria_id != ''){
@@ -434,6 +438,7 @@ $(document).ready(function(){
           $('.btnEditarPM').hide();
           $('.btnEliminarPM').hide();
         }
+        $('#agregarEditarProducto').hide();
     });
 
     $('#selectTam').on('change',function(){
@@ -659,10 +664,66 @@ $('.btnAgregarSC').on('click',function(){
 });
 
 $('.btnAgregarPM').on('click',function(){
+  $('#productoMadre').val('');
+  $('#productoMadre').select2();
+  $('.btnEditarPM').hide();
+  $('.btnEliminarPM').hide();
+  $('#agregarEditarProducto').show();
+  $(".cantidadFrutasModal").hide();
+  $("#cantidadFrutasModal").val('');
+  $('.inputPrecioTransporte').hide();
+  $('#precioTransporte').val('');
+  $("#transporteNo").prop('checked', true);
+  $("#transporteSi").prop('checked',false);
   var texto_seleccionado = $('#productoCategoria1 option:selected').html();
-  $('#priCategoriaM3C').val(texto_seleccionado);
   var texto_seleccionado = $('#productoCategoria2 option:selected').html();
-  $('#segCategoriaM3C').val(texto_seleccionado);
+});
+
+$('.btnEditarPM').on('click',function(){
+      console.log('Cargando datos para editar');
+      $('#agregarEditarProducto').show();
+      $('.btnEditarPM').hide();
+      $('.btnEliminarPM').hide();
+      $('#agregarEditarProducto').show();
+      $(".cantidadFrutasModal").hide();
+      $("#cantidadFrutasModal").val('');
+      $('.inputPrecioTransporte').hide();
+      $('#precioTransporte').val('');
+      $("#transporteNo").prop('checked', true);
+      $("#transporteSi").prop('checked',false);
+
+      //
+      var id_producto_madre = $('#productoMadre').val();
+      var datos = new FormData();
+      datos.append("id_producto_madre",id_producto_madre);
+      $.ajax({
+          method:'POST',
+          url:'<?=site_url("load-producto-madre")?>',
+          data: datos,
+          cache: false,
+          contentType: false,
+          processData: false,
+          dataType: "json",
+          success:function(respuesta){
+            //console.log(respuesta);
+            //console.log('Producto madre',respuesta.ID_PRODUCTO_MADRE);
+            //console.log('respuesta',respuesta.resultado);
+            var obj = JSON.parse(respuesta.resultado);
+            //console.log(obj[0]);
+            var prodMadre= obj[0].PRODUCTO_MADRE;
+            console.log(obj[0]);
+            console.log('Producto',prodMadre);
+            $('#producto').val(prodMadre);
+            if(respuesta == 'ok'){
+              Swal.fire({
+                icon: 'success',
+                title: 'Se ha registrado correctamente.',
+                timer: 3500
+              });
+              window.location.href = "<?=current_url()?>";
+            }
+          }
+      });
 });
 
 function guardarPrimeraCategoria(){

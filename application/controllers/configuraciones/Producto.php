@@ -21,7 +21,7 @@
       public function productos_madre() {
         $segunda_categoria_id = $this->input->post('segunda_categoria_id');
         $texto_seleccionado = $this->input->post('texto_seleccionado');
-        $productos_madre = getProductoMadre($segunda_categoria_id);
+        $productos_madre = getProductosMadre($segunda_categoria_id);
         echo '<option value="">Seleccione el producto</option>';
         foreach ($productos_madre as $key => $value) {
             if($value->PRODUCTO_MADRE == ''){
@@ -29,8 +29,13 @@
             }else{
                 echo '<option value="'.$value->ID_PRODUCTO_MADRE.'">'.$value->PRODUCTO_MADRE.'</option>';
             }
-            
         }
+     }
+
+     public function producto_madre() {
+        $id_producto_madre = $this->input->post('id_producto_madre');
+        $producto_madre = getProductoMadre($id_producto_madre);
+        echo json_encode($producto_madre);
      }
 
      public function guardar_primera_categoria(){
