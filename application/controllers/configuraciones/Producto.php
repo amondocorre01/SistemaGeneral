@@ -38,6 +38,12 @@
         echo json_encode($producto_madre);
      }
 
+     public function lista_precios_producto(){
+        $id_producto_madre = $this->input->post('id_producto_madre');
+
+        echo json_encode('respuesta');
+     }
+
      public function guardar_primera_categoria(){
         $nombre_pc = $this->input->post('nombre_pc');
         $res = null;

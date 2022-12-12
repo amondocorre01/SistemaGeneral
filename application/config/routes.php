@@ -195,6 +195,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['guardar-primera-categoria'] = 'configuraciones/producto/guardar_primera_categoria';
     $route['guardar-segunda-categoria'] = 'configuraciones/producto/guardar_segunda_categoria';
     $route['load-producto-madre'] = 'configuraciones/producto/producto_madre';
+    $route['obtener-lista-precios'] = 'configuraciones/producto/lista_precios_producto';
     
 
 

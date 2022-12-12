@@ -777,7 +777,7 @@ function cargarTablaPrecios(id_producto_madre){
     datos.append("id_producto",id_producto_madre);
     $.ajax({
         method:'POST',
-        url:'<?=site_url("obtener-lista-precio")?>',
+        url:'<?=site_url("obtener-lista-precios")?>',
         data: datos,
         cache: false,
         contentType: false,
