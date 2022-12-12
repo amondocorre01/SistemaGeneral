@@ -18,7 +18,7 @@
                         <?=form_label("Usuarios", 'usuarios');?>
                         </div>
                         <div class="col-3">
-                            <select name="usuarios" id="usuarios" class="form-control">
+                            <select name="usuarios" id="usuarios" class="form-control" onchange="changeUser()">
                                 <?php foreach ($usuarios as $usuario): ?>
                                     <option value="<?=$usuario->ID_USUARIO?>"><?=$usuario->NOMBRE_COMPLETO?></option>
                                 <?php endforeach; ?>
@@ -71,6 +71,13 @@ $('#buscar').on('click', function(){
         }
     });
 });
+
+function changeUser() {
+
+    $('#menu').empty();
+
+
+}
 
 <?php if($this->session->cambios): ?>
 
