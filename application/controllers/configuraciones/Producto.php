@@ -41,7 +41,13 @@
      public function lista_precios_producto(){
         $id_producto_madre = $this->input->post('id_producto_madre');
         $lista_productos_unicos = getProductosUnicos($id_producto_madre);
-        
+
+        foreach ($lista_productos_unicos as $key => $value) {
+            $id_tam = $value->ID_TAMAÑO;
+            $lista_precios= getPreciosProductoUnico($id_producto_madre, $id_tam);
+            var_dump($lista_precios);
+        }
+
         echo json_encode($lista_productos_unicos);
      }
 

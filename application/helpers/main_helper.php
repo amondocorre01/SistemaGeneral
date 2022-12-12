@@ -429,6 +429,14 @@ if(!function_exists('getProductosUnicos')) {
 	}
 }
 
+if(!function_exists('getPreciosProductoUnico')) {
+	function getPreciosProductoUnico($id_producto_madre, $id_tam){
+		$CI =& get_instance();
+		$sql="select * FROM VENTAS_PRECIO_PRODUCTO_UNICO where ID_PRODUCTO_UNICO in (SELECT ID_PRODUCTO_UNICO  FROM VENTAS_PRODUCTO_UNICO where ID_PRODUCTO_MADRE ='$id_producto_madre' AND ID_TAMAÑO='$id_tam');";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta;
+	}
+}
 
   
 
