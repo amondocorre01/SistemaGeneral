@@ -420,10 +420,10 @@ if(!function_exists('getProductoMadre')) {
 	}
 }
 
-if(!function_exists('getProductoMadre')) {
+if(!function_exists('getProductosUnicos')) {
 	function getProductosUnicos($id_producto_madre){
 		$CI =& get_instance();
-		$sql = "select * FROM VENTAS_PRODUCTO_UNICO where ID_PRODUCTO_MADRE ='$id_producto_madre'";
+		$sql = "select * FROM VENTAS_PRODUCTO_UNICO where ID_PRODUCTO_MADRE ='$id_producto_madre';";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}

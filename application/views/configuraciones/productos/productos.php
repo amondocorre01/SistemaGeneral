@@ -774,7 +774,7 @@ $('.btnEditarPM').on('click',function(){
 function cargarTablaPrecios(id_producto_madre){
   console.log('cargando precios');
   var datos = new FormData();
-    datos.append("id_producto",id_producto_madre);
+    datos.append("id_producto_madre",id_producto_madre);
     $.ajax({
         method:'POST',
         url:'<?=site_url("obtener-lista-precios")?>',
