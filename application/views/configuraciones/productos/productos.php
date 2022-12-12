@@ -83,7 +83,7 @@
         </div>
         <div class="form-group">
         <label>Detalle del producto</label>
-              <textarea class="form-control input-sm " rows="2" name="detalle" placeholder="Ingrese el detalle."><?php echo strip_tags('');?></textarea>
+              <textarea class="form-control input-sm " rows="2" id="detalleProducto" name="detalle" placeholder="Ingrese el detalle."><?php echo strip_tags('');?></textarea>
         </div>
 
         
@@ -128,11 +128,11 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label>Cod. Act. Económica</label>
-            <input type="text" class="form-control" name="actividadEconomica" id="actividadEconomica" placeholder="620100">
+            <input type="text" class="form-control" name="actividadEconomica" id="actividadEconomica" placeholder="563010"><!-- -->
           </div>
           <div class="form-group col-md-6">
             <label>Cod. Producto SIN</label>
-            <input type="text" class="form-control" name="productoSIN" id="productoSIN" placeholder="65200">
+            <input type="text" class="form-control" name="productoSIN" id="productoSIN" placeholder="99100"><!--65200-->
           </div>
         </div>
             
@@ -692,6 +692,15 @@ $('.btnEditarPM').on('click',function(){
       $("#transporteNo").prop('checked', true);
       $("#transporteSi").prop('checked',false);
 
+      $('#producto').val('');
+      $('#detalleProducto').val('');
+      $('#unidadMedida').val('');
+      $('#unidadMedida').select2();
+      $('#actividadEconomica').val('');
+      $('#productoSIN').val('');
+      var rutaImagen = "<?=base_url('assets/dist/img/default-image.jpg')?>";
+      $(".previsualizar").attr("src", rutaImagen);
+
       //
       var id_producto_madre = $('#productoMadre').val();
       var datos = new FormData();
@@ -710,10 +719,46 @@ $('.btnEditarPM').on('click',function(){
             //console.log('respuesta',respuesta.resultado);
             var obj = JSON.parse(respuesta.resultado);
             //console.log(obj[0]);
-            var prodMadre= obj[0].PRODUCTO_MADRE;
+            var idProdMadre = obj[0].ID_PRODUCTO_MADRE; 
+            var prodMadre = obj[0].PRODUCTO_MADRE;
+            var actEconomica = obj[0].CODIGO_ACTIVIDAD_ECONOMICA;
+            var codProdSin = obj[0].CODIGO_PRODUCTO_SIN;
+            var codUnidadMedida = obj[0].CODIGO_UNIDAD_MEDIDA;
+            var imagen = obj[0].Imagenes;
+            var transporte = obj[0].TRANSPORTE;
+            var precioTransporte = obj[0].PRECIO_TRANSPORTE;
+            var detalleProducto = obj[0].DETALLE;
+            if(imagen){
+              console.log('si imagen');
+              $(".previsualizar").attr("src", "data:image/png;base64,"+imagen);
+            }else{
+              console.log('no existe imagen');
+            }
+            $('#detalleProducto').val(detalleProducto);
+            $('#unidadMedida').val(codUnidadMedida);
+            $('#unidadMedida').select2();
+            $('#actividadEconomica').val(actEconomica);
+            $('#productoSIN').val(codProdSin);
+            if(transporte){
+              $("#transporteNo").prop('checked', false);
+              $("#transporteSi").prop('checked',true);
+              $('#precioTransporte').val(precioTransporte);
+              $('.inputPrecioTransporte').show();
+            }else{
+              console.log('no incluye transporte');
+              $('#precioTransporte').val('0');
+              $("#transporteNo").prop('checked', true);
+              $("#transporteSi").prop('checked',false);
+              $('.inputPrecioTransporte').hide();
+            }
             console.log(obj[0]);
             console.log('Producto',prodMadre);
+            if(prodMadre ==''){
+              var texto_seleccionado = $('#productoMadre option:selected').html();
+              prodMadre = texto_seleccionado;
+            }
             $('#producto').val(prodMadre);
+            cargarTablaPrecios(id_producto_madre);
             if(respuesta == 'ok'){
               Swal.fire({
                 icon: 'success',
@@ -725,6 +770,10 @@ $('.btnEditarPM').on('click',function(){
           }
       });
 });
+
+function cargarTablaPrecios(id_producto_madre){
+  console.log('cargando precios');
+}
 
 function guardarPrimeraCategoria(){
   var primera_categoria = $('#primeraCategoriaMPC').val();
