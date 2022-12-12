@@ -502,20 +502,20 @@ break;
 											echo $this->load->view('usuario/permisos', $datos, TRUE);
 										break;
 
-										case 'permisos-boton':
-											$this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = SE.ID_EMPLEADO', 'left');
-											$this->db->where('vu.ID_EMPLEADO !=', null);
-											$datos['usuarios'] = $this->main->getListSelect('SIREPE_EMPLEADO se', 'vu.ID_USUARIO, NOMBRE_COMPLETO', ['NOMBRE_COMPLETO'=>'ASC']);
-											
-											
-											$this->db->where('va.ESTADO', 1);
-											$this->db->where('va.TIPO', 'acceso');
-											$this->db->where('va.ACCESO_BOTON', 1);
+	case 'permisos-boton':
+		$this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = SE.ID_EMPLEADO', 'left');
+		$this->db->where('vu.ID_EMPLEADO !=', null);
+		$datos['usuarios'] = $this->main->getListSelect('SIREPE_EMPLEADO se', 'vu.ID_USUARIO, NOMBRE_COMPLETO', ['NOMBRE_COMPLETO'=>'ASC']);
+		
+		
+		$this->db->where('va.ESTADO', 1);
+		$this->db->where('va.TIPO', 'acceso');
+		$this->db->where('va.ACCESO_BOTON', 1);
 
-											$datos['menus'] = $this->main->getListSelect('VENTAS_ACCESO va', 'va.ID_VENTAS_ACCESO, NOMBRE', ['NOMBRE'=>'ASC']);
+		$datos['menus'] = $this->main->getListSelect('VENTAS_ACCESO va', 'va.ID_VENTAS_ACCESO, NOMBRE', ['NOMBRE'=>'ASC']);
 
-											echo $this->load->view('usuario/boton', $datos, TRUE);
-										break;
+		echo $this->load->view('usuario/boton', $datos, TRUE);
+	break;
 
 	case 'permisos-boton-sucursal':
 		

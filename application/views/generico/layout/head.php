@@ -60,7 +60,6 @@
 
   <script src="<?= base_url('node_modules/datatables.net-buttons/js/dataTables.buttons.js') ?>"></script>
 
-  <script src="<?= base_url('node_modules/datatables.net-buttons/js/buttons.html5.js') ?>"></script> 
 
   
  
