@@ -773,6 +773,20 @@ $('.btnEditarPM').on('click',function(){
 
 function cargarTablaPrecios(id_producto_madre){
   console.log('cargando precios');
+  var datos = new FormData();
+    datos.append("id_producto",id_producto_madre);
+    $.ajax({
+        method:'POST',
+        url:'<?=site_url("obtener-lista-precio")?>',
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success:function(respuesta){
+          console.log(respuesta);
+        }
+    });
 }
 
 function guardarPrimeraCategoria(){
