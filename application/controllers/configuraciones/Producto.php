@@ -40,8 +40,9 @@
 
      public function lista_precios_producto(){
         $id_producto_madre = $this->input->post('id_producto_madre');
-
-        echo json_encode('respuesta');
+        $lista_productos_unicos = getProductosUnicos($id_producto_madre);
+        
+        echo json_encode($lista_productos_unicos);
      }
 
      public function guardar_primera_categoria(){
