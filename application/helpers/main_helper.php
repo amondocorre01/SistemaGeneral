@@ -438,6 +438,15 @@ if(!function_exists('getPreciosProductoUnico')) {
 	}
 }
 
+if(!function_exists('getTotalFrutasxProducto')) {
+	function getTotalFrutasxProducto($id_producto_unico){
+		$CI =& get_instance();
+		$sql="select count(*) as TOTAL FROM VENTAS_PROCEDIMIENTO_VENTA WHERE ID_PRODUCTO_UNICO = '$id_producto_unico';";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta[0]->TOTAL;
+	}
+}
+
   
 
   
