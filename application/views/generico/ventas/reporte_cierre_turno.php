@@ -133,6 +133,7 @@
                     <th>Saldo teorico</th>
                     <th>Dinero entregado</th>
                     <th>Descuadre</th>
+                    <th>Acciones</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -148,6 +149,7 @@
                             $monto_total_egresos = floatval(getEgresos($nombre_codigo_sucursal, $prefijo, $sufijo, $id_turno));
 
                             $fecha_apertura = $turno->FECHA;
+                            $fecha_apertura_copy = $turno->FECHA;
                             $fecha = explode("-", $fecha_apertura);
                             $ges=$fecha[0];
                             $mes=$fecha[1];
@@ -156,6 +158,7 @@
                             $horario_apertura = $turno->HORA_APERTURA;
                             $monto_cierre = $turno->MONTO_CIERRE;
                             $fecha_cierre = $turno->FECHA_CIERRE;
+                            $fecha_cierre_copy = $turno->FECHA_CIERRE;
                             if($fecha_cierre){
                                 $fecha = explode("-", $fecha_cierre);
                                 $ges=$fecha[0];
@@ -177,6 +180,32 @@
                             $saldo_teorico = $monto_apertura+$monto_total_ingresos-$monto_total_egresos+$monto_total_ventas_efectivo;
                             $monto_cierre = floatval($monto_cierre);
                             $descuadre = $monto_cierre - $saldo_teorico;
+                            
+                            $objetoCierreCaja = new stdClass();
+                            $objetoCierreCaja->usuario = $name_usuario;
+                            $objetoCierreCaja->impresora_local = $name_impresora;//pendiente
+                            $objetoCierreCaja->fecha_apertura = $fecha_apertura_copy;
+                            $objetoCierreCaja->horario_apertura = $horario_apertura;
+                            $objetoCierreCaja->monto_inicial = number_format($monto_apertura,2); //monto de apertura
+                            $objetoCierreCaja->total_ingresos = number_format($monto_total_ingresos,2) ;
+                            $objetoCierreCaja->total_egresos = number_format($monto_total_egresos,2);
+                            $objetoCierreCaja->monto_total_ventas_efectivo = number_format($monto_total_ventas_efectivo,2);
+                            $objetoCierreCaja->monto_total_ventas_no_efectivo = number_format($monto_total_ventas_no_efectivo,2);
+                            $objetoCierreCaja->monto_total_ventas_pago_qr = number_format($monto_total_ventas_pago_qr,2);
+                            $objetoCierreCaja->monto_total_ventas_tarjeta = number_format($monto_total_ventas_tarjeta,2);
+                            $objetoCierreCaja->monto_total_ventas_transferencia_bancaria = number_format($monto_total_ventas_transferencia_bancaria,2);
+                            $objetoCierreCaja->monto_total_ventas_cupon_pedidos_ya = number_format($monto_total_ventas_cupon_pedidos_ya,2);
+                            $objetoCierreCaja->monto_total_ventas_gift_card = number_format($monto_total_ventas_gift_card,2);
+                            $objetoCierreCaja->saldo_teorico = number_format($saldo_teorico,2);
+                            $objetoCierreCaja->monto_cierre = number_format($monto_cierre,2); //dinero entregado
+                            $objetoCierreCaja->descuadre = number_format($descuadre,2);
+                            $objetoCierreCaja->fecha_cierre = $fecha_cierre_copy;
+                            $objetoCierreCaja->hora_cierre = $hora_cierre;
+                            $objetoCierreCaja->sucursal = $descripcion_sucursal;
+                            $objetoCierreCaja->rangoFacturas = $rangoFacturas;
+                            $objetoCierreCaja->cantidadRecibos = $cantidadRecibos;
+                            $res=json_encode($objetoCierreCaja);
+                            $res_64=base64_encode($res);
                             echo '<tr>
                             <td>'.$turno->ID_USUARIO.'-'.$name_usuario.'</td>
                             <td>'.$fecha_apertura.'  '.$horario_apertura.'</td>
@@ -194,6 +223,7 @@
                             <td>'.$saldo_teorico.'</td>
                             <td>'.$monto_cierre.'</td>
                             <td>'.$descuadre.'</td>
+                            <td><a class="btn btn-primary btn-info btn-xs" usuario="'.$name_usuario.'" print="'.$res_64.'" onclick="imprimirCierreTurno(this)" title="Imprimir"><i class="las la-print"></i></a></td>
                             </tr>';
                             
                         }
@@ -259,6 +289,20 @@
 </div>
 
 <script>
+
+async function imprimirCierreTurno(element){
+  var data = $(element).attr('print');
+  var datos = atob(data);
+  datos = JSON.parse(datos);
+  //console.log('datos',datos);
+  datos = JSON.stringify(datos);
+  await setTimeout(async() =>{ 
+    const rawResponse = await fetch('https://capresso.local/printCierreCaja', {
+    method: 'POST',
+  body: datos
+  });
+}, 1000); 
+}
 
 function abrirDetalleTurno(element){
     $('.detalleTurno').html("<center>Cargando datos...</center>");
