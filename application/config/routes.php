@@ -204,6 +204,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['reimprimir-factura-rollo/(:any)'] = 'api/impresion/reimprimirFacturaRollo/$1';
     $route['imprimir-factura-anulada-carta/(:any)'] = 'api/impresion/imprimirFacturaAnuladaCarta/$1';
     $route['imprimir-factura-anulada-rollo/(:any)'] = 'api/impresion/imprimirFacturaAnuladaRollo/$1';
+    $route['imprimir-cierre-turno'] = 'api/impresion/imprimirCierreTurno';
     $route['obtener-objeto-factura/(:any)'] = 'api/impresion/obtenerObjetoFactura/$1';
 
     $route['reset-password'] = 'api/usuarios/reset';

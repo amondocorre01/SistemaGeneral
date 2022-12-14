@@ -772,6 +772,14 @@
             $data = null;
             $this->load->view('impresion/detalle_turno', $data, FALSE);
          }
+
+         function imprimirCierreTurno(){
+            $data_print = $this->input->post('data_print');
+            $data['datos'] = base64_decode($data_print);
+            //$data = json_decode($data);
+            //$data = null;
+            $this->load->view('impresion/detalle_turno', $data, FALSE);
+         }
         
     
     }

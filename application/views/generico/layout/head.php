@@ -58,7 +58,12 @@
   <script src="<?=base_url('node_modules/datatables.net-responsive/js/dataTables.responsive.js')?>"></script>
 	<script src="<?= base_url('node_modules/datatables.net-responsive-dt/js/responsive.dataTables.js') ?>"></script>
 
+<<<<<<< HEAD
   
+=======
+
+
+>>>>>>> aa4689da7f74f5c04d1dffd0a9d65682f6d9d7a3
   
  
   

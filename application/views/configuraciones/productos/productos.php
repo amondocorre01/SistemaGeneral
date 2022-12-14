@@ -664,6 +664,7 @@ $('.btnAgregarSC').on('click',function(){
 });
 
 $('.btnAgregarPM').on('click',function(){
+  deleteRows();
   $('#productoMadre').val('');
   $('#productoMadre').select2();
   $('.btnEditarPM').hide();
@@ -675,12 +676,25 @@ $('.btnAgregarPM').on('click',function(){
   $('#precioTransporte').val('');
   $("#transporteNo").prop('checked', true);
   $("#transporteSi").prop('checked',false);
+
+  $('#producto').val('');
+  $('#detalleProducto').val('');
+  $('#unidadMedida').val('');
+  $('#unidadMedida').select2();
+  $('#actividadEconomica').val('');
+  $('#productoSIN').val('');
+  $('#selectTam').val('')
+  $('#selectTam').select2();
+  var rutaImagen = "<?=base_url('assets/dist/img/default-image.jpg')?>";
+  $(".previsualizar").attr("src", rutaImagen);
+
   var texto_seleccionado = $('#productoCategoria1 option:selected').html();
   var texto_seleccionado = $('#productoCategoria2 option:selected').html();
 });
 
 $('.btnEditarPM').on('click',function(){
       console.log('Cargando datos para editar');
+      deleteRows();
       $('#agregarEditarProducto').show();
       $('.btnEditarPM').hide();
       $('.btnEliminarPM').hide();
@@ -698,6 +712,8 @@ $('.btnEditarPM').on('click',function(){
       $('#unidadMedida').select2();
       $('#actividadEconomica').val('');
       $('#productoSIN').val('');
+      $('#selectTam').val('')
+      $('#selectTam').select2();
       var rutaImagen = "<?=base_url('assets/dist/img/default-image.jpg')?>";
       $(".previsualizar").attr("src", rutaImagen);
 
@@ -729,10 +745,7 @@ $('.btnEditarPM').on('click',function(){
             var precioTransporte = obj[0].PRECIO_TRANSPORTE;
             var detalleProducto = obj[0].DETALLE;
             if(imagen){
-              console.log('si imagen');
               $(".previsualizar").attr("src", "data:image/png;base64,"+imagen);
-            }else{
-              console.log('no existe imagen');
             }
             $('#detalleProducto').val(detalleProducto);
             $('#unidadMedida').val(codUnidadMedida);
@@ -751,8 +764,6 @@ $('.btnEditarPM').on('click',function(){
               $("#transporteSi").prop('checked',false);
               $('.inputPrecioTransporte').hide();
             }
-            console.log(obj[0]);
-            console.log('Producto',prodMadre);
             if(prodMadre ==''){
               var texto_seleccionado = $('#productoMadre option:selected').html();
               prodMadre = texto_seleccionado;
@@ -772,7 +783,6 @@ $('.btnEditarPM').on('click',function(){
 });
 
 function cargarTablaPrecios(id_producto_madre){
-  console.log('cargando precios');
   var datos = new FormData();
     datos.append("id_producto_madre",id_producto_madre);
     $.ajax({
@@ -785,8 +795,56 @@ function cargarTablaPrecios(id_producto_madre){
         dataType: "json",
         success:function(respuesta){
           console.log(respuesta);
+         var tam = respuesta.length;
+         console.log(tam);
+         respuesta.forEach(element => {
+          var cantFrutas = element.cantidad_frutas;
+          var id_producto_unico = element.id_producto_unico;
+          var id_producto_madre = element.id_producto_madre;
+          var idTamProducto = element.id_tam;
+          var textTamProducto = '';
+          var arrayPrecios = element.precios_producto_unico;
+          $('#selectTam option[value="'+idTamProducto+'"]').prop("selected", true);
+          $('#selectTam').select2();
+          var tam_seleccionado = $('#selectTam option[value="'+idTamProducto+'"]').html();
+          textTamProducto = tam_seleccionado;
+          const modalPrecios = document.getElementsByName("modalCostos"); 
+          var rowsPrecio='';
+          modalPrecios.forEach(element => {
+            var costoElement = element.value;
+            var iden = $(element).attr('iden');
+            var costoElement = 0;
+            for (let i = 0; i < arrayPrecios.length; i++) {
+              const iden_lp = arrayPrecios[i].ID_NOMBRE_LISTA_PRECIOS;
+              if(iden == iden_lp){
+                costoElement = arrayPrecios[i].PRECIO;
+                i = arrayPrecios.length;
+              }
+            }
+            rowsPrecio = `${rowsPrecio}'<td align="center"><input class="in-cant listaPreciosTabla-${idTamProducto}" type="hidden" value="${costoElement}" min='0' name="listaCostos_${iden}" />${costoElement}</td>`;
+          });
+          let row = `
+          <td align="center"><input type="hidden" name="listaPrecios" value="${idTamProducto}" />${textTamProducto}</td>
+          <td align="center"><input type="hidden" name="cantidadFrutas" value="${cantFrutas}" />${cantFrutas}</td>
+          ${rowsPrecio}
+          `;
+          $("#tablaProductos>tbody").prepend(`
+          <tr id="products-tr-${idTamProducto}">
+          ${row}
+          <td align="center">
+            <a class="btnShowProducts btn-warning editRow btn-xs" iden="${idTamProducto}" textTam="${textTamProducto}"><i class="fa fa-pencil"></i></a>  
+            <a class="btnShowProducts btn-danger deleteRow btn-xs" iden="${idTamProducto}"><i class="fa fa-times"></i></a>
+          </td>
+          </tr>
+          `);
+
+         });
         }
     });
+}
+
+function deleteRows(){
+    $('#tablaProductos>tbody>tr').remove();
 }
 
 function guardarPrimeraCategoria(){

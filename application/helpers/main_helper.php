@@ -222,15 +222,16 @@ function rangoFacturas($bd, $sufijo, $id_turno){
 }
 
 if(!function_exists('getIngresos')) {
-function getIngresos($bd, $prefijo, $sufijo, $id){
+function getIngresos($bd, $prefijo, $sufijo_sucursal, $id_turno){
 	$res=0;
-	$sql = "EXEC ".$prefijo."SUMA_INGRESOS '$id';";
+	//$sql = "EXEC ".$prefijo."SUMA_INGRESOS '$id';";
+	$sql = "select ((select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_A from MOVIMIENTOS_CAJA".$sufijo_sucursal." where ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '1' and ID_VENTA_DOCUMENTO = '0' and ID_TIPO_PAGO = '1')+(select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_B from MOVIMIENTOS_CAJA".$sufijo_sucursal." mcs , VENTA_DOCUMENTO".$sufijo_sucursal." vds where mcs.ID_VENTA_DOCUMENTO = vds.ID_VENTA_DOCUMENTO and vds.ANULADO = '0' and ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '1' and ID_TIPO_PAGO = '1')) as TOTAL;";
 	$CI =& get_instance();
 	$DB2 = $CI->load->database($bd, TRUE);
 	$respuesta = $DB2->query($sql);
 	$respuesta = $respuesta->result();
 	if(count($respuesta)==1){
-		$res = $respuesta[0]->ingresos;
+		$res = $respuesta[0]->TOTAL;
 		if($res ==null){
 			$res=0;
 		}
@@ -240,15 +241,16 @@ function getIngresos($bd, $prefijo, $sufijo, $id){
 }
 
 if(!function_exists('getEgresos')) {
-function getEgresos($bd, $prefijo, $sufijo, $id){
+function getEgresos($bd, $prefijo, $sufijo_sucursal, $id_turno){
 	$res=0;
-	$sql = "EXEC ".$prefijo."SUMA_EGRESOS '$id';";
+	//$sql = "EXEC ".$prefijo."SUMA_EGRESOS '$id';";
+	$sql = "select ((select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_A from MOVIMIENTOS_CAJA".$sufijo_sucursal." where ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '0' and ID_VENTA_DOCUMENTO = '0' and ID_TIPO_PAGO = '1')+(select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_B from MOVIMIENTOS_CAJA".$sufijo_sucursal." mcs , VENTA_DOCUMENTO".$sufijo_sucursal." vds where mcs.ID_VENTA_DOCUMENTO = vds.ID_VENTA_DOCUMENTO and vds.ANULADO = '0' and ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '0' and ID_TIPO_PAGO = '1')) as TOTAL;";
 	$CI =& get_instance();
 	$DB2 = $CI->load->database($bd, TRUE);
 	$respuesta = $DB2->query($sql);
 	$respuesta = $respuesta->result();
 	if(count($respuesta)==1){
-		$res = $respuesta[0]->egresos;
+		$res = $respuesta[0]->TOTAL;
 		if($res ==null){
 			$res=0;
 		}
@@ -302,9 +304,11 @@ function getTotalTurno($bd, $sufijo_sucursal, $id_turno, $filtro){
 if(!function_exists('getTotalTurnoTransporte')) {
 function getTotalTurnoTransporte($bd, $sufijo_sucursal, $id_turno, $filtro){
 	$res=0;
-	$sql = "select CASE WHEN (SUM(VP.MONTO)+SUM(CAST(VD.PRECIO_TRANSPORTE AS float))) IS NULL THEN 0 ELSE (SUM(VP.MONTO)+SUM(CAST(VD.PRECIO_TRANSPORTE AS float))) END AS TOTAL
+	/*$sql = "select CASE WHEN (SUM(VP.MONTO)+SUM(CAST(VD.PRECIO_TRANSPORTE AS float))) IS NULL THEN 0 ELSE (SUM(VP.MONTO)+SUM(CAST(VD.PRECIO_TRANSPORTE AS float))) END AS TOTAL
 	from VENTA_PAGO".$sufijo_sucursal." VP, VENTA_DOCUMENTO".$sufijo_sucursal." VD
-	WHERE DESCRIPCION_PAGO='$filtro' AND VD.ID_VENTA_DOCUMENTO=VP.ID_VENTA_DOCUMENTO AND VD.ANULADO=0 AND ID_TURNO = '$id_turno';";
+	WHERE DESCRIPCION_PAGO='$filtro' AND VD.ID_VENTA_DOCUMENTO=VP.ID_VENTA_DOCUMENTO AND VD.ANULADO=0 AND ID_TURNO = '$id_turno';";*/
+	$sql = "select ((select CASE WHEN (SUM(CAST(vts.PRECIO_CONTRATO AS float))) IS NULL THEN 0 ELSE (SUM(CAST(vts.PRECIO_CONTRATO AS float))) END AS TOTAL_TRANSPORTE from VENTA_PAGO".$sufijo_sucursal." vps, VENTA_DOCUMENTO".$sufijo_sucursal." vds , VENTA_TRANSPORTE".$sufijo_sucursal." vts where vds.ID_VENTA_DOCUMENTO =vps.ID_VENTA_DOCUMENTO and vds.ID_VENTA_DOCUMENTO =vts.ID_VENTA_DOCUMENTO and vds.ID_TURNO ='$id_turno' and vps.DESCRIPCION_PAGO='$filtro' and vds.ANULADO ='0') +
+            (select CASE WHEN (SUM(monto)) IS NULL THEN 0 ELSE (SUM(monto)) END as TOTAL_PAGO from VENTA_PAGO".$sufijo_sucursal." vps where DESCRIPCION_PAGO ='$filtro' and  vps.ID_VENTA_DOCUMENTO in (select ID_VENTA_DOCUMENTO from VENTA_DOCUMENTO".$sufijo_sucursal." vds where ANULADO='0' and ID_TURNO = '$id_turno'))) as TOTAL ";
 	$CI =& get_instance();
 	$DB2 = $CI->load->database($bd, TRUE);
 	$respuesta = $DB2->query($sql);
@@ -435,6 +439,15 @@ if(!function_exists('getPreciosProductoUnico')) {
 		$sql="select * FROM VENTAS_PRECIO_PRODUCTO_UNICO where ID_PRODUCTO_UNICO in (SELECT ID_PRODUCTO_UNICO  FROM VENTAS_PRODUCTO_UNICO where ID_PRODUCTO_MADRE ='$id_producto_madre' AND ID_TAMAÑO='$id_tam');";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
+	}
+}
+
+if(!function_exists('getTotalFrutasxProducto')) {
+	function getTotalFrutasxProducto($id_producto_unico){
+		$CI =& get_instance();
+		$sql="select count(*) as TOTAL FROM VENTAS_PROCEDIMIENTO_VENTA WHERE ID_PRODUCTO_UNICO = '$id_producto_unico';";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta[0]->TOTAL;
 	}
 }
 

@@ -41,14 +41,22 @@
      public function lista_precios_producto(){
         $id_producto_madre = $this->input->post('id_producto_madre');
         $lista_productos_unicos = getProductosUnicos($id_producto_madre);
-
+        $arrayPrecios = array();
         foreach ($lista_productos_unicos as $key => $value) {
             $id_tam = $value->ID_TAMAÑO;
+            $id_producto_unico = $value->ID_PRODUCTO_UNICO;
+            $id_producto_madre = $value->ID_PRODUCTO_MADRE;
             $lista_precios= getPreciosProductoUnico($id_producto_madre, $id_tam);
-            var_dump($lista_precios);
+            $cantidad_frutas= getTotalFrutasxProducto($id_producto_unico);
+            $objetoProductoUnico = new stdClass();
+            $objetoProductoUnico->id_producto_unico = $id_producto_unico;
+            $objetoProductoUnico->id_producto_madre = $id_producto_madre;
+            $objetoProductoUnico->id_tam = $id_tam;
+            $objetoProductoUnico->cantidad_frutas = $cantidad_frutas;
+            $objetoProductoUnico->precios_producto_unico = $lista_precios;
+            array_push($arrayPrecios, $objetoProductoUnico);
         }
-
-        echo json_encode($lista_productos_unicos);
+        echo json_encode($arrayPrecios);
      }
 
      public function guardar_primera_categoria(){
