@@ -38,9 +38,14 @@
 
 <script>
 
+    
+
+
     function searchAcceso() {
 
         var id = $('#usuario').val();
+
+        $('.loading').show();
 
         $.ajax({
             type: "POST",
@@ -48,6 +53,7 @@
             data: { id: id},
             dataType: "html",
             success: function (response) {
+                $('.loading').hide();
                 $('#menu').empty();
                 $('#menu').append(response);
             }

@@ -6,7 +6,7 @@
       <div class="col-9"><p class="lead" style="font-weight: 500;"><?=$value->NOMBRE?></p></div>
       <div class="col-3"> 
 
-      <select class="form-control level1" id="nivel<?=$value->ID_VENTAS_ACCESO?>" onchange="activar(<?=$value->ID_VENTAS_ACCESO?>)" >
+      <select class="form-control level1 <?=($value->ACCEDE == 1)?' palette-Green-A100 bg':''?>" id="nivel<?=$value->ID_VENTAS_ACCESO?>" onchange="activar(<?=$value->ID_VENTAS_ACCESO?>)" >
         <option <?=($value->ACCEDE) ? 'selected' : '' ?> value="1"> ACTIVO </option>
         <option <?=($value->ACCEDE == NULL) ? 'selected' : '' ?> value="0"> INACTIVO </option>
       </select>
@@ -29,7 +29,7 @@
                         <div class="col-1"></div>
                         <div class="col-8"><p class="lead" style="font-weight: 500;"><?=$hijo->NOMBRE?></p></div>
                         <div class="col-3"> 
-                            <select class="form-control level1" id="nivel<?=$hijo->ID_VENTAS_ACCESO?>" onchange="activar(<?=$hijo->ID_VENTAS_ACCESO?>)" >
+                            <select class="form-control level1 <?=($hijo->ACCEDE == 1)?' palette-Green-A100 bg':''?>"" id="nivel<?=$hijo->ID_VENTAS_ACCESO?>" onchange="activar(<?=$hijo->ID_VENTAS_ACCESO?>)" >
                                 <option <?=($hijo->ACCEDE) ? 'selected' : '' ?> value="1"> ACTIVO </option>
                                 <option <?=($hijo->ACCEDE == NULL) ? 'selected' : '' ?> value="0"> INACTIVO </option>
                             </select>
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="col-6"><p class="lead" style="font-weight: 500;"><?=$nieto->NOMBRE?></p></div>
                                 <div class="col-3"> 
-                                <select class="form-control" id="nivel<?=$nieto->ID_VENTAS_ACCESO?>" onchange="activar(<?=$nieto->ID_VENTAS_ACCESO?>)" >
+                                <select class="form-control <?=($nieto->ACCEDE == 1)?' palette-Green-A100 bg':''?>"" id="nivel<?=$nieto->ID_VENTAS_ACCESO?>" onchange="activar(<?=$nieto->ID_VENTAS_ACCESO?>)" >
                                     <option <?=($nieto->ACCEDE) ? 'selected' : '' ?> value="1"> ACTIVO </option>
                                     <option <?=($nieto->ACCEDE == NULL) ? 'selected' : '' ?> value="0"> INACTIVO </option>
                                 </select>
@@ -82,7 +82,7 @@
 
                                         <div class="col-5"><p class="lead" style="font-weight: 500;"><?=$bisnieto->NOMBRE?></p></div>
                                         <div class="col-3"> 
-                                            <select class="form-control" id="nivel<?=$bisnieto->ID_VENTAS_ACCESO?>" onchange="activar(<?=$bisnieto->ID_VENTAS_ACCESO?>)" >
+                                            <select class="form-control <?=($bisnieto->ACCEDE == 1)?' palette-Green-A100 bg':''?>"" id="nivel<?=$bisnieto->ID_VENTAS_ACCESO?>" onchange="activar(<?=$bisnieto->ID_VENTAS_ACCESO?>)" >
                                                 <option <?=($bisnieto->ACCEDE) ? 'selected' : '' ?> value="1"> ACTIVO </option>
                                                 <option <?=($bisnieto->ACCEDE == NULL) ? 'selected' : '' ?> value="0"> INACTIVO </option>
                                             </select>

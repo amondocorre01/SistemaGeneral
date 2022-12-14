@@ -43,6 +43,7 @@ function getAcessos() {
 
     var id = $('#perfil').val();
 
+    $('.loading').show();
 
     $.ajax({
         type: "POST",
@@ -50,6 +51,7 @@ function getAcessos() {
         data: { id: id},
         dataType: "html",
         success: function (response) {
+            $('.loading').hide();
             $('#ace').empty();
             $('#menu').append(response);
         }
