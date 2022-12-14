@@ -231,7 +231,7 @@ function getIngresos($bd, $prefijo, $sufijo_sucursal, $id_turno){
 	$respuesta = $DB2->query($sql);
 	$respuesta = $respuesta->result();
 	if(count($respuesta)==1){
-		$res = $respuesta[0]->ingresos;
+		$res = $respuesta[0]->TOTAL;
 		if($res ==null){
 			$res=0;
 		}
@@ -250,7 +250,7 @@ function getEgresos($bd, $prefijo, $sufijo_sucursal, $id_turno){
 	$respuesta = $DB2->query($sql);
 	$respuesta = $respuesta->result();
 	if(count($respuesta)==1){
-		$res = $respuesta[0]->egresos;
+		$res = $respuesta[0]->TOTAL;
 		if($res ==null){
 			$res=0;
 		}
