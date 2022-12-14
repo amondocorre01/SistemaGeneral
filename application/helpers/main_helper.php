@@ -225,7 +225,7 @@ if(!function_exists('getIngresos')) {
 function getIngresos($bd, $prefijo, $sufijo_sucursal, $id_turno){
 	$res=0;
 	//$sql = "EXEC ".$prefijo."SUMA_INGRESOS '$id';";
-	$sql = "select ((select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_A from MOVIMIENTOS_CAJA".$sufijo_sucursal." where ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '1' and ID_VENTA_DOCUMENTO = '0')+(select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_B from MOVIMIENTOS_CAJA".$sufijo_sucursal." mcs , VENTA_DOCUMENTO".$sufijo_sucursal." vds where mcs.ID_VENTA_DOCUMENTO = vds.ID_VENTA_DOCUMENTO and vds.ANULADO = '0' and ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '1')) as TOTAL;";
+	$sql = "select ((select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_A from MOVIMIENTOS_CAJA".$sufijo_sucursal." where ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '1' and ID_VENTA_DOCUMENTO = '0' and ID_TIPO_PAGO = '1')+(select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_B from MOVIMIENTOS_CAJA".$sufijo_sucursal." mcs , VENTA_DOCUMENTO".$sufijo_sucursal." vds where mcs.ID_VENTA_DOCUMENTO = vds.ID_VENTA_DOCUMENTO and vds.ANULADO = '0' and ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '1' and ID_TIPO_PAGO = '1')) as TOTAL;";
 	$CI =& get_instance();
 	$DB2 = $CI->load->database($bd, TRUE);
 	$respuesta = $DB2->query($sql);
@@ -244,7 +244,7 @@ if(!function_exists('getEgresos')) {
 function getEgresos($bd, $prefijo, $sufijo_sucursal, $id_turno){
 	$res=0;
 	//$sql = "EXEC ".$prefijo."SUMA_EGRESOS '$id';";
-	$sql = "select ((select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_A from MOVIMIENTOS_CAJA".$sufijo_sucursal." where ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '0' and ID_VENTA_DOCUMENTO = '0')+(select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_B from MOVIMIENTOS_CAJA".$sufijo_sucursal." mcs , VENTA_DOCUMENTO".$sufijo_sucursal." vds where mcs.ID_VENTA_DOCUMENTO = vds.ID_VENTA_DOCUMENTO and vds.ANULADO = '0' and ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '0')) as TOTAL;";
+	$sql = "select ((select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_A from MOVIMIENTOS_CAJA".$sufijo_sucursal." where ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '0' and ID_VENTA_DOCUMENTO = '0' and ID_TIPO_PAGO = '1')+(select CASE WHEN (SUM(MONTO)) IS NULL THEN 0 ELSE (SUM(MONTO)) END AS TOTAL_B from MOVIMIENTOS_CAJA".$sufijo_sucursal." mcs , VENTA_DOCUMENTO".$sufijo_sucursal." vds where mcs.ID_VENTA_DOCUMENTO = vds.ID_VENTA_DOCUMENTO and vds.ANULADO = '0' and ID_CIERRE_APERTURA_TURNO = '$id_turno' and ingreso = '0' and ID_TIPO_PAGO = '1')) as TOTAL;";
 	$CI =& get_instance();
 	$DB2 = $CI->load->database($bd, TRUE);
 	$respuesta = $DB2->query($sql);
