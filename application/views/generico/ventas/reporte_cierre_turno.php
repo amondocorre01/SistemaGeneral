@@ -287,11 +287,15 @@
         </div>
         <!-- /.modal-dialog -->
 </div>
-
+<form id="form_print" method="post" action="<?=site_url('imprimir-cierre-turno')?>" target="_blank">
+<input type="hidden" id="data_print" name="data_print" />
+</form>
 <script>
 
 async function imprimirCierreTurno(element){
   var data = $(element).attr('print');
+  $('#data_print').val(data);
+  document.getElementById('form_print').submit();
   var datos = atob(data);
   datos = JSON.parse(datos);
   //console.log('datos',datos);
