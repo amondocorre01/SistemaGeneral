@@ -96,6 +96,28 @@
   <?=link_tag('https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css')?>
 <!-- DATA TABLES -->
 
+<script>
+
+ const testData = document.getElementById("menunav_<?=$this->input->get('vc')?>");
+
+ let superior = testData.getAttribute("data-sup");
+
+ testData.style.color = "ghostwhite";
+
+ testData.style.fontWeight = "700";
+
+ const testSuperior= document.getElementById("menunav_"+superior);
+
+ testSuperior.style.color = "white";
+
+ $( testSuperior ).parent().css( "background-color", "#dc3545" );
+
+ $( testSuperior ).parent().addClass('menu-is-opening menu-open');
+
+ 
+
+
+</script>
 
    
 

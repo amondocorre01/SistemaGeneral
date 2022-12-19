@@ -1110,7 +1110,7 @@ class Inicio extends CI_Controller {
                 $habilitado = $this->verificarPermisoMenu($id_usuario, $id_nivel);
                 if($habilitado){
                     $res = $res.'<li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" id="menunav_'.$row->ID_VENTAS_ACCESO.'">
                         '.$row->ICONO.'
                         <p>
                         '.$nombre.'
@@ -1146,14 +1146,14 @@ class Inicio extends CI_Controller {
                         if($navegacion=='new-tab'){
                             $url=site_url($link);
                             $res = $res.'<li class="nav-item">
-                            <a href="'.$url.'" target="_blank" class="nav-link">
+                            <a href="'.$url.'" target="_blank" class="nav-link '.'" data-page="'.$row->ID_VENTAS_ACCESO.'">
                             '.$row->ICONO.'
                             <p>'.$nombre.'</p>
                             </a>
                             </li>';
                         }else{
                             $res = $res.'<li class="nav-item">
-                            <a href="'.$url.'" class="nav-link">   
+                            <a href="'.$url.'" class="nav-link" data-sup="'.$row->NIVEL_SUPERIOR.'" id="menunav_'.$row->ID_VENTAS_ACCESO.'">   
                             '.$row->ICONO.'
                             <p>'.$nombre.'</p>
                             </a>

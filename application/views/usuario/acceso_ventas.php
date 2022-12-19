@@ -42,12 +42,15 @@
 
         var id = $('#usuario').val();
 
+        $('.loading').show();
+
         $.ajax({
             type: "POST",
             url: "<?=site_url('get-usuario-venta')?>",
             data: { id: id},
             dataType: "html",
             success: function (response) {
+                $('.loading').hide();
                 $('#menu').empty();
                 $('#menu').append(response);
             }
