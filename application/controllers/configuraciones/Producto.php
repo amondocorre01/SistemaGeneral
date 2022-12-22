@@ -62,19 +62,61 @@
      public function guardar_primera_categoria(){
         $nombre_pc = $this->input->post('nombre_pc');
         $res = null;
-        $sql = "insert into VENTAS_CATEGORIA_1(CATEGORIA)values('$nombre_pc');";
+        $sql = "insert into VENTAS_CATEGORIA_1(CATEGORIA,ELIMINADO,ORDENADO)values('$nombre_pc','0',(select case when (max(ordenado)+1) is null then 1 else (max(ordenado)+1) end from VENTAS_CATEGORIA_1));";
         $res = $this->main->executeQuery($sql);
         echo json_encode($res);
      }
+
+     public function modificar_primera_categoria(){
+      $nombre_pc = $this->input->post('nombre_pc');
+      $id_categoria = $this->input->post('id_categoria');
+      $res = null;
+      $sql = "update VENTAS_CATEGORIA_1 set CATEGORIA = '$nombre_pc' where ID_CATEGORIA = '$id_categoria';";
+      $res = $this->main->executeQuery($sql);
+      echo json_encode($res);
+    }
+
+    public function eliminar_primera_categoria(){
+      $id_categoria = $this->input->post('id_categoria');
+      $res = null;
+      $sql = "update VENTAS_CATEGORIA_1 set ELIMINADO = '1' where ID_CATEGORIA = '$id_categoria';";
+      $res = $this->main->executeQuery($sql);
+      echo json_encode($res);
+    }
+
+    public function eliminar_segunda_categoria(){
+      $id_categoria = $this->input->post('id_categoria');
+      $res = null;
+      $sql = "update VENTAS_CATEGORIA_2 set ELIMINADO = '1' where ID_CATEGORIA_2 = '$id_categoria';";
+      $res = $this->main->executeQuery($sql);
+      echo json_encode($res);
+    }
+
+    public function eliminar_producto_madre(){
+      $id_producto = $this->input->post('id_producto');
+      $res = null;
+      $sql = "update VENTAS_PRODUCTO_MADRE set ELIMINADO = '1' where ID_PRODUCTO_MADRE = '$id_producto';";
+      $res = $this->main->executeQuery($sql);
+      echo json_encode($res);
+    }
 
      public function guardar_segunda_categoria(){
         $id_categoria_1 = $this->input->post('categoria_1'); 
         $nombre_sc = $this->input->post('nombre_sc');
         $res = null;
-        $sql = "insert into VENTAS_CATEGORIA_2(ID_CATEGORIA, CATEGORIA_2)values('$id_categoria_1','$nombre_sc');";
+        $sql = "insert into VENTAS_CATEGORIA_2(ID_CATEGORIA, CATEGORIA_2, ELIMINADO, ORDENADO)values('$id_categoria_1','$nombre_sc','0',(select case when (max(ORDENADO)+1) is null then 1 else (max(ORDENADO)+1) end from VENTAS_CATEGORIA_2 where ID_CATEGORIA='$id_categoria_1'));";
         $res = $this->main->executeQuery($sql);
         echo json_encode($res);
      }
+
+     public function modificar_segunda_categoria(){
+      $nombre = $this->input->post('nombre');
+      $id_categoria = $this->input->post('id_categoria_2');
+      $res = null;
+      $sql = "update VENTAS_CATEGORIA_2 set CATEGORIA_2 = '$nombre' where ID_CATEGORIA_2 = '$id_categoria';";
+      $res = $this->main->executeQuery($sql);
+      echo json_encode($res);
+    }
 
      public function guardar_nuevo_producto(){
         $datos = $this->input->post('datos'); 

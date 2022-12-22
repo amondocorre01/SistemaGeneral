@@ -1,4 +1,9 @@
-<br>
+<?php
+$protocolo = protocoloWeb();
+$host= $_SERVER["HTTP_HOST"];
+$url= $_SERVER["REQUEST_URI"];
+$current_url = $protocolo.$host.$url;
+?>
 <!-- Select2 -->
 <link rel="stylesheet" href="<?=base_url('assets/plugins/select2/css/select2.min.css')?>">
 <link rel="stylesheet" href="<?=base_url('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')?>">
@@ -29,8 +34,8 @@
                 <div class="form-group">
                   <label>Categoria</label>
                   <a class="btnShowProducts btn-info btn-xs btnAgregarPC" title="Agregar categoria" data-toggle="modal" data-target="#modalAgregarPrimeraCategoria"><i class="fa fa-plus"></i></a>
-                  <a class="btnShowProducts btn-warning btn-xs btnEditarPC" title="Editar categoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-pencil"></i></a>
-                  <a class="btnShowProducts btn-danger btn-xs btnEliminarPC" title="Eliminar categoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-times"></i></a>
+                  <a class="btnShowProducts btn-warning btn-xs btnEditarPC" title="Editar categoria" data-toggle="modal" data-target="#modalAgregarPrimeraCategoria"><i class="fa fa-pencil"></i></a>
+                  <a class="btnShowProducts btn-danger btn-xs btnEliminarPC" title="Eliminar categoria"><i class="fa fa-times"></i></a>
                   <select name="productoCategoria1" id="productoCategoria1" class="form-control select2" style="width: 100%;">
                     <option value="" selected="selected">Seleccione la primera categoria</option>
                     <?php
@@ -45,8 +50,8 @@
                 <div class="form-group">
                   <label>Subcategoria</label>
                   <a class="btnShowProducts btn-info btn-xs btnAgregarSC" title="Agregar Subcategoria" data-toggle="modal" data-target="#modalAgregarSegundaCategoria"><i class="fa fa-plus"></i></a>
-                  <a class="btnShowProducts btn-warning btn-xs btnEditarSC" title="Editar Subcategoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-pencil"></i></a>
-                  <a class="btnShowProducts btn-danger btn-xs btnEliminarSC" title="Eliminar Subcategoria" data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-times"></i></a>
+                  <a class="btnShowProducts btn-warning btn-xs btnEditarSC" title="Editar Subcategoria" data-toggle="modal" data-target="#modalAgregarSegundaCategoria"><i class="fa fa-pencil"></i></a>
+                  <a class="btnShowProducts btn-danger btn-xs btnEliminarSC" title="Eliminar Subcategoria"><i class="fa fa-times"></i></a>
                   <select name="productoCategoria2" id="productoCategoria2" class="form-control select2" style="width: 100%;">
                     <option value="" selected="selected">Seleccione la segunda categoria</option>
                   </select>
@@ -57,7 +62,7 @@
                   <label>Seleccione el producto</label>
                   <a class="btnShowProducts btn-info btn-xs btnAgregarPM" title="Agregar producto "><i class="fa fa-plus"></i></a>
                   <a class="btnShowProducts btn-warning btn-xs btnEditarPM" title="Editar producto " ><i class="fa fa-pencil"></i></a>
-                  <a class="btnShowProducts btn-danger btn-xs btnEliminarPM" title="Eliminar producto " data-toggle="modal" data-target="#procedimiento_1670344808034"><i class="fa fa-times"></i></a>
+                  <a class="btnShowProducts btn-danger btn-xs btnEliminarPM" title="Eliminar producto " ><i class="fa fa-times"></i></a>
                   <select name="productoMadre" id="productoMadre" class="form-control select2" style="width: 100%;">
                     <option value="" selected="selected">Seleccione el producto</option>
                   </select>
@@ -199,7 +204,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Agregar 1ra categoria</h4>
+        <h4 class="modal-title">Categoria</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -215,7 +220,8 @@
       
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary"  onclick="guardarPrimeraCategoria()">Guardar</button>
+        <button type="button" class="btn btn-primary btnSavePrimeraCategoria"  onclick="guardarPrimeraCategoria()">Guardar</button>
+        <button type="button" class="btn btn-primary btnUpdatePrimeraCategoria"  onclick="guardarModificacionPrimeraCategoria()">Modificar</button>
       </div>
     </div>
   </div>
@@ -245,7 +251,8 @@
       
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary"  onclick="guardarSegundaCategoria()">Guardar</button>
+        <button type="button" class="btn btn-primary btnUpdatePrimeraCategoria"  onclick="guardarSegundaCategoria()">Guardar</button>
+        <button type="button" class="btn btn-primary btnUpdateSegundaCategoria"  onclick="guardarModificacionSegundaCategoria()">Modificar</button>
       </div>
     </div>
   </div>
@@ -321,6 +328,10 @@
 
 <script>
 $(document).ready(function(){
+    $('.btnSavePrimeraCategoria').hide();
+    $('.btnUpdatePrimeraCategoria').hide();
+    $('.btnSaveSegundaCategoria').hide();
+    $('.btnUpdateSegundaCategoria').hide();
     $('#saveProduct').hide();
     $('#saveEditProduct').hide();
     $('#agregarEditarProducto').hide();
@@ -339,6 +350,153 @@ $(document).ready(function(){
     $('.btnEliminarPM').hide();
 
     $('.inputPrecioTransporte').hide();
+
+    $('.btnAgregarPC').on('click',function(){
+      $('.btnSavePrimeraCategoria').show();
+      $('.btnUpdatePrimeraCategoria').hide();
+      $('#primeraCategoriaMPC').val('');
+    });
+
+    $('.btnEditarPC').on('click',function(){
+      $('.btnSavePrimeraCategoria').hide();
+      $('.btnUpdatePrimeraCategoria').show();
+      $('#primeraCategoriaMPC').val('');
+      var primera_categoria = $('#productoCategoria1').val();
+      var texto_seleccionado = $('#productoCategoria1 option:selected').html();
+      $('#primeraCategoriaMPC').val(texto_seleccionado);
+    });
+
+    $('.btnAgregarSC').on('click',function(){
+      $('.btnSaveSegundaCategoria').show();
+      $('.btnUpdateSegundaCategoria').hide();
+      $('#segundaCategoriaMSC').val('');
+      var texto_seleccionado = $('#productoCategoria1 option:selected').html();
+      $('#priCategoria').val(texto_seleccionado);
+    });
+
+    $('.btnEditarSC').on('click',function(){
+      $('.btnSaveSegundaCategoria').hide();
+      $('.btnUpdateSegundaCategoria').show();
+      $('#segundaCategoriaMSC').val('');
+      var texto_seleccionado = $('#productoCategoria1 option:selected').html();
+      $('#priCategoria').val(texto_seleccionado);
+      var texto_seleccionado = $('#productoCategoria2 option:selected').html();
+      $('#segundaCategoriaMSC').val(texto_seleccionado);
+    });
+
+    $('.btnEliminarPC').on('click',function(){
+      swal.fire({
+        title: "¿Estás seguro?",
+        text: "Se eliminará la categoria seleccionada.",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Continuar"
+      }).then((result) => {
+          if (result.isConfirmed) {
+            var id_categoria = $('#productoCategoria1').val();
+            $('.loading').show();
+            var datos = new FormData();
+            datos.append("id_categoria",id_categoria);
+            $.ajax({
+                method:'POST',
+                url:'<?=site_url("eliminar-primera-categoria")?>',
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success:function(respuesta){
+                  if(respuesta == 'ok'){
+                    $('.loading').hide();
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Se ha eliminado correctamente.',
+                      timer: 3500
+                    });
+                    window.location.href = "<?=$current_url?>";
+                  }
+                }
+            });
+          }
+        });
+    });
+
+    $('.btnEliminarSC').on('click',function(){
+      swal.fire({
+        title: "¿Estás seguro?",
+        text: "Se eliminará la sub-categoria seleccionada.",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Continuar"
+      }).then((result) => {
+          if (result.isConfirmed) {
+            var id_categoria = $('#productoCategoria2').val();
+            $('.loading').show();
+            var datos = new FormData();
+            datos.append("id_categoria",id_categoria);
+            $.ajax({
+                method:'POST',
+                url:'<?=site_url("eliminar-segunda-categoria")?>',
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success:function(respuesta){
+                  if(respuesta == 'ok'){
+                    $('.loading').hide();
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Se ha eliminado correctamente.',
+                      timer: 3500
+                    });
+                    window.location.href = "<?=$current_url?>";
+                  }
+                }
+            });
+          }
+        });
+    });
+
+    $('.btnEliminarPM').on('click',function(){
+      swal.fire({
+        title: "¿Estás seguro?",
+        text: "Se eliminará el producto seleccionado.",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Continuar"
+      }).then((result) => {
+          if (result.isConfirmed) {
+            var id_producto = $('#productoMadre').val();
+            $('.loading').show();
+            var datos = new FormData();
+            datos.append("id_producto",id_producto);
+            $.ajax({
+                method:'POST',
+                url:'<?=site_url("eliminar-producto-madre")?>',
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success:function(respuesta){
+                  if(respuesta == 'ok'){
+                    $('.loading').hide();
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Se ha eliminado correctamente.',
+                      timer: 3500
+                    });
+                    window.location.href = "<?=$current_url?>";
+                  }
+                }
+            });
+          }
+        });
+    });
 
     $('#productoCategoria1').on('change',function(){
         var primera_categoria_id = $(this).val();
@@ -900,7 +1058,7 @@ $('.btnAgregarPM').on('click',function(){
                   title: 'Se ha guardado correctamente.',
                   timer: 3500
                 });
-                window.location.href = "<?=current_url()?>";
+                window.location.href = "<?=$current_url?>";
               }
             }
           });
@@ -916,7 +1074,7 @@ $('.btnEditarPM').on('click',function(){
       $('#saveEditProduct').show();
       $('#agregarEditarProducto').show();
       $('.btnEditarPM').hide();
-      $('.btnEliminarPM').hide();
+      $('.btnEliminarPM').show();
       $('#agregarEditarProducto').show();
       $(".cantidadFrutasModal").hide();
       $("#cantidadFrutasModal").val('');
@@ -996,7 +1154,7 @@ $('.btnEditarPM').on('click',function(){
                 title: 'Se ha registrado correctamente.',
                 timer: 3500
               });
-              window.location.href = "<?=current_url()?>";
+              window.location.href = "<?=$current_url?>";
             }
           }
       });
@@ -1089,8 +1247,43 @@ function deleteRows(){
     $('#tablaProductos>tbody>tr').remove();
 }
 
+function guardarModificacionPrimeraCategoria(){
+  var primera_categoria = $('#primeraCategoriaMPC').val();
+  var id_categoria = $('#productoCategoria1').val();
+  $('.loading').show();
+  $('#modalAgregarPrimeraCategoria').hide();
+  if(primera_categoria){
+    var datos = new FormData();
+    datos.append("nombre_pc",primera_categoria);
+    datos.append("id_categoria",id_categoria);
+    $.ajax({
+        method:'POST',
+        url:'<?=site_url("modificar-primera-categoria")?>',
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success:function(respuesta){
+          if(respuesta == 'ok'){
+            $('.loading').hide();
+            Swal.fire({
+              icon: 'success',
+              title: 'Se ha guardado correctamente.',
+              timer: 3500
+            });
+            window.location.href = "<?=$current_url?>";
+          }
+        }
+    });
+  }
+  
+}
+
 function guardarPrimeraCategoria(){
   var primera_categoria = $('#primeraCategoriaMPC').val();
+  $('.loading').show();
+  $('#modalAgregarPrimeraCategoria').hide();
   if(primera_categoria){
     var datos = new FormData();
     datos.append("nombre_pc",primera_categoria);
@@ -1104,12 +1297,13 @@ function guardarPrimeraCategoria(){
         dataType: "json",
         success:function(respuesta){
           if(respuesta == 'ok'){
+            $('.loading').hide();
             Swal.fire({
               icon: 'success',
               title: 'Se ha registrado correctamente.',
               timer: 3500
             });
-            window.location.href = "<?=current_url()?>";
+            window.location.href = "<?=$current_url?>";
           }
         }
     });
@@ -1120,6 +1314,8 @@ function guardarPrimeraCategoria(){
 function guardarSegundaCategoria(){
   var primera_categoria = $('#productoCategoria1').val();
   var segunda_categoria = $('#segundaCategoriaMSC').val();
+  $('.loading').show();
+  $('#modalAgregarSegundaCategoria').hide();
   if(segunda_categoria){
     var datos = new FormData();
     datos.append("categoria_1",primera_categoria);
@@ -1134,12 +1330,46 @@ function guardarSegundaCategoria(){
         dataType: "json",
         success:function(respuesta){
           if(respuesta == 'ok'){
+            $('.loading').hide();
             Swal.fire({
               icon: 'success',
               title: 'Se ha registrado correctamente.',
               timer: 3500
             });
-            window.location.href = "<?=current_url()?>";
+            window.location.href = "<?=$current_url?>";
+          }
+        }
+    });
+  }
+  
+}
+
+function guardarModificacionSegundaCategoria(){
+  var segunda_categoria = $('#segundaCategoriaMSC').val();
+  var id_categoria = $('#productoCategoria2').val();
+  $('.loading').show();
+  $('#modalAgregarSegundaCategoria').hide();
+  if(segunda_categoria){
+    var datos = new FormData();
+    datos.append("nombre",segunda_categoria);
+    datos.append("id_categoria_2",id_categoria);
+    $.ajax({
+        method:'POST',
+        url:'<?=site_url("modificar-segunda-categoria")?>',
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success:function(respuesta){
+          if(respuesta == 'ok'){
+            $('.loading').hide();
+            Swal.fire({
+              icon: 'success',
+              title: 'Se ha guardado correctamente.',
+              timer: 3500
+            });
+            window.location.href = "<?=$current_url?>";
           }
         }
     });

@@ -193,11 +193,17 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['productos-segunda-categoria'] = 'configuraciones/producto/productos_segunda_categoria';
     $route['productos-madre'] = 'configuraciones/producto/productos_madre';
     $route['guardar-primera-categoria'] = 'configuraciones/producto/guardar_primera_categoria';
+    $route['modificar-primera-categoria'] = 'configuraciones/producto/modificar_primera_categoria';
     $route['guardar-segunda-categoria'] = 'configuraciones/producto/guardar_segunda_categoria';
+    $route['modificar-segunda-categoria'] = 'configuraciones/producto/modificar_segunda_categoria';
     $route['load-producto-madre'] = 'configuraciones/producto/producto_madre';
     $route['obtener-lista-precios'] = 'configuraciones/producto/lista_precios_producto';
     $route['guardar-nuevo-producto'] = 'configuraciones/producto/guardar_nuevo_producto';
     $route['guardar-editar-producto'] = 'configuraciones/producto/guardar_editar_producto';
+
+    $route['eliminar-primera-categoria'] = 'configuraciones/producto/eliminar_primera_categoria';
+    $route['eliminar-segunda-categoria'] = 'configuraciones/producto/eliminar_segunda_categoria';
+    $route['eliminar-producto-madre'] = 'configuraciones/producto/eliminar_producto_madre';
     
 
 

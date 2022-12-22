@@ -365,7 +365,7 @@ if(!function_exists('getUltimoCUFDBD')) {
 if(!function_exists('getPrimeraCategoria')) {
 	function getPrimeraCategoria(){
 		$CI =& get_instance();
-		$sql = "select * from VENTAS_CATEGORIA_1; ";
+		$sql = "select * from VENTAS_CATEGORIA_1 where ELIMINADO='0'; ";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}
@@ -374,7 +374,7 @@ if(!function_exists('getPrimeraCategoria')) {
 if(!function_exists('getSegundaCategoria')) {
 	function getSegundaCategoria($id){
 		$CI =& get_instance();
-		$sql = "select * from VENTAS_CATEGORIA_2 where ID_CATEGORIA='$id'; ";
+		$sql = "select * from VENTAS_CATEGORIA_2 where ID_CATEGORIA='$id' AND ELIMINADO = '0'; ";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}
@@ -382,7 +382,7 @@ if(!function_exists('getSegundaCategoria')) {
 if(!function_exists('getProductosMadre')) {
 	function getProductosMadre($id){
 		$CI =& get_instance();
-		$sql = "select * from VENTAS_PRODUCTO_MADRE where ID_CATEGORIA_2='$id'; ";
+		$sql = "select * from VENTAS_PRODUCTO_MADRE where ID_CATEGORIA_2='$id' AND ELIMINADO = '0'; ";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}
@@ -678,6 +678,16 @@ if(!function_exists('eliminarVentaProcedimientoOpciones')) {
 		$CI =& get_instance();
 		$sql = "delete FROM VENTAS_PROCEDIMIENTO_OPCIONES WHERE ID_PROCEDIMIENTO_VENTA = '$id_procedimiento_venta';";
 		$respuesta = $CI->db->query($sql);
+	}
+}
+
+if(!function_exists('protocoloWeb')) {
+	function protocoloWeb(){
+    	$protocol =  "http://";
+    	if (isset($_SERVER['HTTPS']) && in_array($_SERVER['HTTPS'], ['on', 1]) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+        	$protocol = 'https://';
+    	}
+		return $protocol ;
 	}
 }
 
