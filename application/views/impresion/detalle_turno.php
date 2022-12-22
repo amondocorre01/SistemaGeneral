@@ -112,68 +112,68 @@ $html= $html."--------------------------------------";
 $html= $html.'<br></center>';
 $html= $html.'<table border="1" class="table table-bordered table-striped tablaDetalleTurno">
                     <tr>
-                        <td><b>Usuario</b></td>
+                        <td align="left"><b>Usuario</b></td>
                         <td>'.$usuario.'</td>
                     </tr>
                     <tr>
-                        <td><b>Fecha/Hora Ingreso: </b></td>
+                        <td align="left"><b>Fecha/Hora Ingreso: </b></td>
                         <td>'.$fecha_apertura."  ".$horario_apertura.'</td>
                     </tr>
                     <tr>
-                        <td><b>Fecha/Hora Salida: </b></td>
+                        <td align="left"><b>Fecha/Hora Salida: </b></td>
                         <td>'.$fecha_cierre."  ".$hora_cierre.'</td>
                     </tr>
                     <tr>
-                        <td><b>Rango de facturas: </b></td>
+                        <td align="left"><b>Rango de facturas: </b></td>
                         <td>'.$rangoFacturas.'</td>
                     </tr>
                     <tr>
-                        <td><b>Cantidad de Recibos: </b></td>
+                        <td align="left"><b>Cantidad de Recibos: </b></td>
                         <td>'.$cantidadRecibos.'</td>
                     </tr>
                     <tr>
-                        <td><b>Monto inicial de turno: </b></td>
+                        <td align="left"><b>Monto inicial de turno: </b></td>
                         <td>'.$monto_apertura.'</td>
                     </tr>
                     
                     <tr>
-                        <td><b>Total Ingresos: </b></td>
+                        <td align="left"><b>Total Ingresos: </b></td>
                         <td>'.$monto_total_ingresos.'</td>
                     </tr>
                     <tr>
-                        <td><b>Total Egresos: </b></td>
+                        <td align="left"><b>Total Egresos: </b></td>
                         <td>'.$monto_total_egresos.'</td>
                     </tr>
                     <tr>
-                        <td><b>Total ventas en efectivo: </b></td>
+                        <td align="left"><b>Total ventas en efectivo: </b></td>
                         <td>'.$monto_total_ventas_efectivo.'</td>
                     </tr>
                     <tr>
-                        <td><b>Total ventas en QR: </b></td>
+                        <td align="left"><b>Total ventas en QR: </b></td>
                         <td>'.$monto_total_ventas_pago_qr.'</td>
                     </tr>
                     <tr>
-                        <td><b>Total ventas Tarj. Deb/Cred: </b></td>
+                        <td align="left"><b>Total ventas Tarj. Deb/Cred: </b></td>
                         <td>'.$monto_total_ventas_tarjeta.'</td>
                     </tr>
                     <tr>
-                        <td><b>Total ventas Transferencia: </b></td>
+                        <td align="left"><b>Total ventas Transferencia: </b></td>
                         <td>'.$monto_total_ventas_transferencia_bancaria.'</td>
                     </tr>
                     <tr>
-                        <td><b>Total cupones Pedidos Ya: </b></td>
+                        <td align="left"><b>Total cupones Pedidos Ya: </b></td>
                         <td>'.$monto_total_ventas_cupon_pedidos_ya.'</td>
                     </tr>
                     <tr>
-                        <td><b>Saldo teorico: </b></td>
+                        <td align="left"><b>Saldo teorico: </b></td>
                         <td>'.$saldo_teorico.'</td>
                     </tr>
                     <tr>
-                        <td><b>Dinero entregado: </b></td>
+                        <td align="left"><b>Dinero entregado: </b></td>
                         <td>'.$monto_cierre.'</td>
                     </tr>
                     <tr>
-                        <td><b>Descuadre: </b></td>
+                        <td align="left"><b>Descuadre: </b></td>
                         <td>'.$descuadre.'</td>
                     </tr>
                 </table>';

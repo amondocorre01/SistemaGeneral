@@ -85,6 +85,18 @@
 <script src="<?=base_url('assets/plugins/summernote/summernote-bs4.min.js')?>"></script>
 <!-- overlayScrollbars -->
 <script src="<?=base_url('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')?>"></script>
+<?php
+  if(isset($_SESSION['form-validate'])): ?>
+<!-- jquery-validation -->
+<script src="<?=base_url('assets/plugins/jquery-validation/jquery.validate.js')?>"></script>
+<script src="<?=base_url('assets/plugins/jquery-validation/additional-methods.min.js')?>"></script>
+<script>
+  
+</script>
+<?php 
+  $this->session->unset_userdata('form-validate');
+  endif; 
+?>
 <!-- AdminLTE App -->
 <script src="<?=base_url('assets/dist/js/adminlte.js')?>"></script>
 <!-- AdminLTE for demo purposes -->

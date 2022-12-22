@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="<?=base_url('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')?>">
   <link rel="stylesheet" href="<?=base_url('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')?>">
 <?php
+    $_SESSION['form-validate']='1';
     $this->session->set_userdata('datatable', 'true');
     $id_menu = intval($this->input->get('vc'));
     $id_usuario = $this->session->id_usuario;
@@ -75,11 +76,13 @@
 
 <div class="card" id="agregarEditarProducto">
   <div class="card-body">
+    <form id="form-product-new-update" enctype="multipart/form-data">
     <div class="row">
       <div class="col-md-3">
         <div class="form-group">
           <label>Producto</label>
           <input type="text" class="form-control" name="producto" id="producto" placeholder="Nombre del producto">
+          <input type="hidden" class="form-control" name="listaPU" id="listaPU">
         </div>
         <div class="form-group">
         <label>Detalle del producto</label>
@@ -91,7 +94,7 @@
       <div class="col-md-3">
         <div class="form-group">
           <label>Seleccione unidad de medida</label>
-          <select name="unidadMedida" id="unidadMedida" class="form-control select2" style="width: 100%;">
+          <select name="unidadMedida" id="unidadMedida" class="form-control select2" required style="width: 100%;">
             <option value="" selected="selected">Seleccione unidad de medida</option>
             <?php
             foreach ($unidadesMedida as $key => $value) {
@@ -105,13 +108,14 @@
           <label class="col-sm-12 ">¿Incluirá transporte?</label>
           <div class="form-group col-sm-4">
             <div class="custom-control custom-checkbox">
-              <input class="custom-control-input" type="radio" name="tieneTransporte" id="transporteSi" value="1">
-              <label for="transporteSi" class="custom-control-label">SI</label>
-            </div>
-            <div class="custom-control custom-checkbox">
               <input class="custom-control-input" type="radio" name="tieneTransporte" id="transporteNo" value="0" checked>
               <label for="transporteNo" class="custom-control-label">NO</label>
             </div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="radio" name="tieneTransporte" id="transporteSi" value="1">
+              <label for="transporteSi" class="custom-control-label">SI</label>
+            </div>
+           
           </div>
           <div class="form-group col-md-8 inputPrecioTransporte">
             <input type="number" class="form-control input-sm" name="precioTransporte" id="precioTransporte" placeholder="Precio">
@@ -159,7 +163,7 @@
           <!--<p class="help-block"><br/>Peso máximo: 2 MB - Dimensiones : 200 x 200 o similar.</p>-->
         </div>
         <center>
-          <img src="<?=base_url('assets/dist/img/default-image.jpg')?>" class="img-thumbnail previsualizar" width="120px">
+          <img src="<?=base_url('assets/dist/img/default-image.jpg')?>" id="nuevaImagen" class="img-thumbnail previsualizar" width="120px">
         </center>
       </div>
     </div>
@@ -183,9 +187,11 @@
     </table>
     <div> 
       <center>
-        <button class="btn btn-primary">Guardar cambios</button>
+        <button type="submit" class="btn btn-primary" id="saveProduct" >Guardar</button>
+        <button type="submit" class="btn btn-primary" id="saveEditProduct" >Guardar cambios</button>
       </center>
     </div>
+    </form>
   </div>
 </div>
 
@@ -262,6 +268,7 @@
                 <label class="col-sm-6 col-form-label">Tamaño seleccionado:</label>
                 <div class="col-sm-6">
                 <input type="text" readonly id="textTamProducto" class="form-control" placeholder="">
+                <input type="hidden" id="idProductoUnico" value="0" class="form-control" placeholder="">
                 </div>
               </div>
           <div class="form-group row">
@@ -284,6 +291,7 @@
                 <option value="3" >3</option>
                 <option value="4" >4</option>
               </select>
+              <input type="hidden" id="cantidadFrutasModalOriginal" value="0" class="form-control">
             </div>
           </div>
             <?php
@@ -313,6 +321,8 @@
 
 <script>
 $(document).ready(function(){
+    $('#saveProduct').hide();
+    $('#saveEditProduct').hide();
     $('#agregarEditarProducto').hide();
     $('#productoCategoria2').prop( "disabled", true );
     $('#productoMadre').prop( "disabled", true );
@@ -567,18 +577,23 @@ $(document).ready(function(){
       modalPrecios.forEach(element => {
         var costoElement = element.value;
         var iden = $(element).attr('iden');
-        rowsPrecio = `${rowsPrecio}'<td align="center"><input class="in-cant listaPreciosTabla-${idTamProducto}" type="hidden" value="${costoElement}" min='0' name="listaCostos_${iden}" />${costoElement}</td>`;
+        rowsPrecio = `${rowsPrecio}'<td align="center"><input class="in-cant listaPreciosTabla-${idTamProducto}" iden_tam="${idTamProducto}" iden_lp="${iden}" type="hidden" value="${costoElement}" min='0' name="listaCostos_${iden}" />${costoElement}</td>`;
       });
       let row = `
-      <td align="center"><input type="hidden" name="listaPrecios" value="${idTamProducto}" />${textTamProducto}</td>
-      <td align="center"><input type="hidden" name="cantidadFrutas" value="${cantFrutas}" />${cantFrutas}</td>
+      <td align="center"><input type="hidden" name="listaPrecios" value="${idTamProducto}" />${textTamProducto}
+      <input type="hidden" name="idProductoUnicos" class="idProductoUnicos-${idTamProducto}" value="0" />
+      </td>
+      <td align="center">
+      <input type="hidden" name="cantidadFrutas" class="cantidadFrutas-${idTamProducto}" value="${cantFrutas}" />
+      <input type="hidden" name="cantidadFrutasO" class="cantidadFrutasOriginal-${idTamProducto}" value="0" />
+      ${cantFrutas}</td>
       ${rowsPrecio}
       `;
       $("#tablaProductos>tbody").prepend(`
       <tr id="products-tr-${idTamProducto}">
       ${row}
       <td align="center">
-        <a class="btnShowProducts btn-warning editRow btn-xs" iden="${idTamProducto}" textTam="${textTamProducto}"><i class="fa fa-pencil"></i></a>  
+        <a class="btnShowProducts btn-warning editRow btn-xs" cantFrutas="${cantFrutas}" cantFrutasO="0" idProU="0" iden="${idTamProducto}" textTam="${textTamProducto}"><i class="fa fa-pencil"></i></a>  
         <a class="btnShowProducts btn-danger deleteRow btn-xs" iden="${idTamProducto}"><i class="fa fa-times"></i></a>
       </td>
       </tr>
@@ -588,36 +603,89 @@ $(document).ready(function(){
 
     $('#guardarEditarProductoMadre').on('click',function(){
       var idTamProducto = $('#idTamProducto').val();
+      var id_producto_unico = $('#idProductoUnico').val();
+      $('#idProductoUnico').val('0');
       var text_id= `#products-tr-${idTamProducto}`;
       $(text_id).remove();
       var textTamProducto = $('#textTamProducto').val();
       var cantFrutas = $('#cantidadFrutasModal').val();
+      var cantFrutasO = $('#cantidadFrutasModalOriginal').val();
       if(cantFrutas == ''){
         cantFrutas ='0';
+      }
+      if(cantFrutasO == ''){
+        cantFrutasO ='0';
       }
       const modalPrecios = document.getElementsByName("modalCostos"); 
       var rowsPrecio='';
       modalPrecios.forEach(element => {
         var costoElement = element.value;
         var iden = $(element).attr('iden');
-        rowsPrecio = `${rowsPrecio}'<td align="center"><input class="in-cant listaPreciosTabla-${idTamProducto}" type="hidden" value="${costoElement}" min='0' name="listaCostos_${iden}" />${costoElement}</td>`;
+        rowsPrecio = `${rowsPrecio}'<td align="center"><input class="in-cant listaPreciosTabla-${idTamProducto}" iden_tam="${idTamProducto}" iden_lp="${iden}" type="hidden" value="${costoElement}" min='0' name="listaCostos_${iden}" />${costoElement}</td>`;
       });
       let row = `
-      <td align="center"><input type="hidden" name="listaPrecios" value="${idTamProducto}" />${textTamProducto}</td>
-      <td align="center"><input type="hidden" name="cantidadFrutas" value="${cantFrutas}" />${cantFrutas}</td>
+      <td align="center"><input type="hidden" name="listaPrecios" value="${idTamProducto}" />${textTamProducto}
+      <input type="hidden" name="idProductoUnicos" class="idProductoUnicos-${idTamProducto}" value="${id_producto_unico}" />
+      </td>
+      <td align="center">
+      <input type="hidden" name="cantidadFrutas" class="cantidadFrutas-${idTamProducto}" value="${cantFrutas}" />
+      <input type="hidden" name="cantidadFrutasO" class="cantidadFrutasOriginal-${idTamProducto}" value="${cantFrutasO}" />
+      ${cantFrutas}</td>
       ${rowsPrecio}
       `;
       $("#tablaProductos>tbody").prepend(`
       <tr id="products-tr-${idTamProducto}">
       ${row}
       <td align="center">
-        <a class="btnShowProducts btn-warning editRow btn-xs" iden="${idTamProducto}" textTam="${textTamProducto}"><i class="fa fa-pencil"></i></a>  
+        <a class="btnShowProducts btn-warning editRow btn-xs" cantFrutas="${cantFrutas}" cantFrutasO="${cantFrutasO}" iden="${idTamProducto}" idProU="${id_producto_unico}" textTam="${textTamProducto}"><i class="fa fa-pencil"></i></a>  
         <a class="btnShowProducts btn-danger deleteRow btn-xs" iden="${idTamProducto}"><i class="fa fa-times"></i></a>
       </td>
       </tr>
       `);
       $("#modalAgregarCostos").modal("hide");
     });
+
+    $(function () {
+    $.validator.setDefaults({
+    
+      submitHandler: function () {
+        //alert( "Form successful submitted!" );
+        guardarProductoBD();
+      }
+    });
+    $('#form-product-new-update').validate({
+      rules: {
+        unidadMedida: {
+          required: true
+        },
+        actividadEconomica:{
+          required: true
+        },
+        productoSIN:{
+          required: true
+        },
+        producto:{
+          required: true
+        },
+      },
+      messages: {
+        unidadMedida: {
+          required: "Seleccione unidad de medida",
+        }
+      },
+      errorElement: 'span',
+      errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid');
+      }
+    });
+  });
 
 });
 
@@ -637,9 +705,26 @@ $('body').on('click', 'a.editRow', function() {
   $("#guardarEditarProductoMadre").css('display', 'block');
   var iden = $(this).attr('iden');
   var textTam = $(this).attr('textTam');
+  var idProU = $(this).attr('idProU');
+  var cantFrutas = $(this).attr('cantFrutas');
+  var cantFrutasO = $(this).attr('cantFrutasO');
+  $('#cantidadFrutasModalOriginal').val(cantFrutasO);
+  $('#idProductoUnico').val(idProU);
   $('#idTamProducto').val(iden);
   $('#textTamProducto').val(textTam);
   $(".modalCostos").val('0');
+  if(cantFrutas == '0'){
+    cantFrutas = '';
+    $("#frutasNo").prop('checked', true);
+    $("#frutasSi").prop('checked', false);
+    $(".cantidadFrutasModal").hide();
+  }else{
+    $("#frutasNo").prop('checked', false);
+    $("#frutasSi").prop('checked', true);
+    $(".cantidadFrutasModal").show();
+  }
+  $("#cantidadFrutasModal").val(cantFrutas);
+  $('#cantidadFrutasModal').select2();
   //agregar costos al modal
   //var listaPreciosTabla = $('.listaPreciosTabla-'+iden).val();
   const listaPreciosTabla = document.getElementsByClassName('listaPreciosTabla-'+iden);
@@ -665,6 +750,9 @@ $('.btnAgregarSC').on('click',function(){
 
 $('.btnAgregarPM').on('click',function(){
   deleteRows();
+  $('#listaPU').val('');
+  $('#saveProduct').show();
+  $('#saveEditProduct').hide();
   $('#productoMadre').val('');
   $('#productoMadre').select2();
   $('.btnEditarPM').hide();
@@ -683,7 +771,7 @@ $('.btnAgregarPM').on('click',function(){
   $('#unidadMedida').select2();
   $('#actividadEconomica').val('');
   $('#productoSIN').val('');
-  $('#selectTam').val('')
+  $('#selectTam').val('');
   $('#selectTam').select2();
   var rutaImagen = "<?=base_url('assets/dist/img/default-image.jpg')?>";
   $(".previsualizar").attr("src", rutaImagen);
@@ -692,15 +780,147 @@ $('.btnAgregarPM').on('click',function(){
   var texto_seleccionado = $('#productoCategoria2 option:selected').html();
 });
 
+//$('#saveProduct').on('click',function(){
+  function guardarProductoBD(){
+  //$('#form-product-new-update').validate();
+  var datos_tabla = ($("#tablaProductos>tbody").html()).trim();
+  if(datos_tabla ==''){
+      alert('Agregue tamaño, cantidad de frutas y precios para continuar');    
+      return;
+  }
+
+  swal.fire({
+        title: "¿Estás seguro?",
+        text: "Se guardará los datos.",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Continuar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+          categoria_2 = $('#productoCategoria2').val();
+          nombre_producto = $('#producto').val();
+          detalle_producto = $('#detalleProducto').val();
+          unidad_medida = $('#unidadMedida').val();
+          actividad_economica = $('#actividadEconomica').val();
+          producto_sin = $('#productoSIN').val();
+          tamSeleccionados = $('#selectTam').val();
+          imagen = $('#nuevaImagen').attr('src');
+          tieneTransporte = $('input[type=radio][name=tieneTransporte]:checked').val();
+          precioTransporte = $('#precioTransporte').val();
+
+          const listaTam = document.getElementsByName("listaPrecios");
+          const listaCantFrutas = document.getElementsByName("cantidadFrutas");
+          const modalPrecios = document.getElementsByName("modalCostos");
+          
+          var listaItems = new Array();
+          var listaPUTable = new Array();
+          listaTam.forEach(element => {
+            var iden = element.value;
+            var valName=`listaPreciosTabla-${iden}`;
+            var listaPreciosTabla = document.getElementsByClassName(valName);
+            var valClassFrutas = `.cantidadFrutas-${iden}`;
+            var valCantFrutas = $(valClassFrutas).val();
+            var valClassFrutasOriginal = `.cantidadFrutasOriginal-${iden}`;
+            var valCantFrutasOriginal = $(valClassFrutasOriginal).val();
+
+            var valClassIdProductoUnicos = `.idProductoUnicos-${iden}`;
+            var valIdProductoUnico = $(valClassIdProductoUnicos).val();
+            if(typeof valIdProductoUnico === 'undefined'){
+              valIdProductoUnico='0';
+            }
+
+            var listCostosArray = new Array(); 
+            
+            
+            for (let elem of listaPreciosTabla) {
+              var datos = {};
+              datos.id_lp = $(elem).attr('iden_lp');
+              datos.precio = elem.value;
+              listCostosArray.push(datos);
+            }
+            var datos = {};
+            datos.id_tam = iden;
+            datos.cantidad_frutas = valCantFrutas;
+            datos.cantidad_frutas_original = valCantFrutasOriginal;
+            datos.precios = listCostosArray;
+            datos.id_producto_unico = valIdProductoUnico;
+            listaItems.push(datos);
+            listaPUTable.push(valIdProductoUnico);
+          });
+          var imagen = $('#nuevaFoto')[0].files[0];
+          var nombre_imagen = '';
+          if(imagen){
+            nombre_imagen = $('#nuevaFoto')[0].files[0].name;
+          }
+          var objeto = {};
+          objeto.nombre_producto = nombre_producto;
+          objeto.categoria_2 = categoria_2;
+          objeto.detalle_producto = detalle_producto;
+          objeto.unidad_medida = unidad_medida;
+          objeto.actividad_economica = actividad_economica;
+          objeto.producto_sin = producto_sin;
+          objeto.imagen= nombre_imagen;
+          objeto.tieneTransporte = tieneTransporte;
+          objeto.precioTransporte = precioTransporte;
+          objeto.productos_unicos = listaItems;
+          objeto.productos_unicos_tabla =listaPUTable;
+          
+          var datos = new FormData();
+          
+          var id_producto = $('#productoMadre').val();
+          var url = '';
+          if(id_producto){
+            console.log('Editar id_producto',id_producto);
+            objeto.id_producto_madre = id_producto;
+            var listaPU = $('#listaPU').val();
+            listaPU = JSON.parse(listaPU);
+            objeto.productos_unicos_original = listaPU; 
+            url = '<?=site_url("guardar-editar-producto")?>';
+          }else{
+            console.log('Registro nuevo');
+            url = '<?=site_url("guardar-nuevo-producto")?>';
+          }
+          console.log(objeto);
+          datos.append("datos", JSON.stringify(objeto));
+          datos.append("imagen", imagen);
+          $.ajax({
+            method:'POST',
+            url: url,
+            data: datos,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success:function(respuesta){
+              //console.log(respuesta);
+              if(respuesta ){
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Se ha guardado correctamente.',
+                  timer: 3500
+                });
+                window.location.href = "<?=current_url()?>";
+              }
+            }
+          });
+        }
+      });
+}
+//});
+
 $('.btnEditarPM').on('click',function(){
-      console.log('Cargando datos para editar');
       deleteRows();
+      $('#listaPU').val('');
+      $('#saveProduct').hide();
+      $('#saveEditProduct').show();
       $('#agregarEditarProducto').show();
       $('.btnEditarPM').hide();
       $('.btnEliminarPM').hide();
       $('#agregarEditarProducto').show();
       $(".cantidadFrutasModal").hide();
       $("#cantidadFrutasModal").val('');
+      $("#cantidadFrutasModalOriginal").val('0');
       $('.inputPrecioTransporte').hide();
       $('#precioTransporte').val('');
       $("#transporteNo").prop('checked', true);
@@ -782,7 +1002,18 @@ $('.btnEditarPM').on('click',function(){
       });
 });
 
+async function encodeFileAsBase64URL(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.addEventListener('loadend', () => {
+            resolve(reader.result);
+        });
+        reader.readAsDataURL(file);
+    });
+};
+
 function cargarTablaPrecios(id_producto_madre){
+  $('#listaPU').val('');
   var datos = new FormData();
     datos.append("id_producto_madre",id_producto_madre);
     $.ajax({
@@ -797,13 +1028,16 @@ function cargarTablaPrecios(id_producto_madre){
           console.log(respuesta);
          var tam = respuesta.length;
          console.log(tam);
+         var listaIDPUOriginal = new Array();
          respuesta.forEach(element => {
+          console.log(element);
           var cantFrutas = element.cantidad_frutas;
           var id_producto_unico = element.id_producto_unico;
           var id_producto_madre = element.id_producto_madre;
           var idTamProducto = element.id_tam;
           var textTamProducto = '';
           var arrayPrecios = element.precios_producto_unico;
+          listaIDPUOriginal.push(id_producto_unico);
           $('#selectTam option[value="'+idTamProducto+'"]').prop("selected", true);
           $('#selectTam').select2();
           var tam_seleccionado = $('#selectTam option[value="'+idTamProducto+'"]').html();
@@ -821,24 +1055,32 @@ function cargarTablaPrecios(id_producto_madre){
                 i = arrayPrecios.length;
               }
             }
-            rowsPrecio = `${rowsPrecio}'<td align="center"><input class="in-cant listaPreciosTabla-${idTamProducto}" type="hidden" value="${costoElement}" min='0' name="listaCostos_${iden}" />${costoElement}</td>`;
+            rowsPrecio = `${rowsPrecio}'<td align="center"><input class="in-cant listaPreciosTabla-${idTamProducto}" iden_tam="${idTamProducto}" iden_lp="${iden}" type="hidden" value="${costoElement}" min='0' name="listaCostos_${iden}" />${costoElement}</td>`;
           });
           let row = `
-          <td align="center"><input type="hidden" name="listaPrecios" value="${idTamProducto}" />${textTamProducto}</td>
-          <td align="center"><input type="hidden" name="cantidadFrutas" value="${cantFrutas}" />${cantFrutas}</td>
+          <td align="center">
+          <input type="hidden" name="listaPrecios" value="${idTamProducto}" />${textTamProducto}
+          <input type="hidden" name="idProductoUnicos" class="idProductoUnicos-${idTamProducto}" value="${id_producto_unico}" />
+          </td>
+          <td align="center">
+          <input type="hidden" name="cantidadFrutas" class="cantidadFrutas-${idTamProducto}" value="${cantFrutas}" />
+          <input type="hidden" name="cantidadFrutasO" class="cantidadFrutasOriginal-${idTamProducto}" value="${cantFrutas}" />
+          ${cantFrutas}</td>
           ${rowsPrecio}
           `;
           $("#tablaProductos>tbody").prepend(`
           <tr id="products-tr-${idTamProducto}">
           ${row}
           <td align="center">
-            <a class="btnShowProducts btn-warning editRow btn-xs" iden="${idTamProducto}" textTam="${textTamProducto}"><i class="fa fa-pencil"></i></a>  
+            <a class="btnShowProducts btn-warning editRow btn-xs" iden="${idTamProducto}" cantFrutas="${cantFrutas}" cantFrutasO="${cantFrutas}" idProU="${id_producto_unico}" textTam="${textTamProducto}"><i class="fa fa-pencil"></i></a>  
             <a class="btnShowProducts btn-danger deleteRow btn-xs" iden="${idTamProducto}"><i class="fa fa-times"></i></a>
           </td>
           </tr>
           `);
 
          });
+         var listaPU = JSON.stringify(listaIDPUOriginal);
+         $('#listaPU').val(listaPU);
         }
     });
 }
@@ -905,7 +1147,7 @@ function guardarSegundaCategoria(){
   
 }
 
-$("#nuevaFoto").change(function(){
+$("#nuevaFoto").change( function(){
   var img = $('#nuevaFoto').val();
   if(img == ''){
     var rutaImagen = "<?=base_url('assets/dist/img/default-image.jpg')?>";
@@ -916,6 +1158,8 @@ var imagen = this.files[0];
 /*=============================================
   VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
   =============================================*/
+  
+
   if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
     $(".nuevaFoto").val("");
      swal({
@@ -935,8 +1179,11 @@ var imagen = this.files[0];
   }else{
     var datosImagen = new FileReader;
     datosImagen.readAsDataURL(imagen);
-    $(datosImagen).on("load", function(event){
+    $(datosImagen).on("load", async function(event){
       var rutaImagen = event.target.result;
+      //(())const base64URL = await encodeFileAsBase64URL(imagen);
+      //console.log(base64URL);
+      //$(".previsualizar").attr("src", base64URL);
       $(".previsualizar").attr("src", rutaImagen);
     })
   }

@@ -75,5 +75,198 @@
         $res = $this->main->executeQuery($sql);
         echo json_encode($res);
      }
+
+     public function guardar_nuevo_producto(){
+        $datos = $this->input->post('datos'); 
+        $res = json_decode($datos);
+        $nombre_producto = $res->nombre_producto;
+        $id_categoria_2 = $res->categoria_2;
+        $detalle_producto = $res->detalle_producto;
+        $actividad_economica = $res->actividad_economica;
+        $producto_sin = $res->producto_sin;
+        $unidad_medida = $res->unidad_medida;
+        $tieneTransporte = $res->tieneTransporte;
+        $precioTransporte = $res->precioTransporte;
+        $imagen = $res->imagen;
+        $productos_unicos = $res->productos_unicos;
+        if(!$tieneTransporte){
+         $precioTransporte = '0';
+        }else{
+         if($precioTransporte==''){
+            $precioTransporte='0';
+         }
+        }
+        $savePM = guardarProductoMadre($nombre_producto, $id_categoria_2, $detalle_producto, $actividad_economica, $producto_sin, $unidad_medida, $tieneTransporte, $precioTransporte, $imagen);
+        $id_producto_madre = getMaxProductoMadre();
+        foreach ($productos_unicos as $key => $value) {
+         $id_tam = $value->id_tam;
+         $cantidad_frutas = $value->cantidad_frutas;
+         $precios = $value->precios;
+         $savePU = guardarProductoUnico($id_producto_madre, $id_tam);
+         $id_producto_unico = getMaxProductoUnico();
+            foreach ($precios as $key => $value) {
+               $id_lp = $value->id_lp;
+               $precio = $value->precio;
+               $savePPU = guardarPrecioProductoUnico($id_lp, $id_producto_unico, $precio);
+            }
+         if($cantidad_frutas>0){
+            $saveVPV = guardarVentasProcedimientoVenta($id_producto_unico, $cantidad_frutas);
+         }
+        }
+        
+        if (is_array($_FILES) && count($_FILES) > 0) {
+         if (($_FILES["imagen"]["type"] == "image/pjpeg")
+             || ($_FILES["imagen"]["type"] == "image/jpeg")
+             || ($_FILES["imagen"]["type"] == "image/png")
+             || ($_FILES["imagen"]["type"] == "image/gif")) {
+
+             if (move_uploaded_file($_FILES["imagen"]["tmp_name"], "./assets/dist/img/productos/".$_FILES['imagen']['name'])) {
+                 //echo "images/".$_FILES['imagen']['name'];
+                 //echo 'si guardo la imagen';
+             } else {
+                 //echo 'No se guardo la imagen';
+             }
+         }else{
+             //echo 'No es imagen';
+         }
+        }else{
+               //echo 'No existe imagen';
+         }
+        echo json_encode($datos);
+     }
+
+     public function guardar_editar_producto(){
+        $datos = $this->input->post('datos'); 
+        $res = json_decode($datos);
+        $id_producto_madre = $res->id_producto_madre;
+        $nombre_producto = $res->nombre_producto;
+        $id_categoria_2 = $res->categoria_2;
+        $detalle_producto = $res->detalle_producto;
+        $actividad_economica = $res->actividad_economica;
+        $producto_sin = $res->producto_sin;
+        $unidad_medida = $res->unidad_medida;
+        $tieneTransporte = $res->tieneTransporte;
+        $precioTransporte = $res->precioTransporte;
+        $imagen = $res->imagen;
+        $productos_unicos = $res->productos_unicos;
+        $productos_unicos_original = $res->productos_unicos_original;
+        $productos_unicos_tabla = $res->productos_unicos_tabla;
+        if(!$tieneTransporte){
+         $precioTransporte = '0';
+        }else{
+         if($precioTransporte==''){
+            $precioTransporte='0';
+         }
+        }
+        $savePM = actualizarProductoMadre($id_producto_madre, $nombre_producto, $id_categoria_2, $detalle_producto, $actividad_economica, $producto_sin, $unidad_medida, $tieneTransporte, $precioTransporte, $imagen);
+        
+        foreach ($productos_unicos as $key => $value) {
+         $id_tam = $value->id_tam;
+         $cantidad_frutas = intval($value->cantidad_frutas) ;
+         $cantidad_frutas_original = intval($value->cantidad_frutas_original);
+         $precios = $value->precios;
+         $id_producto_unico = $value->id_producto_unico;
+         if (in_array($id_producto_unico, $productos_unicos_original)){
+            $saveActualizarPPU = actualizarListaPrecioProductoUnico($id_producto_unico, $precios);
+            if($cantidad_frutas >= 0){
+               if($cantidad_frutas > $cantidad_frutas_original){
+                  //agregar frutas
+                  for ($i=$cantidad_frutas_original+1; $i <= $cantidad_frutas ; $i++) { 
+                     switch ($i) {
+                        case '1':
+                           guardarVentaProcedimientoVenta($id_producto_unico, 'Primera fruta','1');
+                           $id_proc = getMaxVentasProcedimientoVentas();
+				               guardarVentasProcedimientoOpciones($id_proc);
+                           break;
+                        case '2':
+                           guardarVentaProcedimientoVenta($id_producto_unico, 'Segunda fruta','2');
+                           $id_proc = getMaxVentasProcedimientoVentas();
+				               guardarVentasProcedimientoOpciones($id_proc);
+                           break;
+                        case '3':
+                           guardarVentaProcedimientoVenta($id_producto_unico, 'Tercera fruta','3');
+                           $id_proc = getMaxVentasProcedimientoVentas();
+				               guardarVentasProcedimientoOpciones($id_proc);
+                           break;
+                        case '4':
+                           guardarVentaProcedimientoVenta($id_producto_unico, 'Cuarta fruta','4');
+                           $id_proc = getMaxVentasProcedimientoVentas();
+				               guardarVentasProcedimientoOpciones($id_proc);
+                           break;
+                        default:
+                           break;
+                     }
+                  }
+               }
+               if($cantidad_frutas < $cantidad_frutas_original){
+                  //eliminar frutas
+                  for ($i=$cantidad_frutas+1; $i <= $cantidad_frutas_original; $i++) { 
+                     switch ($i) {
+                        case '1':
+                           $id_procedimiento_venta = getIdVentaProcedimientoVenta($id_producto_unico, 'Primera fruta');
+                           eliminarVentaProcedimientoOpciones($id_procedimiento_venta);
+                           eliminarVentaProcedimientoVenta($id_procedimiento_venta);
+                           break;
+                        case '2':
+                           $id_procedimiento_venta = getIdVentaProcedimientoVenta($id_producto_unico, 'Segunda fruta');
+                           eliminarVentaProcedimientoOpciones($id_procedimiento_venta);
+                           eliminarVentaProcedimientoVenta($id_procedimiento_venta);
+                           break;
+                        case '3':
+                           $id_procedimiento_venta = getIdVentaProcedimientoVenta($id_producto_unico, 'Tercera fruta');
+                           eliminarVentaProcedimientoOpciones($id_procedimiento_venta);
+                           eliminarVentaProcedimientoVenta($id_procedimiento_venta);
+                           break;
+                        case '4':
+                           $id_procedimiento_venta = getIdVentaProcedimientoVenta($id_producto_unico, 'Cuarta fruta');
+                           eliminarVentaProcedimientoOpciones($id_procedimiento_venta);
+                           eliminarVentaProcedimientoVenta($id_procedimiento_venta);
+                           break;
+                        default:
+                           break;
+                     }
+                  }
+               }
+            }
+         }else{
+            $savePU = guardarProductoUnico($id_producto_madre, $id_tam);
+            $id_producto_unico = getMaxProductoUnico();
+               foreach ($precios as $key => $value) {
+                  $id_lp = $value->id_lp;
+                  $precio = $value->precio;
+                  $savePPU = guardarPrecioProductoUnico($id_lp, $id_producto_unico, $precio);
+               }
+            if($cantidad_frutas>0){
+               $saveVPV = guardarVentasProcedimientoVenta($id_producto_unico, $cantidad_frutas);
+            }
+         }
+        }
+        //limpieza de no existentes
+        foreach ($productos_unicos_original as $key => $value) {
+         if (! in_array($value, $productos_unicos_tabla)){
+            $savePPU = eliminarProductoUnico($value);
+         }
+        }
+
+        if (is_array($_FILES) && count($_FILES) > 0) {
+         if (($_FILES["imagen"]["type"] == "image/pjpeg")
+             || ($_FILES["imagen"]["type"] == "image/jpeg")
+             || ($_FILES["imagen"]["type"] == "image/png")
+             || ($_FILES["imagen"]["type"] == "image/gif")) {
+
+             if (move_uploaded_file($_FILES["imagen"]["tmp_name"], "./assets/dist/img/productos/".$_FILES['imagen']['name'])) {
+                 //echo "images/".$_FILES['imagen']['name'];
+                 //echo 'si guardo la imagen';
+             } else {
+                 //echo 'No se guardo la imagen';
+             }
+         }else{
+             //echo 'No es imagen';
+         }
+        }else{
+               //echo 'No existe imagen';
+         }
+        echo json_encode($datos);
+     }
      
    }
