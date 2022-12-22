@@ -365,7 +365,7 @@ if(!function_exists('getUltimoCUFDBD')) {
 if(!function_exists('getPrimeraCategoria')) {
 	function getPrimeraCategoria(){
 		$CI =& get_instance();
-		$sql = "select * from VENTAS_CATEGORIA_1; ";
+		$sql = "select * from VENTAS_CATEGORIA_1 where ELIMINADO='0'; ";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}
@@ -374,7 +374,7 @@ if(!function_exists('getPrimeraCategoria')) {
 if(!function_exists('getSegundaCategoria')) {
 	function getSegundaCategoria($id){
 		$CI =& get_instance();
-		$sql = "select * from VENTAS_CATEGORIA_2 where ID_CATEGORIA='$id'; ";
+		$sql = "select * from VENTAS_CATEGORIA_2 where ID_CATEGORIA='$id' AND ELIMINADO = '0'; ";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}
@@ -382,7 +382,7 @@ if(!function_exists('getSegundaCategoria')) {
 if(!function_exists('getProductosMadre')) {
 	function getProductosMadre($id){
 		$CI =& get_instance();
-		$sql = "select * from VENTAS_PRODUCTO_MADRE where ID_CATEGORIA_2='$id'; ";
+		$sql = "select * from VENTAS_PRODUCTO_MADRE where ID_CATEGORIA_2='$id' AND ELIMINADO = '0'; ";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}
@@ -427,7 +427,7 @@ if(!function_exists('getProductoMadre')) {
 if(!function_exists('getProductosUnicos')) {
 	function getProductosUnicos($id_producto_madre){
 		$CI =& get_instance();
-		$sql = "select * FROM VENTAS_PRODUCTO_UNICO where ID_PRODUCTO_MADRE ='$id_producto_madre';";
+		$sql = "select * FROM VENTAS_PRODUCTO_UNICO where ID_PRODUCTO_MADRE ='$id_producto_madre' and ELIMINADO = '0';";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}
@@ -436,7 +436,7 @@ if(!function_exists('getProductosUnicos')) {
 if(!function_exists('getPreciosProductoUnico')) {
 	function getPreciosProductoUnico($id_producto_madre, $id_tam){
 		$CI =& get_instance();
-		$sql="select * FROM VENTAS_PRECIO_PRODUCTO_UNICO where ID_PRODUCTO_UNICO in (SELECT ID_PRODUCTO_UNICO  FROM VENTAS_PRODUCTO_UNICO where ID_PRODUCTO_MADRE ='$id_producto_madre' AND ID_TAMAÑO='$id_tam');";
+		$sql="select * FROM VENTAS_PRECIO_PRODUCTO_UNICO where ID_PRODUCTO_UNICO in (SELECT ID_PRODUCTO_UNICO  FROM VENTAS_PRODUCTO_UNICO where ID_PRODUCTO_MADRE ='$id_producto_madre' AND ID_TAMAÑO='$id_tam' AND ELIMINADO = '0');";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}
@@ -450,6 +450,247 @@ if(!function_exists('getTotalFrutasxProducto')) {
 		return $respuesta[0]->TOTAL;
 	}
 }
+
+if(!function_exists('guardarProductoMadre')) {
+	function guardarProductoMadre($nombre_producto, $id_categoria_2, $detalle_producto, $actividad_economica, $producto_sin, $unidad_medida, $tieneTransporte, $precioTransporte, $imagen){
+		$CI =& get_instance();
+		$sql = "insert into VENTAS_PRODUCTO_MADRE (PRODUCTO_MADRE, ID_CATEGORIA_2, DETALLE, CODIGO_ACTIVIDAD_ECONOMICA, CODIGO_PRODUCTO_SIN, CODIGO_UNIDAD_MEDIDA, TRANSPORTE, PRECIO_TRANSPORTE, IMAGEN, ELIMINADO)
+		values('$nombre_producto','$id_categoria_2','$detalle_producto','$actividad_economica','$producto_sin','$unidad_medida','$tieneTransporte','$precioTransporte','$imagen','0');
+		";
+		$respuesta = $CI->db->query($sql);
+		return $respuesta;
+	}
+}
+
+if(!function_exists('getMaxProductoMadre')) {
+	function getMaxProductoMadre(){
+		$CI =& get_instance();
+		$sql = "select max(ID_PRODUCTO_MADRE) AS ID_PRODUCTO_MADRE FROM VENTAS_PRODUCTO_MADRE;";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta[0]->ID_PRODUCTO_MADRE;
+	}
+}
+
+if(!function_exists('guardarProductoUnico')) {
+	function guardarProductoUnico($id_producto_madre, $id_tam){
+		$CI =& get_instance();
+		$sql = "insert into VENTAS_PRODUCTO_UNICO (ID_PRODUCTO_MADRE, ID_TAMAÑO, ORDENADO, ELIMINADO)values('$id_producto_madre','$id_tam','$id_tam','0');";
+		$respuesta = $CI->db->query($sql);
+	}
+}
+if(!function_exists('getMaxProductoUnico')) {
+	function getMaxProductoUnico(){
+		$CI =& get_instance();
+		$sql = "select max(ID_PRODUCTO_UNICO) AS ID_PRODUCTO_UNICO FROM VENTAS_PRODUCTO_UNICO;";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta[0]->ID_PRODUCTO_UNICO;
+	}
+}
+
+if(!function_exists('guardarPrecioProductoUnico')) {
+	function guardarPrecioProductoUnico($id_nombre_lista_precios, $id_producto_unico, $precio){
+		$CI =& get_instance();
+		$sql = "insert into VENTAS_PRECIO_PRODUCTO_UNICO (ID_NOMBRE_LISTA_PRECIOS, ID_PRODUCTO_UNICO, PRECIO, ESTADO)values('$id_nombre_lista_precios','$id_producto_unico','$precio','1');";
+		$respuesta = $CI->db->query($sql);
+	}
+}
+if(!function_exists('guardarVentasProcedimientoVenta')) {
+	function guardarVentasProcedimientoVenta($id_producto_unico, $cantidad_frutas){
+		$CI =& get_instance();
+		
+		switch ($cantidad_frutas) {
+			case '1':
+				$sql = "insert into VENTAS_PROCEDIMIENTO_VENTA (ID_PRODUCTO_UNICO, PREGUNTA, PREGUNTA_COMANDA, ORDENADO, DELIVERY)values('$id_producto_unico','Primera fruta','Primera fruta','1','1');";
+				$respuesta = $CI->db->query($sql);
+				$id_proc = getMaxVentasProcedimientoVentas();
+				guardarVentasProcedimientoOpciones($id_proc);
+				break;
+			case '2':
+				$sql = "insert into VENTAS_PROCEDIMIENTO_VENTA (ID_PRODUCTO_UNICO, PREGUNTA, PREGUNTA_COMANDA, ORDENADO, DELIVERY)values('$id_producto_unico','Primera fruta','Primera fruta','1','1');";
+				$respuesta = $CI->db->query($sql);
+				$id_proc = getMaxVentasProcedimientoVentas();
+				guardarVentasProcedimientoOpciones($id_proc);
+				$sql = "insert into VENTAS_PROCEDIMIENTO_VENTA (ID_PRODUCTO_UNICO, PREGUNTA, PREGUNTA_COMANDA, ORDENADO, DELIVERY)values('$id_producto_unico','Segunda fruta','Segunda fruta','2','1');";
+				$respuesta = $CI->db->query($sql);
+				$id_proc = getMaxVentasProcedimientoVentas();
+				guardarVentasProcedimientoOpciones($id_proc);
+				break;
+			case '3':
+				$sql = "insert into VENTAS_PROCEDIMIENTO_VENTA (ID_PRODUCTO_UNICO, PREGUNTA, PREGUNTA_COMANDA, ORDENADO, DELIVERY)values('$id_producto_unico','Primera fruta','Primera fruta','1','1');";
+				$respuesta = $CI->db->query($sql);
+				$id_proc = getMaxVentasProcedimientoVentas();
+				guardarVentasProcedimientoOpciones($id_proc);
+				$sql = "insert into VENTAS_PROCEDIMIENTO_VENTA (ID_PRODUCTO_UNICO, PREGUNTA, PREGUNTA_COMANDA, ORDENADO, DELIVERY)values('$id_producto_unico','Segunda fruta','Segunda fruta','2','1');";
+				$respuesta = $CI->db->query($sql);
+				$id_proc = getMaxVentasProcedimientoVentas();
+				guardarVentasProcedimientoOpciones($id_proc);
+				$sql = "insert into VENTAS_PROCEDIMIENTO_VENTA (ID_PRODUCTO_UNICO, PREGUNTA, PREGUNTA_COMANDA, ORDENADO, DELIVERY)values('$id_producto_unico','Tercera fruta','Tercera fruta','3','1');";
+				$respuesta = $CI->db->query($sql);
+				$id_proc = getMaxVentasProcedimientoVentas();
+				guardarVentasProcedimientoOpciones($id_proc);
+				break;
+			case '4':
+				$sql = "insert into VENTAS_PROCEDIMIENTO_VENTA (ID_PRODUCTO_UNICO, PREGUNTA, PREGUNTA_COMANDA, ORDENADO, DELIVERY)values('$id_producto_unico','Primera fruta','Primera fruta','1','1');";
+				$respuesta = $CI->db->query($sql);
+				$id_proc = getMaxVentasProcedimientoVentas();
+				guardarVentasProcedimientoOpciones($id_proc);
+				$sql = "insert into VENTAS_PROCEDIMIENTO_VENTA (ID_PRODUCTO_UNICO, PREGUNTA, PREGUNTA_COMANDA, ORDENADO, DELIVERY)values('$id_producto_unico','Segunda fruta','Segunda fruta','2','1');";
+				$respuesta = $CI->db->query($sql);
+				$id_proc = getMaxVentasProcedimientoVentas();
+				guardarVentasProcedimientoOpciones($id_proc);
+				$sql = "insert into VENTAS_PROCEDIMIENTO_VENTA (ID_PRODUCTO_UNICO, PREGUNTA, PREGUNTA_COMANDA, ORDENADO, DELIVERY)values('$id_producto_unico','Tercera fruta','Tercera fruta','3','1');";
+				$respuesta = $CI->db->query($sql);
+				$id_proc = getMaxVentasProcedimientoVentas();
+				guardarVentasProcedimientoOpciones($id_proc);
+				$sql = "insert into VENTAS_PROCEDIMIENTO_VENTA (ID_PRODUCTO_UNICO, PREGUNTA, PREGUNTA_COMANDA, ORDENADO, DELIVERY)values('$id_producto_unico','Cuarta fruta','Cuarta fruta','4','1');";
+				$respuesta = $CI->db->query($sql);
+				$id_proc = getMaxVentasProcedimientoVentas();
+				guardarVentasProcedimientoOpciones($id_proc);
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+		
+	}
+}
+
+if(!function_exists('getMaxVentasProcedimientoVentas')) {
+	function getMaxVentasProcedimientoVentas(){
+		$CI =& get_instance();
+		$sql = "select max(ID_PROCEDIMIENTO_VENTA) AS ID_PROCEDIMIENTO_VENTA FROM VENTAS_PROCEDIMIENTO_VENTA;";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta[0]->ID_PROCEDIMIENTO_VENTA;
+	}
+}
+
+if(!function_exists('guardarVentasProcedimientoOpciones')) {
+	function guardarVentasProcedimientoOpciones($id_proc){
+		$CI =& get_instance();
+		$sql = "insert into VENTAS_PROCEDIMIENTO_OPCIONES (ID_PROCEDIMIENTO_VENTA, TEXTO_OPCIONAL, ORDENADO)values('$id_proc','Frutilla','1');";
+		$respuesta = $CI->db->query($sql);
+		$sql = "insert into VENTAS_PROCEDIMIENTO_OPCIONES (ID_PROCEDIMIENTO_VENTA, TEXTO_OPCIONAL, ORDENADO)values('$id_proc','Durazno','2');";
+		$respuesta = $CI->db->query($sql);
+		$sql = "insert into VENTAS_PROCEDIMIENTO_OPCIONES (ID_PROCEDIMIENTO_VENTA, TEXTO_OPCIONAL, ORDENADO)values('$id_proc','Maracuyá','3');";
+		$respuesta = $CI->db->query($sql);
+		$sql = "insert into VENTAS_PROCEDIMIENTO_OPCIONES (ID_PROCEDIMIENTO_VENTA, TEXTO_OPCIONAL, ORDENADO)values('$id_proc','Frambuesa','4');";
+		$respuesta = $CI->db->query($sql);
+		$sql = "insert into VENTAS_PROCEDIMIENTO_OPCIONES (ID_PROCEDIMIENTO_VENTA, TEXTO_OPCIONAL, ORDENADO)values('$id_proc','Sandía','5');";
+		$respuesta = $CI->db->query($sql);
+		$sql = "insert into VENTAS_PROCEDIMIENTO_OPCIONES (ID_PROCEDIMIENTO_VENTA, TEXTO_OPCIONAL, ORDENADO)values('$id_proc','Piña','6');";
+		$respuesta = $CI->db->query($sql);
+		$sql = "insert into VENTAS_PROCEDIMIENTO_OPCIONES (ID_PROCEDIMIENTO_VENTA, TEXTO_OPCIONAL, ORDENADO)values('$id_proc','Limón','7');";
+		$respuesta = $CI->db->query($sql);
+		$sql = "insert into VENTAS_PROCEDIMIENTO_OPCIONES (ID_PROCEDIMIENTO_VENTA, TEXTO_OPCIONAL, ORDENADO)values('$id_proc','Copoazú','8');";
+		$respuesta = $CI->db->query($sql);
+		$sql = "insert into VENTAS_PROCEDIMIENTO_OPCIONES (ID_PROCEDIMIENTO_VENTA, TEXTO_OPCIONAL, ORDENADO)values('$id_proc','Mango','9');";
+		$respuesta = $CI->db->query($sql);
+		$sql = "insert into VENTAS_PROCEDIMIENTO_OPCIONES (ID_PROCEDIMIENTO_VENTA, TEXTO_OPCIONAL, ORDENADO)values('$id_proc','Achachairú','10');";
+		$respuesta = $CI->db->query($sql);
+	}
+}
+
+if(!function_exists('actualizarProductoMadre')) {
+	function actualizarProductoMadre($id_producto_madre, $nombre_producto, $id_categoria_2, $detalle_producto, $actividad_economica, $producto_sin, $unidad_medida, $tieneTransporte, $precioTransporte, $imagen){
+		$text_imagen = '';
+		if($imagen != ''){
+			$text_imagen = ", IMAGEN = '$imagen'";
+		}
+		$CI =& get_instance();
+		$sql = "update VENTAS_PRODUCTO_MADRE SET PRODUCTO_MADRE = '$nombre_producto', DETALLE = '$detalle_producto', CODIGO_ACTIVIDAD_ECONOMICA = '$actividad_economica', CODIGO_PRODUCTO_SIN = '$producto_sin', CODIGO_UNIDAD_MEDIDA = '$unidad_medida', TRANSPORTE = '$tieneTransporte', PRECIO_TRANSPORTE = '$precioTransporte' ".$text_imagen." where ID_PRODUCTO_MADRE = '$id_producto_madre' AND ID_CATEGORIA_2 = '$id_categoria_2';";
+		$respuesta = $CI->db->query($sql);
+	}
+}
+
+if(!function_exists('eliminarProductoUnico')) {
+	function eliminarProductoUnico($id_producto_unico){
+		$CI =& get_instance();
+		$sql = "update VENTAS_PRODUCTO_UNICO SET ELIMINADO = '1' where ID_PRODUCTO_UNICO = '$id_producto_unico';";
+		$respuesta = $CI->db->query($sql);
+	}
+}
+
+if(!function_exists('actualizarPrecioProductoUnico')) {
+	function actualizarListaPrecioProductoUnico($id_producto_unico, $precios){
+		foreach ($precios as $key => $value) {
+			$id_lp = $value->id_lp;
+			$precio = $value->precio;
+			$vep = verificarExistenciaPrecioProductoUnico($id_producto_unico,$id_lp);
+			if($vep){
+				$uvlp = actualizarPrecioProductoUnico($id_lp, $id_producto_unico, $precio);
+			}else{
+				$cvlp = guardarPrecioProductoUnico($id_lp, $id_producto_unico, $precio);
+			}
+		}
+	}
+}
+
+if(!function_exists('verificarExistenciaPrecioProductoUnico')) {
+	function verificarExistenciaPrecioProductoUnico($id_producto_unico,$id_lp){
+		$res = false;
+		$CI =& get_instance();
+		$sql = "select * FROM VENTAS_PRECIO_PRODUCTO_UNICO where ID_NOMBRE_LISTA_PRECIOS = '$id_lp' AND ID_PRODUCTO_UNICO = '$id_producto_unico';";
+		$respuesta = $CI->main->getQuery($sql);
+		$total = count($respuesta);
+		if($total > 0){
+			return true;
+		}
+		return $res;
+	}
+}
+
+if(!function_exists('actualizarPrecioProductoUnico')) {
+	function actualizarPrecioProductoUnico($id_lp, $id_producto_unico, $precio){
+		$CI =& get_instance();
+		$sql = "update VENTAS_PRECIO_PRODUCTO_UNICO SET PRECIO = '$precio' where ID_NOMBRE_LISTA_PRECIOS = '$id_lp' AND ID_PRODUCTO_UNICO = '$id_producto_unico';";
+		$respuesta = $CI->db->query($sql);
+	}
+}
+
+if(!function_exists('guardarVentaProcedimientoVenta')) {
+	function guardarVentaProcedimientoVenta($id_producto_unico, $texto_fruta, $orden){
+		$CI =& get_instance();
+		$sql = "insert into VENTAS_PROCEDIMIENTO_VENTA (ID_PRODUCTO_UNICO, PREGUNTA, PREGUNTA_COMANDA, ORDENADO, DELIVERY)values('$id_producto_unico','$texto_fruta','$texto_fruta','$orden','1');";
+		$respuesta = $CI->db->query($sql);
+	}
+}
+
+if(!function_exists('getIdVentaProcedimientoVenta')) {
+	function getIdVentaProcedimientoVenta($id_producto_unico, $texto_fruta){
+		$CI =& get_instance();
+		$sql = "select ID_PROCEDIMIENTO_VENTA FROM VENTAS_PROCEDIMIENTO_VENTA WHERE ID_PRODUCTO_UNICO = '$id_producto_unico' and PREGUNTA='$texto_fruta';";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta[0]->ID_PROCEDIMIENTO_VENTA;
+	}
+}
+
+if(!function_exists('eliminarVentaProcedimientoVenta')) {
+	function eliminarVentaProcedimientoVenta($id_procedimiento_venta){
+		$CI =& get_instance();
+		$sql = "delete FROM VENTAS_PROCEDIMIENTO_VENTA WHERE ID_PROCEDIMIENTO_VENTA = '$id_procedimiento_venta';";
+		$respuesta = $CI->db->query($sql);
+	}
+}
+
+if(!function_exists('eliminarVentaProcedimientoOpciones')) {
+	function eliminarVentaProcedimientoOpciones($id_procedimiento_venta){
+		$CI =& get_instance();
+		$sql = "delete FROM VENTAS_PROCEDIMIENTO_OPCIONES WHERE ID_PROCEDIMIENTO_VENTA = '$id_procedimiento_venta';";
+		$respuesta = $CI->db->query($sql);
+	}
+}
+
+if(!function_exists('protocoloWeb')) {
+	function protocoloWeb(){
+    	$protocol =  "http://";
+    	if (isset($_SERVER['HTTPS']) && in_array($_SERVER['HTTPS'], ['on', 1]) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+        	$protocol = 'https://';
+    	}
+		return $protocol ;
+	}
+}
+
 
   
 

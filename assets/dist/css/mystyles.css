@@ -391,3 +391,7 @@ i {
    background-color: rgb(34, 34, 34);
    z-index: 9999;
 }
+
+.cajaLineaVenta{
+   display: flex;
+}
