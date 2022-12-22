@@ -12,7 +12,7 @@
     
          
           <div id="opcion-2-<?=$codigo.$id?>">
-             <?=$this->load->view('configuraciones/sucursal/impresion', null, TRUE);?> 
+             <!--<?=$this->load->view('configuraciones/sucursal/impresion', null, TRUE);?> -->
           </div>
          
 
@@ -23,7 +23,7 @@
 
 
           <div id="opcion-5-<?=$codigo.$id?>"> 
-			 	<?=$this->load->view('configuraciones/sucursal/impresora', null, TRUE);?> 
+			 	<!--<?=$this->load->view('configuraciones/sucursal/impresora', null, TRUE);?> -->
           </div>
       </div>
 </div>

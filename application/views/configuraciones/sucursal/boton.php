@@ -8,25 +8,17 @@
                 </h3>
             </div>
             <div class="card-body">
-
                 <div class="row">
-                    <div class="col-3">
-                       
-                    </div>
-
+                    <div class="col-3"></div>
                     <div class="col-3">
                         <?=form_label("Sucursal", 'sucursal');?>
-                        <select name="" id="sucursal" class="form-control">
+                        <select name="" id="sucursal" class="form-control" onchange="limpiar()">
                             <?php foreach ($sucursales as  $sucursal): ?>
                                 <option value="<?=$sucursal->ID?>"><?=$sucursal->TEXT?></option>
                             <?php endforeach;?>
                         </select>
                     </div>
-
-                    <div class="col-1">
-                       
-                    </div>
-
+                    <div class="col-1"></div>
 
                     <?=form_button('send', 'Buscar ', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'getBotones()']);?>
                 </div>
@@ -47,6 +39,8 @@
 function getBotones() {
 
     var sucursal = $('#sucursal').val();
+
+    $('.loading').show();
    
     $.ajax({
         type: "POST",
@@ -54,11 +48,20 @@ function getBotones() {
         data: { sucursal: sucursal},
         dataType: "html",
         success: function (response) {
+
+            $('.loading').hide();
+
             $('#permisos').empty();
             $('#permisos').append(response);
         }
     });
 
+
+}
+
+function limpiar() {
+
+    $('#permisos').empty();
 
 }
 

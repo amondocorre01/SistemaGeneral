@@ -12,7 +12,7 @@
             <td><p class="lead"><?=$value->row?></p></td>
             <td><p class="lead"><?=$value->REFERENCIA_BOTON?></p></td>
             <td>
-              <select class="form-control" name="" id="estado_<?=$value->ID?>" onchange="change(<?=$value->ID?>)">
+              <select class="form-control <?=($value->HABILITADO == 1)?' palette-Green-A100 bg':''?>" name="" id="estado_<?=$value->ID?>" onchange="change(<?=$value->ID?>)">
                 <option value="1" <?=($value->HABILITADO == 1) ? 'selected ="selected"': '' ?>" > HABILITADO</option>
                 <option value="0" <?=($value->HABILITADO == 0) ? 'selected ="selected"': '' ?>" > INHABILITADO</option>
               </select>

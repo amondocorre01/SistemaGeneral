@@ -50,8 +50,13 @@
 
     console.log(valor);
 
+   
+
       $.post("<?=site_url('set-configuracion-boton')?>", {id:id, boton:boton, valor:valor })
       .done(function( data ) {
+
+    
+
 
          Swal.fire({
             icon: 'success',

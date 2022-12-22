@@ -60,12 +60,15 @@ $('#buscar').on('click', function(){
     var id_menu = $('#menus').val();
     var id_usuario = $('#usuarios').val();
 
+    $('.loading').show();
+
     $.ajax({
         type: "POST",
         url: "<?=site_url('get-permiso-boton')?>",
         data: { id_menu: id_menu, id_usuario: id_usuario, url:'<?=current_url()?>', vc:'<?=$this->input->get('vc')?>'},
         dataType: "html",
         success: function (response) {
+            $('.loading').hide();
             $('#menu').empty();
             $('#menu').append(response);
         }

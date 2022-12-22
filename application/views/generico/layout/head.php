@@ -58,8 +58,7 @@
   <script src="<?=base_url('node_modules/datatables.net-responsive/js/dataTables.responsive.js')?>"></script>
 	<script src="<?= base_url('node_modules/datatables.net-responsive-dt/js/responsive.dataTables.js') ?>"></script>
 
-
-
+  
   
  
   
@@ -101,8 +100,16 @@
 <div class="wrapper">
 
   <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-  <?=img(['src'=>'assets/dist/img/taza.png', 'class'=>'animation__shake', 'alt'=>'Capresso', 'height'=>'60', 'width'=>'60' ]); ?>
+  <div class="loading justify-content-center align-items-center">
+    <img class="loading-image" src="<?php echo base_url('assets/dist/img/taza_loading.png'); ?>" alt="Loading..." />
   </div>
 
-  
+
+ 
+  <Script>
+
+    $(document).ready(function () {
+        $('.loading').hide();
+    });
+
+  </Script>
