@@ -164,7 +164,7 @@ $current_url = $protocolo.$host.$url;
       <div class="col-md-3">
         <div class="form-group">
           <label>Subir Imagen del Producto:</label>
-          <input type="file" id="nuevaFoto" name="nuevaFoto">
+          <input type="file" id="nuevaFoto" name="nuevaFoto" accept="image/png, image/jpeg, image/jpg">
           <!--<p class="help-block"><br/>Peso máximo: 2 MB - Dimensiones : 200 x 200 o similar.</p>-->
         </div>
         <center>
@@ -848,12 +848,23 @@ $(document).ready(function(){
 });
 
 $('body').on('click', 'a.deleteRow', function() {
-  var iden = $(this).attr('iden');  
-  $('#selectTam option[value="'+iden+'"]').prop("selected", false);
-  $("#selectTam").css('display', 'none');
-  $("#selectTam").css('display', 'block');
-  $('#selectTam').select2();
-  $(this).parents('tr').remove();
+  swal.fire({
+        title: "¿Estás seguro?",
+        text: "",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Continuar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+          var iden = $(this).attr('iden');  
+          $('#selectTam option[value="'+iden+'"]').prop("selected", false);
+          $("#selectTam").css('display', 'none');
+          $("#selectTam").css('display', 'block');
+          $('#selectTam').select2();
+          $(this).parents('tr').remove();
+        }
+      });
 });
 
 $('body').on('click', 'a.editRow', function() {
@@ -1029,19 +1040,17 @@ $('.btnAgregarPM').on('click',function(){
           var id_producto = $('#productoMadre').val();
           var url = '';
           if(id_producto){
-            console.log('Editar id_producto',id_producto);
             objeto.id_producto_madre = id_producto;
             var listaPU = $('#listaPU').val();
             listaPU = JSON.parse(listaPU);
             objeto.productos_unicos_original = listaPU; 
             url = '<?=site_url("guardar-editar-producto")?>';
           }else{
-            console.log('Registro nuevo');
             url = '<?=site_url("guardar-nuevo-producto")?>';
           }
-          console.log(objeto);
           datos.append("datos", JSON.stringify(objeto));
           datos.append("imagen", imagen);
+          $('.loading').show();
           $.ajax({
             method:'POST',
             url: url,
@@ -1051,8 +1060,8 @@ $('.btnAgregarPM').on('click',function(){
             processData: false,
             dataType: "json",
             success:function(respuesta){
-              //console.log(respuesta);
               if(respuesta ){
+                $('.loading').hide();
                 Swal.fire({
                   icon: 'success',
                   title: 'Se ha guardado correctamente.',
@@ -1071,8 +1080,7 @@ $('.btnEditarPM').on('click',function(){
       deleteRows();
       $('#listaPU').val('');
       $('#saveProduct').hide();
-      $('#saveEditProduct').show();
-      $('#agregarEditarProducto').show();
+      $('#saveEditProduct').hide();
       $('.btnEditarPM').hide();
       $('.btnEliminarPM').show();
       $('#agregarEditarProducto').show();
@@ -1108,22 +1116,24 @@ $('.btnEditarPM').on('click',function(){
           processData: false,
           dataType: "json",
           success:function(respuesta){
-            //console.log(respuesta);
-            //console.log('Producto madre',respuesta.ID_PRODUCTO_MADRE);
-            //console.log('respuesta',respuesta.resultado);
             var obj = JSON.parse(respuesta.resultado);
-            //console.log(obj[0]);
             var idProdMadre = obj[0].ID_PRODUCTO_MADRE; 
             var prodMadre = obj[0].PRODUCTO_MADRE;
             var actEconomica = obj[0].CODIGO_ACTIVIDAD_ECONOMICA;
             var codProdSin = obj[0].CODIGO_PRODUCTO_SIN;
             var codUnidadMedida = obj[0].CODIGO_UNIDAD_MEDIDA;
-            var imagen = obj[0].Imagenes;
+            var imagen_b64 = obj[0].Imagenes;
+            var imagen = obj[0].IMAGEN;
             var transporte = obj[0].TRANSPORTE;
             var precioTransporte = obj[0].PRECIO_TRANSPORTE;
             var detalleProducto = obj[0].DETALLE;
             if(imagen){
-              $(".previsualizar").attr("src", "data:image/png;base64,"+imagen);
+              var rutaImagen = "<?=base_url('assets/dist/img/productos/')?>";
+              rutaImagen= rutaImagen+imagen;
+              $(".previsualizar").attr("src", rutaImagen);
+              //$(".previsualizar").attr("src", "data:image/png;base64,"+imagen_b64);
+            }else if(imagen_b64){
+              $(".previsualizar").attr("src", "data:image/png;base64,"+imagen_b64);
             }
             $('#detalleProducto').val(detalleProducto);
             $('#unidadMedida').val(codUnidadMedida);
@@ -1136,7 +1146,6 @@ $('.btnEditarPM').on('click',function(){
               $('#precioTransporte').val(precioTransporte);
               $('.inputPrecioTransporte').show();
             }else{
-              console.log('no incluye transporte');
               $('#precioTransporte').val('0');
               $("#transporteNo").prop('checked', true);
               $("#transporteSi").prop('checked',false);
@@ -1183,12 +1192,9 @@ function cargarTablaPrecios(id_producto_madre){
         processData: false,
         dataType: "json",
         success:function(respuesta){
-          console.log(respuesta);
          var tam = respuesta.length;
-         console.log(tam);
          var listaIDPUOriginal = new Array();
          respuesta.forEach(element => {
-          console.log(element);
           var cantFrutas = element.cantidad_frutas;
           var id_producto_unico = element.id_producto_unico;
           var id_producto_madre = element.id_producto_madre;
@@ -1239,6 +1245,7 @@ function cargarTablaPrecios(id_producto_madre){
          });
          var listaPU = JSON.stringify(listaIDPUOriginal);
          $('#listaPU').val(listaPU);
+         $('#saveEditProduct').show();
         }
     });
 }
@@ -1388,22 +1395,23 @@ var imagen = this.files[0];
 /*=============================================
   VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
   =============================================*/
-  
+  var fsize = imagen["size"];
+  var fileSize = Math.round((fsize / 1024));
 
   if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
-    $(".nuevaFoto").val("");
-     swal({
+    $("#nuevaFoto").val("");
+    $(".previsualizar").attr("src", rutaImagen);
+     Swal.fire({
         title: "Error al subir la imagen",
         text: "¡La imagen debe estar en formato JPG o PNG!",
-        type: "error",
         confirmButtonText: "¡Cerrar!"
       });
-  }else if(imagen["size"] > 2000000){
-    $(".nuevaFoto").val("");
-     swal({
+  }else if(fileSize > 2048){
+    $("#nuevaFoto").val("");
+    $(".previsualizar").attr("src", rutaImagen);
+     Swal.fire({
         title: "Error al subir la imagen",
         text: "¡La imagen no debe pesar más de 2MB!",
-        type: "error",
         confirmButtonText: "¡Cerrar!"
       });
   }else{
@@ -1412,7 +1420,7 @@ var imagen = this.files[0];
     $(datosImagen).on("load", async function(event){
       var rutaImagen = event.target.result;
       //(())const base64URL = await encodeFileAsBase64URL(imagen);
-      //console.log(base64URL);
+      
       //$(".previsualizar").attr("src", base64URL);
       $(".previsualizar").attr("src", rutaImagen);
     })
