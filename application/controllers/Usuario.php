@@ -51,7 +51,7 @@
 						
 						if($id) {
 							$usuario['USUARIO'] = $this->input->post('usuario');
-							$usuario['CONTRASEÑA'] = strToHex(set_value('dni'));
+							$usuario['CONTRASEÑA'] = strToHex('Capresso');
 							$usuario['ID_EMPLEADO'] = $id;
 							$usuario['ELIMINADO'] = 0;
 							$usuario['PRIMER_INGRESO'] = 0;
@@ -81,21 +81,53 @@
 									  $this->db->where('ID_VENTAS_PERFIL', $this->input->post('perfil'));
 							$acceso = $this->main->getListSelect('VENTAS_PERMISO_PERFIL', 'ID_VENTAS_ACCESO');
 
-							$autorizado = [];
-							foreach ($acceso as $a) {
-								$temp = [];
-								$temp['ID_USUARIO'] = $id_usuario;
-								$temp['ID_VENTAS_ACCESO'] = $a->ID_VENTAS_ACCESO;
-								$temp['ESTADO'] = 1;
+							if($acceso) {
 
-								array_push($autorizado, $temp);
+								$autorizado = [];
+								foreach ($acceso as $a) {
+									$temp = [];
+									$temp['ID_USUARIO'] = $id_usuario;
+									$temp['ID_VENTAS_ACCESO'] = $a->ID_VENTAS_ACCESO;
+									$temp['ESTADO'] = 1;
+
+									array_push($autorizado, $temp);
+								}
+
+								$this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $autorizado);
 							}
 
-							$this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $autorizado);
+							
+
+							
 
 							if($this->db->affected_rows()) {
 								$response['status'] = true;
 							}
+
+							$this->db->where('ACCESO_BOTON', 1);
+							$acceso_boton = $this->main->getListSelect('VENTAS_ACCESO', 'ID_VENTAS_ACCESO');
+
+
+							$this->db->where('MODULE', 'ADMIN');
+							$boton = $this->main->getListSelect('VENTAS_BOTON', 'ID_VENTAS_BOTON');
+
+							$array = [];
+
+							foreach($acceso_boton as $a) {
+
+								foreach($boton as $b) {
+									$t['ID_USUARIO'] = $id_usuario;
+									$t['ID_VENTAS_BOTON'] = $b->ID_VENTAS_BOTON;
+									$t['ESTADO'] = 0;
+									$t['ID_VENTAS_ACCESO'] = $a->ID_VENTAS_ACCESO;
+
+									array_push($array, $t);
+								}
+							}
+
+							$this->db->insert_batch('VENTAS_ACCESO_BOTON', $array);
+
+
 						} 
 						
 						echo json_encode($response);
