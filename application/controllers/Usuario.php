@@ -24,7 +24,7 @@
 
 					$response['status'] = false;
 
-					              $this->db->where('CI', $this->input->post('dni'));
+					              $this->db->where('CI', trim($this->input->post('dni').$this->input->post('expedido')));
 						$id = $this->main->getField('SIREPE_EMPLEADO', 'ID_EMPLEADO');
 
 						if(!$id) {

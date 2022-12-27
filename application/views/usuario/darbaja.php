@@ -55,7 +55,26 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <?=form_label(lang('dni'), 'new_dni');?>
-                        <?=form_input('new_dni', null, ['class'=>'form-control', 'id'=>'new_dni','minlength'=>'5', 'required'=>'required']);?>
+                        <?=form_input('new_dni', null, ['class'=>'form-control', 'id'=>'new_dni','minlength'=>'5', 'pattern'=>'^[0-9]{5,10}[A-Z]{2}|[0-9]{5,10}$' ,'required'=>'required']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("Cargo", 'new_cargos');?>
+
+                        <select name="new_expedido" id="new_expedido" class="form-control">
+                            <option value="">--- Seleccione una opcion ---</option>
+                                <option value="CB">Cochabamba</option>
+                                <option value="SC">Santa Cruz</option>
+                                <option value="LP">La Paz</option>
+                                <option value="OR">Oruro</option>
+                                <option value="CH">Chuquisaca</option>
+                                <option value="BN">Beni</option>
+                                <option value="PT">Potosi</option>
+                                <option value="TJ">Tarija</option>
+                                <option value="PN">Pando</option>
+                        </select>
                     </div>
                 </div>
 
@@ -576,6 +595,7 @@
         var appat =  $('#new_appat').val();
         var apmat = $('#new_apmat').val();
         var dni = $('#new_dni').val();
+        var expedido = $('#new_expedido').val();
         var celular = $('input[name="new_celular"]').val();
         var telefono = $('input[name="new_telefono"]').val();
         var nacimiento = $('input[name="new_nacimiento"]').val();
@@ -603,7 +623,7 @@
                     nombre:nombre, appat:appat, apmat:apmat, dni:dni, celular:celular, 
                     telefono:telefono, nacimiento:nacimiento, email:email, cargo:cargo,
                     perfil:perfil, sueldo:sueldo, domicilio:domicilio, afp:afp, genero:genero,
-                    cuenta:cuenta, ingreso:ingreso, usuario:usuario, sucursal:sucursal })
+                    cuenta:cuenta, ingreso:ingreso, usuario:usuario, sucursal:sucursal, expedido:expedido })
             .done(function( data ) {
                 
                 Swal.fire({
