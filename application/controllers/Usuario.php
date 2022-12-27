@@ -24,6 +24,11 @@
 
 					$response['status'] = false;
 
+					              $this->db->where('CI', $this->input->post('dni'));
+						$id = $this->main->getField('SIREPE_EMPLEADO', 'ID_EMPLEADO');
+
+						if(!$id) {
+
 						$registro['NOMBRE'] = $this->input->post('nombre');
 						$registro['AP_PATERNO'] = $this->input->post('appat');
 						$registro['AP_MATERNO'] = $this->input->post('apmat');
@@ -48,11 +53,13 @@
 
 							$this->db->insert('SIREPE_EMPLEADO', $registro);
 							$id = $this->db->insert_id();
+						}
 						
 						if($id) {
 							$usuario['USUARIO'] = $this->input->post('usuario');
 							$usuario['CONTRASEÑA'] = strToHex('Capresso');
 							$usuario['ID_EMPLEADO'] = $id;
+							$usuario['TIPO_USUARIO'] = ($this->input->post('perfil')==1)?'Cajero' : 'Global';
 							$usuario['ELIMINADO'] = 0;
 							$usuario['PRIMER_INGRESO'] = 0;
 							$usuario['VALIDADO'] = 0;
@@ -127,12 +134,10 @@
 
 							$this->db->insert_batch('VENTAS_ACCESO_BOTON', $array);
 
-
 						} 
 						
 						echo json_encode($response);
 					}
 				}
-		
 		/* End of file Usuario.php */
 		

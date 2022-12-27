@@ -38,6 +38,10 @@
 
 <script>
 
+$('#perfil').on('change', function(){
+    $('#menu').empty();
+});
+
 
 function getAcessos() {
 
@@ -52,7 +56,7 @@ function getAcessos() {
         dataType: "html",
         success: function (response) {
             $('.loading').hide();
-            $('#ace').empty();
+            $('#menu').empty();
             $('#menu').append(response);
         }
     });
