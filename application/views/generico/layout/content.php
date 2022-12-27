@@ -560,6 +560,13 @@ break;
 		echo $this->load->view('perfiles/acceso', $data, TRUE);
 	break;
 
+	case 'acceso-perfiles-ventas':
+
+		$data['perfiles'] = $this->main->getListSelect('VENTAS_PERFIL', 'ID_VENTAS_PERFIL AS id, PERFIL AS text', ['ID_VENTAS_PERFIL'=>'ASC']);
+
+		echo $this->load->view('perfiles/acceso', $data, TRUE);
+	break;
+
 										case 'reset-pasword':
 											
 											$campos = "vu.ID_USUARIO AS id, CONCAT_WS(' ', se.NOMBRE, se.AP_PATERNO, se.AP_MATERNO) AS text";

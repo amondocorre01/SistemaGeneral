@@ -59,7 +59,7 @@
 							$usuario['USUARIO'] = $this->input->post('usuario');
 							$usuario['CONTRASEÑA'] = strToHex('Capresso');
 							$usuario['ID_EMPLEADO'] = $id;
-							$usuario['TIPO_USUARIO'] = ($this->input->post('perfil')==1)?'Cajero' : 'Global';
+							$usuario['TIPO_USUARIO'] = $this->input->post('perfil');
 							$usuario['ELIMINADO'] = 0;
 							$usuario['PRIMER_INGRESO'] = 0;
 							$usuario['VALIDADO'] = 0;
@@ -69,7 +69,7 @@
 							$usuario['REIMPRESION_FACTURAS'] = 0;
 							$usuario['PERMISOS_USUARIOS'] = 0;
 							$usuario['RESET_CONTRASEÑA'] = 0;
-							$usuario['ID_VENTAS_PERFIL'] = $this->input->post('perfil');
+							//$usuario['ID_VENTAS_PERFIL'] = $this->input->post('perfil');
 
 
 										  $this->db->insert('VENTAS_USUARIOS', $usuario);

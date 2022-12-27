@@ -106,7 +106,7 @@
                         <select name="new_perfiles" id="new_perfiles" class="form-control">
                             <option value="">--- Seleccione una opcion ---</option>
                             <?php foreach ($perfiles as $perfil) : ?>
-                                <option value="<?=$perfil->ID?>"><?=$perfil->TEXT?></option>
+                                <option value="<?=$perfil->TEXT?>"><?=$perfil->TEXT?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
