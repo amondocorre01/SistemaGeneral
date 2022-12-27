@@ -15,6 +15,7 @@
      <?php  
             $this->db->order_by('NUMERO_ORDEN', 'ASC');
             $this->db->where('NIVEL_SUPERIOR', $value->ID_VENTAS_ACCESO);
+            $this->db->where('ESTADO', 1);
             $hijos = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
               SELECT ESTADO FROM VENTAS_PERMISO_PERFIL vpp 
               WHERE vpp.ID_VENTAS_PERFIL = '.$id.' AND 
@@ -37,6 +38,7 @@
                         <?php  
                                
                                 $this->db->order_by('NUMERO_ORDEN', 'ASC');
+                                $this->db->where('ESTADO', 1);
                                 $this->db->where('NIVEL_SUPERIOR', $hijo->ID_VENTAS_ACCESO);
                                 $nietos = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
                                   SELECT ESTADO 
@@ -62,6 +64,7 @@
                                     
                                     $this->db->order_by('NUMERO_ORDEN', 'ASC');
                                     $this->db->where('NIVEL_SUPERIOR', $nieto->ID_VENTAS_ACCESO);
+                                    $this->db->where('ESTADO', 1);
                                         $bisnietos = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
                                           SELECT ESTADO 
                                           FROM VENTAS_PERMISO_PERFIL vpp 

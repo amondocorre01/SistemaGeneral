@@ -108,6 +108,8 @@
             $id = $this->input->post('id');
     
                             $this->db->where('NIVEL_SUPERIOR', 0);
+                            $this->db->where('ESTADO', 1);
+
                             $this->db->order_by('NUMERO_ORDEN', 'ASC');
                             
             $data['menu'] = $this->main->getListSelect('VENTAS_ACCESO va', 'ID_VENTAS_ACCESO, NOMBRE, NIVEL_SUPERIOR,NUMERO_ORDEN, ( 
