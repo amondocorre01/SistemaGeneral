@@ -15,9 +15,10 @@
                 
                     <div class="row">
                         <div class="col-1">
-                        <?=form_label("Usuarios", 'usuarios');?>
+                        
                         </div>
                         <div class="col-3">
+                        <?=form_label("Usuarios", 'usuarios');?>
                             <select name="usuarios" id="usuarios" class="form-control" onchange="changeUser()">
                                 <?php foreach ($usuarios as $usuario): ?>
                                     <option value="<?=$usuario->ID_USUARIO?>"><?=$usuario->NOMBRE_COMPLETO?></option>
@@ -26,10 +27,11 @@
                         </div>
 
                         <div class="col-1">
-                        <?=form_label("Menu", 'menu');?>
+                       
                         </div>
 
                         <div class="col-3">
+                        <?=form_label("Menu", 'menu');?>
                             <select name="menus" id="menus" class="form-control">
                                     <?php foreach ($menus as $menu): ?>
                                         <option value="<?=$menu->ID_VENTAS_ACCESO?>"><?=$menu->NOMBRE?></option>
@@ -39,7 +41,7 @@
 
 
                         <div class="col-2">
-                            <?=form_button('name', 'Buscar', ['id'=>'buscar', 'class'=>'btn btn-danger btn-xs']);?>
+                            <?=form_button('name', 'Buscar', ['id'=>'buscar', 'class'=>'btn btn-danger btn-lg btn-padding']);?>
                         </div>
                     </div>
 

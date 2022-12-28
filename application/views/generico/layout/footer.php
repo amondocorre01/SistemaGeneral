@@ -114,7 +114,7 @@
 
  let superior = testData.getAttribute("data-sup");
 
- testData.style.color = "ghostwhite";
+ testData.style.color = "#dc3545";
 
  testData.style.fontWeight = "700";
 
@@ -122,9 +122,10 @@
 
  testSuperior.style.color = "white";
 
- $( testSuperior ).parent().css( "background-color", "#dc3545" );
+ //$( testSuperior ).parent().css( "background-color", "#dc3545" );
 
  $( testSuperior ).parent().addClass('menu-is-opening menu-open');
+ $( testSuperior ).parent().parent().addClass('menu-is-opening menu-open');
 
  
 

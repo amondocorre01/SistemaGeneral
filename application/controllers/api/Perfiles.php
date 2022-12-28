@@ -106,7 +106,13 @@
         public function acceso() {
 
             $id = $this->input->post('id');
-    
+                            if($this->input->post('filtro')=='SISTEMA_GENERAL') {
+                                $this->db->where('SISTEMA_GENERAL', 1);
+                            }
+                            else {
+                                $this->db->where('SISTEMA_VENTAS', 1);
+                            }
+                            $this->db->where('NIVEL_SUPERIOR', 0);
                             $this->db->where('NIVEL_SUPERIOR', 0);
                             $this->db->where('ESTADO', 1);
 
@@ -118,6 +124,7 @@
                 WHERE vpp.ID_VENTAS_PERFIL = '.$id.' AND 
                 vpp.ID_VENTAS_ACCESO = va.ID_VENTAS_ACCESO) AS ACCEDE'); 
             $data['id'] = $id;
+            $data['filtro'] = $this->input->post('filtro');
 
             echo $this->load->view('perfiles/body/permisos', $data, TRUE);
         }
@@ -141,6 +148,47 @@
             else {
                 $this->main->update('VENTAS_PERMISO_PERFIL', ['ESTADO'=>$estado], ['ID_VENTAS_PERMISO_PERFIL'=>$accede->ID_VENTAS_PERMISO_PERFIL]);
             }
+
+        }
+
+
+        public function change() {
+
+            $response['status'] = false;
+
+            $perfil = $this->input->post('id');
+            $usuario = $this->input->post('user');
+
+            $id = $this->main->getField('VENTAS_PERFIL', 'ID_VENTAS_PERFIL', ['PERFIL' => $perfil]);
+
+                       $this->db->where('ID_VENTAS_PERFIL', $id);
+                       $this->db->where('ESTADO', 1);
+            $permisos = $this->main->getListSelect('VENTAS_PERMISO_PERFIL', 'ID_VENTAS_ACCESO');
+
+                $this->db->where('ID_USUARIO', $usuario);
+                $this->db->delete('VENTAS_USUARIOS_ACCESO');
+
+                $array = [];
+                foreach ($permisos as $permiso) {
+
+                    $temp = [];
+                    $temp['ID_USUARIO'] = $usuario;
+                    $temp['ID_VENTAS_ACCESO'] = $permiso->ID_VENTAS_ACCESO;
+                    $temp['ESTADO'] = 1;
+
+                    array_push($array, $temp);
+                }
+
+                $this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $array);
+
+                $this->db->where('ID_USUARIO', $usuario);
+                $this->db->update('VENTAS_USUARIOS', ['TIPO_USUARIO'=>$perfil]);
+
+            if($this->db->affected_rows()) {
+                $response['status'] = true;
+            }
+           
+            echo json_encode($response);
 
         }
 

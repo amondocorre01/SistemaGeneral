@@ -395,3 +395,7 @@ i {
 .cajaLineaVenta{
    display: flex;
 }
+
+.btn-padding{
+   padding: 0.8rem 1rem !important; 
+}

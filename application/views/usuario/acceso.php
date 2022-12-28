@@ -8,10 +8,11 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-1">
-                    <?=form_label("Usuario", 'usuario');?>
+                   
                     </div>
 
                     <div class="col-4">
+                        <?=form_label("Usuario", 'usuario');?>
                         <select name="usuario" id="usuario" class="form-control">
                             <option value="">--- Seleccione un Usuario ---</option>
 
@@ -23,7 +24,7 @@
                     </div>
 
                     <div class="col-4">
-                        <?=form_button('name', 'Buscar', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'searchAcceso()']);?>
+                        <?=form_button('name', 'Buscar', ['class'=>'btn btn-danger btn-lg btn-padding', 'onclick'=>'searchAcceso()']);?>
                     </div>
                 </div>
 

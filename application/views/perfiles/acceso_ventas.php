@@ -4,7 +4,7 @@
         <div class="card card-danger">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="las la-users la-2x"></i> Acceso de Perfiles - General
+                    <i class="las la-users la-2x"></i> Acceso de Perfiles - Ventas
                 </h3>
             </div>
             <div class="card-body">
@@ -52,7 +52,7 @@ function getAcessos() {
     $.ajax({
         type: "POST",
         url: "<?=site_url('get-acceso-perfil')?>",
-        data: { id: id, filtro:'SISTEMA_GENERAL'},
+        data: { id: id, filtro:'SISTEMA_VENTAS'},
         dataType: "html",
         success: function (response) {
             $('.loading').hide();

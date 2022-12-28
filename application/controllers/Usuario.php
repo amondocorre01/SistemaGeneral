@@ -69,10 +69,8 @@
 							$usuario['REIMPRESION_FACTURAS'] = 0;
 							$usuario['PERMISOS_USUARIOS'] = 0;
 							$usuario['RESET_CONTRASEÑA'] = 0;
-							//$usuario['ID_VENTAS_PERFIL'] = $this->input->post('perfil');
-
-
-										  $this->db->insert('VENTAS_USUARIOS', $usuario);
+							
+							$this->db->insert('VENTAS_USUARIOS', $usuario);
 							$id_usuario = $this->db->insert_id();	
 							
 							if($id_usuario) {
