@@ -55,7 +55,26 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <?=form_label(lang('dni'), 'new_dni');?>
-                        <?=form_input('new_dni', null, ['class'=>'form-control', 'id'=>'new_dni','minlength'=>'5', 'required'=>'required']);?>
+                        <?=form_input('new_dni', null, ['class'=>'form-control', 'id'=>'new_dni','minlength'=>'5', 'pattern'=>'^[0-9]{5,10}[A-Z]{2}|[0-9]{5,10}$' ,'required'=>'required']);?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group" >
+                        <?=form_label("Cargo", 'new_cargos');?>
+
+                        <select name="new_expedido" id="new_expedido" class="form-control">
+                            <option value="">--- Seleccione una opcion ---</option>
+                                <option value="CB">Cochabamba</option>
+                                <option value="SC">Santa Cruz</option>
+                                <option value="LP">La Paz</option>
+                                <option value="OR">Oruro</option>
+                                <option value="CH">Chuquisaca</option>
+                                <option value="BN">Beni</option>
+                                <option value="PT">Potosi</option>
+                                <option value="TJ">Tarija</option>
+                                <option value="PN">Pando</option>
+                        </select>
                     </div>
                 </div>
 
@@ -106,7 +125,7 @@
                         <select name="new_perfiles" id="new_perfiles" class="form-control">
                             <option value="">--- Seleccione una opcion ---</option>
                             <?php foreach ($perfiles as $perfil) : ?>
-                                <option value="<?=$perfil->ID?>"><?=$perfil->TEXT?></option>
+                                <option value="<?=$perfil->TEXT?>"><?=$perfil->TEXT?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -366,6 +385,40 @@
   </div>
 </div>
 
+
+<div class="modal fade" id="perfiles" tabindex="-1" role="dialog" aria-labelledby="nombre" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="nombre">Cambiar Perfil</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      <div class="row">
+        <div class="col-12">
+            <?=form_label( 'Nuevo perfil', 'perfil'); ?>
+            <select name="perfil" id="change_perfil" class="form-control" data-user="" class="form-control">
+                <option value="">--- Seleccione una opcion ---</option>
+                <?php foreach ($perfiles as $perfil) : ?>
+                    <option value="<?=$perfil->TEXT?>"><?=$perfil->TEXT?></option>
+                <?php endforeach; ?>
+            </select>
+            <input type="hidden" id="change_idusuario">
+        </div>
+      </div>
+           
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-danger" id="confirmar" onclick="savechangeperfil()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 
        
@@ -381,6 +434,7 @@
             { title: 'Nombre completo', width:'20%',data: 'NOMBRE' },
             { title: 'Doc. Ident.', width:'10%' ,data: 'CI' },
             { title: 'Celular', width:'10%', data: 'CELULAR' },
+            { title: 'Perfil', width:'10%', data: 'TIPO_USUARIO' },
             { title: 'Area', width:'10%', data: 'AREA' },
             { title: 'Cargo', width:'15%', data: 'NOMBRE_CARGO' },
             { title: 'Ubicaciones', width:'15%' ,data: null, 
@@ -402,17 +456,21 @@
                     if(row.ID_STATUS == 1) {
 
                         button += '<button class="btn btn-danger btn-xs" onclick="baja('+row.ID_EMPLEADO+')">';
-                        button +='<i class="las la-user-times"></i>';
+                        button +='<i class="las la-user-times la-2x"></i>';
                         button += '</button>';
 
                         button += '<button class="btn btn-xs edit palette-Amber-800 bg" data-toggle="modal" data-target="#editar" onclick="editEmpleado('+row.ID_EMPLEADO+',\''+row.NOMBRE+'\')">';
-                        button +='<i class="las la-user-edit"></i>';
+                        button +='<i class="las la-user-edit la-2x"></i>';
                         button += '</button>';
 
                         if(row.ID_USUARIO) {
 
                             button += '<button class="btn btn-info btn-xs user" data-toggle="modal" data-target="#operaciones" onclick="setUser('+row.ID_USUARIO+',\''+row.NOMBRE+'\')">';
-                            button +='<i class="las la-store-alt"></i>';
+                            button +='<i class="las la-store-alt la-2x"></i>';
+                            button += '</button>';
+
+                            button += '<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#perfiles" onclick="setPerfil('+row.ID_USUARIO+')">';
+                            button +='<i class="las la-user-cog la-2x"></i>';
                             button += '</button>';
 
                         }
@@ -469,6 +527,10 @@
 
         $('#nombre').empty();
         $('#nombre').append(nombre);
+    }
+
+    function setPerfil(id) {
+        $('#change_idusuario').val(id);
     }
 
     function editEmpleado(id, nombre) {
@@ -533,6 +595,36 @@
             });
     }
 
+    function savechangeperfil() {
+
+        var id = $('#change_perfil').val();
+        var user = $('#change_idusuario').val();
+
+        if(id && user){
+
+            $.post("<?=site_url('change-perfil')?>", {user:user, id:id})
+            .done(function (data){
+        
+                table.ajax.reload(); 
+                $('#perfiles').modal('hide');
+
+                Swal.fire({
+                icon: 'success',
+                title: 'Se ha cambiado el perfil de usuario',
+                timer: 4500
+            });
+
+
+        });
+
+
+        }
+
+        
+
+
+    }
+
     $('.user').on('input', function(){
 
         var nombre = $('#new_nombre').val().substr(0,1).toLowerCase();
@@ -576,6 +668,7 @@
         var appat =  $('#new_appat').val();
         var apmat = $('#new_apmat').val();
         var dni = $('#new_dni').val();
+        var expedido = $('#new_expedido').val();
         var celular = $('input[name="new_celular"]').val();
         var telefono = $('input[name="new_telefono"]').val();
         var nacimiento = $('input[name="new_nacimiento"]').val();
@@ -603,7 +696,7 @@
                     nombre:nombre, appat:appat, apmat:apmat, dni:dni, celular:celular, 
                     telefono:telefono, nacimiento:nacimiento, email:email, cargo:cargo,
                     perfil:perfil, sueldo:sueldo, domicilio:domicilio, afp:afp, genero:genero,
-                    cuenta:cuenta, ingreso:ingreso, usuario:usuario, sucursal:sucursal })
+                    cuenta:cuenta, ingreso:ingreso, usuario:usuario, sucursal:sucursal, expedido:expedido })
             .done(function( data ) {
                 
                 Swal.fire({

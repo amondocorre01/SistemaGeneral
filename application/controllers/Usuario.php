@@ -24,6 +24,11 @@
 
 					$response['status'] = false;
 
+					              $this->db->where('CI', trim($this->input->post('dni').$this->input->post('expedido')));
+						$id = $this->main->getField('SIREPE_EMPLEADO', 'ID_EMPLEADO');
+
+						if(!$id) {
+
 						$registro['NOMBRE'] = $this->input->post('nombre');
 						$registro['AP_PATERNO'] = $this->input->post('appat');
 						$registro['AP_MATERNO'] = $this->input->post('apmat');
@@ -48,11 +53,13 @@
 
 							$this->db->insert('SIREPE_EMPLEADO', $registro);
 							$id = $this->db->insert_id();
+						}
 						
 						if($id) {
 							$usuario['USUARIO'] = $this->input->post('usuario');
 							$usuario['CONTRASEÑA'] = strToHex('Capresso');
 							$usuario['ID_EMPLEADO'] = $id;
+							$usuario['TIPO_USUARIO'] = $this->input->post('perfil');
 							$usuario['ELIMINADO'] = 0;
 							$usuario['PRIMER_INGRESO'] = 0;
 							$usuario['VALIDADO'] = 0;
@@ -62,10 +69,8 @@
 							$usuario['REIMPRESION_FACTURAS'] = 0;
 							$usuario['PERMISOS_USUARIOS'] = 0;
 							$usuario['RESET_CONTRASEÑA'] = 0;
-							$usuario['ID_VENTAS_PERFIL'] = $this->input->post('perfil');
-
-
-										  $this->db->insert('VENTAS_USUARIOS', $usuario);
+							
+							$this->db->insert('VENTAS_USUARIOS', $usuario);
 							$id_usuario = $this->db->insert_id();	
 							
 							if($id_usuario) {
@@ -127,12 +132,10 @@
 
 							$this->db->insert_batch('VENTAS_ACCESO_BOTON', $array);
 
-
 						} 
 						
 						echo json_encode($response);
 					}
 				}
-		
 		/* End of file Usuario.php */
 		
