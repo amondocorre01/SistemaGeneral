@@ -138,8 +138,9 @@
             $precioTransporte='0';
          }
         }
+        $id_producto_madre = (intval( getMaxProductoMadre()) +1);
+        $imagen = $id_producto_madre.".png";
         $savePM = guardarProductoMadre($nombre_producto, $id_categoria_2, $detalle_producto, $actividad_economica, $producto_sin, $unidad_medida, $tieneTransporte, $precioTransporte, $imagen);
-        $id_producto_madre = getMaxProductoMadre();
         foreach ($productos_unicos as $key => $value) {
          $id_tam = $value->id_tam;
          $cantidad_frutas = $value->cantidad_frutas;
@@ -157,12 +158,9 @@
         }
         
         if (is_array($_FILES) && count($_FILES) > 0) {
-         if (($_FILES["imagen"]["type"] == "image/pjpeg")
-             || ($_FILES["imagen"]["type"] == "image/jpeg")
-             || ($_FILES["imagen"]["type"] == "image/png")
-             || ($_FILES["imagen"]["type"] == "image/gif")) {
+         if (($_FILES["imagen"]["type"] == "image/png")) {
 
-             if (move_uploaded_file($_FILES["imagen"]["tmp_name"], "./assets/dist/img/productos/".$_FILES['imagen']['name'])) {
+             if (move_uploaded_file($_FILES["imagen"]["tmp_name"], "./assets/dist/img/productos/".$id_producto_madre.".png")) {
                  //echo "images/".$_FILES['imagen']['name'];
                  //echo 'si guardo la imagen';
              } else {
@@ -200,6 +198,7 @@
             $precioTransporte='0';
          }
         }
+        $imagen = $id_producto_madre.".png";
         $savePM = actualizarProductoMadre($id_producto_madre, $nombre_producto, $id_categoria_2, $detalle_producto, $actividad_economica, $producto_sin, $unidad_medida, $tieneTransporte, $precioTransporte, $imagen);
         
         foreach ($productos_unicos as $key => $value) {
@@ -291,12 +290,9 @@
         }
 
         if (is_array($_FILES) && count($_FILES) > 0) {
-         if (($_FILES["imagen"]["type"] == "image/pjpeg")
-             || ($_FILES["imagen"]["type"] == "image/jpeg")
-             || ($_FILES["imagen"]["type"] == "image/png")
-             || ($_FILES["imagen"]["type"] == "image/gif")) {
+         if (($_FILES["imagen"]["type"] == "image/png")) {
 
-             if (move_uploaded_file($_FILES["imagen"]["tmp_name"], "./assets/dist/img/productos/".$_FILES['imagen']['name'])) {
+             if (move_uploaded_file($_FILES["imagen"]["tmp_name"], "./assets/dist/img/productos/".$id_producto_madre.".png")) {
                  //echo "images/".$_FILES['imagen']['name'];
                  //echo 'si guardo la imagen';
              } else {

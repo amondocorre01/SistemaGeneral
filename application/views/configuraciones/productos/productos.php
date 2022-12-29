@@ -164,7 +164,7 @@ $current_url = $protocolo.$host.$url;
       <div class="col-md-3">
         <div class="form-group">
           <label>Subir Imagen del Producto:</label>
-          <input type="file" id="nuevaFoto" name="nuevaFoto" accept="image/png, image/jpeg, image/jpg">
+          <input type="file" id="nuevaFoto" name="nuevaFoto" accept="image/png">
           <!--<p class="help-block"><br/>Peso máximo: 2 MB - Dimensiones : 200 x 200 o similar.</p>-->
         </div>
         <center>
@@ -1398,12 +1398,12 @@ var imagen = this.files[0];
   var fsize = imagen["size"];
   var fileSize = Math.round((fsize / 1024));
 
-  if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
+  if(imagen["type"] != "image/png"){
     $("#nuevaFoto").val("");
     $(".previsualizar").attr("src", rutaImagen);
      Swal.fire({
         title: "Error al subir la imagen",
-        text: "¡La imagen debe estar en formato JPG o PNG!",
+        text: "¡La imagen debe estar en formato PNG!",
         confirmButtonText: "¡Cerrar!"
       });
   }else if(fileSize > 2048){
