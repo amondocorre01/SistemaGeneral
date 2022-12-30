@@ -593,12 +593,13 @@ if(!function_exists('guardarVentasProcedimientoOpciones')) {
 
 if(!function_exists('actualizarProductoMadre')) {
 	function actualizarProductoMadre($id_producto_madre, $nombre_producto, $id_categoria_2, $detalle_producto, $actividad_economica, $producto_sin, $unidad_medida, $tieneTransporte, $precioTransporte, $imagen){
-		$text_imagen = '';
+		/*$text_imagen = '';
 		if($imagen != ''){
 			$text_imagen = ", IMAGEN = '$imagen'";
-		}
+		}*/
 		$CI =& get_instance();
-		$sql = "update VENTAS_PRODUCTO_MADRE SET PRODUCTO_MADRE = '$nombre_producto', DETALLE = '$detalle_producto', CODIGO_ACTIVIDAD_ECONOMICA = '$actividad_economica', CODIGO_PRODUCTO_SIN = '$producto_sin', CODIGO_UNIDAD_MEDIDA = '$unidad_medida', TRANSPORTE = '$tieneTransporte', PRECIO_TRANSPORTE = '$precioTransporte' ".$text_imagen." where ID_PRODUCTO_MADRE = '$id_producto_madre' AND ID_CATEGORIA_2 = '$id_categoria_2';";
+		//$sql = "update VENTAS_PRODUCTO_MADRE SET PRODUCTO_MADRE = '$nombre_producto', DETALLE = '$detalle_producto', CODIGO_ACTIVIDAD_ECONOMICA = '$actividad_economica', CODIGO_PRODUCTO_SIN = '$producto_sin', CODIGO_UNIDAD_MEDIDA = '$unidad_medida', TRANSPORTE = '$tieneTransporte', PRECIO_TRANSPORTE = '$precioTransporte' ".$text_imagen." where ID_PRODUCTO_MADRE = '$id_producto_madre' AND ID_CATEGORIA_2 = '$id_categoria_2';";
+		$sql = "update VENTAS_PRODUCTO_MADRE SET IMAGEN = '$imagen' where ID_PRODUCTO_MADRE = '$id_producto_madre' AND ID_CATEGORIA_2 = '$id_categoria_2';";
 		$respuesta = $CI->db->query($sql);
 	}
 }

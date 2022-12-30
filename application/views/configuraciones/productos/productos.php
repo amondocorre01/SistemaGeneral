@@ -949,6 +949,10 @@ $('.btnAgregarPM').on('click',function(){
   var texto_seleccionado = $('#productoCategoria2 option:selected').html();
 });
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * 100)+1+max;
+}
+
 //$('#saveProduct').on('click',function(){
   function guardarProductoBD(){
   //$('#form-product-new-update').validate();
@@ -1130,6 +1134,8 @@ $('.btnEditarPM').on('click',function(){
             if(imagen){
               var rutaImagen = "<?=base_url('assets/dist/img/productos/')?>";
               rutaImagen= rutaImagen+imagen;
+              var ran = getRandomInt(2);
+              rutaImagen = rutaImagen+'?a='+ran;
               $(".previsualizar").attr("src", rutaImagen);
               //$(".previsualizar").attr("src", "data:image/png;base64,"+imagen_b64);
             }else if(imagen_b64){
