@@ -1100,15 +1100,17 @@ class Inicio extends CI_Controller {
     }
     
     public function obtenerMenuPrincipal($id_usuario, $data){
-        $sql="select * from VENTAS_ACCESO where NIVEL_SUPERIOR = 0 and tipo='menu' and estado=1 order by numero_orden;";
+        $sql = "SELECT va.* FROM VENTAS_ACCESO va, VENTAS_USUARIOS_ACCESO vua  
+        WHERE SISTEMA_VENTAS = 1 AND NIVEL_SUPERIOR = 0 AND va.tipo='menu' AND va.estado=1 AND vua.estado=1
+        AND va.ID_VENTAS_ACCESO = vua.ID_VENTAS_ACCESO AND vua.ID_USUARIO = ".$id_usuario."
+        ORDER BY numero_orden;";
         $res_sql = $this->main->getQuery($sql);
         $res='';
         foreach ($res_sql as $row)
             {
                 $nombre = $row->NOMBRE;
                 $id_nivel = $row->ID_VENTAS_ACCESO;
-                $habilitado = $this->verificarPermisoMenu($id_usuario, $id_nivel);
-                if($habilitado){
+               
                     $res = $res.'<li class="nav-item">
                     <a href="#" class="nav-link" id="menunav_'.$row->ID_VENTAS_ACCESO.'">
                         '.$row->ICONO.'
@@ -1122,13 +1124,16 @@ class Inicio extends CI_Controller {
                         $res=$res.$submenu.'</ul>';
                     
                     $res = $res.'</li>';
-                }                
+                               
             }
         return $res;
     }
 
     public function obtenerSubMenu($id_usuario, $id_nivel_superior, $data){
-        $sql="select * from VENTAS_ACCESO where NIVEL_SUPERIOR = '$id_nivel_superior' and estado=1 and sistema_general=1";
+        $sql = "SELECT va.* FROM VENTAS_ACCESO va, VENTAS_USUARIOS_ACCESO vua  
+        WHERE SISTEMA_VENTAS = 1 AND NIVEL_SUPERIOR = ".$id_nivel_superior." AND va.estado=1 AND vua.estado=1
+        AND va.ID_VENTAS_ACCESO = vua.ID_VENTAS_ACCESO AND vua.ID_USUARIO = ".$id_usuario."
+        ORDER BY numero_orden;";
         $res_sql = $this->main->getQuery($sql);
         $res='';
         foreach ($res_sql as $row)
@@ -1141,8 +1146,7 @@ class Inicio extends CI_Controller {
                 if($tipo =='acceso'){
                     $url= base_url('index.php/generico/inicio');
                     $url= $url.'?vc='.$id_nivel;
-                    $habilitado = $this->verificarPermisoMenu($id_usuario, $id_nivel);
-                    if($habilitado){
+                    
                         if($navegacion=='new-tab'){
                             $url=site_url($link);
                             $res = $res.'<li class="nav-item">
@@ -1159,7 +1163,7 @@ class Inicio extends CI_Controller {
                             </a>
                             </li>';
                         }
-                    }
+                   
                 }else{
                     $habilitado = $this->verificarPermisoMenu($id_usuario, $id_nivel);
                     if($habilitado){
