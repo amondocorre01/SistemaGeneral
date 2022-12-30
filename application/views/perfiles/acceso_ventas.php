@@ -24,7 +24,7 @@
                     </div>
 
                     <div class="col-2">
-                        <?=form_button('send', 'Buscar accesos', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'getAcessos()']);?>
+                        <?=form_button('send', 'Buscar accesos', ['class'=>'btn btn-danger btn-lg btn-padding', 'onclick'=>'getAcessos()']);?>
                     </div>
                 </div>
 
