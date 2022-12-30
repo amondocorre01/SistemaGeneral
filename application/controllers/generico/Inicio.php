@@ -1101,7 +1101,7 @@ class Inicio extends CI_Controller {
     
     public function obtenerMenuPrincipal($id_usuario, $data){
         $sql = "SELECT va.* FROM VENTAS_ACCESO va, VENTAS_USUARIOS_ACCESO vua  
-        WHERE SISTEMA_VENTAS = 1 AND NIVEL_SUPERIOR = 0 AND va.tipo='menu' AND va.estado=1 AND vua.estado=1
+        WHERE SISTEMA_GENERAL = 1 AND NIVEL_SUPERIOR = 0 AND va.tipo='menu' AND va.estado=1 AND vua.estado=1
         AND va.ID_VENTAS_ACCESO = vua.ID_VENTAS_ACCESO AND vua.ID_USUARIO = ".$id_usuario."
         ORDER BY numero_orden;";
         $res_sql = $this->main->getQuery($sql);
@@ -1131,7 +1131,7 @@ class Inicio extends CI_Controller {
 
     public function obtenerSubMenu($id_usuario, $id_nivel_superior, $data){
         $sql = "SELECT va.* FROM VENTAS_ACCESO va, VENTAS_USUARIOS_ACCESO vua  
-        WHERE SISTEMA_VENTAS = 1 AND NIVEL_SUPERIOR = ".$id_nivel_superior." AND va.estado=1 AND vua.estado=1
+        WHERE SISTEMA_GENERAL = 1 AND NIVEL_SUPERIOR = ".$id_nivel_superior." AND va.estado=1 AND vua.estado=1
         AND va.ID_VENTAS_ACCESO = vua.ID_VENTAS_ACCESO AND vua.ID_USUARIO = ".$id_usuario."
         ORDER BY numero_orden;";
         $res_sql = $this->main->getQuery($sql);
