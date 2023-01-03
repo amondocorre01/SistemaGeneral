@@ -537,7 +537,7 @@ break;
 
 										case 'cuis':
 																		$this->db->where('CODIGO_SUCURSAL !=', null);
-											$sucursales = $this->main->getListSelect('ID_UBICACION', 'CODIGO_SUCURSAL, DESCRIPCION', ['CODIGO_SUCURSAL'=>'ASC']);
+											$sucursales = $this->main->getListSelect('ID_UBICACION', 'CODIGO_SUCURSAL AS id, DESCRIPCION AS text', ['CODIGO_SUCURSAL'=>'ASC']);
 											$datos['sucursales'] = $this->main->dropdown($sucursales, '');
 											echo $this->load->view('facturacion/cuis', $datos, TRUE);
 										break;

@@ -36,7 +36,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <?=form_label("API Key", 'evento');?>
-                    <select name="evento" id="evento">
+                    <select name="evento" id="evento" class="form-control">
                             <?php foreach ($eventos as $value) :?>
                               <option value="<?=$value->ID_VENTAS_F01_CUIS.'-'.$value->CODIGO?>"><?=$value->DESCRIPCION?></option>
                             <?php endforeach; ?>
@@ -85,10 +85,6 @@
 </div>
 
 <script>
-
-    $('#evento').select2({
-        placeholder: "Seleccione una opcion"
-    });
     
     var table = $('#table').DataTable({
         responsive: true,

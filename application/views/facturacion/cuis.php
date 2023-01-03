@@ -97,7 +97,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <?=form_label("Sucursal", 'sucursal');?>
-                    <?=form_dropdown('sucursal', $sucursales, null,[ 'id'=>'sucursal', 'required'=>'required']);?>
+                    <?=form_dropdown('sucursal', $sucursales, null,[ 'id'=>'sucursal', 'required'=>'required', 'class'=>'form-control']);?>
                     <div class="valid-feedback"></div>
                 </div>
             </div>

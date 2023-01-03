@@ -108,9 +108,7 @@
 
 <script>
 
-    $('#estado').select2({
-        placeholder: "Seleccione una opcion"
-    });
+    
     
     var table = $('#table').DataTable({
         responsive: true,
