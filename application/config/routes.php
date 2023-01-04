@@ -205,9 +205,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['eliminar-segunda-categoria'] = 'configuraciones/producto/eliminar_segunda_categoria';
     $route['eliminar-producto-madre'] = 'configuraciones/producto/eliminar_producto_madre';
     
-
-
-     $route['imprimir-comanda/(:any)'] = 'api/impresion/imprimirComanda/$1';
+    $route['imprimir-comanda/(:any)'] = 'api/impresion/imprimirComanda/$1';
     $route['reimprimir-factura-carta/(:any)'] = 'api/impresion/reimprimirFacturaCarta/$1';
     $route['reimprimir-factura-rollo/(:any)'] = 'api/impresion/reimprimirFacturaRollo/$1';
     $route['imprimir-factura-anulada-carta/(:any)'] = 'api/impresion/imprimirFacturaAnuladaCarta/$1';
@@ -221,6 +219,9 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['get-acceso-perfil'] = 'api/perfiles/acceso';
     $route['update-permiso-perfil'] = 'api/perfiles/update';
     $route['change-perfil'] = 'api/perfiles/change';
+
+    $route['get-acceso-formas'] = 'api/formas/index';
+    $route['update-forma'] = 'api/formas/update';
 
 
 

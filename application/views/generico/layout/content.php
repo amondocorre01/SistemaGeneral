@@ -517,6 +517,13 @@ break;
 		echo $this->load->view('usuario/boton', $datos, TRUE);
 	break;
 
+	case 'sucursal-formas-pago':
+
+		$datos['sucursales'] = $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION AS ID, DESCRIPCION AS TEXT', ['ID_UBICACION' => 'ASC'], ['ESTADO' => 1]);
+
+		echo $this->load->view('configuraciones/sucursal/formas', $datos, TRUE);
+	break;
+
 	case 'permisos-boton-sucursal':
 		
 		$datos['sucursales'] = $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION AS ID, DESCRIPCION AS TEXT', ['ID_UBICACION' => 'ASC'], ['ESTADO' => 1]);
