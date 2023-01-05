@@ -382,9 +382,11 @@ class Inicio extends CI_Controller {
                             $f_fin = $_POST['f_fin'];
                             $name_procedimiento='REPORTE_09_PANDO';
                             $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
-                            $res = $this->main->getQuery($sql);
+                            $DB_PANDO = $this->load->database('pando',TRUE);                          
+                            //$res = $this->main->getQuery($sql);
+                            $res = $DB_PANDO->query($sql)->result();
                             $data['campos_excel'] = $res;
-                            $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                            $data['nombre_columnas'] = $this->getNombreColumnasProcedimiento($name_procedimiento, 'pando');
                         }
                         break;case 'REPORTE_10_PANDO':
                         if(isset($_POST['form_date'])){
@@ -1090,6 +1092,16 @@ class Inicio extends CI_Controller {
                (N'[dbo].[".$name_procedimiento."]', null, 0)
        order by column_ordinal;";
        return $this->main->getQuery($sql);
+
+    }
+
+    public function getNombreColumnasProcedimiento($name_procedimiento, $conexion){
+        $sql="select name as column_name
+        from sys.dm_exec_describe_first_result_set
+               (N'[dbo].[".$name_procedimiento."]', null, 0)
+       order by column_ordinal;";
+       $DB2 = $this->load->database($conexion, TRUE);
+       return $DB2->query($sql)->result();
 
     }
 
