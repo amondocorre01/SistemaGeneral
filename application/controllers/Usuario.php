@@ -83,7 +83,10 @@
 								$this->db->insert('VENTAS_PERMISO_SUCURSAL', $permiso);
 
 							}
-									  $this->db->where('ID_VENTAS_PERFIL', $this->input->post('perfil'));
+											$this->db->where('PERFIL', $this->input->post('perfil'));
+							$id_perfil = $this->main->getField('VENTAS_PERFIL', 'ID_VENTAS_PERFIL');
+
+									  $this->db->where('ID_VENTAS_PERFIL', $id_perfil);
 							$acceso = $this->main->getListSelect('VENTAS_PERMISO_PERFIL', 'ID_VENTAS_ACCESO');
 
 							if($acceso) {

@@ -566,10 +566,11 @@ class Inicio extends CI_Controller {
                                 $f_ini = $_POST['f_inicio'];
                                 $f_fin = $_POST['f_fin'];
                                 $name_procedimiento='REPORTE_09_SALAMANCA';
+                                $DB_SALAMANCA = $this->load->database('salamanca',TRUE);
                                 $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
-                                $res = $this->main->getQuery($sql);
+                                $res = $DB_SALAMANCA->query($sql)->result();
                                 $data['campos_excel'] = $res;
-                                $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                $data['nombre_columnas'] = $this->getNombreColumnasProcedimiento($name_procedimiento, 'salamanca');
                             }
                             break;case 'REPORTE_10_SALAMANCA':
                             if(isset($_POST['form_date'])){
@@ -934,9 +935,11 @@ class Inicio extends CI_Controller {
                                         $f_fin = $_POST['f_fin'];
                                         $name_procedimiento='REPORTE_09_LINCOLN';
                                         $sql = "EXEC ".$name_procedimiento." '".$f_ini."', '".$f_fin."'";
-                                        $res = $this->main->getQuery($sql);
+                                        $DB_PANDO = $this->load->database('lincoln',TRUE);                          
+                                        //$res = $this->main->getQuery($sql);
+                                        $res = $DB_LINCOLN->query($sql)->result();
                                         $data['campos_excel'] = $res;
-                                        $data['nombre_columnas'] = $this->getNombreColumnas($name_procedimiento);
+                                        $data['nombre_columnas'] = $this->getNombreColumnasProcedimiento($name_procedimiento, 'lincoln');
                                     }
                                     break;case 'REPORTE_10_LINCOLN':
                                     if(isset($_POST['form_date'])){

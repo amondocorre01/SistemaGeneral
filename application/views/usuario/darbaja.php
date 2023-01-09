@@ -684,12 +684,11 @@
         var sucursal = $('#new_sucursal').val();
         var genero = $('#new_genero').val();
 
-
-
-
         $('#nuevo').modal('hide');
 
-        if( nombre != '' && dni != '' && perfil > 0 && sucursal > 0) {
+        console.log(nombre, dni, perfil, sucursal);
+
+        if( nombre != '' && dni != '' && perfil != '' && sucursal > 0) {
 
             $.post("<?=site_url('nuevo-usuario')?>", 
                 {
