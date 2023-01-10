@@ -217,14 +217,8 @@ function onClickAnularFactura(element){
     var iden = $(element).attr("iden");
     $('.btnSaveAnularFactura').attr("iden",iden);
     cargarMotivosAnulacion();
-    //var nameTextSms = '.sms-'+iden;
-    /*var smsText = $(nameTextSms).val();
-    if(smsText != ''){
-        $('.textarea-msg').val(smsText);
-    }else{
-
-    }*/
 }
+
 function cargarMotivosAnulacion(){
     $(".motivoAnulacion").empty();
     var datos = new FormData();

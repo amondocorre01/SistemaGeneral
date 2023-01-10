@@ -91,7 +91,9 @@
             if($save){
                 $DB2 = $this->load->database($nombre_codigo_sucursal, TRUE);
                 $DB2->where('ID_VENTA_DOCUMENTO', $id);
-                $DB2->update('VENTA_DOCUMENTO'.$sufijo_sucursal , ['ANULADO'=>1]);
+                $id_usuario = $this->session->id_usuario;
+                $fecha = date('Y-m-d H:i:s');
+                $DB2->update('VENTA_DOCUMENTO'.$sufijo_sucursal , ['ANULADO'=>1, 'FECHA_MODIFICACION'=>$fecha,	'USUARIO_MODIFICA'=>$id_usuario ]);
                 $this->session->set_flashdata('anulado', 'SI');
                 echo json_encode('anulado');
             }else{
