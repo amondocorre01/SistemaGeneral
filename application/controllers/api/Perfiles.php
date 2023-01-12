@@ -161,6 +161,9 @@
 
             $id = $this->main->getField('VENTAS_PERFIL', 'ID_VENTAS_PERFIL', ['PERFIL' => $perfil]);
 
+                                $this->db->where('ID_USUARIO', $usuario);
+            $this->main->update('VENTAS_USUARIOS', ['TIPO_USUARIO'=>$perfil, 'ID_VENTAS_PERFIL'=>$id]);
+
                        $this->db->where('ID_VENTAS_PERFIL', $id);
                        $this->db->where('ESTADO', 1);
             $permisos = $this->main->getListSelect('VENTAS_PERMISO_PERFIL', 'ID_VENTAS_ACCESO');

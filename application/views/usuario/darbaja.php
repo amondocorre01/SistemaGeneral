@@ -134,7 +134,7 @@
                 <div class="col-md-4">
                     <div class="form-group" >
                         <?=form_label("Género", 'new_genero');?>
-                        <?=form_dropdown('new_genero', [''=>'', 'F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'new_genero', 'class'=>'form-control']);?>
+                        <?=form_dropdown('new_genero', ['F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'new_genero', 'class'=>'form-control']);?>
                     </div>
                 </div>
 
@@ -320,7 +320,7 @@
             <div class="form-group" >
                 <?=form_label("Cargo", 'cargos');?>
                 <select name="cargos" id="cargos" class="form-control">
-                    <option value="">--- Seleccione una opcion ---</option>
+
                     <?php foreach($cargos AS $cargo):?>
                         <option value="<?=$cargo->ID?>"><?=$cargo->TEXT?></option>
                     <?php endforeach;?>
@@ -328,17 +328,19 @@
             </div>
         </div>
 
+        <input type="hidden" id="edit_idUsuario">
+        <input type="hidden" id="edit_empleado">               
         <div class="col-md-4">
             <div class="form-group" >
                 <?=form_label("Género", 'genero');?>
-                <?=form_dropdown('genero', [''=>'', 'F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'genero', 'class'=>'form-control']);?>
+                <?=form_dropdown('genero', ['F'=>'Femenino', 'M'=>'Masculino'], null,['id'=>'genero', 'class'=>'form-control']);?>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="form-group" >
                 <?=form_label("Fecha ingreso", 'ingreso');?>
-                <?=form_input(['name'=>'ingreso', 'type'=>'date' ,'class'=>'form-control', 'required'=>'required']);?>
+                <?=form_input(['name'=>'edit_ingreso', 'type'=>'date' ,'class'=>'form-control', 'required'=>'required']);?>
             </div>
         </div>
 
@@ -359,8 +361,7 @@
         <div class="col-md-4">
             <div class="form-group" >
                 <?=form_label("AFP", 'afp');?>
-                <select name="afp" id="afp" class="form-control">
-                    <option value="">--- Selecione una opcion ---</option>
+                <select name="edit_afp" id="edit_afp" class="form-control">
                 <?php foreach ($afp as $a) : ?>
                     <option value="<?=$a->ID_AFP?>"><?=$a->NOMBRE_AFP?></option>
                 <?php endforeach; ?>
@@ -371,7 +372,7 @@
         <div class="col-md-4">
             <div class="form-group" >
                 <?=form_label("N° de cuenta", 'cuentaban');?>
-                <?=form_input(['name'=>'cuentaban', 'type'=>'text' ,'class'=>'form-control', 'required'=>'required']);?>
+                <?=form_input(['name'=>'edit_cuentaban', 'type'=>'text' ,'class'=>'form-control', 'required'=>'required']);?>
             </div>
         </div>
       </div>
@@ -548,10 +549,19 @@
             $('#apmat').val(empleado.data.AP_MATERNO);
             $('#dni').val(empleado.data.CI);
             $('input[name="telefono"]').val(empleado.data.TELEFONO);
+            $('input[name="domicilio"]').val(empleado.data.DIRECCION);
+            $('input[name="edit_cuentaban"]').val(empleado.data.CUENTA_BANCARIA);
             $('input[name="celular"]').val(empleado.data.CELULAR);
             $('input[name="nacimiento"]').val(empleado.data.FECHA_NACIMIENTO);
+            $('input[name="edit_ingreso"]').val(empleado.data.FECHA_INGRESO);
+            $('input[name="edit_afp"]').val(empleado.data.ID_AFP).trigger('change');
+            $('input[name="sueldo"]').val(empleado.data.SUELDO);
             $('input[name="email"]').val(empleado.data.EMAIL);
             $('#cargos').val(empleado.data.ID_CARGO).trigger('change');
+            $('#edit_idUsuario').val(id);
+            $('#edit_empleado').val(empleado.data.ID_EMPLEADO);
+            $('#genero').val(empleado.data.SEXO).trigger('change');
+
         });
     }
 
@@ -617,12 +627,7 @@
 
         });
 
-
         }
-
-        
-
-
     }
 
     $('.user').on('input', function(){
@@ -697,17 +702,81 @@
                     perfil:perfil, sueldo:sueldo, domicilio:domicilio, afp:afp, genero:genero,
                     cuenta:cuenta, ingreso:ingreso, usuario:usuario, sucursal:sucursal, expedido:expedido })
             .done(function( data ) {
+
+                var respuesta = JSON.parse(data);
+
+                if(respuesta.status == true) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Se han realizado todos los cambios solicitados',
+                        timer: 4500
+                    });
+                }
                 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Se han realizado todos los cambios solicitados',
+                else {
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Hubo un error en el registro de usuario, a lo mejor ya existe usuario para ese documento de identidad',
                     timer: 4500
                 });
+                }
+
+                
 
                 table.ajax.reload();
             });
         }
     });
+
+
+    $('#confirmar_edicion').on('click', function(){
+
+            
+    var nombre = $('#nombres').val();
+    var appat =  $('#appat').val();
+    var apmat = $('#apmat').val();
+    var celular = $('input[name="celular"]').val();
+    var telefono = $('input[name="telefono"]').val();
+    var nacimiento = $('input[name="nacimiento"]').val();
+    var email = $('input[name="email"]').val();
+    var cargo = $('#cargos').val();
+    var sueldo = $('input[name="sueldo"]').val();
+    var domicilio = $('input[name="domicilio"]').val();
+    var afp = $('select[name="edit_afp"]').val();
+    var cuenta = $('input[name="edit_cuentaban"]').val();
+    var ingreso = $('input[name="edit_ingreso"]').val();
+    var empleado = $('#edit_empleado').val();
+    var genero = $('select[name="genero"]').val();
+    
+    $('#editar').modal('hide');
+
+        $.post("<?=site_url('update-usuario')?>", 
+            {nombre:nombre, appat:appat, apmat:apmat, celular:celular, telefono:telefono, nacimiento:nacimiento, email:email, cargo:cargo, sueldo:sueldo, domicilio:domicilio, afp:afp, genero:genero, cuenta:cuenta, ingreso:ingreso, empleado:empleado })
+        .done(function( data ) {
+
+            var respuesta = JSON.parse(data);
+
+                console.log(respuesta);
+
+            if(respuesta.status == true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Se han realizado todos los cambios solicitados',
+                    timer: 4500
+                });
+            }
+            
+            else {
+                Swal.fire({
+                icon: 'error',
+                title: 'Hubo un error en el registro de usuario, a lo mejor ya existe usuario para ese documento de identidad',
+                timer: 4500
+            });
+            }
+
+            table.ajax.reload();
+        });
+});
 
     
 

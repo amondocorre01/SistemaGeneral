@@ -115,6 +115,8 @@ $route['abrir-gaveta'] = 'api/impresion/gaveta';
 
 /**  USUARIOS */
 $route['nuevo-usuario'] = 'usuario/save';
+$route['update-usuario'] = 'usuario/update';
+
 
 
 /** API USUARIOS */
