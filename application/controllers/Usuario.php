@@ -24,7 +24,7 @@
 					$response['status'] = false;
 
 					$this->db->where('se.CI', trim($this->input->post('dni').$this->input->post('expedido')));
-						$this->db->join('VENTAS_USUARIOSX vu', 'vu.ID_EMPLEADO = se.ID_EMPLEADO', 'left');						
+						$this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = se.ID_EMPLEADO', 'left');						
 						$usuario = $this->main->getField('SIREPE_EMPLEADO se', 'se.ID_EMPLEADO');
 
 					if(!$usuario) {
