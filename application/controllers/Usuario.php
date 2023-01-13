@@ -23,12 +23,14 @@
 				{
 					$response['status'] = false;
 
-					$this->db->where('se.CI', trim($this->input->post('dni').$this->input->post('expedido')));
-						$this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = se.ID_EMPLEADO', 'left');						
-						$usuario = $this->main->getField('SIREPE_EMPLEADO se', 'se.ID_EMPLEADO');
+					$this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = se.ID_EMPLEADO', 'left');
+					$this->db->where('se.CI', );
+					
+					$sql = "SELECT * FROM SIREPE_EMPLEADO se LEFT JOIN VENTAS_USUARIOS vu ON vu.ID_EMPLEADO = se.ID_EMPLEADO WHERE se.CI = ?";
+					
+					$usuario = $this->db->query($sql, [trim($this->input->post('dni').$this->input->post('expedido'))]);
 
 					if(!$usuario) {
-
 					              $this->db->where('CI', trim($this->input->post('dni').$this->input->post('expedido')));
 						$id = $this->main->getField('SIREPE_EMPLEADO', 'ID_EMPLEADO');
 
