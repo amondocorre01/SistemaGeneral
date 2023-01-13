@@ -181,8 +181,13 @@
 
                     array_push($array, $temp);
                 }
-
-                $this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $array);
+                if(count($array)>0){
+                    $this->db->insert_batch('VENTAS_USUARIOS_ACCESO', $array);
+                }
+                else {
+                    $response['mensaje'] = "Perfil sin opciones de configuracion";
+                }
+                
 
                 $this->db->where('ID_USUARIO', $usuario);
                 $this->db->update('VENTAS_USUARIOS', ['TIPO_USUARIO'=>$perfil]);

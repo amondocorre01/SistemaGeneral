@@ -434,7 +434,7 @@ $.fn.dataTable.ext.search.push(
                 return true;
         }
         
-        else if(tipo == 'Encargado de Sucursal') {
+        else if(tipo == 'Jefe de Sucursal') {
 
             if( show == 'Cajero'){
                 return true;
@@ -663,11 +663,28 @@ $.fn.dataTable.ext.search.push(
                 table.ajax.reload(); 
                 $('#perfiles').modal('hide');
 
-                Swal.fire({
-                icon: 'success',
-                title: 'Se ha cambiado el perfil de usuario',
-                timer: 4500
-            });
+                var res = JSON.parse(data);
+
+                if(res.mensaje){
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: res.mensaje,
+                        timer: 4500
+                    });
+
+                }
+                else {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Se ha cambiado el perfil de usuario',
+                        timer: 4500
+                    });
+
+                }
+
+                
 
 
         });
