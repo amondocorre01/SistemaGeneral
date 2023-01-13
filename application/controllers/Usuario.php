@@ -93,6 +93,7 @@
 							$id_perfil = $this->main->getField('VENTAS_PERFIL', 'ID_VENTAS_PERFIL');
 
 									  $this->db->where('ID_VENTAS_PERFIL', $id_perfil);
+									  $this->db->where('ESTADO', 1);
 							$acceso = $this->main->getListSelect('VENTAS_PERMISO_PERFIL', 'ID_VENTAS_ACCESO');
 
 							

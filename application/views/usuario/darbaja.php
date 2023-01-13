@@ -422,6 +422,51 @@
 
 <script>
 
+$.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+        
+        var tipo = '<?=$this->session->tipo_usuario;?>'; 
+        var show = data[3];
+
+
+        if(tipo == show) {
+
+                return true;
+        }
+        
+        else if(tipo == 'Encargado de Sucursal') {
+
+            if( show == 'Cajero'){
+                return true;
+            }
+        }
+
+        
+        else if(tipo == 'Supervisor') {
+
+            if( show == 'Cajero' || show == 'Encargado de Sucursal'){
+                return true;
+            }
+        }
+
+        else if(tipo == 'Administrador' ) {
+
+            if( show == 'Cajero' || show == 'Encargado de Sucursal' || show == 'Supervisor'){
+                return true;
+            }
+        }
+        
+        else if(tipo == 'Global') {
+
+                return true;            
+        }
+
+        else {
+                return false;
+        }
+        
+    });
+
        
     var table = $('#table').DataTable({
         ajax: { url: '<?=site_url('get-usuarios')?>' },

@@ -35,7 +35,11 @@
         $.post("<?=site_url('set-estado-boton')?>", {id:id, estado:estado})
         .done(function( data ) {
 
-            console.log(data);
+          Swal.fire({
+            icon: 'success',
+            title: 'Se ha actualizado correctamente',
+            timer: 3500
+          });
         
         });
     }
