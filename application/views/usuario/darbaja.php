@@ -426,15 +426,25 @@ $.fn.dataTable.ext.search.push(
     function( settings, data, dataIndex ) {
         
         var tipo = '<?=$this->session->tipo_usuario;?>'; 
-        var show = data[3];
+        var show = data[4];
+        var id = '<?=$this->session->id_usuario;?>'; 
+        var show_id = data[0];
 
 
-        if(tipo == show) {
+        if(tipo == 'Cajero') {
+
+            if(id == show_id) {
 
                 return true;
+            } 
         }
         
-        else if(tipo == 'Jefe de Sucursal') {
+        else if(tipo == 'Encargado de sucursal') {
+
+            if(id == show_id) {
+
+                return true;
+            } 
 
             if( show == 'Cajero'){
                 return true;
@@ -444,14 +454,24 @@ $.fn.dataTable.ext.search.push(
         
         else if(tipo == 'Supervisor') {
 
-            if( show == 'Cajero' || show == 'Encargado de Sucursal'){
+            if(id == show_id) {
+
+                return true;
+            } 
+
+            if( show == 'Cajero' || show == 'Encargado de sucursal'){
                 return true;
             }
         }
 
         else if(tipo == 'Administrador' ) {
 
-            if( show == 'Cajero' || show == 'Encargado de Sucursal' || show == 'Supervisor'){
+            if(id == show_id) {
+
+                return true;
+            } 
+
+            if( show == 'Cajero' || show == 'Encargado de sucursal' || show == 'Supervisor'){
                 return true;
             }
         }
@@ -477,6 +497,7 @@ $.fn.dataTable.ext.search.push(
         oPaginate: {sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },
         },
         columns: [
+            { title: 'ID', width:'5%',data: 'ID_USUARIO' },
             { title: 'Nombre completo', width:'20%',data: 'NOMBRE' },
             { title: 'Doc. Ident.', width:'10%' ,data: 'CI' },
             { title: 'Celular', width:'10%', data: 'CELULAR' },

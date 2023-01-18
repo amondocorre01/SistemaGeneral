@@ -121,8 +121,13 @@ $route['update-usuario'] = 'usuario/update';
 
 /** API USUARIOS */
 $route['get-usuarios'] = 'api/usuarios';
+$route['get-usuarios-baja'] = 'api/usuarios/conBaja';
 $route['get-usuario'] = 'api/usuarios/acceso';
 $route['get-usuario-venta'] = 'api/usuarios/acceso_ventas';
+$route['eliminar-usuario'] = 'api/usuarios/delete';
+
+
+
 
 $route['dar-baja'] = 'api/usuarios/baja';
 $route['dar-alta'] = 'api/usuarios/alta';
