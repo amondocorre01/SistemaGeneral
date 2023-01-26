@@ -70,6 +70,29 @@
             table.ajax.reload();
 
             Swal.fire({
+                title: 'Esta seguro de eliminar al usuario?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'SI',
+                denyButtonText: 'NO',
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Se ha eliminado al usuario',
+                        timer: 4500
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'No se ha eliminado al usuario',
+                        timer: 4500
+                    });
+                }
+            })
+
+            Swal.fire({
                 icon: 'success',
                 title: 'Se ha eliminado a un usuario',
                 timer: 4500

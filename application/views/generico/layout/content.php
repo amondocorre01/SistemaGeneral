@@ -485,6 +485,10 @@ case 'delete-usuario':
 	$this->load->view('usuario/delete', NULL, FALSE);
 break;
 
+case 'pedidos':
+	echo $this->load->view('generico/apertura/pedidos', NULL, TRUE);
+break;
+
 case 'cambiar-pasword':
 	$data = null;
 	echo $this->load->view('generico/apertura/password', $data, TRUE);
