@@ -22,41 +22,41 @@
 				public function save()
 				{
 					$response['status'] = false;
+					
+					$sql = "SELECT * FROM SIREPE_EMPLEADO se, VENTAS_USUARIOS vu WHERE se.CI = ? AND vu.ID_EMPLEADO = se.ID_EMPLEADO";
+					
+					$usuario = $this->db->query($sql, [trim($this->input->post('dni').$this->input->post('expedido'))])->result();
 
-					$this->db->join('VENTAS_USUARIOS vu', 'vu.ID_EMPLEADO = se.ID_EMPLEADO', 'left');
-					$this->db->where('se.CI', );
 					
-					$sql = "SELECT * FROM SIREPE_EMPLEADO se LEFT JOIN VENTAS_USUARIOS vu ON vu.ID_EMPLEADO = se.ID_EMPLEADO WHERE se.CI = ?";
-					
-					$usuario = $this->db->query($sql, [trim($this->input->post('dni').$this->input->post('expedido'))]);
 
 					if(!$usuario) {
 					              $this->db->where('CI', trim($this->input->post('dni').$this->input->post('expedido')));
 						$id = $this->main->getField('SIREPE_EMPLEADO', 'ID_EMPLEADO');
 
+
 						if(!$id) {
 
-						$registro['NOMBRE'] = $this->input->post('nombre');
-						$registro['AP_PATERNO'] = $this->input->post('appat');
-						$registro['AP_MATERNO'] = $this->input->post('apmat');
-						$registro['CI'] = $this->input->post('dni');
-						$registro['FECHA_NACIMIENTO'] = $this->input->post('nacimiento');
-						$registro['EMAIL'] = $this->input->post('email');
-						$registro['TELEFONO'] = $this->input->post('telefono');
-						$registro['CELULAR'] = $this->input->post('celular');
-						$registro['ID_CARGO'] = $this->input->post('cargo');
-						$registro['FECHA_INGRESO'] = $this->input->post('ingreso');
-						$registro['DIRECCION'] = $this->input->post('domicilio');
-						$registro['SEXO'] = $this->input->post('genero');
-						$registro['SUELDO'] = $this->input->post('sueldo');
-						$registro['ID_AFP'] = $this->input->post('afp');
-						$registro['CUENTA_BANCARIA'] = $this->input->post('cuenta');
-						$registro['INICIALES'] = substr($this->input->post('nombre'),0,1).substr($this->input->post('appat'),0,1).substr($this->input->post('apmat'),0,1);
-						$registro['NOMBRE_COMPLETO'] = $this->input->post('nombre').' '.$this->input->post('appat').' '.$this->input->post('apmat');
-						$registro['ID_CREADOR'] = $this->session->id_usuario;
-						$registro['FECHA_CREADO'] = date('Y-m-d H:i:s');
-						$registro['EDITABLE'] = 1;
-						$registro['ID_STATUS'] = 1;
+				$registro['NOMBRE'] = $this->input->post('nombre');
+				$registro['AP_PATERNO'] = ($this->input->post('appat')) ? $this->input->post('appat') : NULL;
+				$registro['AP_MATERNO'] = ($this->input->post('apmat')) ? $this->input->post('apmat') : NULL;
+				$registro['CI'] = $this->input->post('dni');
+				$registro['FECHA_NACIMIENTO'] = ($this->input->post('nacimiento')) ? $this->input->post('nacimiento') : NULL;
+				$registro['EMAIL'] = ($this->input->post('email')) ? $this->input->post('email') : NULL;
+				$registro['TELEFONO'] = ($this->input->post('telefono')) ? $this->input->post('telefono') : NULL;
+				$registro['CELULAR'] = ($this->input->post('celular')) ? $this->input->post('celular') : NULL;
+				$registro['ID_CARGO'] = ($this->input->post('cargo')) ? $this->input->post('cargo') : NULL;
+				$registro['FECHA_INGRESO'] = ($this->input->post('ingreso')) ? $this->input->post('ingreso') : NULL;
+				$registro['DIRECCION'] = ($this->input->post('domicilio')) ? $this->input->post('domicilio') : NULL;
+				$registro['SEXO'] = ($this->input->post('genero')) ? $this->input->post('genero') : NULL;
+				$registro['SUELDO'] = ($this->input->post('sueldo')) ? $this->input->post('sueldo') : NULL;
+				$registro['ID_AFP'] = ($this->input->post('afp')) ? $this->input->post('afp') : NULL;
+				$registro['CUENTA_BANCARIA'] = ($this->input->post('cuenta')) ? $this->input->post('cuenta') : NULL;
+				$registro['INICIALES'] = substr($this->input->post('nombre'),0,1).substr($this->input->post('appat'),0,1).substr($this->input->post('apmat'),0,1);
+				$registro['NOMBRE_COMPLETO'] = $this->input->post('nombre').' '.$this->input->post('appat').' '.$this->input->post('apmat');
+				$registro['ID_CREADOR'] = $this->session->id_usuario;
+				$registro['FECHA_CREADO'] = date('Y-m-d H:i:s');
+				$registro['EDITABLE'] = 1;
+				$registro['ID_STATUS'] = 1;
 
 							$this->db->insert('SIREPE_EMPLEADO', $registro);
 							$id = $this->db->insert_id();

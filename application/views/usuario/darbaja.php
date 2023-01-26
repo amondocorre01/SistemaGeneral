@@ -33,7 +33,7 @@
       <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <?=form_label("Nombres", 'new_nombre');?>
+                        <?=form_label("Nombres(*)", 'new_nombre', ['class'=>'palette-Red-600 text']);?>
                         <?=form_input('new_nombre', null, ['class'=>'form-control user', 'id'=>'new_nombre', 'required'=>'required']);?>
                     </div>
                 </div>
@@ -54,14 +54,14 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <?=form_label(lang('dni'), 'new_dni');?>
+                        <?=form_label(lang('dni').'(*)', 'new_dni', ['class'=>'palette-Red-600 text']);?>
                         <?=form_input('new_dni', null, ['class'=>'form-control', 'id'=>'new_dni','minlength'=>'5', 'pattern'=>'^[0-9]{5,10}[A-Z]{2}|[0-9]{5,10}$' ,'required'=>'required']);?>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group" >
-                        <?=form_label("Cargo", 'new_cargos');?>
+                        <?=form_label("Expedido", 'new_expedido');?>
 
                         <select name="new_expedido" id="new_expedido" class="form-control">
                             <option value="">--- Seleccione una opcion ---</option>
@@ -121,7 +121,7 @@
 
                 <div class="col-md-4">
                     <div class="form-group" >
-                        <?=form_label("Perfil", 'new_perfiles');?>
+                        <?=form_label("Perfil(*)", 'new_perfiles', ['class'=>'palette-Red-600 text']);?>
                         <select name="new_perfiles" id="new_perfiles" class="form-control">
                             <option value="">--- Seleccione una opcion ---</option>
                             <?php foreach ($perfiles as $perfil) : ?>
@@ -186,7 +186,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <?=form_label( 'Sucursal', 'sucursal'); ?>
+                    <?=form_label( 'Sucursal(*)', 'sucursal', ['class'=>'palette-Red-600 text']); ?>
                     <select name="sucursal" id="new_sucursal" class="form-control">
                         <option value="">--- Seleccione una opcion ---</option>
                         <?php foreach ($sucursales as $sucursal) : ?>
@@ -774,7 +774,6 @@ $.fn.dataTable.ext.search.push(
 
         $('#nuevo').modal('hide');
 
-        console.log(nombre, dni, perfil, sucursal);
 
         if( nombre != '' && dni != '' && perfil != '' && sucursal > 0) {
 
@@ -808,6 +807,16 @@ $.fn.dataTable.ext.search.push(
 
                 table.ajax.reload();
             });
+        }
+
+        else {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'No se llenaron todos los campos obligatorios',
+                timer: 4500
+            });
+
         }
     });
 
