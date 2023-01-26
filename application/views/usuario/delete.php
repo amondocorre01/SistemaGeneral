@@ -91,12 +91,6 @@
                     });
                 }
             })
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Se ha eliminado a un usuario',
-                timer: 4500
-            });
         });
     }
 
