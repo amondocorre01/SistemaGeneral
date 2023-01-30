@@ -234,7 +234,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['update-forma'] = 'api/formas/update';
 
 
-
+    $route['set-minimo'] = 'api/pedido/minimo';
 
    
 

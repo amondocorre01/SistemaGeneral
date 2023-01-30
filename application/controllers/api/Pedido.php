@@ -7,13 +7,29 @@ class Pedido extends CI_Controller {
     {
         $sucursal = $this->input->post('sucursal');
 
-        $sql = "SELECT ID_LISTA_STOCK, NOMBRE_LISTA FROM INVENTARIOS_LISTA_STOCKS_SUCURSALES WHERE ID_SUCURSAL = ?";
+        $sql = "EXECUTE INVENTARIO ?";
        
-        $res = $this->db->query($sql, $sucursal)->result();
-
-        $response = json_
+        $data['inventario'] = $this->db->query($sql, $sucursal)->result();
 
         echo $this->load->view('pedido/perfil', $data, TRUE);
+    }
+
+
+    public function minimo() {
+
+        $response['status'] = false;
+
+        $minimo = $this->input->post('minimo');
+        $id = $this->input->post('id');
+
+        $this->main->update('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', ['STOCK'=>$minimo], ['ID_STOCK'=>$id]);
+        
+        if($this->db->affected_rows()) {
+            $response['status'] = true;
+        }
+
+        echo json_encode($response);
+
     }
 
 }

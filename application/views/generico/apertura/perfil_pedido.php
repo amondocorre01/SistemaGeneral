@@ -4,7 +4,7 @@
         <div class="card card-danger">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="las la-user-plus"></i> Acceso de Botones a las Sucursales
+                    <i class="las la-user-plus"></i> Configuracion de Perfil de Pedidos
                 </h3>
             </div>
             <div class="card-body">
@@ -18,12 +18,17 @@
                             <?php endforeach;?>
                         </select>
                     </div>
-                    <div class="col-1"></div>
+                    <div class="col-1">
+                            <?=form_button('send', 'Buscar ', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'getPerfiles()']);?>
+                    </div>
+                    <div class="col-2">
+                            <?=form_button('new', 'Crear Perfil', ['class'=>'btn btn-success btn-lg', 'onclick'=>'showNewPerfil()']);?>
+                    </div>
 
-                    <?=form_button('send', 'Buscar ', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'getPerfiles()']);?>
+                   
                 </div>
 
-               <div id="permisos">
+               <div id="perfiles">
                   
                               
 
