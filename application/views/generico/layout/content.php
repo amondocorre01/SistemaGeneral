@@ -485,8 +485,22 @@ case 'delete-usuario':
 	$this->load->view('usuario/delete', NULL, FALSE);
 break;
 
-case 'pedidos':
-	echo $this->load->view('generico/apertura/pedidos', NULL, TRUE);
+case 'existencia':
+	echo $this->load->view('generico/apertura/existencia', NULL, TRUE);
+break;
+
+case 'solicitud':
+	echo $this->load->view('generico/apertura/solicitud', NULL, TRUE);
+break;
+
+case 'perfilPed':
+
+	$id = $this->session->id_usuario;
+
+						   $this->db->join('ID_UBICACION u', 'u.ID_UBICACION = vps.ID_UBICACION', 'left');
+	$datos['sucursales'] = $this->main->getListSelect('VENTAS_PERMISO_SUCURSAL vps', 'u.ID_UBICACION AS ID, u.DESCRIPCION AS TEXT', ['u.ID_UBICACION'=>'ASC'], ['u.ESTADO'=>1, 'vps.ESTADO'=>1, 'vps.ID_USUARIO' =>	$id]);
+	
+	echo $this->load->view('generico/apertura/perfil_pedido', $datos, TRUE);
 break;
 
 case 'cambiar-pasword':

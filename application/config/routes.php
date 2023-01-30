@@ -140,6 +140,9 @@ $route['aprobar-cambios-botones'] = 'api/usuarios/botones';
 $route['check-user'] = 'api/usuarios/check';
 $route['check-dni'] = 'api/usuarios/dni';
 
+/** PEDIDOS */
+
+$route['get-perfil-pedido'] = 'api/pedido/perfil';
 
 
 /** API PERFILES */

@@ -122,6 +122,10 @@
     let puede_io = datos.find(el => el.ID_VENTAS_BOTON == 3);
     var io = puede_io['ESTADO'];
 
+    let puede_siat = datos.find(el => el.ID_VENTAS_BOTON == 16);
+    var siat = puede_siat['ESTADO'];
+
+
 	   var table = $('#table').dataTable({
 	   data: <?php echo $resultado ?>,
        responsive: true, scrollX: true,  order: [[2, 'desc']],
@@ -149,9 +153,6 @@ columns: [
        if(data.ANULADO == 0){
         if(anular == true) {
 
-           // var pv2 = data.ID_CUIS;
-           // var pv_current='';
-           // if(pv==pv2){
             if(data.NUMERO_FACTURADO != '0') {
                 button += '<div class="btn-group" role="group" aria-label="Basic example">';
                 button += '<button class="btn btn-primary btn-danger btn-md" iden="'+data.ID_VENTA_DOCUMENTO+'" onClick="onClickAnularFactura(this)" data-toggle="modal" data-target="#modalAnularFactura" title="Anular Factura">';
@@ -185,9 +186,12 @@ columns: [
                 button +='<i class="las la-eye"></i>';
             button += '</button>';
             if(data.NUMERO_FACTURADO != 0) {
+
+                if(siat == true) {
                 button += '<a class="btn btn-info btn-sm btn-enlace-siat" target="_blank" href="'+data.URL_FACTURA+'" title="Ver Factura en el SIAT">';
                     button +='<i class="las la-eye"></i>';
                 button += '</a>';
+                }
             }
 
             if(data.MONTO_INGRESADO != null) {

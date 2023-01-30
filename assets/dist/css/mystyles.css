@@ -399,3 +399,8 @@ i {
 .btn-padding{
    padding: 0.8rem 1rem !important; 
 }
+
+td {
+   font-size: 1rem;
+   font-weight: 500;
+}
