@@ -22,7 +22,7 @@
                             <?=form_button('send', 'Buscar ', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'getPerfiles()']);?>
                     </div>
                     <div class="col-2">
-                            <?=form_button('new', 'Crear Perfil', ['class'=>'btn btn-success btn-lg', 'onclick'=>'showNewPerfil()']);?>
+                            <?=form_button('new', 'Crear Perfiles', ['class'=>'btn btn-success btn-lg', 'onclick'=>'showNewPerfil()']);?>
                     </div>
 
                    
