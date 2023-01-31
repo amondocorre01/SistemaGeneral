@@ -63,10 +63,18 @@
 
         <div class="col-md-12">
             <?=form_label("Sub-Categoria", 'subcategoria');?>
-            <select name="" id="categoria" class="form-control">
+            <select name="" id="subcategoria" class="form-control" onchange="getProductos()">
                 
             </select>
         </div>
+
+        <div class="col-md-12">
+            <?=form_label("Producto", 'producto');?>
+            <select name="" id="producto" class="form-control">
+                
+            </select>
+        </div>
+
       </div>
            
       </div>
@@ -123,10 +131,34 @@
                 html =  '<option>---- Escoja una opcion ----</option>';
 
                 $.each(response, function (i, v) { 
-                    html += '<option value="'+v.+
+                    html += '<option value="'+v.ID_SUB_CATEGORIA_1+'">'+v.SUB_CATEGORIA_1+'</option>'
                 });
-              
+                $('#subcategoria').empty(html);
+                $('#subcategoria').append(html);
+            });
 
+        }
+    }
+
+    function getProductos()
+    {
+        var subcategoria = $('#subcategoria').val();
+
+        if( subcategoria > 0) {
+
+            $.post("<?=site_url('get-producto-categoria')?>", { subcategoria:subcategoria})
+
+            .done(function( data ) {
+
+                var response = JSON.parse(data);
+                            
+                html =  '<option>---- Escoja una opcion ----</option>';
+
+                $.each(response, function (i, v) { 
+                    html += '<option value="'+v.ID_SUB_CATEGORIA_1+'">'+v.SUB_CATEGORIA_1+'</option>'
+                });
+                $('#subcategoria').empty(html);
+                $('#subcategoria').append(html);
             });
 
         }

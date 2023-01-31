@@ -237,6 +237,8 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['set-minimo'] = 'api/pedido/minimo';
     $route['new-perfil'] = 'api/pedido/nuevo';
     $route['get-subcategoria'] = 'api/pedido/subcategoria';
+    $route['get-producto-categoria'] = 'api/pedido/producto';
+
 
    
 
