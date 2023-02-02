@@ -47,9 +47,9 @@
             <h6 >
             <?=$value->CATEGORIA?>
 
-              <button class="btn btn-danger float-right btn-xs" data-toggle="collapse" data-target="#collapse<?=$value->ID_CATEGORIA?>" aria-expanded="true" aria-controls="collapseOne">
+              <span class="btn btn-danger float-right btn-xs" data-toggle="collapse" data-target="#collapse<?=$value->ID_CATEGORIA?>" aria-expanded="true" aria-controls="collapseOne">
                 <i class="las la-plus" ></i>
-              </button>
+              </span>
             </h6>
           </div>
 
@@ -66,9 +66,9 @@
           <div class="card-header" id="heading_sc_<?=$sub->ID_SUB_CATEGORIA_1?>">
           <h6>
           <?=$sub->SUB_CATEGORIA_1?>
-            <button class="btn btn-danger float-right btn-xs" data-toggle="collapse" data-target="#subcollapse<?=$sub->ID_SUB_CATEGORIA_1?>" aria-expanded="true" aria-controls="collapseOne">
+            <span class="btn btn-danger float-right btn-xs" data-toggle="collapse" data-target="#subcollapse<?=$sub->ID_SUB_CATEGORIA_1?>" aria-expanded="true" aria-controls="collapseOne">
             <i class="las la-plus" ></i>
-            </button>
+            </span>
           </h6>
           </div>
 
@@ -85,7 +85,7 @@
                               <?=$p->MEDIDA_ESTANDARIZACION?>                          
                             </td>
                             <td width="30%">
-                              <input name="p_<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control" type="number" min="0" step="0.1">
+                              <input name="p_<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control" type="number" min="0" step="1">
                             </td>
                         </tr>
                       <?php endforeach; ?>
@@ -105,6 +105,8 @@
 </div>
 
 <script>
+
+    
     $('.collapse').collapse();
 
 
