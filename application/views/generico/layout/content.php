@@ -486,7 +486,10 @@ case 'delete-usuario':
 break;
 
 case 'existencia':
-	echo $this->load->view('generico/apertura/existencia', NULL, TRUE);
+
+	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
+
+	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
 break;
 
 case 'solicitud':

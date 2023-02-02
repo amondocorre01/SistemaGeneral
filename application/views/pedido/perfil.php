@@ -51,6 +51,9 @@
       <div class="modal-body">
 
       <div class="row">
+
+        <input type="hidden" id="confPerfil" value="" >
+
         <div class="col-md-12">
             <?=form_label("Categoria", 'categoria');?>
             <select name="" id="categoria" class="form-control" onchange="subcategorias()">
@@ -75,11 +78,16 @@
             </select>
         </div>
 
+        <div class="col-md-12">
+            <?=form_label("Cantidad sugerida", 'producto');?>
+            <?=form_input(['id'=>'cantSugerida', 'class'=>'form-control', 'type'=>'number', 'min'=>'1']); ?>
+        </div>
+
       </div>
            
       </div>
       <div class="modal-footer">
-        <button type="button" onclick="guardarPerfil()" class="btn btn-danger" data-dismiss="modal">Crear</button>
+        <button type="button" onclick="guardarProducto()" class="btn btn-danger" data-dismiss="modal">Crear</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -111,9 +119,11 @@
         });
     }
 
-    function newProducto($id) 
+    function newProducto(id) 
     {
         $('#newProduct').modal('show');
+
+        $('#confPerfil').val(id);
     }
 
     function subcategorias()
@@ -155,12 +165,40 @@
                 html =  '<option>---- Escoja una opcion ----</option>';
 
                 $.each(response, function (i, v) { 
-                    html += '<option value="'+v.ID_SUB_CATEGORIA_1+'">'+v.SUB_CATEGORIA_1+'</option>'
+                    html += '<option value="'+v.ID_SUB_CATEGORIA_2+'">'+v.SUB_CATEGORIA_2+'</option>'
                 });
-                $('#subcategoria').empty(html);
-                $('#subcategoria').append(html);
+
+                $('#producto').empty(html);
+                $('#producto').append(html);
             });
 
         }
+    }
+
+    function guardarProducto()
+    {
+        var producto = $('#producto').val();
+        var cantidad = $('#cantSugerida').val();
+        var lista = $('#confPerfil').val();
+
+
+        $.post("<?=site_url('set-producto-perfil')?>", {producto:producto, cantidad:cantidad, lista:lista})
+
+        .done(function( data ) {
+
+            var response = JSON.parse(data);
+                        
+                if(response.status) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Se ha registrado un producto al perfil',
+                        timer: 4500
+                    });
+                }
+
+                $('#getPerfiles').click();
+        });
+
+
     }
 </script>

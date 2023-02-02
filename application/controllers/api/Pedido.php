@@ -58,6 +58,32 @@ class Pedido extends CI_Controller {
         echo json_encode($subcategorias);
     }
 
+    public function producto() 
+    {
+        $subcategoria = $this->input->post('subcategoria');
+
+        $productos = $this->main->getListSelect('INVENTARIOS_SUB_CATEGORIA_2', 'ID_SUB_CATEGORIA_2, SUB_CATEGORIA_2, ORDEN', ['ORDEN'=>'ASC'], ['ID_SUB_CATEGORIA_1'=>$subcategoria, 'ESTADO'=>1] );
+
+        echo json_encode($productos);
+    }
+
+    public function producto_perfil()
+    {
+        $response['status'] = false;
+        
+        $registro['ID_SUB_CATEGORIA_2'] = $this->input->post('producto');
+        $registro['STOCK'] = $this->input->post('cantidad');
+        $registro['ID_LISTA_STOCK'] = $this->input->post('lista');
+
+        $this->main->insert('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', $registro);
+
+        if($this->db->affected_rows()) {
+            $response['status'] = true;
+        }
+
+        echo json_encode($response);
+    }
+
 }
 
 /* End of file Pedido.php */
