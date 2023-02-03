@@ -85,7 +85,7 @@
                               <?=$p->MEDIDA_ESTANDARIZACION?>                          
                             </td>
                             <td width="30%">
-                              <input name="p_<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control" type="number" min="0" step="1">
+                              <input name="p_<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control" type="number" min="0" step="1" value="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
                         </tr>
                       <?php endforeach; ?>

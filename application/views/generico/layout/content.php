@@ -489,6 +489,20 @@ case 'existencia':
 
 	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 
+	$DB2 = $this->load->database('ventas', TRUE);
+	
+	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+	$registro = $DB2->query($sql)->result();
+
+
+	$array = [];
+
+	foreach ($registro as $value) {
+		$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
+	}
+
+	 $data['registro'] = $array;
+
 	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
 break;
 
