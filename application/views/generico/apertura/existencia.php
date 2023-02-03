@@ -85,7 +85,7 @@
                               <?=$p->MEDIDA_ESTANDARIZACION?>                          
                             </td>
                             <td width="30%">
-                              <input name="p_<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control" type="number" min="0" step="1" value="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
+                              <input name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control" type="number" min="0" step="1" value="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
                         </tr>
                       <?php endforeach; ?>
@@ -114,7 +114,35 @@
 
       var collection = $('#serializeExample form').serialize();
 
-      console.log(collection);
+      $.post("<?=site_url('guardar-declaracion')?>", collection)
+                .done(function( data ) {
+
+                  dato = JSON.parse(data);
+               
+                  if(dato.status == true) {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Se ha guardado las cantidades inventariadas",
+                        timer: 4500
+                    });
+
+                  }
+
+                  else 
+                  {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: "No habia nada que actualizar",
+                        timer: 4500
+                    });
+
+                  }
+                  
+
+          
+                });
 
     }
 </script>

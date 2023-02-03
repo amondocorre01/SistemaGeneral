@@ -84,6 +84,40 @@ class Pedido extends CI_Controller {
         echo json_encode($response);
     }
 
+
+    public function guardar_declaracion() {
+
+        $response['status'] = false;
+
+        $DB2 = $this->load->database('ventas', TRUE);
+        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+        $registro = $DB2->query($sql)->result();
+
+        $array1 = [];
+
+        foreach ($registro as $value) {
+            $array1[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
+        }
+
+        $array2 = $this->input->post();
+
+        foreach ($array2 as $key => $value) {
+            
+            if($value != $array1[$key]) {
+
+               $sql2 = "EXECUTE AE_SET_ITEM_DECLARACION ".$value.",'".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key;   
+               
+               $DB2->query($sql2)->result();
+
+               $response['status'] = true;
+            }
+        }
+
+        echo json_encode($response);
+
+    } 
+
 }
+
 
 /* End of file Pedido.php */
