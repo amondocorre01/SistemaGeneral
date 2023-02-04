@@ -458,6 +458,10 @@ case 'acceso-usuarios-sistema-ventas':
 break;
 
 case 'accesibilidad':
+
+	/***  HORA ACTUAL  ***/
+
+
 	$this->db->join('ID_UBICACION u', 'u.ID_UBICACION = vps.ID_UBICACION', 'left');
 	$this->db->where('ID_USUARIO', $this->session->id_usuario);
 	$datos['sucursales'] =  $this->main->getListSelect('VENTAS_PERMISO_SUCURSAL vps', 'u.ID_UBICACION, u.DESCRIPCION', ['u.DESCRIPCION'=>'ASC'], ['vps.ESTADO'=>1, 'u.ESTADO'=>1 ]);
@@ -487,8 +491,8 @@ break;
 
 case 'existencia':
 
-	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 
+	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 	$DB2 = $this->load->database('ventas', TRUE);
 	
 	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
@@ -510,7 +514,42 @@ case 'existencia':
 break;
 
 case 'solicitud':
-	echo $this->load->view('generico/apertura/solicitud', NULL, TRUE);
+
+	$DB2 = $this->load->database('ventas', TRUE);
+
+	$sql_first = 'SELECT DATEADD(HH, -4, CONVERT(time, GETDATE())) AS HORA';
+	$actual = $DB2->query($sql_first)->result();
+
+	//var_dump($actual);
+
+	$hora1 = strtotime( "06:00:00" );
+	$hora2 = strtotime( $actual[0]->HORA );
+
+	if( $hora1 > $hora2 ) {
+		$sql_date = 'select CONVERT (date, GETDATE()-1) AS DIA';
+		
+	} else {
+		$sql_date = 'select CONVERT (date, GETDATE()) AS DIA';
+	} 
+
+	$fecha = $DB2->query($sql_date)->result();
+	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
+
+	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+	$registro = $DB2->query($sql)->result();
+
+
+	$array = [];  $estado = [];
+
+	foreach ($registro as $value) {
+		$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
+		$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
+	}
+
+	 $data['registro'] = $array;
+	 $data['estado'] = $estado;
+
+	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
 break;
 
 case 'perfilPed':

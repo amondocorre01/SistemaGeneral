@@ -1,114 +1,178 @@
 <br>
-<?php  $name_impresora = $this->session->userdata('impresora'); ?>
-<?php $fecha_actual = date("Y-m-d"); ?>
+<style>
+  button {
+     margin-top: 0px;
+  }
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="card card-danger">
-        <div class="card-header">
-            <h3 class="card-title">Pedidos</h3>
-        </div>
-        <div class="card-body">
-       
-        <br>
+  .table-classic {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
 
-            <table id="table" class="table table-bordered">
+.table-classic td, .table-classic th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
 
-            </table>
+.card-header {
+    padding: 0.25rem 1.25rem 0.15rem;
+}
+
+.table-classic tr:nth-child(even){background-color: #f2f2f2;}
+
+.table-classic tr:hover {background-color: #ddd;}
+
+.table-classic th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #b30035;
+  color: black;
+}
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Solicitudes</a>
+        <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'guardarPedido()']);?>
+
+        <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'enviarPedido()']);?>
+    </nav>
+
+<br>
+<div class="card" id="serializeExample">
+  <form method="post">
+    <div id="accordion">
+      <?php foreach ($existencia as $value) : ?>
+        <div class="card" style="background-color: rgb(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?> )">
+          <div class="card-header" id="heading<?=$value->ID_CATEGORIA?>">
+            <h6 >
+            <?=$value->CATEGORIA?>
+
+              <span class="btn btn-danger float-right btn-xs" data-toggle="collapse" data-target="#collapse<?=$value->ID_CATEGORIA?>" aria-expanded="true" aria-controls="collapseOne">
+                <i class="las la-plus" ></i>
+              </span>
+            </h6>
+          </div>
+
+          <div id="collapse<?=$value->ID_CATEGORIA?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body" style="background-color:white">
+
+            <?php $subcategoria = json_decode($value->SUBCATEGORIA)?>
+
+            <div class="accordion" id="accordionExample">
+          <?php foreach ($subcategoria as $sub) : ?>
+
+            <?php if(isset($sub->PRODUCTOS)):?>
+          <div class="card" style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.6 )">
+          <div class="card-header" id="heading_sc_<?=$sub->ID_SUB_CATEGORIA_1?>">
+          <h6>
+          <?=$sub->SUB_CATEGORIA_1?>
+            <span class="btn btn-danger float-right btn-xs" data-toggle="collapse" data-target="#subcollapse<?=$sub->ID_SUB_CATEGORIA_1?>" aria-expanded="true" aria-controls="collapseOne">
+            <i class="las la-plus" ></i>
+            </span>
+          </h6>
+          </div>
+
+            <div id="subcollapse<?=$sub->ID_SUB_CATEGORIA_1?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body" style="background-color:white">
+                <table class="table-classic" id="table_<?=$sub->ID_SUB_CATEGORIA_1?>">
+                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Producto</th>
+                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Unidad Medida</th>
+                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Stock</th>
+                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Cantidad Declarada</th>
+                      <?php foreach ($sub->PRODUCTOS as $p): ?>
+                        <tr>
+                            <td width="40%"><?=$p->SUB_CATEGORIA_2?></td>
+                            <td width="20%">
+                              <?=$p->MEDIDA_ESTANDARIZACION?>                          
+                            </td>
+                            <td width="20%">
+                            <?=$registro[$p->ID_SUB_CATEGORIA_2]?>
+                            </td>
+                            <td width="20%">
+                              <input name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2])?'readonly="readonly"':''?> step="1" value="0">
+                            </td>
+                        </tr>
+                      <?php endforeach; ?>
+                </table>
+            </div>
+            </div>
+          </div>
+          <?php endif; ?>
+          <?php endforeach; ?>
         </div>
+            </div>
+          </div>
         </div>
+      <?php endforeach; ?>
     </div>
+  </form>
 </div>
 
 <script>
 
-var table;
-
-	table = $('#table').DataTable({
-       // ajax: { url: '<?=site_url('get-ventas-solo-transporte')?>' },
-       data: [
-            {
-                "id" : "1",
-                "name" : "Donuts",
-                "minimo": 19,
-                "stock" : 43,
-                "esperado" : 40,
-                "category" : "Breads",
-                "special" : true
-            },
-            {
-                "id" : "2",
-                "minimo": 22,
-                "name" : "Chocolate Cake",
-                "stock" : 20,
-                "esperado" : 30,
-                "category" : "Cakes", 
-                "special" : true
-            },
-            {
-                "id" : "3",
-                "minimo": 30,
-                "name" : "Baguette",
-                "stock" : 34,
-                "esperado" : 50,
-                "category" : "Breads", 
-                "special" : true
-            }
-        ],
-       responsive: true, scrollX: true,  order: [[2, 'desc']],
-
-       createdRow: function(row, data, index){
-
-                if( data.esperado < data.minimo){
-                    $('td', row).eq(4).css({'background-color': '#ff5252', 'color':'black', 'font-size':'1.5rem', 'font-weight':'600' })
-                }
-
-                if( data.minimo + (data.minimo/2) >= data.esperado && data.esperado > data.minimo){
-                    $('td', row).eq(4).css({'background-color': '#FFAB40', 'color':'black', 'font-size':'1.5rem', 'font-weight':'600'})
-                }
-
-                if( data.minimo + (data.minimo/2) <= data.esperado){
-                    $('td', row).eq(4).css({'background-color': '#69F0AE', 'color':'black', 'font-size':'1.5rem', 'font-weight':'600'})
-                }
-            },
-
-    "lengthMenu": [ [15, 30, 45, -1], [15, 30, 45, "Todo"] ],
-    "pageLength": 15, select: {style: 'single' },
-
-language:{ search: "Buscar", lengthMenu: "Mostrar _MENU_", zeroRecords: "No se encontró nada",
-		   info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros", infoEmpty: "No hay registros disponibles", 
-           infoFiltered: "(Filtrado de _MAX_ registros totales)", previous: "Anterior", oPaginate: { sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },                  
-        },      
-
-columns: [
-
-{ title: "Nombre", className: 'text-center', data: "name", width: "10%"},
-{ title: "Minimo Stock", className: 'text-center', data: "minimo", width: "8%"},
-{ title: "Stock Actual", className: 'text-center', data: "stock", width: "8%"},
-{ title: "Solicitud", className: 'text-center', data: null, render: function (data, type, full, meta) {
-
-    html = '<div class="input-group mb-3"><input class="form-control" type="number" min="1" value="0" id="row_'+data.id+'"><div class="input-group-append"><span onclick="calcular('+data.id+')" id="row_'+data.id+'" class="input-group-text" id="basic-addon2"><i class="las la-check"></i></span></div></div>';
     
-    return html;
-
-} ,width: "8%"},
-{ title: "Stock Esperado", className: 'text-center', data: "esperado", width: "8%"},
+    $('.collapse').collapse();
 
 
-]});
+    function guardarPedido(){
 
-function calcular(id) {
-    
-    var conteo = $('#row_'+id).val();
-    
-   /* $.post("<?=site_url('set-inventario')?>", {id:id, conteo:conteo })
-      .done(function( data ) {
-         
-         alert('sumaremos');
-      });*/
+      var collection = $('#serializeExample form').serialize();
 
-    table.draw();
-}
+      $.post("<?=site_url('guardar-declaracion')?>", collection)
+                .done(function( data ) {
+
+                  dato = JSON.parse(data);
+               
+                  if(dato.status == true) {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Se ha guardado las cantidades inventariadas",
+                        timer: 4500
+                    });
+
+                  }
+
+                  else 
+                  {
+                    Swal.fire({
+                        icon: 'error',
+                        title: "No habia nada que actualizar",
+                        timer: 4500
+                    });
+                  }
+                  
+
+          
+                });
+    }
 
 
+    function enviarPedido()
+    {
+      Swal.fire({
+        title: 'Deseas enviar todos los cambios?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        denyButtonText: 'No',
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+
+          var fecha = '<?=date('Y-m-d')?>'
+
+          $.post("<?=site_url('enviar-declaracion')?>", {fecha:fecha})
+                .done(function( data ) {
+
+                });
+
+          Swal.fire('Envio Exitoso!', '', 'success')
+        } else if (result.isDenied) {
+          Swal.fire('No se ha enviado aun', '', 'info')
+        }
+      })
+    }
 </script>
