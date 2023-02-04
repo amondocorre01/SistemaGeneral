@@ -491,17 +491,20 @@ case 'existencia':
 
 	$DB2 = $this->load->database('ventas', TRUE);
 	
-	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
 	$registro = $DB2->query($sql)->result();
 
 
-	$array = [];
+	$array = [];  $estado = [];
 
 	foreach ($registro as $value) {
 		$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
+		$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
 	}
 
 	 $data['registro'] = $array;
+	 $data['estado'] = $estado;
+
 
 	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
 break;

@@ -240,6 +240,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['get-producto-categoria'] = 'api/pedido/producto';
     $route['set-producto-perfil'] = 'api/pedido/producto_perfil';
     $route['guardar-declaracion'] = 'api/pedido/guardar_declaracion';
+    $route['enviar-declaracion'] = 'api/pedido/enviar_declaracion';
 
 
    

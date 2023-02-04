@@ -35,6 +35,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Pedidos</a>
         <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'guardarDeclaracion()']);?>
+
+        <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'enviarDeclaracion()']);?>
     </nav>
 
 <br>
@@ -85,7 +87,7 @@
                               <?=$p->MEDIDA_ESTANDARIZACION?>                          
                             </td>
                             <td width="30%">
-                              <input name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control" type="number" min="0" step="1" value="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
+                              <input name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2])?'readonly="readonly"':''?> step="1" value="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
                         </tr>
                       <?php endforeach; ?>
@@ -131,18 +133,42 @@
 
                   else 
                   {
-
                     Swal.fire({
                         icon: 'error',
                         title: "No habia nada que actualizar",
                         timer: 4500
                     });
-
                   }
                   
 
           
                 });
+    }
 
+
+    function enviarDeclaracion()
+    {
+      Swal.fire({
+        title: 'Deseas enviar todos los cambios?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        denyButtonText: 'No',
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+
+          var fecha = '<?=date('Y-m-d')?>'
+
+          $.post("<?=site_url('enviar-declaracion')?>", {fecha:fecha})
+                .done(function( data ) {
+
+                });
+
+          Swal.fire('Envio Exitoso!', '', 'success')
+        } else if (result.isDenied) {
+          Swal.fire('No se ha enviado aun', '', 'info')
+        }
+      })
     }
 </script>

@@ -90,7 +90,7 @@ class Pedido extends CI_Controller {
         $response['status'] = false;
 
         $DB2 = $this->load->database('ventas', TRUE);
-        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
         $registro = $DB2->query($sql)->result();
 
         $array1 = [];
@@ -114,8 +114,23 @@ class Pedido extends CI_Controller {
         }
 
         echo json_encode($response);
-
     } 
+
+
+    public function enviar_declaracion() {
+
+        $response['status'] = false;
+
+
+        $DB2 = $this->load->database('ventas', TRUE);
+
+        $sql = "UPDATE INVENTARIOS_DECLARACION_AE SET ESTADO_CONTEO = 1 WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+        $registro = $DB2->query($sql);
+
+        echo json_encode($response);
+    }
+
+
 
 }
 
