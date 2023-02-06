@@ -37,7 +37,20 @@
         <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'guardarPedido()']);?>
 
         <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'enviarPedido()']);?>
+
+        <div class="row">
+          <div class="col-12">
+              <select name="" id="lista" class="form-control" onchange="getMinimos()">
+                <option value=""></option>
+                <?php foreach ($lista as $item): ?>
+                  <option value="<?=$item->ID?>"><?=$item->TEXT?></option>
+                <?php endforeach; ?>
+              </select>
+          </div>
+        </div>
+
     </nav>
+
 
 <br>
 <div class="card" id="serializeExample">
@@ -80,17 +93,23 @@
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Producto</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Unidad Medida</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Stock</th>
-                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Cantidad Declarada</th>
+                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Stock Minimo</th>
+                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Solicitud</th>
                       <?php foreach ($sub->PRODUCTOS as $p): ?>
                         <tr>
-                            <td width="40%"><?=$p->SUB_CATEGORIA_2?></td>
-                            <td width="20%">
+                            <td width="30%"><?=$p->SUB_CATEGORIA_2?></td>
+                            <td width="15%">
                               <?=$p->MEDIDA_ESTANDARIZACION?>                          
                             </td>
-                            <td width="20%">
+                            <td width="15%">
                             <?=$registro[$p->ID_SUB_CATEGORIA_2]?>
                             </td>
-                            <td width="20%">
+
+                            <td width="15%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
+                              0
+                            </td>
+
+                            <td width="15%">
                               <input name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2])?'readonly="readonly"':''?> step="1" value="0">
                             </td>
                         </tr>
@@ -113,7 +132,7 @@
 <script>
 
     
-    $('.collapse').collapse();
+  //  $('.collapse').collapse();
 
 
     function guardarPedido(){
@@ -174,5 +193,24 @@
           Swal.fire('No se ha enviado aun', '', 'info')
         }
       })
+    }
+
+    function getMinimos() {
+
+      d = document.getElementById("lista").value;
+    
+      $.post("<?=site_url('get-minimo-stock')?>", {lista:d})
+      .done(function( data ) {
+
+        minimos = JSON.parse(data);
+
+        $.each(minimos.minimos, function (i, v) { 
+          
+          $('#m_'+v.ID_SUB_CATEGORIA_2).empty();
+          $('#m_'+v.ID_SUB_CATEGORIA_2).html(v.STOCK);
+        });
+
+      });
+
     }
 </script>

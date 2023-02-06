@@ -515,6 +515,8 @@ break;
 
 case 'solicitud':
 
+	$data['lista'] = $this->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES', 'ID_LISTA_STOCK AS ID, NOMBRE_LISTA AS TEXT', ['NOMBRE_LISTA'=>'ASC'], ['ID_SUCURSAL'=>2]);
+
 	$DB2 = $this->load->database('ventas', TRUE);
 
 	$sql_first = 'SELECT DATEADD(HH, -4, CONVERT(time, GETDATE())) AS HORA';

@@ -130,6 +130,19 @@ class Pedido extends CI_Controller {
         echo json_encode($response);
     }
 
+    public function minimo_stock() {
+
+        $id = $this->input->post('lista');
+
+        $minimos = $this->main->getListSelect('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', 'ID_SUB_CATEGORIA_2, STOCK', NULL, ['ID_LISTA_STOCK'=>$id]);
+
+        $sugerida = $this->main->getListSelect('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', 'ID_SUB_CATEGORIA_2, STOCK_SUGERIDA', NULL, ['ID_LISTA_STOCK'=>$id]);
+
+    
+        
+        echo json_encode(['minimos'=>$minimos, 'segerida'=>$sugerida]);
+    }
+
 
 
 }

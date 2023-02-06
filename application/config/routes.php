@@ -241,6 +241,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['set-producto-perfil'] = 'api/pedido/producto_perfil';
     $route['guardar-declaracion'] = 'api/pedido/guardar_declaracion';
     $route['enviar-declaracion'] = 'api/pedido/enviar_declaracion';
+    $route['get-minimo-stock'] = 'api/pedido/minimo_stock';
 
 
    
