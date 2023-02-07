@@ -135,13 +135,42 @@ class Pedido extends CI_Controller {
         $id = $this->input->post('lista');
 
         $minimos = $this->main->getListSelect('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', 'ID_SUB_CATEGORIA_2, STOCK', NULL, ['ID_LISTA_STOCK'=>$id]);
-
-        $sugerida = $this->main->getListSelect('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', 'ID_SUB_CATEGORIA_2, STOCK_SUGERIDA', NULL, ['ID_LISTA_STOCK'=>$id]);
-
-    
+  
         
-        echo json_encode(['minimos'=>$minimos, 'segerida'=>$sugerida]);
+        echo json_encode(['minimos'=>$minimos]);
     }
+
+
+    public function guardar_solicitud() {
+
+        $response['status'] = false;
+
+        $DB2 = $this->load->database('ventas', TRUE);
+        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+        $registro = $DB2->query($sql)->result();
+
+        $array1 = [];
+
+        foreach ($registro as $value) {
+            $array1[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
+        }
+
+        $array2 = $this->input->post();
+
+        foreach ($array2 as $key => $value) {
+            
+            if($value != $array1[$key]) {
+
+               $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$value.",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key;   
+               
+               $DB2->query($sql2)->result();
+
+               $response['status'] = true;
+            }
+        }
+
+        echo json_encode($response);
+    } 
 
 
 

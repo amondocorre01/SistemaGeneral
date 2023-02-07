@@ -537,19 +537,27 @@ case 'solicitud':
 	$fecha = $DB2->query($sql_date)->result();
 	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 
-	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, ESTADO_CONTEO, ADECUACION FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
 	$registro = $DB2->query($sql)->result();
+	
+	$this->session->set_userdata(array('fecha_conteo' => $fecha[0]->DIA));
 
 
-	$array = [];  $estado = [];
+	$array = [];  $estado = []; $adecuacion = []; $solicitud = []; 
 
 	foreach ($registro as $value) {
 		$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
 		$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
+		$adecuacion[$value->ID_SUBCATEGORIA_2] = $value->ADECUACION;
+		$solicitud[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
+
 	}
 
 	 $data['registro'] = $array;
 	 $data['estado'] = $estado;
+	 $data['adecuacion'] = $adecuacion;
+	 $data['solicitud'] = $solicitud;
+
 
 	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
 break;

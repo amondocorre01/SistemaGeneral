@@ -32,9 +32,11 @@
 }
 </style>
 
+
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Solicitudes</a>
-        <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'guardarPedido()']);?>
+        <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'guardarSolicitud()']);?>
 
         <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'enviarPedido()']);?>
 
@@ -55,6 +57,7 @@
 <br>
 <div class="card" id="serializeExample">
   <form method="post">
+
     <div id="accordion">
       <?php foreach ($existencia as $value) : ?>
         <div class="card" style="background-color: rgb(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?> )">
@@ -101,16 +104,18 @@
                             <td width="15%">
                               <?=$p->MEDIDA_ESTANDARIZACION?>                          
                             </td>
-                            <td width="15%">
+                            <td width="15%" id="a_<?=$p->ID_SUB_CATEGORIA_2?>">
                             <?=$registro[$p->ID_SUB_CATEGORIA_2]?>
                             </td>
 
-                            <td width="15%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
+                            <td class="reset_stock" width="15%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
                               0
                             </td>
 
-                            <td width="15%">
-                              <input name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2])?'readonly="readonly"':''?> step="1" value="0">
+                            <td width="15%">    
+                              <input id="p_<?=$p->ID_SUB_CATEGORIA_2?>" type="hidden" value="<?=$p->CANTIDAD_ADECUACION_PEDIDOS?>">  
+                            
+                              <input id="s_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control reset_input_stock" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2])?'readonly="readonly"':''?> step="1" value="<?=$solicitud[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
                         </tr>
                       <?php endforeach; ?>
@@ -135,11 +140,11 @@
   //  $('.collapse').collapse();
 
 
-    function guardarPedido(){
+    function guardarSolicitud(){
 
       var collection = $('#serializeExample form').serialize();
 
-      $.post("<?=site_url('guardar-declaracion')?>", collection)
+      $.post("<?=site_url('guardar-solicitud')?>", collection)
                 .done(function( data ) {
 
                   dato = JSON.parse(data);
@@ -181,9 +186,9 @@
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
 
-          var fecha = '<?=date('Y-m-d')?>'
+          var fecha = '<?=$this->session->fecha_conteo?>'
 
-          $.post("<?=site_url('enviar-declaracion')?>", {fecha:fecha})
+          $.post("<?=site_url('enviar-pedido')?>", {fecha:fecha})
                 .done(function( data ) {
 
                 });
@@ -204,10 +209,31 @@
 
         minimos = JSON.parse(data);
 
+        $('.reset_stock').empty();
+        $('.reset_stock').append(0);
+
+        $('.reset_input_stock').empty();
+        $('.reset_input_stock').val(0);
+
         $.each(minimos.minimos, function (i, v) { 
           
           $('#m_'+v.ID_SUB_CATEGORIA_2).empty();
-          $('#m_'+v.ID_SUB_CATEGORIA_2).html(v.STOCK);
+          $('#m_'+v.ID_SUB_CATEGORIA_2).append(Number(v.STOCK));
+
+          var operacion = Number(v.STOCK)-Number($('#a_'+v.ID_SUB_CATEGORIA_2).html());
+          operacion = Math.ceil(operacion/Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
+
+          if( operacion > 0)
+          {
+            $('#s_'+v.ID_SUB_CATEGORIA_2).val(operacion);
+          }
+
+          else 
+          {
+            $('#s_'+v.ID_SUB_CATEGORIA_2).val(0);
+          }
+
+          
         });
 
       });
