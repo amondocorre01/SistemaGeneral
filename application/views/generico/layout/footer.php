@@ -66,7 +66,6 @@
   $this->session->unset_userdata('datatable');
   endif; 
 ?>
-<script src="<?=base_url('assets/plugins/select2/js/select2.full.min.js')?>"></script>
 
 <!-- Sparkline -->
 <script src="<?=base_url('assets/plugins/select2/js/select2.full.min.js')?>"></script>
