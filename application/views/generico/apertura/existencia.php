@@ -33,7 +33,7 @@
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Pedidos</a>
+        <a class="navbar-brand" href="#">Inventario</a>
         <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'guardarDeclaracion()']);?>
 
         <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'enviarDeclaracion()']);?>
