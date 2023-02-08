@@ -56,8 +56,9 @@
 
 <br>
 <div class="card" id="serializeExample">
-  <form method="post">
 
+  <?=form_open('', '', ['db'=>$db, 'sufijo'=>$sufijo]);?>
+        
     <div id="accordion">
       <?php foreach ($existencia as $value) : ?>
         <div class="card" style="background-color: rgb(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?> )">
@@ -115,7 +116,7 @@
                             <td width="15%">    
                               <input id="p_<?=$p->ID_SUB_CATEGORIA_2?>" type="hidden" value="<?=$p->CANTIDAD_ADECUACION_PEDIDOS?>">  
                             
-                              <input id="s_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control reset_input_stock" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2])?'readonly="readonly"':''?> step="1" value="<?=$solicitud[$p->ID_SUB_CATEGORIA_2]?>">
+                              <input id="s_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control reset_input_stock" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='11')?'readonly="readonly"':''?> step="1" value="<?=$solicitud[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
                         </tr>
                       <?php endforeach; ?>
@@ -131,7 +132,7 @@
         </div>
       <?php endforeach; ?>
     </div>
-  </form>
+  <?=form_close();?>
 </div>
 
 <script>
@@ -153,7 +154,7 @@
 
                     Swal.fire({
                         icon: 'success',
-                        title: "Se ha guardado las cantidades inventariadas",
+                        title: "Se ha guardado las cantidades solicitadas",
                         timer: 4500
                     });
 
@@ -186,14 +187,24 @@
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
 
-          var fecha = '<?=$this->session->fecha_conteo?>'
+          
+          var fecha = '<?=$this->session->fecha_conteo?>';
 
-          $.post("<?=site_url('enviar-pedido')?>", {fecha:fecha})
+          $.post("<?=site_url('enviar-pedido')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
                 .done(function( data ) {
+                  dato = JSON.parse(data);
 
+                  if(dato.result == true){
+                    Swal.fire('Envio Exitoso!', '', 'success');
+                  }
+
+                  else {
+                    Swal.fire('No habia ninguna modificacion', '', 'info');
+                  }
+                  
                 });
 
-          Swal.fire('Envio Exitoso!', '', 'success')
+          
         } else if (result.isDenied) {
           Swal.fire('No se ha enviado aun', '', 'info')
         }

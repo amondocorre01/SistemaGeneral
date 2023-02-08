@@ -89,8 +89,11 @@ class Pedido extends CI_Controller {
 
         $response['status'] = false;
 
-        $DB2 = $this->load->database('ventas', TRUE);
-        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+        $db = $this->input->post('db');
+        $sufijo = $this->input->post('sufijo');
+
+        $DB2 = $this->load->database($db, TRUE);
+        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
         $registro = $DB2->query($sql)->result();
 
         $array1 = [];
@@ -102,14 +105,17 @@ class Pedido extends CI_Controller {
         $array2 = $this->input->post();
 
         foreach ($array2 as $key => $value) {
+
+            if($key != 'db' AND $key != 'sufijo') {
             
-            if($value != $array1[$key]) {
+                if($value != $array1[$key]) {
 
-               $sql2 = "EXECUTE AE_SET_ITEM_DECLARACION ".$value.",'".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key;   
-               
-               $DB2->query($sql2)->result();
+                $sql2 = "EXECUTE ".$sufijo."_SET_ITEM_DECLARACION ".$value.",'".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key;   
+                
+                $DB2->query($sql2)->result();
 
-               $response['status'] = true;
+                $response['status'] = true;
+                }
             }
         }
 
@@ -121,10 +127,12 @@ class Pedido extends CI_Controller {
 
         $response['status'] = false;
 
+        $db = $this->input->post('db');
+        $sufijo = $this->input->post('sufijo');
 
-        $DB2 = $this->load->database('ventas', TRUE);
+        $DB2 = $this->load->database($db, TRUE);
 
-        $sql = "UPDATE INVENTARIOS_DECLARACION_AE SET ESTADO_CONTEO = 1 WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+        $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 10 WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
         $registro = $DB2->query($sql);
 
         echo json_encode($response);
@@ -144,9 +152,11 @@ class Pedido extends CI_Controller {
     public function guardar_solicitud() {
 
         $response['status'] = false;
+        $db = $this->input->post('db');
+        $sufijo = $this->input->post('sufijo');
 
-        $DB2 = $this->load->database('ventas', TRUE);
-        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+        $DB2 = $this->load->database($db, TRUE);
+        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
         $registro = $DB2->query($sql)->result();
 
         $array1 = [];
@@ -159,18 +169,44 @@ class Pedido extends CI_Controller {
 
         foreach ($array2 as $key => $value) {
             
-            if($value != $array1[$key]) {
+            if($key != 'db' AND $key != 'sufijo') {
 
-               $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$value.",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key;   
-               
-               $DB2->query($sql2)->result();
+                if($value != $array1[$key]) {
 
-               $response['status'] = true;
+                    $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$value.",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key;   
+                    
+                    $DB2->query($sql2)->result();
+     
+                    $response['status'] = true;
+                 }
+
             }
+
+            
         }
 
         echo json_encode($response);
     } 
+
+
+    public function enviar_solicitud() {
+
+        $response['status'] = false;
+
+        $db = $this->input->post('db');
+        $sufijo = $this->input->post('sufijo');
+
+        $DB2 = $this->load->database($db, TRUE);
+
+        $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 11 WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+        $registro = $DB2->query($sql);
+
+        if($this->db->affected_rows()) {
+            $response['status'] = true;
+        }
+
+        echo json_encode($response);
+    }
 
 
 

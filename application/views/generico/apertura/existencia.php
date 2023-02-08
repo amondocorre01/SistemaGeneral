@@ -41,6 +41,8 @@
 
 <br>
 <div class="card" id="serializeExample">
+
+<?=form_open('', '', ['db'=>$db, 'sufijo'=>$sufijo]);?>
   <form method="post">
     <div id="accordion">
       <?php foreach ($existencia as $value) : ?>
@@ -160,7 +162,7 @@
 
           var fecha = '<?=date('Y-m-d')?>'
 
-          $.post("<?=site_url('enviar-declaracion')?>", {fecha:fecha})
+          $.post("<?=site_url('enviar-declaracion')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>})
                 .done(function( data ) {
 
                 });
