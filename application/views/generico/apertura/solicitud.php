@@ -32,24 +32,46 @@
 }
 </style>
 
+<?php if($cabecera[0]->ESTADO > 10 ):?>
+  <div class="row ">
+    <div class="col-md-12 text-center">
+    <?=img(['src'=>'assets/dist/img/close2.png', 'width' => '15%'])?>
+    </div>
+  </div>
+<?php endif;?>
 
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+<nav class="row navbar navbar-expand-lg navbar-dark bg-dark">
+
+      <div class="col-4 col-md-6">
         <a class="navbar-brand" href="#">Solicitudes</a>
-        <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'guardarSolicitud()']);?>
+      </div>
+      <?php if($cabecera[0]->ESTADO == 10 ):?>
+      <div class="col-1 col-md-1 ">
+        <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-padding', 'onclick'=>'guardarSolicitud()']);?>
+      </div>
+      <div class="col-1 col-md-1 ">
+        <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding', 'onclick'=>'enviarPedido()']);?>
+      </div>
 
-        <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'enviarPedido()']);?>
-
-        <div class="row">
-          <div class="col-12">
-              <select name="" id="lista" class="form-control" onchange="getMinimos()">
+      <div class="col-5 col-md-2">
+              <select name="" id="lista" class="form-control">
                 <option value=""></option>
                 <?php foreach ($lista as $item): ?>
                   <option value="<?=$item->ID?>"><?=$item->TEXT?></option>
                 <?php endforeach; ?>
               </select>
           </div>
-        </div>
+
+          <div class="col-1 col-md-1 ">
+            <?=form_button('obtener', '<span style="font-size:1.5rem" class="las la-search la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding', 'onclick'=>'getMinimos()']);?>
+          </div>
+      <?php endif;?>
+
+      
+         
+       
 
     </nav>
 

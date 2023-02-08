@@ -531,6 +531,9 @@ case 'solicitud-prueba':
 
 	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, ESTADO_CONTEO, ADECUACION FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
 	$registro = $DB2->query($sql)->result();
+
+	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
+	$cabecera = $DB2->query($sql2)->result();
 	
 	$this->session->set_userdata(array('fecha_conteo' => $fecha[0]->DIA));
 
@@ -551,6 +554,7 @@ case 'solicitud-prueba':
 	 $data['solicitud'] = $solicitud;
 	 $data['db'] = $db;
 	 $data['sufijo'] = $sufijo;
+	 $data['cabecera'] = $cabecera;
 
 	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
 break;
@@ -567,6 +571,9 @@ case 'existencia-prueba':
 	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
 	$registro = $DB2->query($sql)->result();
 
+	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".date('Y-m-d')."'";
+	$cabecera = $DB2->query($sql2)->result();
+
 
 	$array = [];  $estado = [];
 
@@ -579,6 +586,7 @@ case 'existencia-prueba':
 	 $data['estado'] = $estado;
 	 $data['db'] = $db;
 	 $data['sufijo'] = $sufijo;
+	 $data['cabecera'] = $cabecera;
 
 
 	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
