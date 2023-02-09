@@ -32,15 +32,35 @@
 }
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Pedidos</a>
-        <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'guardarDeclaracion()']);?>
+<?php if($cabecera[0]->ESTADO > 9 ):?>
+  <div class="row ">
+    <div class="col-md-12 text-center">
+    <?=img(['src'=>'assets/dist/img/close2.png', 'width' => '15%'])?>
+    </div>
+  </div>
+<?php endif;?>
 
-        <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'enviarDeclaracion()']);?>
+<nav class="row navbar navbar-expand-lg navbar-dark bg-dark">
+        
+        
+          <div class="col-8 col-md-10">
+            <a class="navbar-brand" href="#">Inventario</a>
+          </div>
+          <div class="col-2 col-md-1 ">
+              <?php if($cabecera[0]->ESTADO == 9 ):?>
+                  <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'guardarDeclaracion()']);?>
+              </div>
+              <div class="col-2 col-md-1 ">
+                  <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'enviarDeclaracion()']);?>
+               <?php endif; ?>
+          </div>
+        
     </nav>
 
 <br>
 <div class="card" id="serializeExample">
+
+<?=form_open('', '', ['db'=>$db, 'sufijo'=>$sufijo]);?>
   <form method="post">
     <div id="accordion">
       <?php foreach ($existencia as $value) : ?>
@@ -160,7 +180,7 @@
 
           var fecha = '<?=date('Y-m-d')?>'
 
-          $.post("<?=site_url('enviar-declaracion')?>", {fecha:fecha})
+          $.post("<?=site_url('enviar-declaracion')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>})
                 .done(function( data ) {
 
                 });

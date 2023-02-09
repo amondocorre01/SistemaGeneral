@@ -493,40 +493,32 @@ case 'delete-usuario':
 	$this->load->view('usuario/delete', NULL, FALSE);
 break;
 
-case 'existencia':
 
 
-	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
-	$DB2 = $this->load->database('ventas', TRUE);
+/********** MODULO PEDIDOS ***************/
+
+case 'perfilPed-prueba':
+
+	$id = $this->session->id_usuario;
+
+						   $this->db->join('ID_UBICACION u', 'u.ID_UBICACION = vps.ID_UBICACION', 'left');
+	$datos['sucursales'] = $this->main->getListSelect('VENTAS_PERMISO_SUCURSAL vps', 'u.ID_UBICACION AS ID, u.DESCRIPCION AS TEXT', ['u.ID_UBICACION'=>'ASC'], ['u.ESTADO'=>1, 'vps.ESTADO'=>1, 'vps.ID_USUARIO' =>	$id]);
 	
-	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
-	$registro = $DB2->query($sql)->result();
-
-
-	$array = [];  $estado = [];
-
-	foreach ($registro as $value) {
-		$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
-		$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
-	}
-
-	 $data['registro'] = $array;
-	 $data['estado'] = $estado;
-
-
-	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
+	echo $this->load->view('generico/apertura/perfil_pedido', $datos, TRUE);
 break;
 
-case 'solicitud':
+
+case 'solicitud-prueba':
+
+	$db = 'ventas';
+	$sufijo = 'AE';
 
 	$data['lista'] = $this->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES', 'ID_LISTA_STOCK AS ID, NOMBRE_LISTA AS TEXT', ['NOMBRE_LISTA'=>'ASC'], ['ID_SUCURSAL'=>2]);
 
-	$DB2 = $this->load->database('ventas', TRUE);
+	$DB2 = $this->load->database($db, TRUE);
 
 	$sql_first = 'SELECT DATEADD(HH, -4, CONVERT(time, GETDATE())) AS HORA';
 	$actual = $DB2->query($sql_first)->result();
-
-	//var_dump($actual);
 
 	$hora1 = strtotime( "06:00:00" );
 	$hora2 = strtotime( $actual[0]->HORA );
@@ -541,8 +533,11 @@ case 'solicitud':
 	$fecha = $DB2->query($sql_date)->result();
 	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 
-	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, ESTADO_CONTEO, ADECUACION FROM INVENTARIOS_DECLARACION_AE WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, ESTADO_CONTEO, ADECUACION FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
 	$registro = $DB2->query($sql)->result();
+
+	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
+	$cabecera = $DB2->query($sql2)->result();
 	
 	$this->session->set_userdata(array('fecha_conteo' => $fecha[0]->DIA));
 
@@ -561,20 +556,46 @@ case 'solicitud':
 	 $data['estado'] = $estado;
 	 $data['adecuacion'] = $adecuacion;
 	 $data['solicitud'] = $solicitud;
-
+	 $data['db'] = $db;
+	 $data['sufijo'] = $sufijo;
+	 $data['cabecera'] = $cabecera;
 
 	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
 break;
 
-case 'perfilPed':
 
-	$id = $this->session->id_usuario;
+case 'existencia-prueba':
 
-						   $this->db->join('ID_UBICACION u', 'u.ID_UBICACION = vps.ID_UBICACION', 'left');
-	$datos['sucursales'] = $this->main->getListSelect('VENTAS_PERMISO_SUCURSAL vps', 'u.ID_UBICACION AS ID, u.DESCRIPCION AS TEXT', ['u.ID_UBICACION'=>'ASC'], ['u.ESTADO'=>1, 'vps.ESTADO'=>1, 'vps.ID_USUARIO' =>	$id]);
+	$db = 'ventas';
+	$sufijo = 'AE';
+
+	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
+	$DB2 = $this->load->database($db, TRUE);
 	
-	echo $this->load->view('generico/apertura/perfil_pedido', $datos, TRUE);
+	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+	$registro = $DB2->query($sql)->result();
+
+	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".date('Y-m-d')."'";
+	$cabecera = $DB2->query($sql2)->result();
+
+
+	$array = [];  $estado = [];
+
+	foreach ($registro as $value) {
+		$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
+		$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
+	}
+
+	 $data['registro'] = $array;
+	 $data['estado'] = $estado;
+	 $data['db'] = $db;
+	 $data['sufijo'] = $sufijo;
+	 $data['cabecera'] = $cabecera;
+
+
+	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
 break;
+
 
 case 'cambiar-pasword':
 	$data = null;
