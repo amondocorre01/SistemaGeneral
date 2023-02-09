@@ -692,6 +692,34 @@ if(!function_exists('protocoloWeb')) {
 	}
 }
 
+if(!function_exists('getSucursales')) {
+	function getSucursales(){
+    	$CI =& get_instance();
+		$sql = "select * from ID_UBICACION where ESTADO=1;";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta;
+	}
+}
+
+if(!function_exists('getInventariosSubcategoria2')) {
+	function getInventariosSubcategoria2(){
+		$CI =& get_instance();
+		$sql = "select (SELECT (CATEGORIA) from INVENTARIOS_CATEGORIA c where c.ID_CATEGORIA =v1.ID_CATEGORIA ) as CATEGORIA, *  from INVENTARIOS_SUB_CATEGORIA_2 v2, INVENTARIOS_SUB_CATEGORIA_1 v1 where v2.ID_SUB_CATEGORIA_1 =v1.ID_SUB_CATEGORIA_1 ;";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta;
+	}
+}
+if(!function_exists('getPedidoSucursal')) {
+	function getPedidoSucursal($bd, $sufijo_sucursal){
+		$CI =& get_instance();
+		$DB2 = $CI->load->database($bd, TRUE);
+		$sql = "select * from INVENTARIOS_DECLARACION".$sufijo_sucursal." ida where FECHA_CONTEO ='2023-02-07';";
+		$respuesta = $DB2->query($sql);
+		$respuesta = $respuesta->result();
+		return $respuesta;
+	}
+}
+
 
   
 

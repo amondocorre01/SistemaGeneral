@@ -425,6 +425,10 @@
 											echo $this->load->view('generico/ventas/reporte_cierre_turno', $data, TRUE);
 										break;
 
+										case 'pedidos-consolidados':
+											echo $this->load->view('pedido/pedidos_consolidados', null, TRUE);
+										break;
+
 										case 'config-sucursales':
 																		$this->db->where('ESTADO', 1);
 											$data['sucursales'] = $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION, CODIGO, DESCRIPCION, MENSAJE_FACTURA, MENSAJE_RECIBO,MENSAJE_COMANDA, IMPRESORA', ['ID_UBICACION'=>'ASC']);
