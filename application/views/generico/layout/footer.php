@@ -41,15 +41,30 @@
     <script src="<?=base_url('assets/plugins/datatables-buttons/js/buttons.print.min.js')?>"></script>
     <script src="<?=base_url('assets/plugins/datatables-buttons/js/buttons.colVis.min.js')?>"></script>
     <script>
+    
     $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
       "lengthChange": false,
       "autoWidth": true,
       "responsive": true,
-      "buttons": ["excel"]
+      "buttons": [
+      {
+        extend:'pdfHtml5',
+        text:'pdf',
+        orientation: 'landscape',
+        pageSize: 'LEGAL',
+        title: '<?=$_SESSION['title']?>',
+        download: 'open'
+      },{
+        extend:'excelHtml5',
+        text:'excel',
+        title: '<?=$_SESSION['title']?>',
+      }
+    ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     $('.buttons-pdf').attr('class','btn btn-secondary buttons-excel buttons-html5 btn-xs');
     $('.buttons-excel').attr('class','btn btn-secondary buttons-pdf buttons-html5 btn-xs');
+
+
     $(function () {
       $('.select2').select2()
     });

@@ -710,16 +710,32 @@ if(!function_exists('getInventariosSubcategoria2')) {
 	}
 }
 if(!function_exists('getPedidoSucursal')) {
-	function getPedidoSucursal($bd, $sufijo_sucursal){
+	function getPedidoSucursal($bd, $sufijo_sucursal, $fecha){
 		$CI =& get_instance();
 		$DB2 = $CI->load->database($bd, TRUE);
-		$sql = "select * from INVENTARIOS_DECLARACION".$sufijo_sucursal." ida where FECHA_CONTEO ='2023-02-07';";
+		$sql = "select * from INVENTARIOS_DECLARACION".$sufijo_sucursal." ida where FECHA_CONTEO ='$fecha';";
 		$respuesta = $DB2->query($sql);
 		$respuesta = $respuesta->result();
 		return $respuesta;
 	}
 }
 
+if(!function_exists('buscarCantidadSubcategoria2')) {
+function buscarCantidadSubcategoria2($pedidoSucursal, $subcategoria){
+	$encontrado = false;
+	$i=0;
+	$cant = 0;
+	while ($i < count($pedidoSucursal) && $encontrado ==false) {
+	  $sub = $pedidoSucursal[$i]->ID_SUBCATEGORIA_2;
+	  if($sub == $subcategoria){
+		$cant = $pedidoSucursal[$i]->CANTIDAD;
+		$encontrado = true;
+	  }
+	  $i++;
+	}
+	return $cant;
+  }
+}
 
   
 

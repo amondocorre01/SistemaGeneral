@@ -83,6 +83,7 @@
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed 
 <?php
+  $title='';
   if(isset($collapse)){
     echo $collapse;
   }
