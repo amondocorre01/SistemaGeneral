@@ -729,10 +729,11 @@ if(!function_exists('existencia')) {
 
 		function solicitud($db, $sufijo, $sucursal) {
 
+			$CI =& get_instance();
 
-			$data['lista'] = $this->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES', 'ID_LISTA_STOCK AS ID, NOMBRE_LISTA AS TEXT', ['NOMBRE_LISTA'=>'ASC'], ['ID_SUCURSAL'=>$sucursal]);
+			$data['lista'] = $CI->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES', 'ID_LISTA_STOCK AS ID, NOMBRE_LISTA AS TEXT', ['NOMBRE_LISTA'=>'ASC'], ['ID_SUCURSAL'=>$sucursal]);
 
-			$DB2 = $this->load->database($db, TRUE);
+			$DB2 = $CI->load->database($db, TRUE);
 
 			$sql_first = 'SELECT DATEADD(HH, -4, CONVERT(time, GETDATE())) AS HORA';
 			$actual = $DB2->query($sql_first)->result();
@@ -748,7 +749,7 @@ if(!function_exists('existencia')) {
 			} 
 
 			$fecha = $DB2->query($sql_date)->result();
-			$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
+			$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 
 			$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, ESTADO_CONTEO, ADECUACION FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
 			$registro = $DB2->query($sql)->result();
@@ -756,7 +757,7 @@ if(!function_exists('existencia')) {
 			$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
 			$cabecera = $DB2->query($sql2)->result();
 	
-			$this->session->set_userdata(array('fecha_conteo' => $fecha[0]->DIA));
+			$CI->session->set_userdata(array('fecha_conteo' => $fecha[0]->DIA));
 
 
 			$array = [];  $estado = []; $adecuacion = []; $solicitud = []; 
