@@ -510,7 +510,7 @@ case 'solicitud-prueba':
 	$sufijo = 'AE';
 	$sucursal = 2;
 
-	$data = sucursal($db, $sufijo, $sucursal);
+	$data = solicitud($db, $sufijo, $sucursal);
 	
 
 	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
