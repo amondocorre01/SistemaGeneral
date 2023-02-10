@@ -439,6 +439,17 @@
 											//$datos['productoMadre'] = getProductoMadre();
 											$this->load->view('configuraciones/productos/productos', $datos, FALSE);
 										break;
+										case 'pedidos-consolidados':
+											$datos = '';
+											echo $this->load->view('pedido/pedidos_consolidados', $datos, TRUE);
+										break;
+										case 'pedidos-extraordinarios':
+											$datos['primeraCategoria'] = getPrimeraCategoria();
+											$datos['tamProductos'] = getTamProductos();
+											$datos['listasPrecios'] = getNombresListasPrecios();
+											$datos['unidadesMedida'] = getUnidadesMedida();
+											echo $this->load->view('pedido/pedidos_extraordinarios', $datos, TRUE);
+										break;
 case 'acceso-usuarios-sistema-general':
 	
 	$this->db->join('SIREPE_EMPLEADO se', 'se.ID_EMPLEADO = vu.ID_EMPLEADO', 'left');
