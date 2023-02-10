@@ -48,10 +48,10 @@
           </div>
           <div class="col-2 col-md-1 ">
               <?php if($cabecera[0]->ESTADO == 9 ):?>
-                  <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'guardarDeclaracion()']);?>
+                  <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarDeclaracion()']);?>
               </div>
               <div class="col-2 col-md-1 ">
-                  <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'enviarDeclaracion()']);?>
+                  <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarDeclaracion()']);?>
                <?php endif; ?>
           </div>
         
@@ -186,8 +186,7 @@
 
                   Swal.fire('Envio Exitoso!', '', 'success');
 
-                  $('button[name=agregar]').hide();
-                  $('button[name=enviar]').hide();
+                  $('.btn-hide').hide();
 
                   $('.enviado').attr('readonly', 'readonly');
 
