@@ -724,6 +724,7 @@ if(!function_exists('existencia')) {
 
 	}
 }
+
 if(!function_exists('getPedidoSucursal')) {
 	function getPedidoSucursal($bd, $sufijo_sucursal, $fecha){
 		$CI =& get_instance();
@@ -753,79 +754,78 @@ if(!function_exists('getInventariosSubcategoria2')) {
 	}
 }
 
+if(!function_exists('solicitud')) {
 
-	if(!function_exists('solicitud')) {
+	function solicitud($db, $sufijo, $sucursal) {
 
-		function solicitud($db, $sufijo, $sucursal) {
+		$CI =& get_instance();
 
-			$CI =& get_instance();
+		$data['lista'] = $CI->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES', 'ID_LISTA_STOCK AS ID, NOMBRE_LISTA AS TEXT', ['NOMBRE_LISTA'=>'ASC'], ['ID_SUCURSAL'=>$sucursal]);
 
-			$data['lista'] = $CI->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES', 'ID_LISTA_STOCK AS ID, NOMBRE_LISTA AS TEXT', ['NOMBRE_LISTA'=>'ASC'], ['ID_SUCURSAL'=>$sucursal]);
+		$DB2 = $CI->load->database($db, TRUE);
 
-			$DB2 = $CI->load->database($db, TRUE);
+		$sql_first = 'SELECT DATEADD(HH, -4, CONVERT(time, GETDATE())) AS HORA';
+		$actual = $DB2->query($sql_first)->result();
 
-			$sql_first = 'SELECT DATEADD(HH, -4, CONVERT(time, GETDATE())) AS HORA';
-			$actual = $DB2->query($sql_first)->result();
+		$hora1 = strtotime( "06:00:00" );
+		$hora2 = strtotime( $actual[0]->HORA );
 
-			$hora1 = strtotime( "06:00:00" );
-			$hora2 = strtotime( $actual[0]->HORA );
+		if( $hora1 > $hora2 ) {
+			$sql_date = 'select CONVERT (date, GETDATE()-1) AS DIA';
+			
+		} else {
+			$sql_date = 'select CONVERT (date, GETDATE()) AS DIA';
+		} 
 
-			if( $hora1 > $hora2 ) {
-				$sql_date = 'select CONVERT (date, GETDATE()-1) AS DIA';
-				
-			} else {
-				$sql_date = 'select CONVERT (date, GETDATE()) AS DIA';
-			} 
+		$fecha = $DB2->query($sql_date)->result();
+		$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 
-			$fecha = $DB2->query($sql_date)->result();
-			$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
+		$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, ESTADO_CONTEO, ADECUACION FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+		$registro = $DB2->query($sql)->result();
 
-			$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, ESTADO_CONTEO, ADECUACION FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
-			$registro = $DB2->query($sql)->result();
+		$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
+		$cabecera = $DB2->query($sql2)->result();
 
-			$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
-			$cabecera = $DB2->query($sql2)->result();
-	
-			$CI->session->set_userdata(array('fecha_conteo' => $fecha[0]->DIA));
+		$CI->session->set_userdata(array('fecha_conteo' => $fecha[0]->DIA));
 
 
-			$array = [];  $estado = []; $adecuacion = []; $solicitud = []; 
+		$array = [];  $estado = []; $adecuacion = []; $solicitud = []; 
 
-			foreach ($registro as $value) {
-				$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
-				$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
-				$adecuacion[$value->ID_SUBCATEGORIA_2] = $value->ADECUACION;
-				$solicitud[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
-			}
-
-			$data['registro'] = $array;
-			$data['estado'] = $estado;
-			$data['adecuacion'] = $adecuacion;
-			$data['solicitud'] = $solicitud;
-			$data['db'] = $db;
-			$data['sufijo'] = $sufijo;
-			$data['cabecera'] = $cabecera;
-
-			return $data;
-
+		foreach ($registro as $value) {
+			$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
+			$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
+			$adecuacion[$value->ID_SUBCATEGORIA_2] = $value->ADECUACION;
+			$solicitud[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
 		}
+
+		$data['registro'] = $array;
+		$data['estado'] = $estado;
+		$data['adecuacion'] = $adecuacion;
+		$data['solicitud'] = $solicitud;
+		$data['db'] = $db;
+		$data['sufijo'] = $sufijo;
+		$data['cabecera'] = $cabecera;
+
+		return $data;
+
 	}
+}
 
 if(!function_exists('buscarCantidadSubcategoria2')) {
-function buscarCantidadSubcategoria2($pedidoSucursal, $subcategoria){
-	$encontrado = false;
-	$i=0;
-	$cant = 0;
-	while ($i < count($pedidoSucursal) && $encontrado ==false) {
-	  $sub = $pedidoSucursal[$i]->ID_SUBCATEGORIA_2;
-	  if($sub == $subcategoria){
-		$cant = $pedidoSucursal[$i]->CANTIDAD;
-		$encontrado = true;
-	  }
-	  $i++;
+	function buscarCantidadSubcategoria2($pedidoSucursal, $subcategoria){
+		$encontrado = false;
+		$i=0;
+		$cant = 0;
+		while ($i < count($pedidoSucursal) && $encontrado ==false) {
+		$sub = $pedidoSucursal[$i]->ID_SUBCATEGORIA_2;
+		if($sub == $subcategoria){
+			$cant = $pedidoSucursal[$i]->CANTIDAD;
+			$encontrado = true;
+		}
+		$i++;
+		}
+		return $cant;
 	}
-	return $cant;
-  }
 }
 
   
