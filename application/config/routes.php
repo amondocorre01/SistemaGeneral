@@ -244,6 +244,9 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['get-minimo-stock'] = 'api/pedido/minimo_stock';
     $route['guardar-solicitud'] = 'api/pedido/guardar_solicitud';
     $route['enviar-pedido'] = 'api/pedido/enviar_solicitud';
+    $route['guardar-preparacion'] = 'api/pedido/guardar_preparacion';
+    $route['enviar-preparacion'] = 'api/pedido/enviar_preparacion';
+
 
 
    

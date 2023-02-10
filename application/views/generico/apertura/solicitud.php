@@ -49,10 +49,10 @@
       </div>
       <?php if($cabecera[0]->ESTADO == 10 ):?>
       <div class="col-1 col-md-1 ">
-        <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-padding', 'onclick'=>'guardarSolicitud()']);?>
+        <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-padding btn-hide', 'onclick'=>'guardarSolicitud()']);?>
       </div>
       <div class="col-1 col-md-1 ">
-        <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding', 'onclick'=>'enviarPedido()']);?>
+        <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding btn-hide', 'onclick'=>'enviarPedido()']);?>
       </div>
 
       <div class="col-5 col-md-2">
@@ -65,7 +65,7 @@
           </div>
 
           <div class="col-1 col-md-1 ">
-            <?=form_button('obtener', '<span style="font-size:1.5rem" class="las la-search la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding', 'onclick'=>'getMinimos()']);?>
+            <?=form_button('obtener', '<span style="font-size:1.5rem" class="las la-search la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding btn-hide', 'onclick'=>'getMinimos()']);?>
           </div>
       <?php endif;?>
 
@@ -216,8 +216,14 @@
                 .done(function( data ) {
                   dato = JSON.parse(data);
 
-                  if(dato.result == true){
+                  if(dato.status == true){
                     Swal.fire('Envio Exitoso!', '', 'success');
+
+                      $('.btn-hide').hide();
+                      $('#lista').hide();
+                      
+
+                      $('.reset_input_stock').attr('readonly', 'readonly');
                   }
 
                   else {
@@ -235,7 +241,18 @@
 
     function getMinimos() {
 
-      d = document.getElementById("lista").value;
+      Swal.fire({
+        title: 'Deseas cargar la sugerencia del perfil?, puedes perder toda informacion guardada anteriormente ',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        denyButtonText: 'No',
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+
+
+          d = document.getElementById("lista").value;
     
       $.post("<?=site_url('get-minimo-stock')?>", {lista:d})
       .done(function( data ) {
@@ -271,5 +288,10 @@
 
       });
 
+          
+        } else if (result.isDenied) {
+          Swal.fire('No se ha enviado aun', '', 'info')
+        }
+      })
     }
 </script>
