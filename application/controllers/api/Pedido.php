@@ -133,7 +133,12 @@ class Pedido extends CI_Controller {
         $DB2 = $this->load->database($db, TRUE);
 
         $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 10 WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
-        $registro = $DB2->query($sql);
+        $DB2->query($sql);
+
+        $sql2 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 10 WHERE FECHA ='".date('Y-m-d')."'";
+        $DB2->query($sql2);
+
+        $response['status'] = true;
 
         echo json_encode($response);
     }
@@ -195,15 +200,86 @@ class Pedido extends CI_Controller {
 
         $db = $this->input->post('db');
         $sufijo = $this->input->post('sufijo');
+        $fecha = $this->input->post('fecha');
 
         $DB2 = $this->load->database($db, TRUE);
 
-        $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 11 WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+        $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 11 WHERE FECHA_CONTEO ='".$fecha."'";
+        $DB2->query($sql);
+
+        $sql2 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 11 WHERE FECHA ='".date('Y-m-d')."'";
+        $DB2->query($sql2);
+
+        
+            $response['status'] = true;
+
+        echo json_encode($response);
+    }
+
+
+    public function guardar_preparacion() {
+
+        $response['status'] = false;
+        $db = $this->input->post('db');
+        $sufijo = $this->input->post('sufijo');
+        $fecha = $this->input->post('fecha');
+
+        $DB2 = $this->load->database($db, TRUE);
+        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD, CANTIDAD_ENVIADA FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha."'";
+        $registro = $DB2->query($sql)->result();
+
+        $array1 = [];
+
+        foreach ($registro as $value) {
+            $array1[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENVIADA;
+        }
+
+        $array2 = $this->input->post();
+
+        foreach ($array2 as $key => $value) {
+            
+            if($key != 'db' AND $key != 'sufijo' AND $key != 'fecha') {
+  
+
+                    if($value['id'] != $array1[$key]) { 
+
+                        $observacion = ($value['observacion']) ? $value['observacion'] : 'NINGUNA';
+
+                        $sql2 = "EXECUTE ".$sufijo."_SET_ITEM_PREPARACION ".$value['id'].",'".$fecha."','".$observacion."',".$key;   
+                        
+                        $DB2->query($sql2)->result();
+         
+                        $response['status'] = true;
+                     }
+                
+            }
+
+            
+        }
+
+        echo json_encode($response);
+    } 
+
+
+    public function enviar_preparacion() {
+
+        $response['status'] = false;
+
+        $db = $this->input->post('db');
+        $sufijo = $this->input->post('sufijo');
+
+        $DB2 = $this->load->database($db, TRUE);
+
+        $sql_date = "select CONVERT (date, GETDATE()) AS DIA";   // QUITAR UN DIA
+	    $fecha = $DB2->query($sql_date)->result();
+        
+
+        $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 12 WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+
         $registro = $DB2->query($sql);
 
-        if($this->db->affected_rows()) {
+        
             $response['status'] = true;
-        }
 
         echo json_encode($response);
     }

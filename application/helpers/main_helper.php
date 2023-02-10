@@ -692,21 +692,36 @@ if(!function_exists('protocoloWeb')) {
 	}
 }
 
-if(!function_exists('getSucursales')) {
-	function getSucursales(){
-    	$CI =& get_instance();
-		$sql = "select * from ID_UBICACION where ESTADO=1;";
-		$respuesta = $CI->main->getQuery($sql);
-		return $respuesta;
-	}
-}
+if(!function_exists('existencia')) {
+	function existencia($db, $sufijo){
 
-if(!function_exists('getInventariosSubcategoria2')) {
-	function getInventariosSubcategoria2(){
 		$CI =& get_instance();
-		$sql = "select (SELECT (CATEGORIA) from INVENTARIOS_CATEGORIA c where c.ID_CATEGORIA =v1.ID_CATEGORIA ) as CATEGORIA, *  from INVENTARIOS_SUB_CATEGORIA_2 v2, INVENTARIOS_SUB_CATEGORIA_1 v1 where v2.ID_SUB_CATEGORIA_1 =v1.ID_SUB_CATEGORIA_1 ;";
-		$respuesta = $CI->main->getQuery($sql);
-		return $respuesta;
+
+		$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
+	
+		$DB2 = $CI->load->database($db, TRUE);
+	
+		$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+	
+		$registro = $DB2->query($sql)->result();
+
+		$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".date('Y-m-d')."'";
+		$cabecera = $DB2->query($sql2)->result();
+
+
+		$array = [];  $estado = [];
+
+		foreach ($registro as $value) {
+			$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
+		}
+
+	 	$data['registro'] = $array;
+	 	$data['db'] = $db;
+	 	$data['sufijo'] = $sufijo;
+	 	$data['cabecera'] = $cabecera;
+
+		return $data;
+
 	}
 }
 if(!function_exists('getPedidoSucursal')) {
@@ -717,6 +732,64 @@ if(!function_exists('getPedidoSucursal')) {
 		$respuesta = $DB2->query($sql);
 		$respuesta = $respuesta->result();
 		return $respuesta;
+}
+
+
+	if(!function_exists('solicitud')) {
+
+		function solicitud($db, $sufijo, $sucursal) {
+
+			$CI =& get_instance();
+
+			$data['lista'] = $CI->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES', 'ID_LISTA_STOCK AS ID, NOMBRE_LISTA AS TEXT', ['NOMBRE_LISTA'=>'ASC'], ['ID_SUCURSAL'=>$sucursal]);
+
+			$DB2 = $CI->load->database($db, TRUE);
+
+			$sql_first = 'SELECT DATEADD(HH, -4, CONVERT(time, GETDATE())) AS HORA';
+			$actual = $DB2->query($sql_first)->result();
+
+			$hora1 = strtotime( "06:00:00" );
+			$hora2 = strtotime( $actual[0]->HORA );
+
+			if( $hora1 > $hora2 ) {
+				$sql_date = 'select CONVERT (date, GETDATE()-1) AS DIA';
+				
+			} else {
+				$sql_date = 'select CONVERT (date, GETDATE()) AS DIA';
+			} 
+
+			$fecha = $DB2->query($sql_date)->result();
+			$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
+
+			$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, ESTADO_CONTEO, ADECUACION FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+			$registro = $DB2->query($sql)->result();
+
+			$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
+			$cabecera = $DB2->query($sql2)->result();
+	
+			$CI->session->set_userdata(array('fecha_conteo' => $fecha[0]->DIA));
+
+
+			$array = [];  $estado = []; $adecuacion = []; $solicitud = []; 
+
+			foreach ($registro as $value) {
+				$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
+				$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
+				$adecuacion[$value->ID_SUBCATEGORIA_2] = $value->ADECUACION;
+				$solicitud[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
+			}
+
+			$data['registro'] = $array;
+			$data['estado'] = $estado;
+			$data['adecuacion'] = $adecuacion;
+			$data['solicitud'] = $solicitud;
+			$data['db'] = $db;
+			$data['sufijo'] = $sufijo;
+			$data['cabecera'] = $cabecera;
+
+			return $data;
+
+		}
 	}
 }
 

@@ -425,10 +425,6 @@
 											echo $this->load->view('generico/ventas/reporte_cierre_turno', $data, TRUE);
 										break;
 
-										case 'pedidos-consolidados':
-											echo $this->load->view('pedido/pedidos_consolidados', null, TRUE);
-										break;
-
 										case 'config-sucursales':
 																		$this->db->where('ESTADO', 1);
 											$data['sucursales'] = $this->main->getListSelect('ID_UBICACION', 'ID_UBICACION, CODIGO, DESCRIPCION, MENSAJE_FACTURA, MENSAJE_RECIBO,MENSAJE_COMANDA, IMPRESORA', ['ID_UBICACION'=>'ASC']);
@@ -512,53 +508,10 @@ case 'solicitud-prueba':
 
 	$db = 'ventas';
 	$sufijo = 'AE';
+	$sucursal = 2;
 
-	$data['lista'] = $this->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES', 'ID_LISTA_STOCK AS ID, NOMBRE_LISTA AS TEXT', ['NOMBRE_LISTA'=>'ASC'], ['ID_SUCURSAL'=>2]);
-
-	$DB2 = $this->load->database($db, TRUE);
-
-	$sql_first = 'SELECT DATEADD(HH, -4, CONVERT(time, GETDATE())) AS HORA';
-	$actual = $DB2->query($sql_first)->result();
-
-	$hora1 = strtotime( "06:00:00" );
-	$hora2 = strtotime( $actual[0]->HORA );
-
-	if( $hora1 > $hora2 ) {
-		$sql_date = 'select CONVERT (date, GETDATE()-1) AS DIA';
-		
-	} else {
-		$sql_date = 'select CONVERT (date, GETDATE()) AS DIA';
-	} 
-
-	$fecha = $DB2->query($sql_date)->result();
-	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
-
-	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, ESTADO_CONTEO, ADECUACION FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
-	$registro = $DB2->query($sql)->result();
-
-	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
-	$cabecera = $DB2->query($sql2)->result();
+	$data = solicitud($db, $sufijo, $sucursal);
 	
-	$this->session->set_userdata(array('fecha_conteo' => $fecha[0]->DIA));
-
-
-	$array = [];  $estado = []; $adecuacion = []; $solicitud = []; 
-
-	foreach ($registro as $value) {
-		$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
-		$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
-		$adecuacion[$value->ID_SUBCATEGORIA_2] = $value->ADECUACION;
-		$solicitud[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
-
-	}
-
-	 $data['registro'] = $array;
-	 $data['estado'] = $estado;
-	 $data['adecuacion'] = $adecuacion;
-	 $data['solicitud'] = $solicitud;
-	 $data['db'] = $db;
-	 $data['sufijo'] = $sufijo;
-	 $data['cabecera'] = $cabecera;
 
 	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
 break;
@@ -569,31 +522,60 @@ case 'existencia-prueba':
 	$db = 'ventas';
 	$sufijo = 'AE';
 
+	$data = existencia($db, $sufijo);
+
+
+	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
+break;
+
+case 'apv-prueba':
+
+	$db = 'ventas';
+	$sufijo = 'AE';
+
 	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 	$DB2 = $this->load->database($db, TRUE);
+
+
+
+	$sql_first = 'SELECT DATEADD(HH, -4, CONVERT(time, GETDATE())) AS HORA';
+	$actual = $DB2->query($sql_first)->result();
+
 	
-	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, ESTADO_CONTEO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+	$sql_date = "select CONVERT (date, GETDATE()) AS DIA";   // QUITAR UN DIA
+	$fecha = $DB2->query($sql_date)->result();
+
+	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_CONTEO, OBSERVACION, CANTIDAD_ENVIADA FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
 	$registro = $DB2->query($sql)->result();
 
-	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".date('Y-m-d')."'";
+	//var_dump($registro); die();
+
+	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
 	$cabecera = $DB2->query($sql2)->result();
 
 
-	$array = [];  $estado = [];
+	$array = [];  $estado = []; $observacion = []; $solicitada = []; 
 
 	foreach ($registro as $value) {
-		$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
+		$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
 		$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
+		$observacion[$value->ID_SUBCATEGORIA_2] = $value->OBSERVACION;
+		$solicitada[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENVIADA;
 	}
 
+	
 	 $data['registro'] = $array;
 	 $data['estado'] = $estado;
 	 $data['db'] = $db;
 	 $data['sufijo'] = $sufijo;
 	 $data['cabecera'] = $cabecera;
+	 $data['observacion'] = $observacion;
+	 $data['solicitada'] = $solicitada;
+	 $data['fecha'] = $fecha[0]->DIA;
 
 
-	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
+	echo $this->load->view('generico/apertura/apv', $data, TRUE);
+
 break;
 
 
