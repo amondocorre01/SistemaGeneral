@@ -19,7 +19,7 @@
     $name_impresora = IMPRESORA_LOCAL;
     $descripcion_sucursal = $datos_sucursal->DESCRIPCION;
     $this->session->set_userdata('ubicacion_seleccionada', $datos_sucursal);
-
+    $this->session->set_userdata('title', 'Reporte Cierre de Turno -'.$descripcion_sucursal);
     if($_SESSION['tipo_usuario'] == 'cajero'){
       $id_usuario = $_SESSION['id_usuario'];
       $usuarios_sucursal = getUsuariosSucursalUsuario($id_usuario, $id_ubicacion);
