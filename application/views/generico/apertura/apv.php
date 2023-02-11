@@ -48,10 +48,8 @@
         <a class="navbar-brand" href="#">Preparacion</a>
       </div>
       <?php if($cabecera[0]->ESTADO == 11 ):?>
-        <div class="col-1 col-md-1 ">
+        <div class="col-3 col-md-1 btn-group">
             <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-padding', 'onclick'=>'guardarPreparacion()']);?>
-        </div>
-        <div class="col-1 col-md-1 ">
             <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding', 'onclick'=>'enviarPreparacion()']);?>
         </div>
       <?php endif;?>
@@ -61,7 +59,6 @@
        
 
     </nav>
-
 
 <br>
 <div class="card" id="serializeExample">
@@ -107,6 +104,7 @@
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Unidad Medida</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Stock Solicitado</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Stock Enviado</th>
+                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Turno</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Observaciones</th>
                       <?php foreach ($sub->PRODUCTOS as $p): ?>
                         <tr>
@@ -114,12 +112,20 @@
                             <td width="15%">
                               <?=$p->MEDIDA_ESTANDARIZACION?>                          
                             </td>
-                            <td width="15%" id="a_<?=$p->ID_SUB_CATEGORIA_2?>">
+                            <td width="10%" id="a_<?=$p->ID_SUB_CATEGORIA_2?>">
                             <?=$registro[$p->ID_SUB_CATEGORIA_2]?>
                             </td>
 
-                            <td width="15%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
+                            <td width="10%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
                                 <input name="<?=$p->ID_SUB_CATEGORIA_2?>[id]" class="form-control" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='12')?'readonly="readonly"':''?> step="1" value="<?=$solicitada[$p->ID_SUB_CATEGORIA_2]?>">
+                            </td>
+
+                            <td width="18%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
+                                <select name="<?=$p->ID_SUB_CATEGORIA_2?>[turno]" id="" class="form-control">
+                                  <?php foreach($turnos AS $turno):?>
+                                    <option value="<?=$turno->TURNO?>" <?=($turno->TURNO == $envio[$p->ID_SUB_CATEGORIA_2] )?'selected':'' ?>><?=$turno->TURNO?></option>
+                                  <?php endforeach;?>
+                                </select>
                             </td>
 
                             <td width="15%">                                

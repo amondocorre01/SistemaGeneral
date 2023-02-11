@@ -225,32 +225,42 @@ class Pedido extends CI_Controller {
         $fecha = $this->input->post('fecha');
 
         $DB2 = $this->load->database($db, TRUE);
-        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD, CANTIDAD_ENVIADA FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha."'";
+        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD, CANTIDAD_ENVIADA, OBSERVACION, TURNO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha."'";
         $registro = $DB2->query($sql)->result();
 
-        $array1 = [];
+
+        $array1 = []; $observacion = []; $envio = [];
 
         foreach ($registro as $value) {
-            $array1[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENVIADA;
+            $array1[$value->ID_SUBCATEGORIA_2] = ($value->CANTIDAD_ENVIADA)?$value->CANTIDAD_ENVIADA:'0';
+            $observacion[$value->ID_SUBCATEGORIA_2] = ($value->OBSERVACION)?$value->OBSERVACION:'NINGUNA';
+            $envio[$value->ID_SUBCATEGORIA_2] = $value->TURNO;
+
         }
 
         $array2 = $this->input->post();
+        $cont = 0;
 
-        foreach ($array2 as $key => $value) {
+        foreach ($array2 as $key => $value2) {
+
+            
             
             if($key != 'db' AND $key != 'sufijo' AND $key != 'fecha') {
-  
 
-                    if($value['id'] != $array1[$key]) { 
+                if($value2['id'] != $array1[$key] OR $value2['observacion'] != $observacion[$key] OR $value2['turno'] != $envio[$key]) { 
 
-                        $observacion = ($value['observacion']) ? $value['observacion'] : 'NINGUNA';
+                    $value2['observacion'] = ($value2['observacion']) ? $value2['observacion'] : 'NINGUNA';
 
-                        $sql2 = "EXECUTE ".$sufijo."_SET_ITEM_PREPARACION ".$value['id'].",'".$fecha."','".$observacion."',".$key;   
-                        
+                    if($value2['id'] > 0) {
+
+                        $sql2 = "EXECUTE ".$sufijo."_SET_ITEM_PREPARACION ".$value2['id'].",'".$fecha."','".$value2['observacion']."',".$key.",'".$value2['turno']."'";   
+                    
                         $DB2->query($sql2)->result();
-         
-                        $response['status'] = true;
-                     }
+
+                    }
+
+                    $response['status'] = true;
+                }
                 
             }
 

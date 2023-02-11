@@ -536,31 +536,32 @@ case 'apv-prueba':
 	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 	$DB2 = $this->load->database($db, TRUE);
 
+	$sql_turno = "SELECT TURNO FROM INVENTARIOS_TURNO";
+	$turnos = $this->db->query($sql_turno)->result();
 
 
 	$sql_first = 'SELECT DATEADD(HH, -4, CONVERT(time, GETDATE())) AS HORA';
 	$actual = $DB2->query($sql_first)->result();
 
 	
-	$sql_date = "select CONVERT (date, GETDATE()) AS DIA";   // QUITAR UN DIA
+	$sql_date = "select CONVERT (date, GETDATE()-1) AS DIA";   // QUITAR UN DIA
 	$fecha = $DB2->query($sql_date)->result();
 
-	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_CONTEO, OBSERVACION, CANTIDAD_ENVIADA FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_CONTEO, OBSERVACION, CANTIDAD_ENVIADA, TURNO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
 	$registro = $DB2->query($sql)->result();
-
-	//var_dump($registro); die();
 
 	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
 	$cabecera = $DB2->query($sql2)->result();
 
 
-	$array = [];  $estado = []; $observacion = []; $solicitada = []; 
+	$array = [];  $estado = []; $observacion = []; $solicitada = []; $envio = [];
 
 	foreach ($registro as $value) {
 		$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
 		$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
 		$observacion[$value->ID_SUBCATEGORIA_2] = $value->OBSERVACION;
 		$solicitada[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENVIADA;
+		$envio[$value->ID_SUBCATEGORIA_2] = $value->TURNO;
 	}
 
 	
@@ -572,7 +573,8 @@ case 'apv-prueba':
 	 $data['observacion'] = $observacion;
 	 $data['solicitada'] = $solicitada;
 	 $data['fecha'] = $fecha[0]->DIA;
-
+	 $data['turnos'] = $turnos;
+	 $data['envio'] = $envio;
 
 	echo $this->load->view('generico/apertura/apv', $data, TRUE);
 
