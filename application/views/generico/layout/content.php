@@ -506,12 +506,28 @@ break;
 
 case 'perfilPed-prueba':
 
+	$sucursal = 2;
+
 	$id = $this->session->id_usuario;
 
-						   $this->db->join('ID_UBICACION u', 'u.ID_UBICACION = vps.ID_UBICACION', 'left');
-	$datos['sucursales'] = $this->main->getListSelect('VENTAS_PERMISO_SUCURSAL vps', 'u.ID_UBICACION AS ID, u.DESCRIPCION AS TEXT', ['u.ID_UBICACION'=>'ASC'], ['u.ESTADO'=>1, 'vps.ESTADO'=>1, 'vps.ID_USUARIO' =>	$id]);
+	$datos['perfiles'] = $this->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES ss', 'ss.ID_LISTA_STOCK AS ID, ss.NOMBRE_LISTA AS TEXT', ['ss.NOMBRE_LISTA'=>'ASC'], ['ss.ID_SUCURSAL'=>$sucursal]);
+
+	$datos['sucursal'] = 2;
 	
 	echo $this->load->view('generico/apertura/perfil_pedido', $datos, TRUE);
+break;
+
+case 'recepcion-prueba':
+
+	$db = 'ventas';
+	$sufijo = 'AE';
+	$sucursal = 2;
+	$fecha = '2023-02-10';
+
+	$data = recepcion($db, $sufijo, $fecha);
+
+	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
+
 break;
 
 

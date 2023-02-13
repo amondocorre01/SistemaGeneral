@@ -5,7 +5,7 @@ class Pedido extends CI_Controller {
 
     public function perfil()
     {
-        $sucursal = $this->input->post('sucursal');
+        $sucursal = $this->input->post('perfil');
 
         $sql = "EXECUTE INVENTARIO ?";
        

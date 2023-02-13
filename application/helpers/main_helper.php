@@ -828,3 +828,39 @@ if(!function_exists('buscarCantidadSubcategoria2')) {
 	}
 }
 
+
+if(!function_exists('recepcion')){
+
+	function recepcion($db, $sufijo, $fecha) {
+		$CI =& get_instance();
+
+		$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
+	
+		$DB2 = $CI->load->database($db, TRUE);
+	
+		$sql = "SELECT ID_INVENTARIOS_DECLARACION, NOMBRE_PRODUCTO, CANTIDAD_ENVIADA, ID_SUBCATEGORIA_2 FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha."'";
+	
+		$registro = $DB2->query($sql)->result();
+
+
+		$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha."'";
+		$cabecera = $DB2->query($sql2)->result();
+
+
+		$array = [];  $estado = [];
+
+		foreach ($registro as $value) {
+			$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENVIADA;
+		}
+
+	 	$data['registro'] = $array;
+	 	$data['db'] = $db;
+	 	$data['sufijo'] = $sufijo;
+	 	$data['cabecera'] = $cabecera;
+
+		return $data;
+
+	}
+
+}
+

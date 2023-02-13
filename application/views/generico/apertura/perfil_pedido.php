@@ -11,15 +11,15 @@
                 <div class="row">
                     <div class="col-2"></div>
                     <div class="col-3">
-                        <?=form_label("Sucursal", 'sucursal');?>
-                        <select name="" id="sucursal" class="form-control" onchange="limpiar()">
-                            <?php foreach ($sucursales as  $sucursal): ?>
-                                <option value="<?=$sucursal->ID?>"><?=$sucursal->TEXT?></option>
+                        <?=form_label("Perfil", 'perfil');?>
+                        <select name="" id="perfil" class="form-control" onchange="limpiar()">
+                            <?php foreach ($perfiles as  $perfil): ?>
+                                <option value="<?=$perfil->ID?>"><?=$perfil->TEXT?></option>
                             <?php endforeach;?>
                         </select>
                     </div>
                     <div class="col-2">
-                            <?=form_button('send', 'Buscar ', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'getPerfiles()', 'id'=>'getPerfiles']);?>
+                            <?=form_button('send', 'Buscar ', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'getPerfil()', 'id'=>'getPerfiles']);?>
                     </div>
                     <div class="col-3">
                             <?=form_button('new', 'Crear Perfiles', ['class'=>'btn btn-success btn-lg', 'onclick'=>'showNewPerfil()']);?>
@@ -53,7 +53,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <?=form_label("Nombre de Perfil", 'perfil');?>
-                <?=form_input(['name'=>'perfil', 'id'=>'perfil','class'=>'form-control palette-Yellow-100 bg']);?>
+                <?=form_input(['name'=>'nombre_perfil', 'id'=>'nombre_perfil','class'=>'form-control palette-Yellow-100 bg']);?>
                 <div class="valid-feedback"></div>
             </div>
         </div>
@@ -70,16 +70,16 @@
 
 <script>
 
-function getPerfiles() {
+function getPerfil() {
 
-    var sucursal = $('#sucursal').val();
+    var perfil = $('#perfil').val();
 
     $('.loading').show();
    
     $.ajax({
         type: "POST",
         url: "<?=site_url('get-perfil-pedido')?>",
-        data: { sucursal: sucursal},
+        data: { perfil: perfil},
         dataType: "html",
         success: function (response) {
 
@@ -104,8 +104,8 @@ function showNewPerfil() {
 }
 
 function guardarPerfil() {
-    var perfil = $('#perfil').val();
-    var sucursal = $('#sucursal').val();
+    var perfil = $('#nombre_perfil').val();
+    var sucursal = '<?=$sucursal?>';
 
     if(perfil) {
 
