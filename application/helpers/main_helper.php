@@ -838,12 +838,42 @@ if(!function_exists('guardarPedidoExtraordinario')) {
 	}
 }
 
-  
+if(!function_exists('recepcion')){
 
-  
+	function recepcion($db, $sufijo) {
+		$CI =& get_instance();
 
-  
+		$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
+	
+		$DB2 = $CI->load->database($db, TRUE);
 
-  
+		$sql5 = "SELECT CAST((SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.") AS Date) AS DIA;";
+		$fecha = $DB2->query($sql5)->result();
 
+	
+		$sql = "SELECT ID_INVENTARIOS_DECLARACION, NOMBRE_PRODUCTO, CANTIDAD_ENVIADA, ID_SUBCATEGORIA_2 FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+	
+		$registro = $DB2->query($sql)->result();
+
+
+		$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
+		$cabecera = $DB2->query($sql2)->result();
+
+
+		$array = [];  $estado = [];
+
+		foreach ($registro as $value) {
+			$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENVIADA;
+		}
+
+	 	$data['registro'] = $array;
+	 	$data['db'] = $db;
+	 	$data['sufijo'] = $sufijo;
+	 	$data['cabecera'] = $cabecera;
+
+		return $data;
+
+	}
+
+}
 

@@ -31,7 +31,7 @@
   color: black;
 }
 </style>
-
+<?php if($cabecera AND $cabecera[0]->ESTADO > 9): ?>
 <?php if($cabecera[0]->ESTADO > 10 ):?>
   <div class="row ">
     <div class="col-md-12 text-center">
@@ -156,6 +156,12 @@
     </div>
   <?=form_close();?>
 </div>
+
+<?php else:?>
+  <div class="alert alert-danger" role="alert">
+     NO SE HA ENVIADO INVENTARIO DEL DIA
+  </div>
+<?php endif;?>
 
 <script>
 
