@@ -51,8 +51,8 @@
       </div>
       <?php if($cabecera[0]->ESTADO == 11 ):?>
         <div class="col-3 col-md-1 btn-group">
-            <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-padding', 'onclick'=>'guardarPreparacion()']);?>
-            <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding', 'onclick'=>'enviarPreparacion()']);?>
+            <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-padding btn-hide', 'onclick'=>'guardarPreparacion()']);?>
+            <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding btn-hide', 'onclick'=>'enviarPreparacion()']);?>
         </div>
       <?php endif;?>
 
@@ -69,7 +69,8 @@
         
     <div id="accordion">
       <?php foreach ($existencia as $value) : ?>
-        <div class="card" style="background-color: rgb(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?> )">
+        <?php $count = 0?>
+        <div id="cat_<?=$value->ID_CATEGORIA?>" class="card" style="background-color: rgb(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?> )">
           <div class="card-header" id="heading<?=$value->ID_CATEGORIA?>">
             <h6 >
             <?=$value->CATEGORIA?>
@@ -109,6 +110,8 @@
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Turno</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Observaciones</th>
                       <?php foreach ($sub->PRODUCTOS as $p): ?>
+                        <?php if($registro[$p->ID_SUB_CATEGORIA_2] > 0):?> 
+                          <?php $count = $count + 1?>
                         <tr>
                             <td width="30%"><?=$p->SUB_CATEGORIA_2?></td>
                             <td width="15%">
@@ -119,11 +122,11 @@
                             </td>
 
                             <td width="10%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
-                                <input name="<?=$p->ID_SUB_CATEGORIA_2?>[id]" class="form-control" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='12')?'readonly="readonly"':''?> step="1" value="<?=$solicitada[$p->ID_SUB_CATEGORIA_2]?>">
+                                <input name="<?=$p->ID_SUB_CATEGORIA_2?>[id]" class="form-control reset_input_stock" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='12')?'readonly="readonly"':''?> step="1" value="<?=$solicitada[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
 
                             <td width="18%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
-                                <select name="<?=$p->ID_SUB_CATEGORIA_2?>[turno]" id="" class="form-control">
+                                <select name="<?=$p->ID_SUB_CATEGORIA_2?>[turno]" id="" class="form-control reset_input_stock">
                                   <?php foreach($turnos AS $turno):?>
                                     <option value="<?=$turno->TURNO?>" <?=($turno->TURNO == $envio[$p->ID_SUB_CATEGORIA_2] )?'selected':'' ?>><?=$turno->TURNO?></option>
                                   <?php endforeach;?>
@@ -131,9 +134,10 @@
                             </td>
 
                             <td width="15%">                                
-                              <input id="o_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>[observacion]" class="form-control" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='12')?'readonly="readonly"':''?> type="text" value="<?=$observacion[$p->ID_SUB_CATEGORIA_2]?>">
+                              <input id="o_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>[observacion]" class="form-control reset_input_stock" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='12')?'readonly="readonly"':''?> type="text" value="<?=$observacion[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
                         </tr>
+                        <?php endif; ?>
                       <?php endforeach; ?>
                 </table>
             </div>
@@ -141,6 +145,14 @@
           </div>
           <?php endif; ?>
           <?php endforeach; ?>
+          <script>
+            var cantidad = '<?=$count?>';
+            var categoria = '<?=$value->ID_CATEGORIA?>';
+
+              if(cantidad == 0) {
+                $('#cat_'+categoria).attr("hidden", true);
+              }
+          </script>
         </div>
             </div>
           </div>
@@ -152,7 +164,7 @@
 <?php else:?>
 
   <div class="alert alert-danger" role="alert">
-     NO SE HA ENVIADO INVENTARIO DEL DIA
+     NO SE HA ENVIADO SOLICITUDES PARA EL DIA
   </div>
 
 <?php endif;?>
@@ -216,6 +228,12 @@
 
                   if(dato.status == true){
                     Swal.fire('Envio Exitoso!', '', 'success');
+
+                    $('.btn-hide').hide();
+                      $('#lista').hide();
+                      
+
+                      $('.reset_input_stock').attr('readonly', 'readonly');
                   }
 
                   else {

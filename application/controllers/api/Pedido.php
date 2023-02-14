@@ -207,7 +207,7 @@ class Pedido extends CI_Controller {
         $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 11 WHERE FECHA_CONTEO ='".$fecha."'";
         $DB2->query($sql);
 
-        $sql2 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 11 WHERE FECHA ='".date('Y-m-d')."'";
+        $sql2 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 11, FECHA_SOLICITUD ='".date('Y-m-d H:i:s')."' WHERE FECHA = (SELECT MAX(FECHA) FROM CABECERA_PEDIDO_".$sufijo." ) ";
         $DB2->query($sql2);
 
         
@@ -286,6 +286,86 @@ class Pedido extends CI_Controller {
 
         $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 12 WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
 
+        $sql3 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 12, FECHA_PREPARACION = (SELECT DATEADD(HH, -4, GETDATE())) WHERE FECHA_SOLICITUD = (SELECT MAX(FECHA_SOLICITUD) FROM CABECERA_PEDIDO_".$sufijo.")";
+        $DB2->query($sql3);
+
+        $registro = $DB2->query($sql);
+
+        
+            $response['status'] = true;
+
+        echo json_encode($response);
+    }
+
+    public function guardar_recepcion() 
+    {
+
+        $response['status'] = false;
+        $db = $this->input->post('db');
+        $sufijo = $this->input->post('sufijo');
+
+        $DB2 = $this->load->database($db, TRUE);
+        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD, CANTIDAD_ACEPTADA, OBSERVACION2, TURNO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO = (SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo."))";
+        $registro = $DB2->query($sql)->result();
+
+
+        $sql6 = "SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.")";
+        $fecha = $DB2->query($sql6)->result();
+
+
+        $array1 = []; $observacion = []; $envio = [];
+
+        foreach ($registro as $value) {
+            $array1[$value->ID_SUBCATEGORIA_2] = ($value->CANTIDAD_ACEPTADA)?$value->CANTIDAD_ACEPTADA:'0';
+            $observacion[$value->ID_SUBCATEGORIA_2] = ($value->OBSERVACION2)?$value->OBSERVACION2:'NINGUNA';
+        }
+
+        $array2 = $this->input->post();
+        $cont = 0;
+
+        foreach ($array2 as $key => $value2) {
+            
+            if($key != 'db' AND $key != 'sufijo' AND $key != 'fecha') {
+
+                if($value2['cantidad'] != $array1[$key] OR $value2['observacion'] != $observacion[$key]) { 
+
+                    $value2['observacion'] = ($value2['observacion']) ? $value2['observacion'] : 'NINGUNA';
+
+                    if($value2['cantidad'] > 0) {
+
+                        $sql2 = "EXECUTE ".$sufijo."_SET_ITEM_RECEPCION ".$value2['cantidad'].",'".$fecha[0]->FECHA."','".$value2['observacion']."',".$key;
+
+                        $DB2->query($sql2)->result();
+
+                    }
+
+                    $response['status'] = true;
+                }   
+            } 
+        }
+
+        echo json_encode($response);
+    } 
+
+
+    public function enviar_recepcion() {
+
+        $response['status'] = false;
+
+        $db = $this->input->post('db');
+        $sufijo = $this->input->post('sufijo');
+
+        $DB2 = $this->load->database($db, TRUE);
+
+        $sql6 = "SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.")";
+        $fecha = $DB2->query($sql6)->result();
+        
+
+        $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 13 WHERE FECHA_CONTEO ='".$fecha[0]->FECHA."'";
+
+        $sql3 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 13, FECHA_RECEPCION = (SELECT DATEADD(HH, -4, GETDATE())) WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.")";
+        $DB2->query($sql3);
+
         $registro = $DB2->query($sql);
 
         
@@ -295,8 +375,10 @@ class Pedido extends CI_Controller {
     }
 
 
-
 }
+
+
+    
 
 
 /* End of file Pedido.php */
