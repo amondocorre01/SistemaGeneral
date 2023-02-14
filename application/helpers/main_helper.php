@@ -828,7 +828,15 @@ if(!function_exists('buscarCantidadSubcategoria2')) {
 	}
 }
 
-  
+if(!function_exists('guardarPedidoExtraordinario')) {
+	function guardarPedidoExtraordinario($bd, $sufijo_sucursal, $categoria_1, $categoria_2, $producto_madre, $modificado, $detalle, $id_usuario, $fecha_registro) {
+		$CI =& get_instance();
+		$DB2 = $CI->load->database($bd, TRUE);
+		$sql = "insert into PEDIDO_EXTRAORDINARIO".$sufijo_sucursal."(CATEGORIA_1, CATEGORIA_2,PRODUCTO_MADRE,MODIFICADO,DETALLE,ESTADO,USUARIO,FECHA_REGISTRO)values('$categoria_1','$categoria_2','$producto_madre','$modificado','$detalle','1','$id_usuario','$fecha_registro') ;";
+		$respuesta = $DB2->query($sql);
+		return true;
+	}
+}
 
   
 

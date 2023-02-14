@@ -248,6 +248,8 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['enviar-preparacion'] = 'api/pedido/enviar_preparacion';
 
 
+    $route['guardar-pedido-extraordinario'] = 'api/pedidoextraordinario/guardar_pedido_extraordinario';
+
 
    
 

@@ -448,6 +448,7 @@
 											$datos['tamProductos'] = getTamProductos();
 											$datos['listasPrecios'] = getNombresListasPrecios();
 											$datos['unidadesMedida'] = getUnidadesMedida();
+											$datos['sucursales'] = getSucursales();
 											echo $this->load->view('pedido/pedidos_extraordinarios', $datos, TRUE);
 										break;
 case 'acceso-usuarios-sistema-general':
