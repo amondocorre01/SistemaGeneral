@@ -445,10 +445,11 @@
 										break;
 										case 'pedidos-extraordinarios':
 											$datos['primeraCategoria'] = getPrimeraCategoria();
-											$datos['tamProductos'] = getTamProductos();
-											$datos['listasPrecios'] = getNombresListasPrecios();
-											$datos['unidadesMedida'] = getUnidadesMedida();
 											echo $this->load->view('pedido/pedidos_extraordinarios', $datos, TRUE);
+										break;
+										case 'lista-pedidos-extraordinarios':
+											$datos = '';
+											echo $this->load->view('pedido/lista_pedidos_extraordinarios', $datos, TRUE);
 										break;
 case 'acceso-usuarios-sistema-general':
 	
@@ -549,7 +550,6 @@ case 'existencia-prueba':
 	$sufijo = 'AE';
 
 	$data = existencia($db, $sufijo);
-
 
 	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
 break;

@@ -251,6 +251,8 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
 
 
 
+    $route['guardar-pedido-extraordinario'] = 'api/pedidoextraordinario/guardar_pedido_extraordinario';
+
 
    
 

@@ -43,10 +43,10 @@
   <nav class="row navbar navbar-expand-lg navbar-dark bg-dark">
         
         
-          <div class="col-8 col-md-10">
+          <div class="col-9 col-md-10">
             <a class="navbar-brand" href="#">Inventario</a>
           </div>
-          <div class="col-2 col-md-1 btn-group">
+          <div class="col-3 col-md-2 btn-group">
               <?php if($cabecera[0]->ESTADO == 9 ):?>
                   <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarDeclaracion()']);?>
             
