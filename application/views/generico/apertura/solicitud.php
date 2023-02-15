@@ -40,33 +40,37 @@
   </div>
 <?php endif;?>
 
+<div class="row justify-content-center">
+  <div class="col-8 col-md-2">
+    <label for="">Perfil de Pedido</label>
+      <select name="" id="lista" class="form-control">
+        <option value=""></option>
+        <?php foreach ($lista as $item): ?>
+          <option value="<?=$item->ID?>"><?=$item->TEXT?></option>
+        <?php endforeach; ?>
+      </select>
+  </div>
+
+  <div class="col-1 col-md-1 ">
+    <?=form_button('obtener', '<span style="font-size:1.5rem" class="las la-search la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding btn-hide', 'onclick'=>'getMinimos()']);?>
+  </div>
+</div>
+
+<br>
 
 
 <nav class="row navbar navbar-expand-lg navbar-dark bg-dark">
 
-      <div class="col-4 col-md-6">
+      <div class="col-9 col-md-6">
         <a class="navbar-brand" href="#">Solicitudes</a>
       </div>
       <?php if($cabecera[0]->ESTADO == 10 ):?>
-      <div class="col-1 col-md-1 ">
-        <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-padding btn-hide', 'onclick'=>'guardarSolicitud()']);?>
-      </div>
-      <div class="col-1 col-md-1 ">
-        <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding btn-hide', 'onclick'=>'enviarPedido()']);?>
+      <div class="col-3 col-md-1 btn-group">
+        <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarSolicitud()']);?>
+      
+        <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarPedido()']);?>
       </div>
 
-      <div class="col-5 col-md-2">
-              <select name="" id="lista" class="form-control">
-                <option value=""></option>
-                <?php foreach ($lista as $item): ?>
-                  <option value="<?=$item->ID?>"><?=$item->TEXT?></option>
-                <?php endforeach; ?>
-              </select>
-          </div>
-
-          <div class="col-1 col-md-1 ">
-            <?=form_button('obtener', '<span style="font-size:1.5rem" class="las la-search la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding btn-hide', 'onclick'=>'getMinimos()']);?>
-          </div>
       <?php endif;?>
 
       

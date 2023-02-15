@@ -550,7 +550,6 @@ case 'existencia-prueba':
 
 	$data = existencia($db, $sufijo);
 
-
 	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
 break;
 
