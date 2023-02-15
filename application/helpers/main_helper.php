@@ -745,6 +745,15 @@ if(!function_exists('getSucursales')) {
 	}
 }
 
+if(!function_exists('getSucursalesUsuario')) {
+	function getSucursalesUsuario($id_usuario){
+    	$CI =& get_instance();
+		$sql="select * from ID_UBICACION iu WHERE iu.ESTADO=1 AND iu.ID_UBICACION IN (select distinct(ID_UBICACION) from VENTAS_PERMISO_SUCURSAL vps where vps.ESTADO=1 and vps.ID_USUARIO ='$id_usuario')";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta;
+	}
+}
+
 if(!function_exists('getInventariosSubcategoria2')) {
 	function getInventariosSubcategoria2(){
 		$CI =& get_instance();
@@ -829,12 +838,47 @@ if(!function_exists('buscarCantidadSubcategoria2')) {
 }
 
 if(!function_exists('guardarPedidoExtraordinario')) {
-	function guardarPedidoExtraordinario($bd, $sufijo_sucursal, $categoria_1, $categoria_2, $producto_madre, $modificado, $detalle, $id_usuario, $fecha_registro) {
+	function guardarPedidoExtraordinario($bd, $sufijo_sucursal, $categoria_1, $categoria_2, $producto_madre, $modificado, $detalle, $id_usuario, $fecha_registro, $fecha_pedido) {
+		//var_dump($fecha_pedido);
 		$CI =& get_instance();
 		$DB2 = $CI->load->database($bd, TRUE);
-		$sql = "insert into PEDIDO_EXTRAORDINARIO".$sufijo_sucursal."(CATEGORIA_1, CATEGORIA_2,PRODUCTO_MADRE,MODIFICADO,DETALLE,ESTADO,USUARIO,FECHA_REGISTRO)values('$categoria_1','$categoria_2','$producto_madre','$modificado','$detalle','1','$id_usuario','$fecha_registro') ;";
+		$sql = "insert into PEDIDO_EXTRAORDINARIO".$sufijo_sucursal."(CATEGORIA_1, CATEGORIA_2,PRODUCTO_MADRE,MODIFICADO,DETALLE,ESTADO,USUARIO,FECHA_REGISTRO, FECHA_PEDIDO)values('$categoria_1','$categoria_2','$producto_madre','$modificado','$detalle','1','$id_usuario','$fecha_registro','$fecha_pedido') ;";
 		$respuesta = $DB2->query($sql);
 		return true;
+	}
+}
+
+if(!function_exists('getPedidosExtraordinarios')) {
+	function getPedidosExtraordinarios($bd, $sufijo_sucursal, $fecha_pedido) {
+		$CI =& get_instance();
+		$DB2 = $CI->load->database($bd, TRUE);
+		$sql = "select * from PEDIDO_EXTRAORDINARIO".$sufijo_sucursal." where FECHA_PEDIDO = '$fecha_pedido';";
+		$respuesta = $DB2->query($sql);
+		return $respuesta->result();
+	}
+}
+if(!function_exists('getNombreCategoria1')) {
+	function getNombreCategoria1($id){
+		$CI =& get_instance();
+		$sql="select * from VENTAS_CATEGORIA_1 where ID_CATEGORIA='$id';";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta[0];
+	}
+}
+if(!function_exists('getNombreCategoria2')) {
+	function getNombreCategoria2($id){
+		$CI =& get_instance();
+		$sql="select * from VENTAS_CATEGORIA_2 where ID_CATEGORIA_2='$id';";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta[0];
+	}
+}
+if(!function_exists('getNombreProducto')) {
+	function getNombreProducto($id){
+		$CI =& get_instance();
+		$sql="select * from VENTAS_PRODUCTO_MADRE where ID_PRODUCTO_MADRE='$id';";
+		$respuesta = $CI->main->getQuery($sql);
+		return $respuesta[0];
 	}
 }
 

@@ -445,11 +445,11 @@
 										break;
 										case 'pedidos-extraordinarios':
 											$datos['primeraCategoria'] = getPrimeraCategoria();
-											$datos['tamProductos'] = getTamProductos();
-											$datos['listasPrecios'] = getNombresListasPrecios();
-											$datos['unidadesMedida'] = getUnidadesMedida();
-											$datos['sucursales'] = getSucursales();
 											echo $this->load->view('pedido/pedidos_extraordinarios', $datos, TRUE);
+										break;
+										case 'lista-pedidos-extraordinarios':
+											$datos = '';
+											echo $this->load->view('pedido/lista_pedidos_extraordinarios', $datos, TRUE);
 										break;
 case 'acceso-usuarios-sistema-general':
 	
