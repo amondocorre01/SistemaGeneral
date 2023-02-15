@@ -520,7 +520,7 @@ break;
 
 case 'recepcion-prueba':
 
-	$db = 'ventas';
+	$db = 'aeste';
 	$sufijo = 'AE';
 	$sucursal = 2;
 
@@ -533,7 +533,7 @@ break;
 
 case 'solicitud-prueba':
 
-	$db = 'ventas';
+	$db = 'aeste';
 	$sufijo = 'AE';
 	$sucursal = 2;
 
@@ -546,7 +546,7 @@ break;
 
 case 'existencia-prueba':
 
-	$db = 'ventas';
+	$db = 'aeste';
 	$sufijo = 'AE';
 
 	$data = existencia($db, $sufijo);
@@ -556,7 +556,7 @@ break;
 
 
 case 'entrega-prueba':
-	$db = 'ventas';
+	$db = 'aeste';
 	$sufijo = 'AE';
 
 	$data = entrega($db, $sufijo);
@@ -566,7 +566,7 @@ break;
 
 case 'apv-prueba':
 
-	$db = 'ventas';
+	$db = 'aeste';
 	$sufijo = 'AE';
 
 	$data['existencia'] =  $this->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
@@ -623,7 +623,7 @@ case 'cambiar-pasword':
 break;
 
 										case 'reimpresion-cine-center':
-											$datos['db'] = 'ventas'; 
+											$datos['db'] = 'aeste'; 
 											$datos['sucursal'] = 'Pruebas';
 										 echo $this->load->view('generico/apertura/reimpresion', $datos, TRUE);
 										break;

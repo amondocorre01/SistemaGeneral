@@ -78,7 +78,7 @@ $db['default'] = array(
 	'hostname' => 'capressobd.database.windows.net',
 	'username' => 'capresso',
 	'password' => 'Qwerty123!%',
-	'database' => 'BDCapresso',
+	'database' => 'BdCapresso',   //BDCapresso
 	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -166,7 +166,7 @@ $db['aeste'] = array(
 	'hostname' => 'capressobd.database.windows.net',
 	'username' => 'capresso',
 	'password' => 'Qwerty123!%',
-	'database' => 'BdVentasSucursalAmericaE',
+	'database' => 'BdVentas',   //BdVentasSucursalAmericaE
 	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -270,7 +270,7 @@ $db['jordan'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-
+/*
 $db['ventas'] = array(
 	'dsn'	=> '',
 	'hostname' => 'capressobd.database.windows.net',
@@ -292,3 +292,4 @@ $db['ventas'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+*/
