@@ -3,6 +3,9 @@ $protocolo = protocoloWeb();
 $host= $_SERVER["HTTP_HOST"];
 $url= $_SERVER["REQUEST_URI"];
 $current_url = $protocolo.$host.$url;
+
+$id_usuario = $this->session->id_usuario;
+$sucursales = getSucursalesUsuario($id_usuario);
 ?>
 <!-- Select2 -->
 <link rel="stylesheet" href="<?=base_url('assets/plugins/select2/css/select2.min.css')?>">
@@ -13,7 +16,6 @@ $current_url = $protocolo.$host.$url;
   <link rel="stylesheet" href="<?=base_url('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')?>">
 <?php
     $_SESSION['form-validate']='1';
-    $this->session->set_userdata('datatable', 'true');
     $id_menu = intval($this->input->get('vc'));
     $id_usuario = $this->session->id_usuario;
 ?>
@@ -83,6 +85,10 @@ $current_url = $protocolo.$host.$url;
                     <option value="" selected="selected">Seleccione el producto</option>
                   </select>
                 </div>
+            </div>
+            <div class="col-offset-1 col-md-3">
+                <label for="">Seleccione Fecha de entrega</label>
+                <input class="form-control" type="date" id="fecha_pedido" name="fecha_pedido" min="<?=date('Y-m-d')?>" >
             </div>
             <!--<div class="col-md-3">
             <input  name="vc" type="hidden" id="fecha" value="<?=$this->input->get('vc')?>">
@@ -391,6 +397,7 @@ $(document).ready(function(){
       var productoCategoria2 = $('#productoCategoria2').val();
       var productoMadre = $('#productoMadre').val();
       var detalleProducto = $('#detalleProducto').val();
+      var fecha_pedido = $('#fecha_pedido').val();
       var modificaraProducto = $('input[type=radio][name=modificaraProducto]:checked').val();
       $('.loading').show();
       var datos = new FormData();
@@ -400,6 +407,7 @@ $(document).ready(function(){
       datos.append("producto_madre",productoMadre);
       datos.append("detalle_producto",detalleProducto);
       datos.append("modificara_producto",modificaraProducto);
+      datos.append("fecha_pedido",fecha_pedido);
       $.ajax({
           method:'POST',
           url:'<?=site_url("guardar-pedido-extraordinario")?>',
@@ -558,6 +566,9 @@ $(document).ready(function(){
         detalle:{
           required: true
         },
+        fecha_pedido:{
+          required: true
+        }
       },
       messages: {
         codigo_sucursal: {
@@ -574,6 +585,9 @@ $(document).ready(function(){
         },
         detalle:{
           required: "Detalle es requerido",
+        },
+        fecha_pedido:{
+          required: "Seleccione fecha de entrega",
         }
       },
       errorElement: 'span',
