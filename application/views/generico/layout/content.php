@@ -445,12 +445,6 @@
 										break;
 										case 'pedidos-extraordinarios':
 											$datos['primeraCategoria'] = getPrimeraCategoria();
-<<<<<<< HEAD
-											$datos['tamProductos'] = getTamProductos();
-											$datos['listasPrecios'] = getNombresListasPrecios();
-											$datos['unidadesMedida'] = getUnidadesMedida();
-=======
->>>>>>> 051ffc70f6f1b64d11301e0690009dea81d61429
 											echo $this->load->view('pedido/pedidos_extraordinarios', $datos, TRUE);
 										break;
 										case 'lista-pedidos-extraordinarios':
