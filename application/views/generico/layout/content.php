@@ -554,6 +554,16 @@ case 'existencia-prueba':
 	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
 break;
 
+
+case 'entrega-prueba':
+	$db = 'ventas';
+	$sufijo = 'AE';
+
+	$data = entrega($db, $sufijo);
+
+	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
+break;
+
 case 'apv-prueba':
 
 	$db = 'ventas';

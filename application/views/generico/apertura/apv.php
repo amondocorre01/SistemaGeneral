@@ -46,13 +46,13 @@
 
 <nav class="row navbar navbar-expand-lg navbar-dark bg-dark">
 
-      <div class="col-4 col-md-10">
+      <div class="col-9 col-md-10">
         <a class="navbar-brand" href="#">Preparacion</a>
       </div>
       <?php if($cabecera[0]->ESTADO == 11 ):?>
         <div class="col-3 col-md-1 btn-group">
-            <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-padding btn-hide', 'onclick'=>'guardarPreparacion()']);?>
-            <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding btn-hide', 'onclick'=>'enviarPreparacion()']);?>
+            <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarPreparacion()']);?>
+            <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarPreparacion()']);?>
         </div>
       <?php endif;?>
 
