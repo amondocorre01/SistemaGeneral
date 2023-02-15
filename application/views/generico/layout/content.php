@@ -551,7 +551,6 @@ case 'existencia-prueba':
 
 	$data = existencia($db, $sufijo);
 
-
 	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
 break;
 
@@ -574,7 +573,7 @@ case 'apv-prueba':
 	$sql_date = "SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_SOLICITUD = (SELECT MAX(FECHA_SOLICITUD) FROM CABECERA_PEDIDO_".$sufijo.") ";   // QUITAR UN DIA
 	$fecha = $DB2->query($sql_date)->result();
 
-	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO CONTEO, OBSERVACION, CANTIDAD_ENVIADA, TURNO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->FECHA."'";
+	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_CONTEO, OBSERVACION, CANTIDAD_ENVIADA, TURNO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->FECHA."'";
 	$registro = $DB2->query($sql)->result();
 
 	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
