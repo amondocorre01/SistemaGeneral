@@ -448,7 +448,6 @@
 											$datos['tamProductos'] = getTamProductos();
 											$datos['listasPrecios'] = getNombresListasPrecios();
 											$datos['unidadesMedida'] = getUnidadesMedida();
-											$datos['sucursales'] = getSucursales();
 											echo $this->load->view('pedido/pedidos_extraordinarios', $datos, TRUE);
 										break;
 case 'acceso-usuarios-sistema-general':
@@ -554,6 +553,16 @@ case 'existencia-prueba':
 	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
 break;
 
+
+case 'entrega-prueba':
+	$db = 'ventas';
+	$sufijo = 'AE';
+
+	$data = entrega($db, $sufijo);
+
+	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
+break;
+
 case 'apv-prueba':
 
 	$db = 'ventas';
@@ -576,7 +585,7 @@ case 'apv-prueba':
 	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_CONTEO, OBSERVACION, CANTIDAD_ENVIADA, TURNO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->FECHA."'";
 	$registro = $DB2->query($sql)->result();
 
-	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
+	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->FECHA."'";
 	$cabecera = $DB2->query($sql2)->result();
 
 

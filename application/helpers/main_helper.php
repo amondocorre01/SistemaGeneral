@@ -874,6 +874,50 @@ if(!function_exists('recepcion')){
 		return $data;
 
 	}
+}
+
+if(!function_exists('entrega')){
+
+	function entrega($db, $sufijo) {
+		$CI =& get_instance();
+
+		$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
+	
+		$DB2 = $CI->load->database($db, TRUE);
+
+		$sql5 = "SELECT CAST((SELECT MAX(FECHA_RECEPCION) FROM CABECERA_PEDIDO_".$sufijo.") AS Date) AS DIA;";
+		$fecha = $DB2->query($sql5)->result();
+
+	
+		$sql = "SELECT ID_INVENTARIOS_DECLARACION, NOMBRE_PRODUCTO, CANTIDAD_ENVIADA, CANTIDAD_ACEPTADA, CANTIDAD_ENTREGADA, CANTIDAD_DEVUELTA, ID_SUBCATEGORIA_2 FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+	
+		$registro = $DB2->query($sql)->result();
+
+
+		$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
+		$cabecera = $DB2->query($sql2)->result();
+
+
+		$array = [];  $entregada = []; $devuelta = []; $aceptada=[];
+
+		foreach ($registro as $value) {
+			$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENVIADA;
+			$aceptada[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ACEPTADA;
+			$entregada[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENTREGADA;
+			$devuelta[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_DEVUELTA;
+		}
+
+	 	$data['registro'] = $array;
+		$data['aceptada'] = $aceptada;
+		$data['entregada'] = $entregada;
+		$data['devuelta'] = $devuelta;
+	 	$data['db'] = $db;
+	 	$data['sufijo'] = $sufijo;
+	 	$data['cabecera'] = $cabecera; 
+
+		return $data;
+
+	}
 
 }
 
