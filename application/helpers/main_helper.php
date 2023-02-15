@@ -828,7 +828,7 @@ if(!function_exists('buscarCantidadSubcategoria2')) {
 		while ($i < count($pedidoSucursal) && $encontrado ==false) {
 		$sub = $pedidoSucursal[$i]->ID_SUBCATEGORIA_2;
 		if($sub == $subcategoria){
-			$cant = $pedidoSucursal[$i]->CANTIDAD;
+			$cant = $pedidoSucursal[$i]->CANTIDAD_SOLICITADA;
 			$encontrado = true;
 		}
 		$i++;
