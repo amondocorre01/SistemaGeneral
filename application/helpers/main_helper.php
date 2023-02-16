@@ -967,9 +967,9 @@ if(!function_exists('entrega')){
 
 
 if(!function_exists('preparacion')) {
-	function preparacion() {
+	function preparacion($db, $sufijo) {
 
-		$CI =& get_instance($db, $sufijo);
+		$CI =& get_instance();
 
 		$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 	$DB2 = $CI->load->database($db, TRUE);
