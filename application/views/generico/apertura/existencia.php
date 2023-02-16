@@ -142,10 +142,10 @@
     function guardarDeclaracion(){
 
       var collection = $('#serializeExample form').serialize();
-
+      $('.loading').show();
       $.post("<?=site_url('guardar-declaracion')?>", collection)
                 .done(function( data ) {
-
+                  $('.loading').hide();
                   dato = JSON.parse(data);
                
                   if(dato.status == true) {
@@ -184,12 +184,12 @@
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-
+          $('.loading').show();
           var fecha = '<?=date('Y-m-d')?>'
 
           $.post("<?=site_url('enviar-declaracion')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
                 .done(function( data ) {
-
+                  $('.loading').hide();
                   Swal.fire('Envio Exitoso!', '', 'success');
 
                   $('.btn-hide').hide();

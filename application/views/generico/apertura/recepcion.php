@@ -112,7 +112,7 @@
                         <tr>
                             <td width="20%"><?=$p->SUB_CATEGORIA_2?></td>
                             <td width="15%">
-                              <?=$p->MEDIDA_ESTANDARIZACION?>                          
+                              <?=$p->MEDIDA_ADECUACIÓN?>                          
                             </td>
                             <td width="15%" id="r_<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
                               <?=$registro[$p->ID_SUB_CATEGORIA_2]?>                      
@@ -173,10 +173,10 @@
     function guardarRecepcion(){
 
       var collection = $('#serializeExample form').serialize();
-
+      $('.loading').show();
       $.post("<?=site_url('guardar-recepcion')?>", collection)
                 .done(function( data ) {
-
+                  $('.loading').hide();
                   dato = JSON.parse(data);
                
                   if(dato.status == true) {
@@ -215,10 +215,10 @@
         if (result.isConfirmed) {
 
           var fecha = '<?=date('Y-m-d')?>'
-
+          $('.loading').show();
           $.post("<?=site_url('enviar-recepcion')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
                 .done(function( data ) {
-
+                  $('.loading').hide();
                   Swal.fire('Envio Exitoso!', '', 'success');
 
                   $('.btn-hide').hide();
