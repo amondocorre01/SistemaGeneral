@@ -88,7 +88,7 @@
 
             <div class="accordion" id="accordionExample">
           <?php foreach ($subcategoria as $sub) : ?>
-
+            <?php $count2 = 0 ?>
             <?php if(isset($sub->PRODUCTOS)):?>
           <div class="card" style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.6 )">
           <div class="card-header" id="heading_sc_<?=$sub->ID_SUB_CATEGORIA_1?>">
@@ -112,6 +112,7 @@
                       <?php foreach ($sub->PRODUCTOS as $p): ?>
                         <?php if($registro[$p->ID_SUB_CATEGORIA_2] > 0):?> 
                           <?php $count = $count + 1?>
+                          <?php $count2 = $count2 + 1?>
                         <tr>
                             <td width="30%"><?=$p->SUB_CATEGORIA_2?></td>
                             <td width="15%">
@@ -139,6 +140,15 @@
                         </tr>
                         <?php endif; ?>
                       <?php endforeach; ?>
+                      <script>
+                        var cantidad2 = '<?=$count2?>';
+                        var subcategoria = '<?=$sub->ID_SUB_CATEGORIA_1?>';
+                          if(cantidad2 == 0) {
+                            
+                            $('#subcat_'+subcategoria).attr("hidden", true);
+
+                          }
+                      </script>
                 </table>
             </div>
             </div>
@@ -178,10 +188,11 @@
     function guardarPreparacion(){
 
       var collection = $('#serializeExample form').serialize();
+      $('.loading').show();
 
       $.post("<?=site_url('guardar-preparacion')?>", collection)
                 .done(function( data ) {
-
+                  $('.loading').hide();
                   dato = JSON.parse(data);
                
                   if(dato.status == true) {
@@ -202,9 +213,6 @@
                         timer: 4500
                     });
                   }
-                  
-
-          
                 });
     }
 
@@ -221,11 +229,11 @@
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
 
-
+          $('.loading').show();
           $.post("<?=site_url('enviar-preparacion')?>", {db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
                 .done(function( data ) {
                   dato = JSON.parse(data);
-
+                  $('.loading').hide();
                   if(dato.status == true){
                     Swal.fire('Envio Exitoso!', '', 'success');
 

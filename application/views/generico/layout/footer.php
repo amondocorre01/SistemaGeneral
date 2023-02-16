@@ -135,7 +135,7 @@
 
  const testSuperior= document.getElementById("menunav_"+superior);
 
- testSuperior.style.color = "white";
+ testSuperior.style.color = "#FFFFFF";
 
  //$( testSuperior ).parent().css( "background-color", "#dc3545" );
 

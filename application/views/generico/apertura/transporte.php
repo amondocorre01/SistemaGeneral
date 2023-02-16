@@ -101,6 +101,7 @@
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Unidad Medida</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Cantidad Enviada</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Cantidad Aceptada</th>
+                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Cantidad Entregada</th>
 					  <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Cantidad Regresada</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Observacion</th>
                       
@@ -110,17 +111,21 @@
                           <?php $count2 = $count2 + 1?>
                         <tr>
                             <td width="20%"><?=$p->SUB_CATEGORIA_2?></td>
-                            <td width="15%">
-                              <?=$p->MEDIDA_ESTANDARIZACION?>                          
+                            <td width="10%">
+                              <?=$p->MEDIDA_ADECUACIÓN?>                          
                             </td>
-                            <td width="15%" id="r_<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
+                            <td width="10%" id="r_<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
                               <?=$registro[$p->ID_SUB_CATEGORIA_2]?>                      
                             </td>
-							<td width="15%" id="r_<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
+							<td width="10%" id="r_<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
                               <?=$aceptada[$p->ID_SUB_CATEGORIA_2]?>                      
                             </td>
-                            <td width="20%">
-                              <input onblur="checkCantidad(<?=$registro[$p->ID_SUB_CATEGORIA_2]?>,<?=$p->ID_SUB_CATEGORIA_2?>)" id="pro_<?=$p->ID_SUB_CATEGORIA_2?>"  name="<?=$p->ID_SUB_CATEGORIA_2?>[cantidad]" class="form-control enviado" type="number" min="0" max="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>" <?=($cabecera[0]->ESTADO > 13)?'readonly="readonly"':''?> step="1" value="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
+                            <td width="15%" id="e_<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
+                            <input name="<?=$p->ID_SUB_CATEGORIA_2?>[entregada]" class="form-control enviado" type="number" <?=($cabecera[0]->ESTADO > 13)?'readonly="readonly"':''?> value="<?=$entregada[$p->ID_SUB_CATEGORIA_2]?>">
+                                                    
+                            </td>
+                            <td width="15%">
+                              <input onblur="checkCantidad(<?=$entregada[$p->ID_SUB_CATEGORIA_2]?>,<?=$p->ID_SUB_CATEGORIA_2?>)" id="pro_<?=$p->ID_SUB_CATEGORIA_2?>"  name="<?=$p->ID_SUB_CATEGORIA_2?>[regresada]" class="form-control enviado" type="number" min="0" max="<?=$entregada[$p->ID_SUB_CATEGORIA_2]?>" <?=($cabecera[0]->ESTADO > 13)?'readonly="readonly"':''?> step="1" value="<?=$devuelta[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
                             <td width="20%">
                               <input name="<?=$p->ID_SUB_CATEGORIA_2?>[observacion]" class="form-control enviado" type="text" <?=($cabecera[0]->ESTADO > 13)?'readonly="readonly"':''?> value="">
@@ -131,7 +136,7 @@
                       <script>
                         var cantidad2 = '<?=$count2?>';
                         var subcategoria = '<?=$sub->ID_SUB_CATEGORIA_1?>';
-                          console.log(subcategoria);
+                          
                           if(cantidad2 == 0) {
                             
                             $('#subcat_'+subcategoria).attr("hidden", true);
@@ -170,20 +175,20 @@
 <script>
 
 
-    function guardarRecepcion(){
+    function guardarEntrega(){
 
       var collection = $('#serializeExample form').serialize();
-
-      $.post("<?=site_url('guardar-recepcion')?>", collection)
+      $('.loading').show();
+      $.post("<?=site_url('guardar-entrega')?>", collection)
                 .done(function( data ) {
-
+                  $('.loading').hide();
                   dato = JSON.parse(data);
                
                   if(dato.status == true) {
 
                     Swal.fire({
                         icon: 'success',
-                        title: "Se ha guardado la recepcion de productos",
+                        title: "Se ha guardado la entrega de productos",
                         timer: 4500
                     });
 
@@ -202,7 +207,7 @@
     }
 
 
-    function enviarRecepcion()
+    function enviarEntrega()
     {
       Swal.fire({
         title: 'Deseas enviar todos los cambios?',
@@ -215,10 +220,10 @@
         if (result.isConfirmed) {
 
           var fecha = '<?=date('Y-m-d')?>'
-
-          $.post("<?=site_url('enviar-recepcion')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
+          $('.loading').show();
+          $.post("<?=site_url('enviar-entrega')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
                 .done(function( data ) {
-
+                  $('.loading').hide();
                   Swal.fire('Envio Exitoso!', '', 'success');
 
                   $('.btn-hide').hide();

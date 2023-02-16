@@ -121,9 +121,10 @@
             <div class="card-body" style="background-color:white">
                 <table class="table-classic" id="table_<?=$sub->ID_SUB_CATEGORIA_1?>">
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Producto</th>
-                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Unidad Medida</th>
+                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Unidad Conteo</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Stock</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Stock Minimo</th>
+                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Medida Solicitud</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Solicitud</th>
                       <?php foreach ($sub->PRODUCTOS as $p): ?>
                         <tr>
@@ -137,6 +138,10 @@
 
                             <td class="reset_stock" width="15%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
                               0
+                            </td>
+
+                            <td class="reset_stock" width="15%">
+                              <?=(isset($p->MEDIDA_ADECUACIÓN))?$p->MEDIDA_ADECUACIÓN: ''?>
                             </td>
 
                             <td width="15%">    
@@ -176,9 +181,13 @@
     function guardarSolicitud(){
 
       var collection = $('#serializeExample form').serialize();
+      $('.loading').show();
+
 
       $.post("<?=site_url('guardar-solicitud')?>", collection)
                 .done(function( data ) {
+                  $('.loading').hide();
+
 
                   dato = JSON.parse(data);
                
@@ -221,9 +230,12 @@
 
           
           var fecha = '<?=$this->session->fecha_conteo?>';
+          $('.loading').show();
 
           $.post("<?=site_url('enviar-pedido')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
                 .done(function( data ) {
+                  $('.loading').hide();
+
                   dato = JSON.parse(data);
 
                   if(dato.status == true){

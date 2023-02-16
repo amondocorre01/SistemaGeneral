@@ -34,8 +34,9 @@
 <?php if($registro): ?>
   <?php if($cabecera[0]->ESTADO > 9 ):?>
     <div class="row ">
-      <div class="col-md-12 text-center">
-        <?=img(['src'=>'assets/dist/img/close2.png', 'width' => '15%'])?>
+      <div class="col-2 btn-group">
+          <?=form_button('cerrar', '<span class="las la-lock la-4x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'cerrarTodo()']);?>
+          <?=form_button('abrir', '<span class="las la-key la-4x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'abrirTodo()']);?>
       </div>
     </div>
   <?php endif;?>
@@ -111,7 +112,7 @@
                               <small><?=$p->NOTA?></small>
                             </td>
                             <td width="20%">
-                              <input name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control enviado" type="number" min="0" <?=($cabecera[0]->ESTADO > 9)?'readonly="readonly"':''?> step="1" value="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
+                              <input name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control enviado" type="number" min="0" <?=($cabecera[0]->ESTADO > 9)?'readonly':''?> step="1" value="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
                         </tr>
                       <?php endforeach; ?>
@@ -142,10 +143,10 @@
     function guardarDeclaracion(){
 
       var collection = $('#serializeExample form').serialize();
-
+      $('.loading').show();
       $.post("<?=site_url('guardar-declaracion')?>", collection)
                 .done(function( data ) {
-
+                  $('.loading').hide();
                   dato = JSON.parse(data);
                
                   if(dato.status == true) {
@@ -184,12 +185,12 @@
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-
+          $('.loading').show();
           var fecha = '<?=date('Y-m-d')?>'
 
           $.post("<?=site_url('enviar-declaracion')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
                 .done(function( data ) {
-
+                  $('.loading').hide();
                   Swal.fire('Envio Exitoso!', '', 'success');
 
                   $('.btn-hide').hide();
@@ -204,4 +205,76 @@
         }
       })
     }
+
+    function abrirTodo() {
+
+      Swal.fire({
+        title: 'Deseas abrir el formulario?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        denyButtonText: 'No',
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          $('.loading').show();
+          var fecha = '<?=date('Y-m-d')?>'
+
+          $.post("<?=site_url('abrir-declaracion')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
+                .done(function( data ) {
+                  $('.loading').hide();
+                  dato = JSON.parse(data);
+
+                  if(dato.status == true) {
+                    Swal.fire('El formulario fue abierto', '', 'success');
+                    $('.enviado').attr('readonly',false);
+                  }
+                  else {
+                    Swal.fire('No se cumplieron las condiciones para abrir el formuario', '', 'info');
+                  }
+                });
+
+          
+        } else if (result.isDenied) {
+          Swal.fire('No se ha enviado aun', '', 'info')
+        }
+      })
+    }
+
+
+    function cerrarTodo() {
+
+    Swal.fire({
+      title: 'Deseas cerrar y guardar el formulario?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: 'No',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        $('.loading').show();
+        var fecha = '<?=date('Y-m-d')?>'
+
+        $.post("<?=site_url('abrir-declaracion')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
+              .done(function( data ) {
+                $('.loading').hide();
+                dato = JSON.parse(data);
+
+                if(dato.status == true) {
+                  guardarDeclaracion();
+                  Swal.fire('El formulario fue guardado y cerrado', '', 'success');
+                  $('.enviado').attr('readonly',true);
+                }
+                else {
+                  Swal.fire('No se cumplieron las condiciones para cerrar y guardar el formuario', '', 'info');
+                }
+              });
+
+        
+      } else if (result.isDenied) {
+        Swal.fire('No se ha enviado aun', '', 'info')
+      }
+    })
+  }
 </script>

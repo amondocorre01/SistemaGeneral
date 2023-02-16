@@ -375,7 +375,107 @@ class Pedido extends CI_Controller {
     }
 
 
+
+    public function guardar_entrega() 
+    {
+
+        $response['status'] = false;
+        $db = $this->input->post('db');
+        $sufijo = $this->input->post('sufijo');
+
+        $DB2 = $this->load->database($db, TRUE);
+        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD, CANTIDAD_ACEPTADA, OBSERVACION3, CANTIDAD_ENTREGADA, CANTIDAD_DEVUELTA FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO = (SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_RECEPCION = (SELECT MAX(FECHA_RECEPCION) FROM CABECERA_PEDIDO_".$sufijo."))";
+        $registro = $DB2->query($sql)->result();
+
+
+        $sql6 = "SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_RECEPCION = (SELECT MAX(FECHA_RECEPCION) FROM CABECERA_PEDIDO_".$sufijo.")";
+        $fecha = $DB2->query($sql6)->result();
+
+
+        $array1 = []; $observacion = []; $regresada = [];
+
+        foreach ($registro as $value) {
+            $array1[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENTREGADA;
+            $regresada[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_DEVUELTA;
+            $observacion[$value->ID_SUBCATEGORIA_2] = ($value->OBSERVACION3)?$value->OBSERVACION3:'NINGUNA';
+        }
+
+        $array2 = $this->input->post();
+        $cont = 0;
+
+        foreach ($array2 as $key => $value2) {
+            
+            if($key != 'db' AND $key != 'sufijo' AND $key != 'fecha') {
+
+                if($value2['entregada'] != $array1[$key] OR $value2['regresada'] != $regresada[$key] OR $value2['observacion'] != $observacion[$key]) { 
+
+                    $value2['observacion'] = ($value2['observacion']) ? $value2['observacion'] : 'NINGUNA';
+
+                    
+
+                        $sql2 = "EXECUTE ".$sufijo."_SET_ITEM_ENTREGA ".$value2['entregada'].",".$value2['regresada'].",'".$fecha[0]->FECHA."','".$value2['observacion']."',".$key;
+
+                        $DB2->query($sql2)->result();
+
+                    $response['status'] = true;
+                }   
+            } 
+        }
+
+        echo json_encode($response);
+    }
+
+
+    public function enviar_entrega() {
+
+        $response['status'] = false;
+
+        $db = $this->input->post('db');
+        $sufijo = $this->input->post('sufijo');
+
+        $DB2 = $this->load->database($db, TRUE);
+
+        $sql6 = "SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_RECEPCION = (SELECT MAX(FECHA_RECEPCION) FROM CABECERA_PEDIDO_".$sufijo.")";
+        $fecha = $DB2->query($sql6)->result();
+        
+
+        $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 14 WHERE FECHA_CONTEO ='".$fecha[0]->FECHA."'";
+
+        $sql3 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 14, FECHA_ENTREGA = (SELECT DATEADD(HH, -4, GETDATE())) WHERE FECHA_RECEPCION = (SELECT MAX(FECHA_RECEPCION) FROM CABECERA_PEDIDO_".$sufijo.")";
+        $DB2->query($sql3);
+
+        $registro = $DB2->query($sql);
+
+        
+            $response['status'] = true;
+
+        echo json_encode($response);
+    }
+
+    public function abrir_declaracion() 
+    {
+        $response['status'] = false;
+        $usuario = $this->session->id_usuario;
+        $sufijo = $this->input->post('sufijo');
+        $fecha = $this->input->post('fecha');
+        $db = $this->input->post('db');
+
+        $DB2 = $this->load->database($db, TRUE);
+
+        $sql = "SELECT COUNT(*) AS PERMISO FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_SOLICITUD IS NULL AND FECHA_PREPARACION IS NULL AND FECHA_RECEPCION IS NULL AND FECHA_ENTREGA IS NULL AND USUARIO_CONTEO = ? AND FECHA = ? ";
+
+        $registro = $DB2->query($sql, [$usuario, $fecha])->result();
+
+        if($registro[0]->PERMISO > 0) {
+            $response['status'] = true;
+        }
+
+        echo json_encode($response);
+    }
+
 }
+
+
 
 
     
