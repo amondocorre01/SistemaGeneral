@@ -452,8 +452,30 @@ class Pedido extends CI_Controller {
         echo json_encode($response);
     }
 
+    public function abrir_declaracion() 
+    {
+        $response['status'] = false;
+        $usuario = $this->session->id_usuario;
+        $sufijo = $this->input->post('sufijo');
+        $fecha = $this->input->post('fecha');
+        $db = $this->input->post('db');
+
+        $DB2 = $this->load->database($db, TRUE);
+
+        $sql = "SELECT COUNT(*) AS PERMISO FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_SOLICITUD IS NULL AND FECHA_PREPARACION IS NULL AND FECHA_RECEPCION IS NULL AND FECHA_ENTREGA IS NULL AND USUARIO_CONTEO = ? AND FECHA = ? ";
+
+        $registro = $DB2->query($sql, [$usuario, $fecha])->result();
+
+        if($registro[0]->PERMISO > 0) {
+            $response['status'] = true;
+        }
+
+        echo json_encode($response);
+    }
 
 }
+
+
 
 
     
