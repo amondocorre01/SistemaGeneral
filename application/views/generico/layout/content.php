@@ -582,7 +582,7 @@ case 'cambiar-pasword':
 break;
 
 										case 'reimpresion-cine-center':
-											$datos['db'] = 'ventas'; 
+											$datos['db'] = 'aeste'; 
 											$datos['sucursal'] = 'Pruebas';
 										 echo $this->load->view('generico/apertura/reimpresion', $datos, TRUE);
 										break;
