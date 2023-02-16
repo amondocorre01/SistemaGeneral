@@ -444,11 +444,11 @@
 											echo $this->load->view('pedido/pedidos_consolidados', $datos, TRUE);
 										break;
 										case 'pedidos-extraordinarios':
-											$datos['primeraCategoria'] = getPrimeraCategoria();
+											$datos['primeraCategoria'] = getPrimeraCategoriaInventarios();
 											echo $this->load->view('pedido/pedidos_extraordinarios', $datos, TRUE);
 										break;
 										case 'lista-pedidos-extraordinarios':
-											$datos = '';
+											$datos['primeraCategoria'] = getPrimeraCategoriaInventarios();
 											echo $this->load->view('pedido/lista_pedidos_extraordinarios', $datos, TRUE);
 										break;
 case 'acceso-usuarios-sistema-general':

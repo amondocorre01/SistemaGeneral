@@ -27,15 +27,7 @@ $sucursales = getSucursalesUsuario($id_usuario);
             <h3 class="card-title">Pedidos Extraordinarios </h3>
         </div>
         
-        <div class="card-body">
-        
-        
-        </div>
-        </div>
-    </div>
-</div>
-
-<div class="card">
+        <div class="card">
   <div class="card-body">
     <form id="form-product-new-update" enctype="multipart/form-data">
     <div class="row">
@@ -131,6 +123,11 @@ $sucursales = getSucursalesUsuario($id_usuario);
     </form>
   </div>
 </div>
+        </div>
+    </div>
+</div>
+
+
 
 <div class="modal fade" id="modalAgregarPrimeraCategoria">
   <div class="modal-dialog">
@@ -466,7 +463,7 @@ $(document).ready(function(){
         if(primera_categoria_id){
             $.ajax({
                 method:'POST',
-                url:'<?=site_url("productos-segunda-categoria")?>',
+                url:'<?=site_url("productos-primera-subcategoria-inventario")?>',
                 data: datos,
                 cache: false,
                 contentType: false,
@@ -512,7 +509,7 @@ $(document).ready(function(){
         if(segunda_categoria_id){
             $.ajax({
                 method:'POST',
-                url:'<?=site_url("productos-madre")?>',
+                url:'<?=site_url("productos-segunda-subcategoria-inventario")?>',
                 data: datos,
                 cache: false,
                 contentType: false,

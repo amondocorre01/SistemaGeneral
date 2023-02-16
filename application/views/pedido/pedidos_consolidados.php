@@ -93,7 +93,7 @@ foreach ($sucursales as $key => $sucursal) {
                               $col = $col.'<td>'.$total_suc.'</td>';
                               $sum = $sum+$total_suc;
                             }
-                            echo '<tr>
+                            $columna = '<tr>
                             <td>'.$producto->CATEGORIA.'</td>
                             <td>'.$producto->SUB_CATEGORIA_1.'</td>
                             <td>'.$producto->SUB_CATEGORIA_2.'</td>
@@ -101,6 +101,9 @@ foreach ($sucursales as $key => $sucursal) {
                             '.$col.'
                             <td>'.$sum.'</td>
                             </tr>';
+                            if($sum != 0){
+                              echo $columna;
+                            }
                         }
                     ?>
                   </tfoot>
