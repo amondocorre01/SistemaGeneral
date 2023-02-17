@@ -19,13 +19,13 @@ if(!$fecha_entrega_inicial){
 $pedidos_extraordinarios = [];
 $descripcion_sucursal = '';
 if($sucursal_seleccionado){
-    $sucursal_seleccionado='ventas';
-    $sufijo_sucursal = '_AE';
-    //$datos_sucursal= getSucursal($sucursal_seleccionado);
-    //$id_ubicacion_sucursal = $datos_sucursal->ID_UBICACION;
-    //$prefijo_sucursal = $datos_sucursal->PREFIJO;
-    //$sufijo_sucursal = $datos_sucursal->SUFIJO;
-    //$descripcion_sucursal = $datos_sucursal->DESCRIPCION;
+    /* $sucursal_seleccionado='ventas';
+    $sufijo_sucursal = '_AE'; */
+    $datos_sucursal= getSucursal($sucursal_seleccionado);
+    $id_ubicacion_sucursal = $datos_sucursal->ID_UBICACION;
+    $prefijo_sucursal = $datos_sucursal->PREFIJO;
+    $sufijo_sucursal = $datos_sucursal->SUFIJO;
+    $descripcion_sucursal = $datos_sucursal->SUCURSAL_BI;
     
     $pedidos_extraordinarios = getPedidosExtraordinarios($sucursal_seleccionado, $sufijo_sucursal, $fecha_entrega_inicial, $fecha_entrega);
 }
@@ -86,19 +86,20 @@ if($sucursal_seleccionado){
                 
             </div>
             </form>
-             <button class="btn btn-primary btn-nuevo-pe float-left btn-xs">+ Agregar pedido extraordinario</button>
+             <button class="btn btn-primary btn-nuevo-pe float-left btn-xs"><i class="fa-regular fa-plus"></i> Agregar pedido extraordinario</button>
 
             <br>
             <table id="example1" class="table table-bordered table-striped">
             <thead>
             <tr>
+                <th class="text-center">Sucursal</th>
                 <th class="text-center">Categoria</th>
                 <th class="text-center">Subcategoria</th>
                 <th class="text-center">Producto</th>
                 <th class="text-center">Detalle</th>
                 <th class="text-center">P.Modificado</th>
                 <th class="text-center">Fecha de entrega</th>
-                <th class="text-center">Acciones</th>
+                <th class="text-center no-exportar">Acciones</th>
             </tr>
             </thead>
             <tbody>
@@ -110,15 +111,25 @@ if($sucursal_seleccionado){
                         $modificado = $pedido->MODIFICADO == 1 ?'SI':'NO';
                         $fecha_entrega = date("d/m/Y", strtotime(($pedido->FECHA_ENTREGA_PEDIDO)));
                         $id_pedido_extraordinario = $pedido->ID_PEDIDO_EXTRAORDINARIO;
+                        $aprobado = $pedido->APROBADO;
+                        if($aprobado){
+                          $btn_class_aprobar='btn-success';
+                          $btn_accept_enabled='disabled';
+                        }else{
+                          $btn_class_aprobar='btn-info';
+                          $btn_accept_enabled='';
+                        }
                         $btn_delete='<button class="btn btn-primary btn-danger btn-xs" codigo_sucursal="'.$sucursal_seleccionado.'" sufijo_sucursal="'.$sufijo_sucursal.'" iden="'.$id_pedido_extraordinario.'" onclick="onClickEliminarProductoExtraordinario(this)" title="Eliminar pedido extraordinario"><i class="las la-times"></i></button>';
+                        $btn_accept='<button '.$btn_accept_enabled.' class="btn '.$btn_class_aprobar.' btn-xs" codigo_sucursal="'.$sucursal_seleccionado.'" sufijo_sucursal="'.$sufijo_sucursal.'" iden="'.$id_pedido_extraordinario.'" onclick="onClickAprobarPE(this)" title="Aprobar pedido extraordinario"><i class="las la-check"></i></button>';
                         echo '<tr>
+                                <td>'.$descripcion_sucursal.'</td>
                                 <td>'.$categoria_1->CATEGORIA.'</td>
                                 <td>'.$categoria_2->SUB_CATEGORIA_1.'</td>
                                 <td>'.$producto->SUB_CATEGORIA_2.'</td>
                                 <td>'.$pedido->DETALLE.'</td>
                                 <td align="center">'.$modificado.'</td>
                                 <td align="center">'.$fecha_entrega.'</td>
-                                <td align="center">'.$btn_delete.'</td>
+                                <td align="center">'.$btn_accept.$btn_delete.'</td>
                               </tr>';
                     }
                 ?>
@@ -238,6 +249,11 @@ $(document).ready(function(){
         $('#modalAgregarProductoExtraordinario').modal("show");
     });
     function guardarPedidoExtraordinario() {
+      var texto_sucursal = $('#codigo_sucursal option:selected').html();
+      var texto_categoria = $('#productoCategoria1 option:selected').html();
+      var texto_subcategoria1 = $('#productoCategoria2 option:selected').html();
+      var texto_subcategoria2 = $('#productoMadre option:selected').html();
+
       var codigo_sucursal = $('#codigo_sucursal').val();
       var productoCategoria1 = $('#productoCategoria1').val();
       var productoCategoria2 = $('#productoCategoria2').val();
@@ -268,11 +284,30 @@ $(document).ready(function(){
               Swal.fire({
                 icon: 'success',
                 title: 'Se ha guardado correctamente.',
-                timer: 3500
+                timer: 1500
               });
-              var curr_url = "<?=$current_url?>"
+              var codigo_sucursal = respuesta.codigo_sucursal;
+              var sufijo_sucursal = respuesta.sufijo_sucursal;
+              var id_pedido_extraordinario = respuesta.iden;
+              var modificado = respuesta.modificado;
+              var fecha_entrega = respuesta.fecha_entrega;
+              var btn_delete = `<button class="btn btn-danger btn-xs" codigo_sucursal="${codigo_sucursal}" sufijo_sucursal="${sufijo_sucursal}" iden="${id_pedido_extraordinario}" onclick="onClickEliminarProductoExtraordinario(this)" title="Eliminar pedido extraordinario"><i class="las la-times"></i></button>`;
+              var btn_change_estado = `<button class="btn btn-info btn-info btn-xs" codigo_sucursal="${codigo_sucursal}" sufijo_sucursal="${sufijo_sucursal}" iden="${id_pedido_extraordinario}" onclick="onClickAprobarPE(this)" title="Aprobar pedido extraordinario"><i class="las la-check"></i></button>`;
+              var btn_actions = btn_change_estado + btn_delete;
+              $('#modalAgregarProductoExtraordinario').modal("hide");
+              var table = $('#example1').DataTable();
+              $('#form-product-new-update').trigger("reset");
+              $('#codigo_sucursal').select2();
+              $('#productoCategoria1').select2();
+              $('#productoCategoria2').select2();
+              $('#productoCategoria2').prop( "disabled", true );
+              $('#productoMadre').select2();
+              $('#productoMadre').prop( "disabled", true );
+
+              table.row.add([texto_sucursal,texto_categoria,texto_subcategoria1,texto_subcategoria2,detalleProducto,modificado,fecha_entrega,btn_actions]).draw(false);
+              /* var curr_url = "<?=$current_url?>"
               var comp_url = `${curr_url}&codigo_sucursal=${respuesta.sucursal}&fecha_entrega=${respuesta.fecha_entrega}`;
-              window.location.href = comp_url;
+              window.location.href = comp_url; */
             }else{
                 $('.loading').hide();
               Swal.fire({
@@ -458,24 +493,44 @@ $(document).ready(function(){
       }
       });
     });
+
+    $('.btn-form-search').on('click',function(){
+      $('.loading').show();
+    });
 });
 
 function onClickEliminarProductoExtraordinario(element){
-        swal.fire({
-        icon: "error",
-        title: "¿Estás seguro?",
-        text: "Se eliminará el pedido extraordinario.",
-        showCancelButton: true,
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Continuar"
-        }).then((result) => {
-            if (result.isConfirmed) {
-            var iden = $(element).attr('iden');
-            var sc = updateEstadoPE(element);
-            }
-        });
-    }
+    swal.fire({
+    icon: "error",
+    title: "¿Estás seguro?",
+    text: "Se eliminará el pedido extraordinario.",
+    showCancelButton: true,
+    cancelButtonText: "Cancelar",
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Continuar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+        var iden = $(element).attr('iden');
+        var sc = updateEstadoPE(element);
+        }
+    });
+  }
+function onClickAprobarPE(element){
+  swal.fire({
+    title: "¿Estás seguro?",
+    text: "Se aprobara el pedido extraordinario.",
+    showCancelButton: true,
+    cancelButtonText: "Cancelar",
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Continuar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+        var iden = $(element).attr('iden');
+        var sc = updateEstadoAprobadoPE(element);
+        }
+    });
+}
+
 function updateEstadoPE(element){
     var iden = $(element).attr('iden');
     var codigo_sucursal = $(element).attr('codigo_sucursal');
@@ -504,6 +559,48 @@ function updateEstadoPE(element){
                     timer: 4500
                 });
                 $(element).parents('tr').remove();
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ocurrio un error inesperado.',
+                    timer: 4500
+                });
+            }
+        }
+    });
+    
+}
+function updateEstadoAprobadoPE(element){
+    var iden = $(element).attr('iden');
+    var codigo_sucursal = $(element).attr('codigo_sucursal');
+    var sufijo_sucursal = $(element).attr('sufijo_sucursal');
+    console.log('Se cambiara',iden);
+    var datos = new FormData();
+    datos.append("updateEstadoPE",'1');
+    datos.append("iden",iden);
+    datos.append("codigo_sucursal",codigo_sucursal);
+    datos.append("sufijo_sucursal",sufijo_sucursal);
+    $('.loading').show();
+    $.ajax({
+        method:'POST',
+        url:'<?=site_url("aprobar-pedido-extraordinario")?>',
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success:function(respuesta){
+            $('.loading').hide();
+            if(respuesta.estado){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Se ha aprobado el pedido exitosamente',
+                    timer: 1000
+                });
+                $(element).prop('disabled', true);
+                $(element).removeClass( "btn-info" );
+                $(element).addClass( "btn-success" );
+                
             }else{
                 Swal.fire({
                     icon: 'error',

@@ -9,8 +9,10 @@ class Pedidoextraordinario extends CI_Controller {
         $codigo_sucursal = $this->input->post('codigo_sucursal');
         $sucursal = getSucursal($codigo_sucursal);
         $sufijo_sucursal = $sucursal->SUFIJO;
-        $codigo_sucursal='ventas';
-        $sufijo_sucursal='_AE';
+        $prefijo_sucursal = $sucursal->PREFIJO;
+        $descripcion_sucursal = $sucursal->SUCURSAL_BI;
+        /* $codigo_sucursal='ventas';
+        $sufijo_sucursal='_AE'; */
 
         $categoria_1 = $this->input->post('categoria_1');
         $categoria_2 = $this->input->post('categoria_2');
@@ -20,16 +22,25 @@ class Pedidoextraordinario extends CI_Controller {
         $fecha_entrega = $this->input->post('fecha_entrega');
         $id_usuario = $this->session->id_usuario;
         $fecha_registro = date('Y-m-d H:i:s');
-        if(guardarPedidoExtraordinario($codigo_sucursal, $sufijo_sucursal, $categoria_1, $categoria_2, $producto_madre, $modificara_producto, $detalle_producto, $id_usuario, $fecha_registro, $fecha_entrega)){
+        $pedido = guardarPedidoExtraordinario($codigo_sucursal, $prefijo_sucursal, $sufijo_sucursal, $categoria_1, $categoria_2, $producto_madre, $modificara_producto, $detalle_producto, $id_usuario, $fecha_registro, $fecha_entrega);
+        if($pedido){
+            $modificado = $modificara_producto == 1 ?'SI':'NO';
+            $fecha_entrega = date("d/m/Y", strtotime(($fecha_entrega)));
+                        
             $respuesta = new stdClass();
-            $respuesta->sucursal = $codigo_sucursal;
+            $respuesta->iden = $pedido;
+            $respuesta->codigo_sucursal = $codigo_sucursal;
+            $respuesta->descripcion_sucursal = $descripcion_sucursal;
+            $respuesta->sufijo_sucursal = $sufijo_sucursal;
+            $respuesta->prefijo_sucursal = $prefijo_sucursal;
+            $respuesta->modificado = $modificado;
             $respuesta->fecha_entrega = $fecha_entrega;
             $respuesta->estado = true;
             echo json_encode($respuesta);
             exit();
         }else{
             $respuesta = new stdClass();
-            $respuesta->sucursal = $codigo_sucursal;
+            $respuesta->codigo_sucursal = $codigo_sucursal;
             $respuesta->fecha_entrega = $fecha_entrega;
             $respuesta->estado = false;
             echo json_encode($respuesta);
@@ -70,6 +81,25 @@ class Pedidoextraordinario extends CI_Controller {
         $codigo_sucursal = $this->input->post('codigo_sucursal');
         $sufijo_sucursal = $this->input->post('sufijo_sucursal');
         if(eliminar_pedido_extraordinario($codigo_sucursal, $sufijo_sucursal, $id_pedido_extraordinario)){
+            $respuesta = new stdClass();
+            $respuesta->sucursal = $codigo_sucursal;
+            $respuesta->estado = true;
+            echo json_encode($respuesta);
+            exit();
+        }else{
+            $respuesta = new stdClass();
+            $respuesta->sucursal = $codigo_sucursal;
+            $respuesta->estado = false;
+            echo json_encode($respuesta);
+            exit();
+        }
+     }
+
+     public function aprobar_pedido_extraordinario(){
+        $id_pedido_extraordinario = $this->input->post('iden');
+        $codigo_sucursal = $this->input->post('codigo_sucursal');
+        $sufijo_sucursal = $this->input->post('sufijo_sucursal');
+        if(aprobar_pedido_extraordinario($codigo_sucursal, $sufijo_sucursal, $id_pedido_extraordinario)){
             $respuesta = new stdClass();
             $respuesta->sucursal = $codigo_sucursal;
             $respuesta->estado = true;

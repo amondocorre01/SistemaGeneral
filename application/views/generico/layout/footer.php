@@ -41,11 +41,15 @@
     <script src="<?=base_url('assets/plugins/datatables-buttons/js/buttons.print.min.js')?>"></script>
     <script src="<?=base_url('assets/plugins/datatables-buttons/js/buttons.colVis.min.js')?>"></script>
     <script>
-    
+
     $("#example1").DataTable({
       "lengthChange": false,
-      "autoWidth": true,
+      "autoWidth": false,
       "responsive": true,
+      language:{ search: "Buscar", lengthMenu: "Mostrar _MENU_", zeroRecords: "No se encontró nada",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros", infoEmpty: "No hay registros disponibles", 
+                    infoFiltered: "(Filtrado de _MAX_ registros totales)", previous: "Anterior", oPaginate: { sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },                  
+                    }, 
       "buttons": [
       {
         extend:'pdfHtml5',
@@ -53,11 +57,17 @@
         orientation: 'landscape',
         pageSize: 'LEGAL',
         title: '<?=$_SESSION['title']?>',
-        download: 'open'
+        download: 'open',
+        exportOptions: {
+        columns: ":not(.no-exportar)" //exportar toda columna que no tenga la clase no-exportar
+        }
       },{
         extend:'excelHtml5',
         text:'excel',
         title: '<?=$_SESSION['title']?>',
+        exportOptions: {
+        columns: ":not(.no-exportar)" //exportar toda columna que no tenga la clase no-exportar
+        }
       }
     ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
@@ -119,12 +129,12 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 
 <!-- DAataTables-->
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  <?=link_tag('https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css')?>
+<!-- <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <?=link_tag('https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css')?> -->
 <!-- DATA TABLES -->
 
 <script>
-
+<?php if($this->input->get('vc')):?>
  const testData = document.getElementById("menunav_<?=$this->input->get('vc')?>");
 
  let superior = testData.getAttribute("data-sup");
@@ -134,14 +144,17 @@
  testData.style.fontWeight = "700";
 
  const testSuperior= document.getElementById("menunav_"+superior);
+ if(testSuperior){
+  testSuperior.style.color = "#FFFFFF";
+ }
 
- testSuperior.style.color = "#FFFFFF";
+ 
 
  //$( testSuperior ).parent().css( "background-color", "#dc3545" );
 
  $( testSuperior ).parent().addClass('menu-is-opening menu-open');
  $( testSuperior ).parent().parent().addClass('menu-is-opening menu-open');
-
+<?php endif; ?>
  
 
 

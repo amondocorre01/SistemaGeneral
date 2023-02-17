@@ -1,4 +1,15 @@
 <br>
+<link rel="stylesheet" href="<?=base_url('assets/plugins/select2/css/select2.min.css')?>">
+<link rel="stylesheet" href="<?=base_url('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')?>">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="<?=base_url('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')?>">
+  <link rel="stylesheet" href="<?=base_url('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')?>">
+  <link rel="stylesheet" href="<?=base_url('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')?>">
+<?php
+    $this->session->set_userdata('datatable', 'true');
+    $id_menu = intval($this->input->get('vc'));
+    $id_usuario = $this->session->id_usuario;
+?>
 <?php 
     $resultado = null;
     $nombre_codigo_sucursal = $sucursal;
@@ -126,122 +137,118 @@
     var siat = puede_siat['ESTADO'];
 
 
-	   var table = $('#table').dataTable({
-	   data: <?php echo $resultado ?>,
-       responsive: true, scrollX: true,  order: [[2, 'desc']],
+	var table = $('#table').dataTable({
+        "lengthChange": true,
+        "autoWidth": false,
+        "responsive": true,
+        data: <?php echo $resultado ?>,
+        responsive: true,  
+        order: [[2, 'desc']],
+        "lengthMenu": [ [15, 30, 45, -1], [15, 30, 45, "Todo"] ],
+        "pageLength": 15, 
+        select: {style: 'single' },
+        language:{ search: "Buscar", lengthMenu: "Mostrar _MENU_", zeroRecords: "No se encontró nada",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros", infoEmpty: "No hay registros disponibles", 
+                    infoFiltered: "(Filtrado de _MAX_ registros totales)", previous: "Anterior", oPaginate: { sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },                  
+                    }, 
+        columns: [
+        { title:"Accion", className: 'check-boy', data: null, orderable: false, className: 'text-center',
+            render: function (data, type, full, meta) 
+            {
+            
+                var button = '';
+            url_anular = "<?=site_url('anular-factura')?>";
+            url_copia = "<?=site_url('copia-factura')?>";
 
 
-    "lengthMenu": [ [15, 30, 45, -1], [15, 30, 45, "Todo"] ],
-    "pageLength": 15, select: {style: 'single' },
+            if(data.ANULADO == 0){
+                if(anular == true) {
 
-language:{ search: "Buscar", lengthMenu: "Mostrar _MENU_", zeroRecords: "No se encontró nada",
-		   info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros", infoEmpty: "No hay registros disponibles", 
-           infoFiltered: "(Filtrado de _MAX_ registros totales)", previous: "Anterior", oPaginate: { sNext:"Siguiente", sLast: "Último", sPrevious: "Anterior", sFirst:"Primero" },                  
-        },      
-
-columns: [
-
-{ title:"Accion", className: 'check-boy', data: null, orderable: false, className: 'text-center',
-    render: function (data, type, full, meta) 
-    {
-      
-        var button = '';
-       url_anular = "<?=site_url('anular-factura')?>";
-       url_copia = "<?=site_url('copia-factura')?>";
-
-
-       if(data.ANULADO == 0){
-        if(anular == true) {
-
-            if(data.NUMERO_FACTURADO != '0') {
-                button += '<div class="btn-group" role="group" aria-label="Basic example">';
-                button += '<button class="btn btn-primary btn-danger btn-md" iden="'+data.ID_VENTA_DOCUMENTO+'" onClick="onClickAnularFactura(this)" data-toggle="modal" data-target="#modalAnularFactura" title="Anular Factura">';
-                    button +='<i class="las la-times"></i>';
-                button += '</button>';
-            }else{
-                button += '<div class="btn-group" role="group" aria-label="Basic example">';
-                button += '<button class="btn btn-primary btn-warning btn-md" iden="'+data.ID_VENTA_DOCUMENTO+'" onClick="onClickAnularRecibo(this)" title="Anular Recibo">';
-                    button +='<i class="las la-times"></i>';
-                button += '</button>';
-            }
-            //}
-        }
-        
-        if(ic == true) {
-            button += '<button class="btn btn-primary btn-success btn-md" onclick="reimprimirFacturaRollo('+data.ID_VENTA_DOCUMENTO+');imprimirFacturaRolloLocal('+data.ID_VENTA_DOCUMENTO+')" title="Imprimir factura rollo">';
-                button +='<i class="las la-copy"></i>';
-            button += '</button>';
-        }
-        if(data.NUMERO_FACTURADO != 0) {
-            if(io == true) {
-                button += '<button class="btn btn-primary btn-info btn-md" onclick="reimprimirFacturaCarta('+data.ID_VENTA_DOCUMENTO+')" title="Imprimir factura carta">';
-                    button +='<i class="las la-check-circle"></i>';
-                button += '</button>';
-            }
-        }
-
-        var oculta = btoa(data.DETALLE);
-
-        button += '<button class="btn btn-info btn-md palette-Red-600 bg" onclick="detalle(\''+data.ID_VENTA_DOCUMENTO+'\',\''+oculta+'\')" title="Ver Detalle">';
-                button +='<i class="las la-eye"></i>';
-            button += '</button>';
-            if(data.NUMERO_FACTURADO != 0) {
-
-                if(siat == true) {
-                button += '<a class="btn btn-info btn-sm btn-enlace-siat" target="_blank" href="'+data.URL_FACTURA+'" title="Ver Factura en el SIAT">';
-                    button +='<i class="las la-eye"></i>';
-                button += '</a>';
+                    if(data.NUMERO_FACTURADO != '0') {
+                        button += '<div class="btn-group" role="group" aria-label="Basic example">';
+                        button += '<button class="btn btn-primary btn-danger btn-md" iden="'+data.ID_VENTA_DOCUMENTO+'" onClick="onClickAnularFactura(this)" data-toggle="modal" data-target="#modalAnularFactura" title="Anular Factura">';
+                            button +='<i class="las la-times"></i>';
+                        button += '</button>';
+                    }else{
+                        button += '<div class="btn-group" role="group" aria-label="Basic example">';
+                        button += '<button class="btn btn-primary btn-warning btn-md" iden="'+data.ID_VENTA_DOCUMENTO+'" onClick="onClickAnularRecibo(this)" title="Anular Recibo">';
+                            button +='<i class="las la-times"></i>';
+                        button += '</button>';
+                    }
+                    //}
                 }
+                
+                if(ic == true) {
+                    button += '<button class="btn btn-primary btn-success btn-md" onclick="reimprimirFacturaRollo('+data.ID_VENTA_DOCUMENTO+');imprimirFacturaRolloLocal('+data.ID_VENTA_DOCUMENTO+')" title="Imprimir factura rollo">';
+                        button +='<i class="las la-copy"></i>';
+                    button += '</button>';
+                }
+                if(data.NUMERO_FACTURADO != 0) {
+                    if(io == true) {
+                        button += '<button class="btn btn-primary btn-info btn-md" onclick="reimprimirFacturaCarta('+data.ID_VENTA_DOCUMENTO+')" title="Imprimir factura carta">';
+                            button +='<i class="las la-check-circle"></i>';
+                        button += '</button>';
+                    }
+                }
+
+                var oculta = btoa(data.DETALLE);
+
+                button += '<button class="btn btn-info btn-md palette-Red-600 bg" onclick="detalle(\''+data.ID_VENTA_DOCUMENTO+'\',\''+oculta+'\')" title="Ver Detalle">';
+                        button +='<i class="las la-eye"></i>';
+                    button += '</button>';
+                    if(data.NUMERO_FACTURADO != 0) {
+
+                        if(siat == true) {
+                        button += '<a class="btn btn-info btn-sm btn-enlace-siat" target="_blank" href="'+data.URL_FACTURA+'" title="Ver Factura en el SIAT">';
+                            button +='<i class="las la-eye"></i>';
+                        button += '</a>';
+                        }
+                    }
+
+                    if(data.MONTO_INGRESADO != null) {
+                    
+                        button += '<button class="btn btn-info btn-md palette-Orange-600 bg"  data-precio="'+data.MONTO_INGRESADO+'" data-ubicacion="'+data.UBICACION_TRANSPORTE+'" data-referencia="'+data.REFERENCIA_ENTREGA+'" title="Datos de transporte" data-venta="'+data.ID_VENTA_DOCUMENTO+'" data-cliente="'+data.cliente+'" onclick="datosTransporte($(this))">';
+                            button +='<i class="las la-taxi"></i>';
+                        button += '</button>';
+                    }
+
+                    if(data.VENTA_PROGRAMADA != null) {
+                    
+                        datos = JSON.parse(data.VENTA_PROGRAMADA);
+
+                        button += '<button class="btn btn-info btn-md palette-Grey-600 bg"  data-fecha="'+datos[0].FECHA_DE_ENVIO+'" data-hora="'+datos[0].HORA_DE_ENVIO+'" data-direccion="'+datos[0].DETALLE_DIRECCION+'" data-dedicatoria="'+datos[0].DEDICATORIA+'" data-cliente="'+data.cliente+'" title="Venta Programada" onclick="datosVentaProgramada($(this))">';
+                            button +='<i class="las la-calendar-day"></i>';
+                        button += '</button>';
+                    }
+                
+                button += '</div>';
+
             }
 
-            if(data.MONTO_INGRESADO != null) {
-            
-                button += '<button class="btn btn-info btn-md palette-Orange-600 bg"  data-precio="'+data.MONTO_INGRESADO+'" data-ubicacion="'+data.UBICACION_TRANSPORTE+'" data-referencia="'+data.REFERENCIA_ENTREGA+'" title="Datos de transporte" data-venta="'+data.ID_VENTA_DOCUMENTO+'" data-cliente="'+data.cliente+'" onclick="datosTransporte($(this))">';
-                    button +='<i class="las la-taxi"></i>';
-                button += '</button>';
+            else {
+
+                button += '<label class="btn btn-info gender-label"><span>Anulado</span></label>';
+                if(data.NUMERO_FACTURADO != 0) {
+                    button += '<a class="btn btn-info btn-sm btn-enlace-siat-an" target="_blank" href="'+data.URL_FACTURA+'" title="Ver Factura en el SIAT">';
+                        button +='<i class="las la-eye"></i>';
+                    button += '</a>';
+                }
+
             }
 
-            if(data.VENTA_PROGRAMADA != null) {
-            
-                datos = JSON.parse(data.VENTA_PROGRAMADA);
 
-                button += '<button class="btn btn-info btn-md palette-Grey-600 bg"  data-fecha="'+datos[0].FECHA_DE_ENVIO+'" data-hora="'+datos[0].HORA_DE_ENVIO+'" data-direccion="'+datos[0].DETALLE_DIRECCION+'" data-dedicatoria="'+datos[0].DEDICATORIA+'" data-cliente="'+data.cliente+'" title="Venta Programada" onclick="datosVentaProgramada($(this))">';
-                    button +='<i class="las la-calendar-day"></i>';
-                button += '</button>';
-            }
-        
-        button += '</div>';
+                return button;
+            }},
+        { title: "Nº", className: 'text-center', data: "row" },
+        { title: "Nº de Factura", className: 'text-center', data: "NUMERO_FACTURADO"},
+        { title: "Fecha y Hora", className: 'text-center', data: "FECHA"},
+        { title: "Cliente", className: 'text-center', data: "cliente"},
+        { title: "NIT", className: 'text-center', data: "NIT"},
+        { title: "Total a pagar", className: 'text-center', data: "TOTAL_A_PAGAR"},
+        { title: "Detalle", className: 'text-center', data: "NOMBRE_LISTA_PRECIOS"},
+        ]});
 
-       }
-
-       else {
-
-        button += '<label class="btn btn-info gender-label"><span>Anulado</span></label>';
-        if(data.NUMERO_FACTURADO != 0) {
-            button += '<a class="btn btn-info btn-sm btn-enlace-siat-an" target="_blank" href="'+data.URL_FACTURA+'" title="Ver Factura en el SIAT">';
-                button +='<i class="las la-eye"></i>';
-            button += '</a>';
-        }
-
-       }
-
-
-        return button;
-    },
-    width: "15%"
-},
-{ title: "Nº", className: 'text-center', data: "row", width: "5%" },
-{ title: "Nº de Factura", className: 'text-center', data: "NUMERO_FACTURADO", width: "5%"},
-{ title: "Fecha y Hora", className: 'text-center', data: "FECHA", width: "5%"},
-{ title: "Cliente", className: 'text-center', data: "cliente", width: "10%"},
-{ title: "NIT", className: 'text-center', data: "NIT", width: "8%"},
-{ title: "Total a pagar", className: 'text-center', data: "TOTAL_A_PAGAR", width: "5%"},
-{ title: "Detalle", className: 'text-center', data: "NOMBRE_LISTA_PRECIOS", width: "10%"},
-
-
-]});
-
-});
+    });
 
 function send() {
     $('#form_fecha').submit();
@@ -475,7 +482,7 @@ function guardarAnularFactura(element){
         var detalle = JSON.parse(content);
 
         html = '<table class="table table-head-fixed text-nowrap">';
-        html += '<thead><tr><th class="palette-Red-500 bg" width="55%"><span class="palette-White text">Producto</span></th><th class="palette-Grey-600 bg" width="15%"><span class="palette-White text">Cantidad</span></th><th class="palette-Grey-600 bg" width="15%"><span class="palette-White text">P. Unit.</span></th><th class="palette-Grey-600 bg" width="15%"><span class="palette-White text">Precio</span></th></tr></thead><tbody>';
+        html += '<thead><tr><th class="palette-Red-500 bg" ><span class="palette-White text">Producto</span></th><th class="palette-Grey-600 bg" ><span class="palette-White text">Cantidad</span></th><th class="palette-Grey-600 bg" ><span class="palette-White text">P. Unit.</span></th><th class="palette-Grey-600 bg"><span class="palette-White text">Precio</span></th></tr></thead>';
 
 
         $.each(detalle, function (i, v) { 

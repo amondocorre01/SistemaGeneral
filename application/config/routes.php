@@ -262,6 +262,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['productos-primera-subcategoria-inventario'] = 'api/pedidoextraordinario/primera_subcategoria';
     $route['productos-segunda-subcategoria-inventario'] = 'api/pedidoextraordinario/segunda_subcategoria';
     $route['eliminar-pedido-extraordinario'] = 'api/pedidoextraordinario/eliminar_pedido_extraordinario';
+    $route['aprobar-pedido-extraordinario'] = 'api/pedidoextraordinario/aprobar_pedido_extraordinario';
 
 
    
