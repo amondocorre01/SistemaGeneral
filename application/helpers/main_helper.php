@@ -820,7 +820,7 @@ if(!function_exists('solicitud')) {
 		$fecha = $DB2->query($sql_date)->result();
 		$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 
-		$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, ESTADO_CONTEO, ADECUACION FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+		$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, PRECARGADO, ESTADO_CONTEO, ADECUACION FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
 		$registro = $DB2->query($sql)->result();
 
 		$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
@@ -829,13 +829,14 @@ if(!function_exists('solicitud')) {
 		$CI->session->set_userdata(array('fecha_conteo' => $fecha[0]->DIA));
 
 
-		$array = [];  $estado = []; $adecuacion = []; $solicitud = []; 
+		$array = [];  $estado = []; $adecuacion = []; $solicitud = []; $precargado=[];
 
 		foreach ($registro as $value) {
 			$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD;
 			$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
 			$adecuacion[$value->ID_SUBCATEGORIA_2] = $value->ADECUACION;
 			$solicitud[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
+			$precargado[$value->ID_SUBCATEGORIA_2] = $value->PRECARGADO;
 		}
 
 		$data['registro'] = $array;
@@ -845,6 +846,7 @@ if(!function_exists('solicitud')) {
 		$data['db'] = $db;
 		$data['sufijo'] = $sufijo;
 		$data['cabecera'] = $cabecera;
+		$data['precargado'] = $precargado;
 
 		return $data;
 

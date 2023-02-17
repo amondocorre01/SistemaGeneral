@@ -34,10 +34,11 @@
 <?php if($cabecera AND $cabecera[0]->ESTADO > 9): ?>
 <?php if($cabecera[0]->ESTADO > 10 ):?>
   <div class="row ">
-    <div class="col-md-12 text-center">
-    <?=img(['src'=>'assets/dist/img/close2.png', 'width' => '15%'])?>
+      <div class="col-2 btn-group">
+          <?=form_button('cerrar', '<span class="las la-lock la-4x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'cerrarTodo()']);?>
+          <?=form_button('abrir', '<span class="las la-key la-4x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'abrirTodo()']);?>
+      </div>
     </div>
-  </div>
 <?php endif;?>
 
 <div class="row justify-content-center">
@@ -128,26 +129,36 @@
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Solicitud</th>
                       <?php foreach ($sub->PRODUCTOS as $p): ?>
                         <tr>
-                            <td width="30%"><?=$p->SUB_CATEGORIA_2?></td>
-                            <td width="15%">
+                            <td width="25%"><?=$p->SUB_CATEGORIA_2?></td>
+                            <td width="12%">
                               <?=$p->MEDIDA_ESTANDARIZACION?>                          
                             </td>
-                            <td width="15%" id="a_<?=$p->ID_SUB_CATEGORIA_2?>">
+                            <td width="12%" id="a_<?=$p->ID_SUB_CATEGORIA_2?>">
                             <?=$registro[$p->ID_SUB_CATEGORIA_2]?>
                             </td>
 
-                            <td class="reset_stock" width="15%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
+                            <td class="reset_stock" width="12%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
                               0
                             </td>
 
-                            <td class="reset_stock" width="15%">
+                            <td class="reset_stock" width="12%">
                               <?=(isset($p->MEDIDA_ADECUACIÓN))?$p->MEDIDA_ADECUACIÓN: ''?>
                             </td>
 
-                            <td width="15%">    
-                              <input id="p_<?=$p->ID_SUB_CATEGORIA_2?>" type="hidden" value="<?=$p->CANTIDAD_ADECUACION_PEDIDOS?>">  
+                            <td width="20%">    
+                              <input id="p_<?=$p->ID_SUB_CATEGORIA_2?>" type="hidden" value="<?=$p->CANTIDAD_ADECUACION_PEDIDOS?>"> 
+                              
+                              <input name="<?=$p->ID_SUB_CATEGORIA_2?>[precargado]" id="h_<?=$p->ID_SUB_CATEGORIA_2?>" type="hidden" value="<?=$precargado[$p->ID_SUB_CATEGORIA_2]?>"> 
                             
-                              <input id="s_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control reset_input_stock" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='11')?'readonly="readonly"':''?> step="1" value="<?=$solicitud[$p->ID_SUB_CATEGORIA_2]?>">
+                              <div class="input-group">
+                              <input id="s_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>[cantidad]" class="form-control reset_input_stock" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='11')?'readonly="readonly"':''?> step="1" oninput="noPrecargar(<?=$p->ID_SUB_CATEGORIA_2?>)" value="<?=$solicitud[$p->ID_SUB_CATEGORIA_2]?>">
+
+                              <div class="input-group-append">
+                                <button id="b_<?=$p->ID_SUB_CATEGORIA_2?>" onclick="enable(<?=$p->ID_SUB_CATEGORIA_2?>)" class="btn <?=($precargado[$p->ID_SUB_CATEGORIA_2])? 'btn-success':'btn-danger'?>" type="button">
+                                  <i class="las la-hand-point-left"></i>
+                                </button>
+                              </div>
+                            </div>
                             </td>
                         </tr>
                       <?php endforeach; ?>
@@ -279,31 +290,49 @@
       $.post("<?=site_url('get-minimo-stock')?>", {lista:d})
       .done(function( data ) {
 
-        minimos = JSON.parse(data);
+        response = JSON.parse(data);
+
+        
 
         $('.reset_stock').empty();
         $('.reset_stock').append(0);
 
-        $('.reset_input_stock').empty();
-        $('.reset_input_stock').val(0);
+        
+        $.each(response.productos, function (key, val) { 
+           var status = $('#h_'+val.ID_SUB_CATEGORIA_2).val();
+           if(status == 1){
+            $('#s_'+val.ID_SUB_CATEGORIA_2).val(0);
+           }
+        }); 
 
-        $.each(minimos.minimos, function (i, v) { 
+
+
+        $.each(response.minimos, function (i, v) { 
           
-          $('#m_'+v.ID_SUB_CATEGORIA_2).empty();
-          $('#m_'+v.ID_SUB_CATEGORIA_2).append(Number(v.STOCK));
+          precargado = $('#h_'+v.ID_SUB_CATEGORIA_2).val();
 
-          var operacion = Number(v.STOCK)-Number($('#a_'+v.ID_SUB_CATEGORIA_2).html());
-          operacion = Math.ceil(operacion/Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
+          console.log(precargado);
 
-          if( operacion > 0)
+          if(precargado == 1) 
           {
-            $('#s_'+v.ID_SUB_CATEGORIA_2).val(operacion);
+              $('#m_'+v.ID_SUB_CATEGORIA_2).empty();
+              $('#m_'+v.ID_SUB_CATEGORIA_2).append(Number(v.STOCK));
+
+              var operacion = Number(v.STOCK)-Number($('#a_'+v.ID_SUB_CATEGORIA_2).html());
+              operacion = Math.ceil(operacion/Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
+
+              if( operacion > 0)
+              {
+                $('#s_'+v.ID_SUB_CATEGORIA_2).val(operacion);
+              }
+
+              else 
+              {
+                $('#s_'+v.ID_SUB_CATEGORIA_2).val(0);
+              }
           }
 
-          else 
-          {
-            $('#s_'+v.ID_SUB_CATEGORIA_2).val(0);
-          }
+          
 
           
         });
@@ -316,4 +345,101 @@
         }
       })
     }
+
+
+    function abrirTodo() {
+
+Swal.fire({
+  title: 'Deseas abrir el formulario?',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: 'Si',
+  denyButtonText: 'No',
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $('.loading').show();
+    
+    $.post("<?=site_url('verificar-solicitud')?>", {db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
+          .done(function( data ) {
+            $('.loading').hide();
+            dato = JSON.parse(data);
+
+            if(dato.status == true) {
+              Swal.fire('El formulario fue abierto', '', 'success');
+              $('.reset_input_stock').attr('readonly',false);
+            }
+            else {
+              Swal.fire('No se cumplieron las condiciones para abrir el formuario', '', 'info');
+            }
+          });
+
+    
+  } else if (result.isDenied) {
+    Swal.fire('No se ha enviado aun', '', 'info')
+  }
+})
+}
+
+
+function cerrarTodo() {
+
+Swal.fire({
+title: 'Deseas cerrar y guardar el formulario?',
+showDenyButton: true,
+showCancelButton: true,
+confirmButtonText: 'Si',
+denyButtonText: 'No',
+}).then((result) => {
+/* Read more about isConfirmed, isDenied below */
+if (result.isConfirmed) {
+  $('.loading').show();
+  var fecha = '<?=date('Y-m-d')?>'
+
+  $.post("<?=site_url('verificar-solicitud')?>", {db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
+        .done(function( data ) {
+          $('.loading').hide();
+          dato = JSON.parse(data);
+
+          if(dato.status == true) {
+            guardarSolicitud();
+            Swal.fire('El formulario fue guardado y cerrado', '', 'success');
+            $('.reset_input_stock').attr('readonly',true);
+          }
+          else {
+            Swal.fire('No se cumplieron las condiciones para cerrar y guardar el formuario', '', 'info');
+          }
+        });
+
+  
+} else if (result.isDenied) {
+  Swal.fire('No se ha enviado aun', '', 'info')
+}
+})
+}
+
+function noPrecargar(id) {
+  $('input[name="' + id + '[precargado]"]').val(0);
+}
+
+function enable(id) {
+  
+  var status =  $('#h_'+id).val();
+
+  console.log(status);
+
+  if(status == 1) {
+    $('#h_'+id).val(0);
+    $('#b_'+id).removeClass('btn-success');
+    $('#b_'+id).addClass('btn-danger');
+  }
+
+  else 
+  {
+    $('#h_'+id).val(1);
+    $('#b_'+id).removeClass('btn-danger');
+    $('#b_'+id).addClass('btn-success');
+  }
+
+}
 </script>

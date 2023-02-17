@@ -251,7 +251,9 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['guardar-entrega'] = 'api/pedido/guardar_entrega';
     $route['enviar-entrega'] = 'api/pedido/enviar_entrega';
     $route['abrir-declaracion'] = 'api/pedido/abrir_declaracion';
-    $route['cerrar-declaracion'] = 'api/pedido/cerrar_declaracion';
+    $route['verificar-solicitud'] = 'api/pedido/verificar_solicitud';
+    $route['verificar-preparacion'] = 'api/pedido/verificar_preparacion';
+
 
 
 
