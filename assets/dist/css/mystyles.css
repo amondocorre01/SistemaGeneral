@@ -391,6 +391,27 @@ i {
    background-color: rgb(34, 34, 34);
    z-index: 9999;
 }
+/* .loading-image {
+   background: #2a2a2a;
+   border-radius: 50%;
+   color: #000000;
+   opacity: 0;
+   height: 200px;
+   left: 50%;
+   line-height: 200px;
+   margin: -100px 0 0 -100px;
+   position: absolute;
+   text-align: center;
+   top: 50%;
+   width: 200px;
+} */
+.loading-image {
+    align-items: center;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   z-index: 10000;
+ } 
 
 .cajaLineaVenta{
    display: flex;
