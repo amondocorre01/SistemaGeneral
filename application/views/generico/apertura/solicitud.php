@@ -129,28 +129,36 @@
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Solicitud</th>
                       <?php foreach ($sub->PRODUCTOS as $p): ?>
                         <tr>
-                            <td width="30%"><?=$p->SUB_CATEGORIA_2?></td>
-                            <td width="15%">
+                            <td width="25%"><?=$p->SUB_CATEGORIA_2?></td>
+                            <td width="12%">
                               <?=$p->MEDIDA_ESTANDARIZACION?>                          
                             </td>
-                            <td width="15%" id="a_<?=$p->ID_SUB_CATEGORIA_2?>">
+                            <td width="12%" id="a_<?=$p->ID_SUB_CATEGORIA_2?>">
                             <?=$registro[$p->ID_SUB_CATEGORIA_2]?>
                             </td>
 
-                            <td class="reset_stock" width="15%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
+                            <td class="reset_stock" width="12%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
                               0
                             </td>
 
-                            <td class="reset_stock" width="15%">
+                            <td class="reset_stock" width="12%">
                               <?=(isset($p->MEDIDA_ADECUACIÓN))?$p->MEDIDA_ADECUACIÓN: ''?>
                             </td>
 
-                            <td width="15%">    
+                            <td width="20%">    
                               <input id="p_<?=$p->ID_SUB_CATEGORIA_2?>" type="hidden" value="<?=$p->CANTIDAD_ADECUACION_PEDIDOS?>"> 
                               
                               <input name="<?=$p->ID_SUB_CATEGORIA_2?>[precargado]" id="h_<?=$p->ID_SUB_CATEGORIA_2?>" type="hidden" value="<?=$precargado[$p->ID_SUB_CATEGORIA_2]?>"> 
                             
+                              <div class="input-group">
                               <input id="s_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>[cantidad]" class="form-control reset_input_stock" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='11')?'readonly="readonly"':''?> step="1" oninput="noPrecargar(<?=$p->ID_SUB_CATEGORIA_2?>)" value="<?=$solicitud[$p->ID_SUB_CATEGORIA_2]?>">
+
+                              <div class="input-group-append">
+                                <button id="b_<?=$p->ID_SUB_CATEGORIA_2?>" onclick="enable(<?=$p->ID_SUB_CATEGORIA_2?>)" class="btn <?=($precargado[$p->ID_SUB_CATEGORIA_2])? 'btn-success':'btn-danger'?>" type="button">
+                                  <i class="las la-hand-point-left"></i>
+                                </button>
+                              </div>
+                            </div>
                             </td>
                         </tr>
                       <?php endforeach; ?>
@@ -282,17 +290,24 @@
       $.post("<?=site_url('get-minimo-stock')?>", {lista:d})
       .done(function( data ) {
 
-        minimos = JSON.parse(data);
+        response = JSON.parse(data);
 
         
 
         $('.reset_stock').empty();
         $('.reset_stock').append(0);
 
-        //$('.reset_input_stock').empty();
-        //$('.reset_input_stock').val(0);
+        
+        $.each(response.productos, function (key, val) { 
+           var status = $('#h_'+val.ID_SUB_CATEGORIA_2).val();
+           if(status == 1){
+            $('#s_'+val.ID_SUB_CATEGORIA_2).val(0);
+           }
+        }); 
 
-        $.each(minimos.minimos, function (i, v) { 
+
+
+        $.each(response.minimos, function (i, v) { 
           
           precargado = $('#h_'+v.ID_SUB_CATEGORIA_2).val();
 
@@ -404,10 +419,27 @@ if (result.isConfirmed) {
 }
 
 function noPrecargar(id) {
-
   $('input[name="' + id + '[precargado]"]').val(0);
+}
+
+function enable(id) {
   
-  
+  var status =  $('#h_'+id).val();
+
+  console.log(status);
+
+  if(status == 1) {
+    $('#h_'+id).val(0);
+    $('#b_'+id).removeClass('btn-success');
+    $('#b_'+id).addClass('btn-danger');
+  }
+
+  else 
+  {
+    $('#h_'+id).val(1);
+    $('#b_'+id).removeClass('btn-danger');
+    $('#b_'+id).addClass('btn-success');
+  }
 
 }
 </script>
