@@ -44,16 +44,18 @@
 <div class="row justify-content-center">
   <div class="col-8 col-md-2">
     <label for="">Perfil de Pedido</label>
+    <div class="input-group">
       <select name="" id="lista" class="form-control">
         <option value=""></option>
         <?php foreach ($lista as $item): ?>
           <option value="<?=$item->ID?>"><?=$item->TEXT?></option>
         <?php endforeach; ?>
       </select>
-  </div>
-
-  <div class="col-1 col-md-1 ">
-    <?=form_button('obtener', '<span style="font-size:1.5rem" class="las la-search la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-padding btn-hide', 'onclick'=>'getMinimos()']);?>
+      <div class="input-group-append">
+      <?=form_button('obtener', '<span style="font-size:1.5rem" class="las la-search la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'getMinimos()']);?>
+      <?=form_button('limpiar', '<span style="font-size:1.5rem" class="las la-broom la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'setLimpiar()']);?>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -441,5 +443,38 @@ function enable(id) {
     $('#b_'+id).addClass('btn-success');
   }
 
+}
+
+
+function setLimpiar() {
+
+  Swal.fire({
+    title: 'Deseas limpiar todas la modificaciones manuales?',
+    showDenyButton: true,
+    showCancelButton: true,
+    confirmButtonText: 'Si',
+    denyButtonText: 'No',
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+
+  $.post("<?=site_url('set-limpiar')?>")
+   .done(function( data ) {
+
+    response = JSON.parse(data);
+    
+    $.each(response.productos, function (key, val) { 
+      var status = $('#h_'+val.ID_SUB_CATEGORIA_2).val();
+      if(status == 0){
+        $('#s_'+val.ID_SUB_CATEGORIA_2).val(0);
+      }
+    }); 
+  });
+
+      
+    } else if (result.isDenied) {
+      Swal.fire('Ha elegido no limpiar', '', 'info')
+    }
+  })
 }
 </script>

@@ -253,6 +253,8 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['abrir-declaracion'] = 'api/pedido/abrir_declaracion';
     $route['verificar-solicitud'] = 'api/pedido/verificar_solicitud';
     $route['verificar-preparacion'] = 'api/pedido/verificar_preparacion';
+    $route['set-limpiar'] = 'api/pedido/set_limpiar';
+
 
 
 

@@ -514,6 +514,15 @@ class Pedido extends CI_Controller {
         echo json_encode($response);
     } 
 
+
+    public function set_limpiar() {
+
+        $productos = $this->main->getListSelect('INVENTARIOS_SUB_CATEGORIA_2', 'ID_SUB_CATEGORIA_2', NULL, ['ESTADO_REPOSICION'=>1]);
+  
+        
+        echo json_encode(['productos'=>$productos]);
+    }
+
 }
 
 
