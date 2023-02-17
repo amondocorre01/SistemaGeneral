@@ -34,10 +34,11 @@
 <?php if($cabecera AND $cabecera[0]->ESTADO > 9): ?>
 <?php if($cabecera[0]->ESTADO > 10 ):?>
   <div class="row ">
-    <div class="col-md-12 text-center">
-    <?=img(['src'=>'assets/dist/img/close2.png', 'width' => '15%'])?>
+      <div class="col-2 btn-group">
+          <?=form_button('cerrar', '<span class="las la-lock la-4x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'cerrarTodo()']);?>
+          <?=form_button('abrir', '<span class="las la-key la-4x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'abrirTodo()']);?>
+      </div>
     </div>
-  </div>
 <?php endif;?>
 
 <div class="row justify-content-center">
@@ -145,9 +146,11 @@
                             </td>
 
                             <td width="15%">    
-                              <input id="p_<?=$p->ID_SUB_CATEGORIA_2?>" type="hidden" value="<?=$p->CANTIDAD_ADECUACION_PEDIDOS?>">  
+                              <input id="p_<?=$p->ID_SUB_CATEGORIA_2?>" type="hidden" value="<?=$p->CANTIDAD_ADECUACION_PEDIDOS?>"> 
+                              
+                              <input name="<?=$p->ID_SUB_CATEGORIA_2?>[precargado]" id="h_<?=$p->ID_SUB_CATEGORIA_2?>" type="hidden" value="<?=$precargado[$p->ID_SUB_CATEGORIA_2]?>"> 
                             
-                              <input id="s_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>" class="form-control reset_input_stock" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='11')?'readonly="readonly"':''?> step="1" value="<?=$solicitud[$p->ID_SUB_CATEGORIA_2]?>">
+                              <input id="s_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>[cantidad]" class="form-control reset_input_stock" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='11')?'readonly="readonly"':''?> step="1" oninput="noPrecargar(<?=$p->ID_SUB_CATEGORIA_2?>)" value="<?=$solicitud[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
                         </tr>
                       <?php endforeach; ?>
@@ -281,29 +284,40 @@
 
         minimos = JSON.parse(data);
 
+        
+
         $('.reset_stock').empty();
         $('.reset_stock').append(0);
 
-        $('.reset_input_stock').empty();
-        $('.reset_input_stock').val(0);
+        //$('.reset_input_stock').empty();
+        //$('.reset_input_stock').val(0);
 
         $.each(minimos.minimos, function (i, v) { 
           
-          $('#m_'+v.ID_SUB_CATEGORIA_2).empty();
-          $('#m_'+v.ID_SUB_CATEGORIA_2).append(Number(v.STOCK));
+          precargado = $('#h_'+v.ID_SUB_CATEGORIA_2).val();
 
-          var operacion = Number(v.STOCK)-Number($('#a_'+v.ID_SUB_CATEGORIA_2).html());
-          operacion = Math.ceil(operacion/Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
+          console.log(precargado);
 
-          if( operacion > 0)
+          if(precargado == 1) 
           {
-            $('#s_'+v.ID_SUB_CATEGORIA_2).val(operacion);
+              $('#m_'+v.ID_SUB_CATEGORIA_2).empty();
+              $('#m_'+v.ID_SUB_CATEGORIA_2).append(Number(v.STOCK));
+
+              var operacion = Number(v.STOCK)-Number($('#a_'+v.ID_SUB_CATEGORIA_2).html());
+              operacion = Math.ceil(operacion/Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
+
+              if( operacion > 0)
+              {
+                $('#s_'+v.ID_SUB_CATEGORIA_2).val(operacion);
+              }
+
+              else 
+              {
+                $('#s_'+v.ID_SUB_CATEGORIA_2).val(0);
+              }
           }
 
-          else 
-          {
-            $('#s_'+v.ID_SUB_CATEGORIA_2).val(0);
-          }
+          
 
           
         });
@@ -316,4 +330,84 @@
         }
       })
     }
+
+
+    function abrirTodo() {
+
+Swal.fire({
+  title: 'Deseas abrir el formulario?',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: 'Si',
+  denyButtonText: 'No',
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $('.loading').show();
+    
+    $.post("<?=site_url('verificar-solicitud')?>", {db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
+          .done(function( data ) {
+            $('.loading').hide();
+            dato = JSON.parse(data);
+
+            if(dato.status == true) {
+              Swal.fire('El formulario fue abierto', '', 'success');
+              $('.reset_input_stock').attr('readonly',false);
+            }
+            else {
+              Swal.fire('No se cumplieron las condiciones para abrir el formuario', '', 'info');
+            }
+          });
+
+    
+  } else if (result.isDenied) {
+    Swal.fire('No se ha enviado aun', '', 'info')
+  }
+})
+}
+
+
+function cerrarTodo() {
+
+Swal.fire({
+title: 'Deseas cerrar y guardar el formulario?',
+showDenyButton: true,
+showCancelButton: true,
+confirmButtonText: 'Si',
+denyButtonText: 'No',
+}).then((result) => {
+/* Read more about isConfirmed, isDenied below */
+if (result.isConfirmed) {
+  $('.loading').show();
+  var fecha = '<?=date('Y-m-d')?>'
+
+  $.post("<?=site_url('verificar-solicitud')?>", {db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
+        .done(function( data ) {
+          $('.loading').hide();
+          dato = JSON.parse(data);
+
+          if(dato.status == true) {
+            guardarSolicitud();
+            Swal.fire('El formulario fue guardado y cerrado', '', 'success');
+            $('.reset_input_stock').attr('readonly',true);
+          }
+          else {
+            Swal.fire('No se cumplieron las condiciones para cerrar y guardar el formuario', '', 'info');
+          }
+        });
+
+  
+} else if (result.isDenied) {
+  Swal.fire('No se ha enviado aun', '', 'info')
+}
+})
+}
+
+function noPrecargar(id) {
+
+  $('input[name="' + id + '[precargado]"]').val(0);
+  
+  
+
+}
 </script>

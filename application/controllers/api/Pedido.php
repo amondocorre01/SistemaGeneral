@@ -135,7 +135,7 @@ class Pedido extends CI_Controller {
         $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 10 WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
         $DB2->query($sql);
 
-        $sql2 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 10 WHERE FECHA ='".date('Y-m-d')."'";
+        $sql2 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 10, USUARIO_CONTEO = ".$this->session->id_usuario." WHERE FECHA ='".date('Y-m-d')."'";
         $DB2->query($sql2);
 
         $response['status'] = true;
@@ -176,9 +176,9 @@ class Pedido extends CI_Controller {
             
             if($key != 'db' AND $key != 'sufijo') {
 
-                if($value != $array1[$key]) {
+                if($value['cantidad'] != $array1[$key]) {
 
-                    $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$value.",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key;   
+                    $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$value['cantidad'].",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key.",".$value['precargado'];   
                     
                     $DB2->query($sql2)->result();
      
@@ -207,7 +207,7 @@ class Pedido extends CI_Controller {
         $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 11 WHERE FECHA_CONTEO ='".$fecha."'";
         $DB2->query($sql);
 
-        $sql2 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 11, FECHA_SOLICITUD ='".date('Y-m-d H:i:s')."' WHERE FECHA = (SELECT MAX(FECHA) FROM CABECERA_PEDIDO_".$sufijo." ) ";
+        $sql2 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 11, USUARIO_SOLICITUD = ".$this->session->id_usuario.", FECHA_SOLICITUD ='".date('Y-m-d H:i:s')."' WHERE FECHA = (SELECT MAX(FECHA) FROM CABECERA_PEDIDO_".$sufijo." ) ";
         $DB2->query($sql2);
 
         
@@ -472,6 +472,26 @@ class Pedido extends CI_Controller {
 
         echo json_encode($response);
     }
+
+
+    public function verificar_solicitud() 
+    {
+        $response['status'] = false;
+        $usuario = $this->session->id_usuario;
+        $sufijo = $this->input->post('sufijo');
+        $db = $this->input->post('db');
+
+        $DB2 = $this->load->database($db, TRUE);
+
+        $sql = "SELECT COUNT(*) AS PERMISO FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_SOLICITUD IS NOT NULL AND FECHA_PREPARACION IS NULL AND FECHA_RECEPCION IS NULL AND FECHA_ENTREGA IS NULL AND USUARIO_SOLICITUD = ? AND FECHA = (SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo."      WHERE FECHA_SOLICITUD = (SELECT MAX(FECHA_SOLICITUD) FROM CABECERA_PEDIDO_".$sufijo."))";
+        $registro = $DB2->query($sql, $usuario)->result();
+
+        if($registro[0]->PERMISO > 0) {
+            $response['status'] = true;
+        }
+
+        echo json_encode($response);
+    } 
 
 }
 
