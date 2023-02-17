@@ -27,102 +27,10 @@ $sucursales = getSucursalesUsuario($id_usuario);
             <h3 class="card-title">Pedidos Extraordinarios </h3>
         </div>
         
-        <div class="card">
-  <div class="card-body">
-    <form id="form-product-new-update" enctype="multipart/form-data">
-    <div class="row">
-    <div class="col-md-3">
-                
-                <div class="form-group">
-                  <label>Sucursal</label>
-                  <select name="codigo_sucursal" id="codigo_sucursal" class="form-control select2" style="width: 100%;">
-                    <option value="" selected="selected">Seleccione la sucursal</option>
-                    <?php
-                        foreach ($sucursales as $key => $sucursal) {
-                            echo '<option value="'.$sucursal->CODIGO.'">'.$sucursal->SUCURSAL_BI.'</option>';
-                        }
-                    ?>
-                  </select>
-                </div>
-            </div>
-    </div>
-    <div class="row">
-
-            <div class="col-md-3">
-                
-                <div class="form-group">
-                  <label>Categoria</label>
-                  <select name="productoCategoria1" id="productoCategoria1" class="form-control select2" style="width: 100%;">
-                    <option value="" selected="selected">Seleccione la primera categoria</option>
-                    <?php
-                        foreach ($primeraCategoria as $key => $value) {
-                            echo '<option '.$sel.' value="'.$value->ID_CATEGORIA.'">'.$value->CATEGORIA.'</option>';
-                        }
-                    ?>
-                  </select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                  <label>Subcategoria</label>
-                  <select name="productoCategoria2" id="productoCategoria2" class="form-control select2" style="width: 100%;">
-                    <option value="" selected="selected">Seleccione la segunda categoria</option>
-                  </select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                  <label>Seleccione el producto</label>
-                  <select name="productoMadre" id="productoMadre" class="form-control select2" style="width: 100%;">
-                    <option value="" selected="selected">Seleccione el producto</option>
-                  </select>
-                </div>
-            </div>
-            <div class="col-offset-1 col-md-3">
-                <label for="">Seleccione Fecha de entrega</label>
-                <input class="form-control" type="date" id="fecha_pedido" name="fecha_pedido" min="<?=date('Y-m-d')?>" >
-            </div>
-            <!--<div class="col-md-3">
-            <input  name="vc" type="hidden" id="fecha" value="<?=$this->input->get('vc')?>">
-                <input class="btn btn-primary btn-form-search" type="submit" value="Buscar" name="buscar" >
-            </div>-->
+      <div class="card">
+        <div class="card-body">
         </div>
-
-    <div class="row">
-      <div class="col-md-9">
-        <div class="form-group">
-        <label>Detalle del producto extraordinario</label>
-              <textarea class="form-control input-sm " rows="5" id="detalleProducto" name="detalle" placeholder="Ingrese el detalle."><?php echo strip_tags('');?></textarea>
-        </div>
-
-        
       </div>
-      <div class="col-md-3">
-        <div class="row">
-          <label class="col-sm-12 ">¿Se modificará el producto?</label>
-          <div class="form-group col-sm-4">
-            <div class="custom-control custom-checkbox">
-              <input class="custom-control-input" type="radio" name="modificaraProducto" id="transporteNo" value="0" checked>
-              <label for="transporteNo" class="custom-control-label">NO</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input class="custom-control-input" type="radio" name="modificaraProducto" id="transporteSi" value="1">
-              <label for="transporteSi" class="custom-control-label">SI</label>
-            </div>
-          </div>
-        </div>
-      </div>  
-
-    </div>
-    
-    <div> 
-      <center>
-        <button type="submit" class="btn btn-primary" id="guardarPedidoExtraordinario" >Guardar</button>
-      </center>
-    </div>
-    </form>
-  </div>
-</div>
         </div>
     </div>
 </div>
@@ -539,14 +447,14 @@ $(document).ready(function(){
     });
 
     $(function () {
-    $.validator.setDefaults({
+      $.validator.setDefaults({
     
       submitHandler: function () {
         //alert( "Form successful submitted!" );
         guardarPedidoExtraordinario();
       }
-    });
-    $('#form-product-new-update').validate({
+      });
+      $('#form-product-new-update').validate({
       rules: {
         codigo_sucursal: {
           required: true
@@ -598,8 +506,8 @@ $(document).ready(function(){
       unhighlight: function (element, errorClass, validClass) {
         $(element).removeClass('is-invalid');
       }
+      });
     });
-  });
 
 });
 

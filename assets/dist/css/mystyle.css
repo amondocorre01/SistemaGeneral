@@ -658,10 +658,4 @@ r-tabs .r-tabs-accordion-title .r-tabs-anchor {
 
 
  
- .loading-image {
-    align-items: center;
-   position: absolute;
-   top: 300px;
-   left: 840px;
-   z-index: 10000;
- }
+ 

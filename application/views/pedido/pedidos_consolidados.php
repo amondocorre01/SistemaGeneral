@@ -10,9 +10,13 @@
     $this->session->set_userdata('datatable', 'true');
     
     $fecha_reporte = $this->input->get('fecha_reporte');
+    $tipo_reporte = $this->input->get('tipo_reporte');
     $id_usuario_seleccionado = $this->input->get('usuario');
     if(!$fecha_reporte){
         $fecha_reporte = date('Y-m-d');
+    }
+    if(!$tipo_reporte){
+      $tipo_reporte = 'ALL';
     }
     $fecha_r = date("d/m/Y", strtotime($fecha_reporte));
     $this->session->set_userdata('title', 'Pedidos Consolidados '.$fecha_r);
@@ -38,6 +42,18 @@
             </div>
 
             <div class="col-md-3">
+              <div class="form-group">
+                  <label>Seleccione</label>
+                  <select name="tipo_reporte" class="form-control" style="width: 100%;">
+                    <option value="" selected="selected">Seleccione</option>
+                    <option value="PERECEDERO" <?= $tipo_reporte=='PERECEDERO'?'selected="selected"':''?>>PERECEDERO</option>
+                    <option value="NO PERECEDERO"<?= $tipo_reporte=='NO PERECEDERO'?'selected="selected"':''?>>NO PERECEDERO</option>
+                    <option value="ALL"<?= $tipo_reporte=='ALL'?'selected="selected"':''?>>TODOS</option>
+                  </select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
             <input  name="vc" type="hidden" id="fecha" value="<?=$this->input->get('vc')?>">
                 <input class="btn btn-primary btn-form-search" type="submit" value="Buscar" name="buscar" >
             </div>
@@ -58,7 +74,7 @@ $listas_pedidos_sucursal = array();
 foreach ($sucursales as $key => $sucursal) {
   $codigo_bd = $sucursal->CODIGO;
   $sufijo_bd = $sucursal->SUFIJO; 
-  $pedidoSucursal = getPedidoSucursal($codigo_bd, $sufijo_bd, $fecha_reporte);
+  $pedidoSucursal = getPedidoSucursal($codigo_bd, $sufijo_bd, $fecha_reporte, $tipo_reporte);
   $listas_pedidos_sucursal[$codigo_bd] = $pedidoSucursal;
 }
 ?>
@@ -115,3 +131,8 @@ foreach ($sucursales as $key => $sucursal) {
 <input type="hidden" id="data_print" name="data_print" />
 </form>
 
+<script>
+  $('.btn-form-search').on('click',function(){
+      $('.loading').show();
+    });
+</script>

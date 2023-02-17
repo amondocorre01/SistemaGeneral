@@ -752,10 +752,15 @@ if(!function_exists('existencia')) {
 }
 
 if(!function_exists('getPedidoSucursal')) {
-	function getPedidoSucursal($bd, $sufijo_sucursal, $fecha){
+	function getPedidoSucursal($bd, $sufijo_sucursal, $fecha, $tipo_reporte){
 		$CI =& get_instance();
 		$DB2 = $CI->load->database($bd, TRUE);
-		$sql = "select * from INVENTARIOS_DECLARACION".$sufijo_sucursal." ida where FECHA_CONTEO ='$fecha';";
+		if($tipo_reporte =='ALL'){
+			$sql = "select * from INVENTARIOS_DECLARACION".$sufijo_sucursal." ida where FECHA_CONTEO ='$fecha';";
+		}else{
+			$sql = "select * from INVENTARIOS_DECLARACION".$sufijo_sucursal." ida where FECHA_CONTEO ='$fecha' and TURNO='$tipo_reporte';";
+		}
+		
 		$respuesta = $DB2->query($sql);
 		$respuesta = $respuesta->result();
 		return $respuesta;
@@ -866,13 +871,19 @@ if(!function_exists('buscarCantidadSubcategoria2')) {
 }
 
 if(!function_exists('guardarPedidoExtraordinario')) {
-	function guardarPedidoExtraordinario($bd, $sufijo_sucursal, $categoria_1, $categoria_2, $producto_madre, $modificado, $detalle, $id_usuario, $fecha_registro, $fecha_entrega_pedido) {
-		//var_dump($fecha_entrega_pedido);
+	function guardarPedidoExtraordinario($bd, $prefijo_sucursal, $sufijo_sucursal, $categoria_1, $categoria_2, $producto_madre, $modificado, $detalle, $id_usuario, $fecha_registro, $fecha_entrega_pedido) {
 		$CI =& get_instance();
 		$DB2 = $CI->load->database($bd, TRUE);
-		$sql = "insert into PEDIDO_EXTRAORDINARIO".$sufijo_sucursal."(CATEGORIA_1, CATEGORIA_2,PRODUCTO_MADRE,MODIFICADO,DETALLE,ESTADO,USUARIO,FECHA_REGISTRO, FECHA_ENTREGA_PEDIDO)values('$categoria_1','$categoria_2','$producto_madre','$modificado','$detalle','1','$id_usuario','$fecha_registro','$fecha_entrega_pedido') ;";
-		$respuesta = $DB2->query($sql);
-		return true;
+		$sql = "EXEC ".$prefijo_sucursal."SET_PEDIDO_EXTRAORDINARIO '$categoria_1','$categoria_2','$producto_madre','$modificado','$detalle','$id_usuario','$fecha_registro','$fecha_entrega_pedido' ;";
+		if(($respuesta = $DB2->query($sql)->result())){
+			if(count($respuesta)==1){
+				return $respuesta[0]->ID_PEDIDO_EXTRAORDINARIO;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
 	}
 }
 if(!function_exists('eliminar_pedido_extraordinario')) {
@@ -880,6 +891,19 @@ if(!function_exists('eliminar_pedido_extraordinario')) {
 		$CI =& get_instance();
 		$DB2 = $CI->load->database($bd, TRUE);
 		$sql = "update PEDIDO_EXTRAORDINARIO".$sufijo_sucursal." SET ESTADO=0 where ID_PEDIDO_EXTRAORDINARIO='$id_pedido_extraordinario';";
+		if($DB2->query($sql)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+}
+
+if(!function_exists('aprobar_pedido_extraordinario')) {
+	function aprobar_pedido_extraordinario($bd, $sufijo_sucursal, $id_pedido_extraordinario){
+		$CI =& get_instance();
+		$DB2 = $CI->load->database($bd, TRUE);
+		$sql = "update PEDIDO_EXTRAORDINARIO".$sufijo_sucursal." SET APROBADO=1 where ID_PEDIDO_EXTRAORDINARIO='$id_pedido_extraordinario';";
 		if($DB2->query($sql)){
 			return true;
 		}else{
