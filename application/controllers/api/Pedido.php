@@ -288,7 +288,7 @@ class Pedido extends CI_Controller {
 
         $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 12 WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
 
-        $sql3 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 12, FECHA_PREPARACION = (SELECT DATEADD(HH, -4, GETDATE())) WHERE FECHA_SOLICITUD = (SELECT MAX(FECHA_SOLICITUD) FROM CABECERA_PEDIDO_".$sufijo.")";
+        $sql3 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 12, USUARIO_PREPARACION = ".$this->session->id_usuario.", FECHA_PREPARACION = (SELECT DATEADD(HH, -4, GETDATE())) WHERE FECHA_SOLICITUD = (SELECT MAX(FECHA_SOLICITUD) FROM CABECERA_PEDIDO_".$sufijo.")";
         $DB2->query($sql3);
 
         $registro = $DB2->query($sql);
@@ -486,6 +486,25 @@ class Pedido extends CI_Controller {
         $DB2 = $this->load->database($db, TRUE);
 
         $sql = "SELECT COUNT(*) AS PERMISO FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_SOLICITUD IS NOT NULL AND FECHA_PREPARACION IS NULL AND FECHA_RECEPCION IS NULL AND FECHA_ENTREGA IS NULL AND USUARIO_SOLICITUD = ? AND FECHA = (SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo."      WHERE FECHA_SOLICITUD = (SELECT MAX(FECHA_SOLICITUD) FROM CABECERA_PEDIDO_".$sufijo."))";
+        $registro = $DB2->query($sql, $usuario)->result();
+
+        if($registro[0]->PERMISO > 0) {
+            $response['status'] = true;
+        }
+
+        echo json_encode($response);
+    } 
+
+    public function verificar_preparacion() 
+    {
+        $response['status'] = false;
+        $usuario = $this->session->id_usuario;
+        $sufijo = $this->input->post('sufijo');
+        $db = $this->input->post('db');
+
+        $DB2 = $this->load->database($db, TRUE);
+
+        $sql = "SELECT COUNT(*) AS PERMISO FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_SOLICITUD IS NOT NULL AND FECHA_PREPARACION IS NOT NULL AND FECHA_RECEPCION IS NULL AND FECHA_ENTREGA IS NULL AND USUARIO_PREPARACION = ? AND FECHA = (SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo."    WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo."))";
         $registro = $DB2->query($sql, $usuario)->result();
 
         if($registro[0]->PERMISO > 0) {

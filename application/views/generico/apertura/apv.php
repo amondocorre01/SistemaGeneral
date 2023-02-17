@@ -268,8 +268,7 @@
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           $('.loading').show();
-          var fecha = '<?=date('Y-m-d')?>'
-
+          
           $.post("<?=site_url('verificar-preparacion')?>", {db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
                 .done(function( data ) {
                   $('.loading').hide();
@@ -277,7 +276,7 @@
 
                   if(dato.status == true) {
                     Swal.fire('El formulario fue abierto', '', 'success');
-                    $('.enviado').attr('readonly',false);
+                    $('.reset_input_stock').attr('readonly',false);
                   }
                   else {
                     Swal.fire('No se cumplieron las condiciones para abrir el formuario', '', 'info');
@@ -306,15 +305,15 @@ if (result.isConfirmed) {
   $('.loading').show();
   var fecha = '<?=date('Y-m-d')?>'
 
-  $.post("<?=site_url('verificar-declaracion')?>", {db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
+  $.post("<?=site_url('verificar-preparacion')?>", {db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
         .done(function( data ) {
           $('.loading').hide();
           dato = JSON.parse(data);
 
           if(dato.status == true) {
-            guardarDeclaracion();
+            guardarPreparacion();
             Swal.fire('El formulario fue guardado y cerrado', '', 'success');
-            $('.enviado').attr('readonly',true);
+            $('.reset_input_stock').attr('readonly',true);
           }
           else {
             Swal.fire('No se cumplieron las condiciones para cerrar y guardar el formuario', '', 'info');
