@@ -20,12 +20,22 @@ class MYPDF extends TCPDF
     
 }
 
+$html_decode= trim(base64_decode($pedido));
+var_dump($html_decode);
+/*ob_start();
+echo '<div>';
+echo $html_decode;
+echo '</div>';
+$html = ob_get_clean();*/
+$html = $html_decode;
+
 
 $pageLayout = array(80, 120); //  or array($height, $width) 
 
 
 // create new PDF document
-$pdf = new MYPDF('P', 'mm', $pageLayout, true, 'UTF-8', false);
+$pdf = new MYPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+$pdf->Cell(0, 0, 'A4 PORTRAIT', 1, 1, 'C');
 
 // set default monospaced font
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -61,12 +71,7 @@ $pdf->setCellPaddings(0,0,0,0);
 $pdf->SetFont('helvetica', 'B', 8);
 mb_internal_encoding("UTF-8");
 $pdf->SetFont('dejavusans', '', 7.2, '', true);
-ob_start();
-echo '<script>
-var getlocal = localStorage.getItem("data_pedido");
-console.log(getlocal);
-</script>';
-ob_clean();
+/*
 $html= "<center><b>CAPRESSO S.R.L";
 $html= $html.'<br>';
 $html= $html.'<br>';
@@ -141,10 +146,10 @@ $html= $html.'<table border="1" class="table table-bordered table-striped tablaD
                         <td></td>
                     </tr>
                 </table>';
-
+*/
 //$contenido = $this->load->view($html, '', TRUE);
-$pdf->writeHTML($html, true, true, true, true, 'C');
-$pdf->Output('detalle_turno.pdf', 'I');
-
+$pdf->writeHTML($html, true, false, true, false, 'C');
+//$pdf->Output('detalle_pedido.pdf', 'I');
+$pdf->Output(NAME_DIR.'assets/detalle_pedido.pdf', 'F');
 
 ?>

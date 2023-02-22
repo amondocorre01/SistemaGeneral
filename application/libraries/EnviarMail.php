@@ -199,4 +199,49 @@ class EnviarMail
         }
      
     }
+
+    function enviarCorreoPedido($pedido){
+        $mail = new PHPMailer(true);
+        try {
+            $correoCliente = 'goe.alcon@gmail.com';
+            $email_emisor = 'facturacion.capresso@outlook.com';
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.office365.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'facturacion.capresso@outlook.com';
+            $mail->Password = 'CapInternet123!';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            $mail->setFrom(($email_emisor), $email_emisor);
+            $mail->addAddress($correoCliente, 'Guido Alcón');
+
+            
+            $mail->isHTML(true);
+            $mail->Subject = 'Emision de Documento Fiscal';
+            $html = trim(base64_decode($pedido));
+
+            /* $html=' <h1 style="color: #AD2205;">Numero de Factura: '.$nroFactura.'</h1>
+                    <p>Estimado(a) usuario(a),'.$nombreEmpresa.' procedi&oacute; a generar la Factura correspondiente, descritos en la Factura Nro. <strong>'.$nroFactura.'</strong></p>
+                    <p>Adjunto encontrara los archivos la factura en formato pdf y la factura firmada digitalmente en formato xml.</p>
+                    <p><strong>No responda a este mensaje.</strong>&nbsp;En caso de que se le presente alguna duda o inquietud puede contactarnos a los tel&eacute;fonos y correo electr&oacute;nico mencionados en el pie de este mensaje.</p>
+                    <p>&nbsp;</p>
+                    <p><strong>Telf:</strong>'.$celular.'<br /><strong>Correo Electr&oacute;nico:</strong>&nbsp;<a href="mailto:'.$correo.'" target="_blank" rel="noopener">'.$correo.'</a><br /><strong>Direcci&oacute;n:</strong>'.$direccion.'<br /><strong>Sitio Web:</strong>&nbsp;<a href="https://'.$paginaWeb.'" target="_blank" rel="noopener" data-saferedirecturl="'.$paginaWeb.'">https://'.$paginaWeb.'</a></p>';
+             */
+                    $mail->Body = $html;
+            if($mail->send()){
+                //unlink($rutaPdf);
+                return true;
+            }else{
+                return false;
+            }
+            
+        } catch (Exception $e) {
+            echo 'Mensaje ' . $mail->ErrorInfo;
+            return false;
+            
+        }
+     
+    }
 }

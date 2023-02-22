@@ -250,9 +250,24 @@
     function generarPdfPedido(){
       //console.log('generando pdf');
       var data_html=$('#serializeExample').html();
-      localStorage.setItem("data_pedido", data_html);
-      var url= "<?=site_url('generar-pdf-pedido')?>";
-      url= `${url}/1`;
-        window.open(url,'_blank');
+      let encoded = btoa(data_html);
+      var datos = new FormData();
+      datos.append("pedido_html",encoded);
+      $.ajax({
+            url: "<?=site_url('generar-pdf-pedido')?>/1",
+            method: "POST",
+            data: datos,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success:function(respuesta){
+              console.log(respuesta);
+            }
+          });
+      //localStorage.setItem("precios", data_html);
+      //var url= "<?=site_url('generar-pdf-pedido')?>";
+      //url= `${url}/${encoded}`;
+        //window.open(url,'_blank');
     }
 </script>
