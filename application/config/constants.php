@@ -105,4 +105,6 @@ define('URL_QR', 'https://siat.impuestos.gob.bo/consulta/QR');
 define('NAME_DIR','SistemaGeneral/');
 define('IMPRESORA_LOCAL','EPSON TM-T20II Receipt');
 
+define('SUCURSALES', [ ['db'=>'aeste', 'sufijo'=>'AE', 'sucursal'=>'Jordan'], ['db'=>'aeste', 'sufijo'=>'AE', 'sucursal'=>'America Este'], ['db'=>'aeste', 'sufijo'=>'AE', 'sucursal'=>'America Oeste'] ]);
+
 

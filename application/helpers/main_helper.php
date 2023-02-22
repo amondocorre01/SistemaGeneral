@@ -1083,3 +1083,47 @@ if(!function_exists('preparacion')) {
 	}
 }
 
+
+if( ! function_exists('despacho')) {
+	function despacho($conexiones) {
+
+		$CI =& get_instance();
+
+		$sql1 = "SELECT SUB_CATEGORIA_2 FROM INVENTARIOS_SUB_CATEGORIA_2 WHERE ESTADO_REPOSICION = 1"; 
+
+		$consulta = $CI->db->query($sql1)->result();
+		$pila = [];
+
+		foreach ( $consulta as $i) {
+			$inicio[$i->SUB_CATEGORIA_2] = 0;
+		}
+
+		foreach ($conexiones as $key => $value) {
+			$db = $value['db'];
+			$sufijo = $value['sufijo'];
+			$sucursal = $value['sucursal'];
+
+			$DB2 = $CI->load->database($db, TRUE);
+
+			// Obtenemos la fecha de preparacion
+			$sql = "SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_PREPARACION > ?";
+			$consulta = $DB2->query($sql, date('Y-m-d 06:00:00.000'))->result();
+			$fecha = $consulta[0]->FECHA;
+
+			$sql2 = "SELECT ID_SUBCATEGORIA_2, NOMBRE_PRODUCTO, CANTIDAD_ENVIADA FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO = ?";
+			$consulta2 = $DB2->query($sql2, $fecha)->result();
+
+
+			foreach ($consulta2 as $v) {
+				//$p[$v->NOMBRE_PRODUCTO] = $inicio[$v->NOMBRE_PRODUCTO] + $v->CANTIDAD_ENVIADA;
+				 array_push($pila, array( ['producto'=>$v->NOMBRE_PRODUCTO], ['cantidad'=>$v->CANTIDAD_ENVIADA]));
+			}
+		}
+
+		echo '<pre>';
+		print_r($pila);
+
+		//return $inicio;
+
+	}
+}
