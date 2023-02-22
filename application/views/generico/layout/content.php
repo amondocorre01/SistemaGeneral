@@ -576,11 +576,8 @@ case 'apv-prueba':
 break;
 
 case 'despacho':
-	$sucursales = SUCURSALES;
-
-	$data['response'] = json_encode(despacho($sucursales));
-
-	echo $this->load->view('generico/apertura/despacho', $data, TRUE);
+	
+	echo $this->load->view('generico/apertura/despacho', NULL, TRUE);
 
 break;
 
