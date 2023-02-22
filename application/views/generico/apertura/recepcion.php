@@ -113,7 +113,9 @@
                         <tr>
                             <td width="20%"><?=$p->SUB_CATEGORIA_2?></td>
                             <td width="15%">
-                              <?=$p->MEDIDA_ADECUACIÓN?>                          
+                              <?php if(isset($p->MEDIDA_ADECUACIÓN)): ?>
+                              <?=$p->MEDIDA_ADECUACIÓN?> 
+                              <?php endif; ?>                         
                             </td>
                             <td width="15%" id="r_<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
                               <?=$registro[$p->ID_SUB_CATEGORIA_2]?>                      
