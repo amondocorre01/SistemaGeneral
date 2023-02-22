@@ -268,6 +268,10 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['eliminar-pedido-extraordinario'] = 'api/pedidoextraordinario/eliminar_pedido_extraordinario';
     $route['aprobar-pedido-extraordinario'] = 'api/pedidoextraordinario/aprobar_pedido_extraordinario';
 
+    $route['generar-pdf-pedido/(:any)'] = 'api/impresion/generarPdfPedido/$1';
+
+
+
 
    
 
