@@ -1092,11 +1092,12 @@ if( ! function_exists('despacho')) {
 		$sql1 = "SELECT SUB_CATEGORIA_2 FROM INVENTARIOS_SUB_CATEGORIA_2 WHERE ESTADO_REPOSICION = 1"; 
 
 		$consulta = $CI->db->query($sql1)->result();
-		$pila = [];
 
 		foreach ( $consulta as $i) {
 			$inicio[$i->SUB_CATEGORIA_2] = 0;
 		}
+
+		
 
 		foreach ($conexiones as $key => $value) {
 			$db = $value['db'];
@@ -1115,15 +1116,15 @@ if( ! function_exists('despacho')) {
 
 
 			foreach ($consulta2 as $v) {
-				//$p[$v->NOMBRE_PRODUCTO] = $inicio[$v->NOMBRE_PRODUCTO] + $v->CANTIDAD_ENVIADA;
-				 array_push($pila, array( ['producto'=>$v->NOMBRE_PRODUCTO], ['cantidad'=>$v->CANTIDAD_ENVIADA]));
+				$inicio[$v->NOMBRE_PRODUCTO] = $inicio[$v->NOMBRE_PRODUCTO] + $v->CANTIDAD_ENVIADA;
 			}
 		}
 
 		echo '<pre>';
-		print_r($pila);
+		print_r($inicio);
 
-		//return $inicio;
+		return $inicio;
 
 	}
 }
+

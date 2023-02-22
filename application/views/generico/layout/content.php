@@ -520,7 +520,7 @@ break;
 
 case 'recepcion-prueba':
 
-	$db = 'aeste';
+	$db = 'ventas';
 	$sufijo = 'AE';
 	$sucursal = 2;
 
@@ -533,7 +533,7 @@ break;
 
 case 'solicitud-prueba':
 
-	$db = 'aeste';
+	$db = 'ventas';
 	$sufijo = 'AE';
 	$sucursal = 2;
 
@@ -546,7 +546,7 @@ break;
 
 case 'existencia-prueba':
 
-	$db = 'aeste';
+	$db = 'ventas';
 	$sufijo = 'AE';
 
 	$data = existencia($db, $sufijo);
@@ -556,7 +556,7 @@ break;
 
 
 case 'entrega-prueba':
-	$db = 'aeste';
+	$db = 'ventas';
 	$sufijo = 'AE';
 
 	$data = entrega($db, $sufijo);
@@ -566,7 +566,7 @@ break;
 
 case 'apv-prueba':
 
-	$db = 'aeste';
+	$db = 'ventas';
 	$sufijo = 'AE';
 
 	$data = preparacion($db, $sufijo);
