@@ -783,6 +783,10 @@
             $this->load->view('impresion/detalle_turno', $data, FALSE);
          }
         
+         function generarPdfPedido($valor){
+            $data = null;
+            $this->load->view('impresion/pdf_pedido', $data, FALSE);
+         }
     
     }
     

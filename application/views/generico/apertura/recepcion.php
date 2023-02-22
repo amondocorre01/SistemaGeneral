@@ -52,6 +52,7 @@
             
                   <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarRecepcion()']);?>
                <?php endif; ?>
+               <button onclick="generarPdfPedido()">pdf</button>
           </div>
         
     </nav>
@@ -244,5 +245,14 @@
           $('#pro_'+id).val(cant);
       }
 
+    }
+
+    function generarPdfPedido(){
+      //console.log('generando pdf');
+      var data_html=$('#serializeExample').html();
+      localStorage.setItem("data_pedido", data_html);
+      var url= "<?=site_url('generar-pdf-pedido')?>";
+      url= `${url}/1`;
+        window.open(url,'_blank');
     }
 </script>
