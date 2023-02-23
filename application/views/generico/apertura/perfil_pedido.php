@@ -9,7 +9,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-2"></div>
+                    <div class="col-1"></div>
                     <div class="col-3">
                         <?=form_label("Perfil", 'perfil');?>
                         <select name="" id="perfil" class="form-control" onchange="limpiar()">
@@ -21,8 +21,11 @@
                     <div class="col-2">
                             <?=form_button('send', 'Buscar ', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'getPerfil()', 'id'=>'getPerfiles']);?>
                     </div>
-                    <div class="col-3">
-                            <?=form_button('new', 'Crear Perfiles', ['class'=>'btn btn-success btn-lg', 'onclick'=>'showNewPerfil()']);?>
+                    <div class="col-1">
+                        <?=form_button('new', '<i class="las la-plus"></i>Crear', ['class'=>'btn btn-success btn-lg', 'onclick'=>'showNewPerfil()']);?>
+                    </div>
+                    <div class="col-1">
+                        <?=form_button('new', '<i class="las la-copy"></i>Clonar', ['class'=>'btn btn-info btn-lg', 'onclick'=>'clonePerfil()']);?>
                     </div>
 
                    
@@ -68,11 +71,65 @@
   </div>
 </div>
 
+<div class="modal fade" id="clonePerfil" tabindex="-1" role="dialog" aria-labelledby="nombre2" aria-hidden="true">
+  <div class="modal-dialog modal-xs" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="nombre2">Clonar Perfil de Pedido</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      <div class="row">
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <?=form_label("Nombre de Perfil", 'perfil');?>
+                <?=form_input(['name'=>'perfil', 'id'=>'namePerfil','class'=>'form-control palette-Yellow-100 bg']);?>
+                <div class="valid-feedback"></div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <?=form_label("Perfil", 'perfil');?>
+                <select name="" id="clonePerfil" class="form-control">
+                            <?php foreach ($perfiles as  $perfil): ?>
+                                <option value="<?=$perfil->ID?>"><?=$perfil->TEXT?></option>
+                            <?php endforeach;?>
+                        </select>
+                <div class="valid-feedback"></div>
+            </div>
+        </div>
+      </div>
+           
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="guardarClonePerfil()" class="btn btn-danger" data-dismiss="modal">Clone</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 
-function getPerfil() {
+function getPerfil(id=null) {
 
-    var perfil = $('#perfil').val();
+    var perfil;
+    
+    if(id == null)
+    {
+        
+        perfil = $('#perfil').val();
+    }
+    else 
+    {
+        perfil = id;
+    }
+
 
     $('.loading').show();
    
@@ -103,6 +160,10 @@ function showNewPerfil() {
     $('#newPerfil').modal('show');
 }
 
+function clonePerfil() {
+    $('#clonePerfil').modal('show');
+}
+
 function guardarPerfil() {
     var perfil = $('#nombre_perfil').val();
     var sucursal = '<?=$sucursal?>';
@@ -121,11 +182,55 @@ function guardarPerfil() {
                         title: 'Se ha registrado un perfil de pedido',
                         timer: 4500
                     });
+                    getPerfil(response.id);
                 }
 
-                $('#getPerfiles').click();
+                if(response.existe) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Existe un perfil con el mismo nombre',
+                        timer: 4500
+                    });
+                }
         });
     }
 }
+
+function guardarClonePerfil() {
+    var perfil = $('#namePerfil').val();
+    var sucursal = '<?=$sucursal?>';
+    var clone = $('#clonePerfil').find(":selected").val();
+
+    if(perfil && clone) {
+
+        $.post("<?=site_url('clone-perfil')?>", {perfil:perfil, sucursal:sucursal, clone:clone})
+
+        .done(function( data ) {
+
+            var response = JSON.parse(data);
+                        
+                if(response.status) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Se ha registrado un perfil de pedido',
+                        timer: 4500
+                    });
+                    getPerfil(response.id);
+                }
+
+              
+
+                if(response.existe) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Existe un perfil con el mismo nombre',
+                        timer: 4500
+                    });
+                }
+        });
+    }
+}
+
+
 
 </script>

@@ -38,13 +38,49 @@ class Pedido extends CI_Controller {
         $sucursal = $this->input->post('sucursal');
         $perfil = $this->input->post('perfil');
         $response['status'] = false;
+        $response['existe'] = false;
 
-        $this->main->insert('INVENTARIOS_LISTA_STOCKS_SUCURSALES', ['ID_SUCURSAL'=>$sucursal, 'NOMBRE_LISTA'=>$perfil, 'FECHA_CREACION'=>date('Y-m-d'), 'USUARIO_CREADOR'=>$this->session->id_usuario]);
-        
-        if($this->db->affected_rows()) {
-            $response['status'] = true;
+        //Existe mismo nombre
+        $existe = $this->main->total('INVENTARIOS_LISTA_STOCKS_SUCURSALES', ['ID_SUCURSAL'=>$sucursal, 'NOMBRE_LISTA'=>$perfil]);
+
+        if(!$existe) {
+
+            $id = $this->main->insert('INVENTARIOS_LISTA_STOCKS_SUCURSALES', ['ID_SUCURSAL'=>$sucursal, 'NOMBRE_LISTA'=>$perfil, 'FECHA_CREACION'=>date('Y-m-d'), 'USUARIO_CREADOR'=>$this->session->id_usuario]);
+
+
+                     $this->db->where('ESTADO_REPOSICION', 1);
+            $productos = $this->main->getListSelect('INVENTARIOS_SUB_CATEGORIA_2', 'ID_SUB_CATEGORIA_2');
+
+
+            if($productos) {
+
+                $autorizado = [];
+                foreach ($productos as $p) {
+                    $temp = [];
+                    $temp['ID_LISTA_STOCK'] = $id;
+                    $temp['ID_SUB_CATEGORIA_2'] = $p->ID_SUB_CATEGORIA_2;
+                    $temp['STOCK'] = 0;
+
+                    array_push($autorizado, $temp);
+                }
+
+                $this->db->insert_batch('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', $autorizado);
+            }
+
+
+            
+            if($this->db->affected_rows()) {
+                $response['status'] = true;
+            }
+
         }
 
+        else 
+            {
+                $response['existe'] = true;  
+            }
+
+        
         echo json_encode($response);
     }
 
@@ -509,6 +545,7 @@ class Pedido extends CI_Controller {
 
         if($registro[0]->PERMISO > 0) {
             $response['status'] = true;
+            $response['id'] = $id;
         }
 
         echo json_encode($response);
@@ -521,6 +558,60 @@ class Pedido extends CI_Controller {
   
         
         echo json_encode(['productos'=>$productos]);
+    }
+
+
+    public function clone() {
+
+        $sucursal = $this->input->post('sucursal');
+        $perfil = $this->input->post('perfil');
+        $clone = $this->input->post('clone');
+        $response['status'] = false;
+        $response['existe'] = false;
+
+        $existe = $this->main->total('INVENTARIOS_LISTA_STOCKS_SUCURSALES', ['ID_SUCURSAL'=>$sucursal, 'NOMBRE_LISTA'=>$perfil]);
+
+        if(!$existe) {
+
+            $id = $this->main->insert('INVENTARIOS_LISTA_STOCKS_SUCURSALES', ['ID_SUCURSAL'=>$sucursal, 'NOMBRE_LISTA'=>$perfil, 'FECHA_CREACION'=>date('Y-m-d'), 'USUARIO_CREADOR'=>$this->session->id_usuario]);
+
+
+            $this->db->where('ID_LISTA_STOCK', $clone);
+            $productos = $this->main->getListSelect('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', 'ID_LISTA_STOCK, ID_SUB_CATEGORIA_2, STOCK');
+
+
+            if($productos) {
+
+            $autorizado = [];
+            foreach ($productos as $p) {
+                $temp = [];
+                $temp['ID_LISTA_STOCK'] = $id;
+                $temp['ID_SUB_CATEGORIA_2'] = $p->ID_SUB_CATEGORIA_2;
+                $temp['STOCK'] = $p->STOCK;
+
+                array_push($autorizado, $temp);
+            }
+
+            $this->db->insert_batch('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', $autorizado);
+            }
+
+
+
+            if($this->db->affected_rows()) {
+                $response['status'] = true;
+                $response['id'] = $id;
+            }
+
+        }
+
+        else 
+        {
+            $response['existe'] = true;
+        }
+
+        
+
+        echo json_encode($response);
     }
 
 }

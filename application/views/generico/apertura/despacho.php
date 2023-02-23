@@ -94,6 +94,7 @@ foreach ($sucursales as $key => $sucursal) {
                     }
                     ?>
                     <th>Total</th>
+					<th>Cargado</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -116,6 +117,7 @@ foreach ($sucursales as $key => $sucursal) {
                             <td></td>
                             '.$col.'
                             <td>'.$sum.'</td>
+							<td><input name="'.$id_subcategoria_2.'[]" type="checkbox"></td>
                             </tr>';
                             if($sum != 0){
                               echo $columna;

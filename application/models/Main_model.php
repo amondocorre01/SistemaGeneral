@@ -153,14 +153,12 @@ class Main_Model extends CI_Model
 	 * @return integer        		el Id generado tras la inserccion.
 	 */
 	 
-	function insert($table, $data, $seq = null)
+	function insert($table, $data)
 	{
 		  $this->db->insert($table, $data);
 
-		  if($seq)
-		  {
-			return $this->db->insert_id($seq);
-		  } 
+		  
+		return $this->db->insert_id();
     }
 
 	/**

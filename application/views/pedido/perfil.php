@@ -2,7 +2,6 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#"><?=$value->NOMBRE_LISTA?></a>
-        <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-plus-circle"></span>', ['class'=>'btn btn-danger btn-lg float-right', 'onclick'=>'newProducto('.$value->ID_LISTA_STOCK.')']);?>
     </nav>
 
     <?php if ($value->productos):?>

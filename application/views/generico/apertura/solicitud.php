@@ -32,17 +32,10 @@
 }
 </style>
 <?php if($cabecera AND $cabecera[0]->ESTADO > 9): ?>
-<?php if($cabecera[0]->ESTADO > 10 ):?>
-  <div class="row ">
-      <div class="col-2 btn-group">
-          <?=form_button('cerrar', '<span class="las la-lock la-4x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'cerrarTodo()']);?>
-          <?=form_button('abrir', '<span class="las la-key la-4x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'abrirTodo()']);?>
-      </div>
-    </div>
-<?php endif;?>
+
 
 <div class="row justify-content-center">
-  <div class="col-8 col-md-2">
+  <div class="col-8 col-md-4">
     <label for="">Perfil de Pedido</label>
     <div class="input-group">
       <select name="" id="lista" class="form-control">
@@ -54,6 +47,11 @@
       <div class="input-group-append">
       <?=form_button('obtener', '<span style="font-size:1.5rem" class="las la-search la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'getMinimos()']);?>
       <?=form_button('limpiar', '<span style="font-size:1.5rem" class="las la-broom la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'setLimpiar()']);?>
+      <?php if($cabecera[0]->ESTADO > 10 ):?>
+        <?=form_button('cerrar', '<span class="las la-lock la-2x"></span>', ['class'=>'btn palette-Grey-600 bg btn-xs float-right', 'onclick'=>'cerrarTodo()']);?>
+
+          <?=form_button('abrir', '<span class="las la-key la-2x"></span>', ['class'=>'btn palette-Pink-800 bg btn-xs float-right', 'onclick'=>'abrirTodo()']);?>
+          <?php endif;?>
       </div>
     </div>
   </div>
@@ -139,8 +137,8 @@
                             <?=$registro[$p->ID_SUB_CATEGORIA_2]?>
                             </td>
 
-                            <td class="reset_stock" width="12%" id="m_<?=$p->ID_SUB_CATEGORIA_2?>">
-                              0
+                            <td class="reset_stock" width="12%">
+                              <input id="m_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>[minimo]" class="form-control" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='11')?'readonly="readonly"':''?> step="1" value="<?=$minimo[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
 
                             <td class="reset_stock" width="12%">
@@ -317,8 +315,8 @@
 
           if(precargado == 1) 
           {
-              $('#m_'+v.ID_SUB_CATEGORIA_2).empty();
-              $('#m_'+v.ID_SUB_CATEGORIA_2).append(Number(v.STOCK));
+              //$('#m_'+v.ID_SUB_CATEGORIA_2).empty();
+              $('#m_'+v.ID_SUB_CATEGORIA_2).val(Number(v.STOCK));
 
               var operacion = Number(v.STOCK)-Number($('#a_'+v.ID_SUB_CATEGORIA_2).html());
               operacion = Math.ceil(operacion/Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));

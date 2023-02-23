@@ -32,14 +32,7 @@
 }
 </style>
 <?php if($registro): ?>
-  <?php if($cabecera[0]->ESTADO > 9 ):?>
-    <div class="row ">
-      <div class="col-2 btn-group">
-          <?=form_button('cerrar', '<span class="las la-lock la-4x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'cerrarTodo()']);?>
-          <?=form_button('abrir', '<span class="las la-key la-4x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'abrirTodo()']);?>
-      </div>
-    </div>
-  <?php endif;?>
+ 
 
   <nav class="row navbar navbar-expand-lg navbar-dark bg-dark">
         
@@ -52,6 +45,11 @@
                   <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarDeclaracion()']);?>
             
                   <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarDeclaracion()']);?>
+
+                  <?php if($cabecera[0]->ESTADO > 9 ):?>
+                    <?=form_button('cerrar', '<span class="las la-lock la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'cerrarTodo()']);?>
+                    <?=form_button('abrir', '<span class="las la-key la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'abrirTodo()']);?>
+                <?php endif;?>
                <?php endif; ?>
           </div>
         
