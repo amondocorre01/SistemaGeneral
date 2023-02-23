@@ -784,8 +784,11 @@
          }
         
          function generarPdfPedido($valor){
-            $data = null;
-            $this->load->view('impresion/pdf_pedido', $data, FALSE);
+            //$data['pedido'] = $this->input->post('pedido_html');
+            $pedido = $this->input->post('pedido_html');
+            //$data = null;
+            //$this->load->view('impresion/pdf_pedido', $data, FALSE);
+            $res=$this->enviarmail->enviarCorreoPedido($pedido);
          }
     
     }
