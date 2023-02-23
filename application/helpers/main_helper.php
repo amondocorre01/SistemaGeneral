@@ -823,7 +823,7 @@ if(!function_exists('solicitud')) {
 		$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD, CANTIDAD_SOLICITADA, PRECARGADO, ESTADO_CONTEO, ADECUACION, MINIMO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
 		$registro = $DB2->query($sql)->result();
 
-		$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
+		$sql2 = "SELECT ESTADO, FECHA, PERFIL FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
 		$cabecera = $DB2->query($sql2)->result();
 
 		$CI->session->set_userdata(array('fecha_conteo' => $fecha[0]->DIA));

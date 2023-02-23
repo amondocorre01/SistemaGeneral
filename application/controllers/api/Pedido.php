@@ -199,24 +199,37 @@ class Pedido extends CI_Controller {
         $sufijo = $this->input->post('sufijo');
 
         $DB2 = $this->load->database($db, TRUE);
-        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD, MINIMO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
         $registro = $DB2->query($sql)->result();
 
         $array1 = [];
 
         foreach ($registro as $value) {
             $array1[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
+            $array3[$value->ID_SUBCATEGORIA_2] = $value->MINIMO;
+            
         }
+
+        $perfil = $this->input->post('lista');
+
+        if ($perfil) {
+        $sql7 = "UPDATE CABECERA_PEDIDO_AE SET PERFIL = ".$perfil." WHERE FECHA = '".$this->session->fecha_conteo."'";
+        }
+
+        $DB2->query($sql7);
 
         $array2 = $this->input->post();
 
         foreach ($array2 as $key => $value) {
             
-            if($key != 'db' AND $key != 'sufijo') {
+            if($key != 'db' AND $key != 'sufijo' AND $key != 'lista') {
 
-                if($value['cantidad'] != $array1[$key]) {
+                
 
-                    $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$value['cantidad'].",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key.",".$value['precargado'];   
+
+                if($value['cantidad'] != $array1[$key] OR $value['minimo'] != $array3[$key]) {
+
+                    $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$value['cantidad'].",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key.",".$value['precargado'].",".$value['minimo'];   
                     
                     $DB2->query($sql2)->result();
      

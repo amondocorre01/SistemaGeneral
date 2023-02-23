@@ -34,28 +34,6 @@
 <?php if($cabecera AND $cabecera[0]->ESTADO > 9): ?>
 
 
-<div class="row justify-content-center">
-  <div class="col-8 col-md-4">
-    <label for="">Perfil de Pedido</label>
-    <div class="input-group">
-      <select name="" id="lista" class="form-control">
-        <option value=""></option>
-        <?php foreach ($lista as $item): ?>
-          <option value="<?=$item->ID?>"><?=$item->TEXT?></option>
-        <?php endforeach; ?>
-      </select>
-      <div class="input-group-append">
-      <?=form_button('obtener', '<span style="font-size:1.5rem" class="las la-search la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'getMinimos()']);?>
-      <?=form_button('limpiar', '<span style="font-size:1.5rem" class="las la-broom la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'setLimpiar()']);?>
-      <?php if($cabecera[0]->ESTADO > 10 ):?>
-        <?=form_button('cerrar', '<span class="las la-lock la-2x"></span>', ['class'=>'btn palette-Grey-600 bg btn-xs float-right', 'onclick'=>'cerrarTodo()']);?>
-
-          <?=form_button('abrir', '<span class="las la-key la-2x"></span>', ['class'=>'btn palette-Pink-800 bg btn-xs float-right', 'onclick'=>'abrirTodo()']);?>
-          <?php endif;?>
-      </div>
-    </div>
-  </div>
-</div>
 
 <br>
 
@@ -74,10 +52,6 @@
 
       <?php endif;?>
 
-      
-         
-       
-
     </nav>
 
 
@@ -85,6 +59,33 @@
 <div class="card" id="serializeExample">
 
   <?=form_open('', '', ['db'=>$db, 'sufijo'=>$sufijo]);?>
+
+
+  <div class="row justify-content-center">
+  <div class="col-8 col-md-4">
+    <label for="">Perfil de Pedido</label>
+    <div class="input-group">
+      <select name="lista" id="lista" class="form-control">
+        <option value=""></option>
+        <?php foreach ($lista as $item): ?>
+          <option <?=($item->ID == $cabecera[0]->PERFIL)? 'selected': ''?> value="<?=$item->ID?>"><?=$item->TEXT?></option>
+        <?php endforeach; ?>
+      </select>
+      <div class="input-group-append">
+      <?=form_button('obtener', '<span style="font-size:1.5rem" class="las la-search la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'getMinimos()']);?>
+      <?=form_button('limpiar', '<span style="font-size:1.5rem" class="las la-broom la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'setLimpiar()']);?>
+      <?php if($cabecera[0]->ESTADO > 10 ):?>
+        <?=form_button('cerrar', '<span class="las la-lock la-2x"></span>', ['class'=>'btn palette-Grey-600 bg btn-xs float-right', 'onclick'=>'cerrarTodo()']);?>
+
+          <?=form_button('abrir', '<span class="las la-key la-2x"></span>', ['class'=>'btn palette-Pink-800 bg btn-xs float-right', 'onclick'=>'abrirTodo()']);?>
+          <?php endif;?>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+
+
         
     <div id="accordion">
       <?php foreach ($existencia as $value) : ?>
@@ -137,11 +138,11 @@
                             <?=$registro[$p->ID_SUB_CATEGORIA_2]?>
                             </td>
 
-                            <td class="reset_stock" width="12%">
+                            <td width="12%">
                               <input id="m_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>[minimo]" class="form-control" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='11')?'readonly="readonly"':''?> step="1" value="<?=$minimo[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
 
-                            <td class="reset_stock" width="12%">
+                            <td width="12%">
                               <?=(isset($p->MEDIDA_ADECUACIÓN))?$p->MEDIDA_ADECUACIÓN: ''?>
                             </td>
 
