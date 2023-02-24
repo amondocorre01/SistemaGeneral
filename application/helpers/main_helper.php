@@ -928,10 +928,24 @@ if(!function_exists('cambiar_aprobacion_pe_planta')) {
 }
 
 if(!function_exists('getPedidosExtraordinarios')) {
-	function getPedidosExtraordinarios($bd, $sufijo_sucursal, $fecha_inicial, $fecha_entrega_pedido) {
+	function getPedidosExtraordinarios($bd, $sufijo_sucursal, $fecha_inicial, $fecha_entrega_pedido, $filtro_aprobacion) {
+		switch ($filtro_aprobacion) {
+			case 'all':
+				$filtro_ap = '';
+				break;
+			case 'pendientes':
+				$filtro_ap = 'and ESTADO <> 5';
+				break;
+			case 'aprobados':
+				$filtro_ap=' and ESTADO = 5';
+				break;
+			default:
+				$filtro_ap='';
+				break;
+		}
 		$CI =& get_instance();
 		$DB2 = $CI->load->database($bd, TRUE);
-		$sql = "select * from PEDIDO_EXTRAORDINARIO".$sufijo_sucursal." where ESTADO<>2 and FECHA_ENTREGA_PEDIDO between '$fecha_inicial' and '$fecha_entrega_pedido' order by FECHA_ENTREGA_PEDIDO desc;";
+		$sql = "select * from PEDIDO_EXTRAORDINARIO".$sufijo_sucursal." where ESTADO<>2 ".$filtro_ap." and FECHA_ENTREGA_PEDIDO between '$fecha_inicial' and '$fecha_entrega_pedido' order by FECHA_ENTREGA_PEDIDO desc;";
 		$respuesta = $DB2->query($sql);
 		return $respuesta->result();
 	}

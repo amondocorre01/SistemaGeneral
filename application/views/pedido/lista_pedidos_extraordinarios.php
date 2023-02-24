@@ -16,6 +16,10 @@ $fecha_entrega_inicial = $this->input->get('fecha_entrega_inicial');
 if(!$fecha_entrega_inicial){
     $fecha_entrega_inicial = date('Y-m-d');
 }
+$filtro_aprobacion = $this->input->get('filtro_aprobacion');
+if(!$filtro_aprobacion){
+  $filtro_aprobacion = 'all';
+}
 $pedidos_extraordinarios = [];
 $descripcion_sucursal = '';
 $permisos_botones_json='';
@@ -28,10 +32,12 @@ if($sucursal_seleccionado){
     $sufijo_sucursal = $datos_sucursal->SUFIJO;
     $descripcion_sucursal = $datos_sucursal->SUCURSAL_BI;
     $tipo_usuario = strtolower(trim($this->session->tipo_usuario));
-    $pedidos_extraordinarios = getPedidosExtraordinarios($sucursal_seleccionado, $sufijo_sucursal, $fecha_entrega_inicial, $fecha_entrega);
+    $pedidos_extraordinarios = getPedidosExtraordinarios($sucursal_seleccionado, $sufijo_sucursal, $fecha_entrega_inicial, $fecha_entrega, $filtro_aprobacion);
 
     
 }
+
+
 $permisos_botones = getPermisosBotonesPedidosExtraordinarios($id_usuario);
 
 ?>
@@ -74,15 +80,25 @@ $permisos_botones = getPermisosBotonesPedidosExtraordinarios($id_usuario);
                     </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
+                    <div class="form-group">
+                    <label>Seleccione</label>
+                    <select name="filtro_aprobacion" class="form-control select2" style="width: 100%;">
+                        <option value ='all' <?=$filtro_aprobacion=='all'?'selected="selected"':''?> >Todos</option>
+                        <option value ='pendientes' <?=$filtro_aprobacion=='pendientes'?'selected="selected"':''?>>Sin aprobación</option>
+                        <option value = 'aprobados' <?=$filtro_aprobacion=='aprobados'?'selected="selected"':''?>>Aprobados</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
                     <label for="">Seleccione Fecha inicial</label>
                     <input class="form-control" type="date" name="fecha_entrega_inicial" value="<?=$fecha_entrega_inicial?>" >
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="">Seleccione Fecha final</label>
                     <input class="form-control" type="date" name="fecha_entrega" value="<?=$fecha_entrega?>" >
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                 <input  name="vc" type="hidden" id="fecha" value="<?=$this->input->get('vc')?>">
                     <input class="btn btn-primary btn-form-search" type="submit" value="Buscar" name="buscar" >
                 </div>
