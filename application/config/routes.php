@@ -269,6 +269,8 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
 
 
     $route['guardar-perfil'] = 'api/pedido/guardarPerfil';
+    $route['guardar-totales'] = 'api/pedido/guardarTotales';
+
 
    
 

@@ -45,17 +45,20 @@
               <div class="form-group">
                   <label>Seleccione</label>
                   <select name="tipo_reporte" class="form-control" style="width: 100%;">
-                    <option value="" selected="selected">Seleccione</option>
-                    <option value="PERECEDERO" <?= $tipo_reporte=='PERECEDERO'?'selected="selected"':''?>>PERECEDERO</option>
-                    <option value="NO PERECEDERO"<?= $tipo_reporte=='NO PERECEDERO'?'selected="selected"':''?>>NO PERECEDERO</option>
-                    <option value="ALL"<?= $tipo_reporte=='ALL'?'selected="selected"':''?>>TODOS</option>
+                    <?php foreach ($turno as $value) : ?>
+                      <option value="<?=$value->TURNO?>"><?=$value->TURNO?></option>
+                    <?php endforeach; ?>
                   </select>
               </div>
             </div>
 
-            <div class="col-md-3">
-            <input  name="vc" type="hidden" id="fecha" value="<?=$this->input->get('vc')?>">
+            <div class="col-md-2">
+                <input  name="vc" type="hidden" id="fecha" value="<?=$this->input->get('vc')?>">
                 <input class="btn btn-primary btn-form-search" type="submit" value="Buscar" name="buscar" >
+            </div>
+
+            <div class="col-md-2">
+              <span form="totales" onclick="guardarTotales()" class="btn btn-primary btn-form-search">Guardar</span>
             </div>
         </div>
         </form>
@@ -81,7 +84,7 @@ foreach ($sucursales as $key => $sucursal) {
 <div class="card">
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Categoria</th>
@@ -97,7 +100,8 @@ foreach ($sucursales as $key => $sucursal) {
 					<th>Cargado</th>
                   </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="cantidadTotales">
+                    <form id="totales">
                     <?php
                         foreach ($productosSub2 as $key => $producto) {
                             $col='';
@@ -117,13 +121,17 @@ foreach ($sucursales as $key => $sucursal) {
                             <td></td>
                             '.$col.'
                             <td>'.$sum.'</td>
-							<td><input name="'.$id_subcategoria_2.'[]" type="checkbox"></td>
+							            <td>
+                              <input name="'.$id_subcategoria_2.'[total]" value="1" type="checkbox">
+                              <input name="'.$id_subcategoria_2.'[cantidad]" value="'.$sum.'" type="hidden">
+                          </td>
                             </tr>';
                             if($sum != 0){
                               echo $columna;
                             }
                         }
                     ?>
+                    </form>
                   </tfoot>
                 </table>
               </div>
@@ -137,4 +145,17 @@ foreach ($sucursales as $key => $sucursal) {
   $('.btn-form-search').on('click',function(){
       $('.loading').show();
     });
+
+
+  function guardarTotales() {
+
+    
+
+    var collection = $('#cantidadTotales form').serialize();
+      
+    $.post("<?=site_url('guardar-totales')?>", collection)
+      .done(function( data ) {
+        
+      });
+  }
 </script>

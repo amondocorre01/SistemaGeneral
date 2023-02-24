@@ -676,6 +676,12 @@ class Pedido extends CI_Controller {
         echo json_encode($response);
     }
 
+
+    public function guardarTotales() {
+        
+        var_dump($this->input->post());
+    }
+
 }
 
 

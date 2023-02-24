@@ -577,7 +577,9 @@ break;
 
 case 'despacho':
 	
-	echo $this->load->view('generico/apertura/despacho', NULL, TRUE);
+	$data = despacho();
+
+	echo $this->load->view('generico/apertura/despacho', $data, TRUE);
 
 break;
 
