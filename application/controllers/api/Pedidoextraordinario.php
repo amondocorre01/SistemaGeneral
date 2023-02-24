@@ -95,11 +95,32 @@ class Pedidoextraordinario extends CI_Controller {
         }
      }
 
-     public function aprobar_pedido_extraordinario(){
+     public function cambiar_estado_pe(){
         $id_pedido_extraordinario = $this->input->post('iden');
         $codigo_sucursal = $this->input->post('codigo_sucursal');
         $sufijo_sucursal = $this->input->post('sufijo_sucursal');
-        if(aprobar_pedido_extraordinario($codigo_sucursal, $sufijo_sucursal, $id_pedido_extraordinario)){
+        $estado = $this->input->post('valor');
+        if(cambiar_estado_pe($codigo_sucursal, $sufijo_sucursal, $id_pedido_extraordinario, $estado)){
+            $respuesta = new stdClass();
+            $respuesta->sucursal = $codigo_sucursal;
+            $respuesta->estado = true;
+            echo json_encode($respuesta);
+            exit();
+        }else{
+            $respuesta = new stdClass();
+            $respuesta->sucursal = $codigo_sucursal;
+            $respuesta->estado = false;
+            echo json_encode($respuesta);
+            exit();
+        }
+     }
+
+     public function aprobacion_pe_planta(){
+        $id_pedido_extraordinario = $this->input->post('iden');
+        $codigo_sucursal = $this->input->post('codigo_sucursal');
+        $sufijo_sucursal = $this->input->post('sufijo_sucursal');
+        $estado = $this->input->post('valor');
+        if(cambiar_aprobacion_pe_planta($codigo_sucursal, $sufijo_sucursal, $id_pedido_extraordinario, $estado)){
             $respuesta = new stdClass();
             $respuesta->sucursal = $codigo_sucursal;
             $respuesta->estado = true;
