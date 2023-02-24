@@ -40,17 +40,17 @@
           <div class="col-9 col-md-10">
             <a class="navbar-brand" href="#">Inventario</a>
           </div>
-          <div class="col-3 col-md-2 btn-group">
+          <div class="col-3 col-md-2">
               <?php if($cabecera[0]->ESTADO == 9 ):?>
                   <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarDeclaracion()']);?>
             
                   <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarDeclaracion()']);?>
-
-                  <?php if($cabecera[0]->ESTADO > 9 ):?>
-                    <?=form_button('cerrar', '<span class="las la-lock la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'cerrarTodo()']);?>
-                    <?=form_button('abrir', '<span class="las la-key la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'abrirTodo()']);?>
-                <?php endif;?>
                <?php endif; ?>
+
+               <?php if($cabecera[0]->ESTADO == 10 ):?>
+                    <?=form_button('cerrar', '<span class="las la-lock la-2x"></span>', ['class'=>'btn palette-Grey-600 bg btn-xs float-right', 'onclick'=>'cerrarTodo()']);?>
+                    <?=form_button('abrir', '<span class="las la-key la-2x"></span>', ['class'=>'btn palette-Pink-800 bg btn-xs float-right', 'onclick'=>'abrirTodo()']);?>
+                <?php endif;?>
           </div>
         
     </nav>
