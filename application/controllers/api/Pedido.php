@@ -5,11 +5,24 @@ class Pedido extends CI_Controller {
 
     public function perfil()
     {
-        $sucursal = $this->input->post('perfil');
+        $id_perfil = $this->input->post('perfil');
+        $nombre = $this->input->post('nombre');
 
-        $sql = "EXECUTE INVENTARIO ?";
-       
-        $data['inventario'] = $this->db->query($sql, $sucursal)->result();
+        $sql = "SELECT * FROM EXISTENCIA ORDER BY ORDEN ASC";
+        $data['perfil'] = $this->db->query($sql)->result();
+
+        $sql2 = "SELECT ID_SUB_CATEGORIA_2, STOCK FROM INVENTARIOS_STOCKS_MINIMOS_SUCURSALES WHERE ID_LISTA_STOCK =".$id_perfil;
+		$registro = $this->db->query($sql2)->result();
+
+        $array = [];
+
+        foreach ($registro as $value) {
+			$array[$value->ID_SUB_CATEGORIA_2] = $value->STOCK;
+		}
+
+        $data['registro'] = $array;
+        $data['id'] = $id_perfil;
+        $data['nombre'] = $nombre;
 
         echo $this->load->view('pedido/perfil', $data, TRUE);
     }
@@ -71,6 +84,7 @@ class Pedido extends CI_Controller {
             
             if($this->db->affected_rows()) {
                 $response['status'] = true;
+                $response['id'] = $id;
             }
 
         }
@@ -608,11 +622,10 @@ class Pedido extends CI_Controller {
             $this->db->insert_batch('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', $autorizado);
             }
 
-
-
             if($this->db->affected_rows()) {
                 $response['status'] = true;
                 $response['id'] = $id;
+                $response['nombre'] = $perfil;
             }
 
         }
@@ -623,6 +636,42 @@ class Pedido extends CI_Controller {
         }
 
         
+
+        echo json_encode($response);
+    }
+
+
+    public function guardarPerfil() {
+
+        $response['status'] = false;
+
+        $perfil = $this->input->post('perfil');
+
+        $sql = "SELECT ID_SUB_CATEGORIA_2, STOCK FROM INVENTARIOS_STOCKS_MINIMOS_SUCURSALES WHERE ID_LISTA_STOCK =".$perfil;
+        $registro = $this->db->query($sql)->result();
+
+        $array1 = [];
+
+        foreach ($registro as $value) {
+            $array1[$value->ID_SUB_CATEGORIA_2] = $value->STOCK;
+        }
+
+        $array2 = $this->input->post();
+
+        foreach ($array2 as $key => $value) {
+
+            if($key != 'perfil') {
+            
+                if($value != $array1[$key]) {
+
+                $sql2 = "EXECUTE SET_ITEM_PERFIL ".$value.",".$perfil.",".$key;   
+                
+                $this->db->query($sql2)->result();
+
+                $response['status'] = true;
+                }
+            }
+        }
 
         echo json_encode($response);
     }

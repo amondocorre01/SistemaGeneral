@@ -19,13 +19,13 @@
                         </select>
                     </div>
                     <div class="col-2">
-                            <?=form_button('send', 'Buscar ', ['class'=>'btn btn-danger btn-lg', 'onclick'=>'getPerfil()', 'id'=>'getPerfiles']);?>
+                            <?=form_button('send', '<i class="las la-search"></i>Buscar', ['class'=>'btn btn-danger btn-lg btn-padding', 'onclick'=>'getPerfil()', 'id'=>'getPerfiles']);?>
                     </div>
                     <div class="col-1">
-                        <?=form_button('new', '<i class="las la-plus"></i>Crear', ['class'=>'btn btn-success btn-lg', 'onclick'=>'showNewPerfil()']);?>
+                        <?=form_button('new', '<i class="las la-plus"></i>Crear', ['class'=>'btn btn-success btn-lg btn-padding', 'onclick'=>'showNewPerfil()']);?>
                     </div>
                     <div class="col-1">
-                        <?=form_button('new', '<i class="las la-copy"></i>Clonar', ['class'=>'btn btn-info btn-lg', 'onclick'=>'clonePerfil()']);?>
+                        <?=form_button('new', '<i class="las la-copy"></i>Clonar', ['class'=>'btn btn-info btn-lg btn-padding', 'onclick'=>'clonePerfil()']);?>
                     </div>
 
                    
@@ -64,7 +64,7 @@
            
       </div>
       <div class="modal-footer">
-        <button type="button" onclick="guardarPerfil()" class="btn btn-danger" data-dismiss="modal">Crear</button>
+        <button type="button" onclick="crearPerfil()" class="btn btn-danger" data-dismiss="modal">Crear</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -107,7 +107,7 @@
            
       </div>
       <div class="modal-footer">
-        <button type="button" onclick="guardarClonePerfil()" class="btn btn-danger" data-dismiss="modal">Clone</button>
+        <button type="button" onclick="clonarPerfil()" class="btn btn-danger" data-dismiss="modal">Clone</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -116,14 +116,15 @@
 
 <script>
 
-function getPerfil(id=null) {
+function getPerfil(id=null, nombre=null) {
 
-    var perfil;
+    var perfil; var nombre;
     
-    if(id == null)
+    if(id == null && nombre == null)
     {
         
         perfil = $('#perfil').val();
+        nombre = $('#perfil option:selected').text();
     }
     else 
     {
@@ -136,7 +137,7 @@ function getPerfil(id=null) {
     $.ajax({
         type: "POST",
         url: "<?=site_url('get-perfil-pedido')?>",
-        data: { perfil: perfil},
+        data: { perfil: perfil, nombre: nombre},
         dataType: "html",
         success: function (response) {
 
@@ -164,7 +165,7 @@ function clonePerfil() {
     $('#clonePerfil').modal('show');
 }
 
-function guardarPerfil() {
+function crearPerfil() {
     var perfil = $('#nombre_perfil').val();
     var sucursal = '<?=$sucursal?>';
 
@@ -182,7 +183,12 @@ function guardarPerfil() {
                         title: 'Se ha registrado un perfil de pedido',
                         timer: 4500
                     });
-                    getPerfil(response.id);
+                    getPerfil(response.id, perfil);
+
+                    $('#perfil').append($('<option>', {
+                        value: response.id,
+                        text: perfil
+                    }));
                 }
 
                 if(response.existe) {
@@ -196,7 +202,7 @@ function guardarPerfil() {
     }
 }
 
-function guardarClonePerfil() {
+function clonarPerfil() {
     var perfil = $('#namePerfil').val();
     var sucursal = '<?=$sucursal?>';
     var clone = $('#clonePerfil').find(":selected").val();
@@ -215,10 +221,14 @@ function guardarClonePerfil() {
                         title: 'Se ha registrado un perfil de pedido',
                         timer: 4500
                     });
-                    getPerfil(response.id);
+                    getPerfil(response.id, perfil);
+
+                    $('#perfil').append($('<option>', {
+                        value: response.id,
+                        text: perfil
+                    }));
                 }
 
-              
 
                 if(response.existe) {
                     Swal.fire({
