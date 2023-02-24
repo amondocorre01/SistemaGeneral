@@ -113,6 +113,7 @@
                         <tr>
                             <td width="20%"><?=$p->SUB_CATEGORIA_2?></td>
                             <td width="15%">
+                              
                               <?php if(isset($p->MEDIDA_ADECUACIÓN)): ?>
                               <?=$p->MEDIDA_ADECUACIÓN?> 
                               <?php endif; ?>                         

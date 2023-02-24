@@ -5,11 +5,24 @@ class Pedido extends CI_Controller {
 
     public function perfil()
     {
-        $sucursal = $this->input->post('perfil');
+        $id_perfil = $this->input->post('perfil');
+        $nombre = $this->input->post('nombre');
 
-        $sql = "EXECUTE INVENTARIO ?";
-       
-        $data['inventario'] = $this->db->query($sql, $sucursal)->result();
+        $sql = "SELECT * FROM EXISTENCIA ORDER BY ORDEN ASC";
+        $data['perfil'] = $this->db->query($sql)->result();
+
+        $sql2 = "SELECT ID_SUB_CATEGORIA_2, STOCK FROM INVENTARIOS_STOCKS_MINIMOS_SUCURSALES WHERE ID_LISTA_STOCK =".$id_perfil;
+		$registro = $this->db->query($sql2)->result();
+
+        $array = [];
+
+        foreach ($registro as $value) {
+			$array[$value->ID_SUB_CATEGORIA_2] = $value->STOCK;
+		}
+
+        $data['registro'] = $array;
+        $data['id'] = $id_perfil;
+        $data['nombre'] = $nombre;
 
         echo $this->load->view('pedido/perfil', $data, TRUE);
     }
@@ -38,13 +51,50 @@ class Pedido extends CI_Controller {
         $sucursal = $this->input->post('sucursal');
         $perfil = $this->input->post('perfil');
         $response['status'] = false;
+        $response['existe'] = false;
 
-        $this->main->insert('INVENTARIOS_LISTA_STOCKS_SUCURSALES', ['ID_SUCURSAL'=>$sucursal, 'NOMBRE_LISTA'=>$perfil, 'FECHA_CREACION'=>date('Y-m-d'), 'USUARIO_CREADOR'=>$this->session->id_usuario]);
-        
-        if($this->db->affected_rows()) {
-            $response['status'] = true;
+        //Existe mismo nombre
+        $existe = $this->main->total('INVENTARIOS_LISTA_STOCKS_SUCURSALES', ['ID_SUCURSAL'=>$sucursal, 'NOMBRE_LISTA'=>$perfil]);
+
+        if(!$existe) {
+
+            $id = $this->main->insert('INVENTARIOS_LISTA_STOCKS_SUCURSALES', ['ID_SUCURSAL'=>$sucursal, 'NOMBRE_LISTA'=>$perfil, 'FECHA_CREACION'=>date('Y-m-d'), 'USUARIO_CREADOR'=>$this->session->id_usuario]);
+
+
+                     $this->db->where('ESTADO_REPOSICION', 1);
+            $productos = $this->main->getListSelect('INVENTARIOS_SUB_CATEGORIA_2', 'ID_SUB_CATEGORIA_2');
+
+
+            if($productos) {
+
+                $autorizado = [];
+                foreach ($productos as $p) {
+                    $temp = [];
+                    $temp['ID_LISTA_STOCK'] = $id;
+                    $temp['ID_SUB_CATEGORIA_2'] = $p->ID_SUB_CATEGORIA_2;
+                    $temp['STOCK'] = 0;
+
+                    array_push($autorizado, $temp);
+                }
+
+                $this->db->insert_batch('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', $autorizado);
+            }
+
+
+            
+            if($this->db->affected_rows()) {
+                $response['status'] = true;
+                $response['id'] = $id;
+            }
+
         }
 
+        else 
+            {
+                $response['existe'] = true;  
+            }
+
+        
         echo json_encode($response);
     }
 
@@ -163,24 +213,37 @@ class Pedido extends CI_Controller {
         $sufijo = $this->input->post('sufijo');
 
         $DB2 = $this->load->database($db, TRUE);
-        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD, MINIMO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
         $registro = $DB2->query($sql)->result();
 
         $array1 = [];
 
         foreach ($registro as $value) {
             $array1[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
+            $array3[$value->ID_SUBCATEGORIA_2] = $value->MINIMO;
+            
         }
+
+        $perfil = $this->input->post('lista');
+
+        if ($perfil) {
+        $sql7 = "UPDATE CABECERA_PEDIDO_AE SET PERFIL = ".$perfil." WHERE FECHA = '".$this->session->fecha_conteo."'";
+        }
+
+        $DB2->query($sql7);
 
         $array2 = $this->input->post();
 
         foreach ($array2 as $key => $value) {
             
-            if($key != 'db' AND $key != 'sufijo') {
+            if($key != 'db' AND $key != 'sufijo' AND $key != 'lista') {
 
-                if($value['cantidad'] != $array1[$key]) {
+                
 
-                    $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$value['cantidad'].",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key.",".$value['precargado'];   
+
+                if($value['cantidad'] != $array1[$key] OR $value['minimo'] != $array3[$key]) {
+
+                    $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$value['cantidad'].",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key.",".$value['precargado'].",".$value['minimo'];   
                     
                     $DB2->query($sql2)->result();
      
@@ -509,6 +572,7 @@ class Pedido extends CI_Controller {
 
         if($registro[0]->PERMISO > 0) {
             $response['status'] = true;
+            $response['id'] = $id;
         }
 
         echo json_encode($response);
@@ -521,6 +585,95 @@ class Pedido extends CI_Controller {
   
         
         echo json_encode(['productos'=>$productos]);
+    }
+
+
+    public function clone() {
+
+        $sucursal = $this->input->post('sucursal');
+        $perfil = $this->input->post('perfil');
+        $clone = $this->input->post('clone');
+        $response['status'] = false;
+        $response['existe'] = false;
+
+        $existe = $this->main->total('INVENTARIOS_LISTA_STOCKS_SUCURSALES', ['ID_SUCURSAL'=>$sucursal, 'NOMBRE_LISTA'=>$perfil]);
+
+        if(!$existe) {
+
+            $id = $this->main->insert('INVENTARIOS_LISTA_STOCKS_SUCURSALES', ['ID_SUCURSAL'=>$sucursal, 'NOMBRE_LISTA'=>$perfil, 'FECHA_CREACION'=>date('Y-m-d'), 'USUARIO_CREADOR'=>$this->session->id_usuario]);
+
+
+            $this->db->where('ID_LISTA_STOCK', $clone);
+            $productos = $this->main->getListSelect('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', 'ID_LISTA_STOCK, ID_SUB_CATEGORIA_2, STOCK');
+
+
+            if($productos) {
+
+            $autorizado = [];
+            foreach ($productos as $p) {
+                $temp = [];
+                $temp['ID_LISTA_STOCK'] = $id;
+                $temp['ID_SUB_CATEGORIA_2'] = $p->ID_SUB_CATEGORIA_2;
+                $temp['STOCK'] = $p->STOCK;
+
+                array_push($autorizado, $temp);
+            }
+
+            $this->db->insert_batch('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', $autorizado);
+            }
+
+            if($this->db->affected_rows()) {
+                $response['status'] = true;
+                $response['id'] = $id;
+                $response['nombre'] = $perfil;
+            }
+
+        }
+
+        else 
+        {
+            $response['existe'] = true;
+        }
+
+        
+
+        echo json_encode($response);
+    }
+
+
+    public function guardarPerfil() {
+
+        $response['status'] = false;
+
+        $perfil = $this->input->post('perfil');
+
+        $sql = "SELECT ID_SUB_CATEGORIA_2, STOCK FROM INVENTARIOS_STOCKS_MINIMOS_SUCURSALES WHERE ID_LISTA_STOCK =".$perfil;
+        $registro = $this->db->query($sql)->result();
+
+        $array1 = [];
+
+        foreach ($registro as $value) {
+            $array1[$value->ID_SUB_CATEGORIA_2] = $value->STOCK;
+        }
+
+        $array2 = $this->input->post();
+
+        foreach ($array2 as $key => $value) {
+
+            if($key != 'perfil') {
+            
+                if($value != $array1[$key]) {
+
+                $sql2 = "EXECUTE SET_ITEM_PERFIL ".$value.",".$perfil.",".$key;   
+                
+                $this->db->query($sql2)->result();
+
+                $response['status'] = true;
+                }
+            }
+        }
+
+        echo json_encode($response);
     }
 
 }

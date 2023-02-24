@@ -236,6 +236,8 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
 
     $route['set-minimo'] = 'api/pedido/minimo';
     $route['new-perfil'] = 'api/pedido/nuevo';
+    $route['clone-perfil'] = 'api/pedido/clone';
+
     $route['get-subcategoria'] = 'api/pedido/subcategoria';
     $route['get-producto-categoria'] = 'api/pedido/producto';
     $route['set-producto-perfil'] = 'api/pedido/producto_perfil';
@@ -256,12 +258,6 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['set-limpiar'] = 'api/pedido/set_limpiar';
 
 
-
-
-
-
-
-
     $route['guardar-pedido-extraordinario'] = 'api/pedidoextraordinario/guardar_pedido_extraordinario';
     $route['productos-primera-subcategoria-inventario'] = 'api/pedidoextraordinario/primera_subcategoria';
     $route['productos-segunda-subcategoria-inventario'] = 'api/pedidoextraordinario/segunda_subcategoria';
@@ -272,7 +268,7 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['generar-pdf-pedido/(:any)'] = 'api/impresion/generarPdfPedido/$1';
 
 
-
+    $route['guardar-perfil'] = 'api/pedido/guardarPerfil';
 
    
 

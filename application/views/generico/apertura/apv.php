@@ -36,9 +36,9 @@
 
 <?php if($cabecera[0]->ESTADO > 11 ):?>
   <div class="row ">
-      <div class="col-2 btn-group">
-          <?=form_button('cerrar', '<span class="las la-lock la-4x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'cerrarTodo()']);?>
-          <?=form_button('abrir', '<span class="las la-key la-4x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'abrirTodo()']);?>
+      <div class="col-2 ">
+          <?=form_button('cerrar', '<span class="las la-lock la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'cerrarTodo()']);?>
+          <?=form_button('abrir', '<span class="las la-key la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'abrirTodo()']);?>
       </div>
     </div>
 <?php endif;?>
@@ -51,16 +51,16 @@
         <a class="navbar-brand" href="#">Preparacion</a>
       </div>
       <?php if($cabecera[0]->ESTADO == 11 ):?>
-        <div class="col-3 col-md-1 btn-group">
+        <div class="col-3 col-md-2 btn-group">
             <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarPreparacion()']);?>
             <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarPreparacion()']);?>
+
+            <?php if($cabecera[0]->ESTADO > 11 ):?>
+              <?=form_button('cerrar', '<span class="las la-lock la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right', 'onclick'=>'cerrarTodo()']);?>
+              <?=form_button('abrir', '<span class="las la-key la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'abrirTodo()']);?>
+            <?php endif;?>
         </div>
       <?php endif;?>
-
-      
-         
-       
-
     </nav>
 
 <br>
