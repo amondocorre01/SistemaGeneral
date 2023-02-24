@@ -434,3 +434,10 @@ select {
    margin-bottom: 0rem;
 }
 
+.btn-danger-black{
+   background-color: #000000;
+}
+.btn-danger-black:hover{
+   background-color: #3b3a3aad;
+}
+
