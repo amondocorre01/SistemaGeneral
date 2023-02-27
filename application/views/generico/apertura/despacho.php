@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="<?=base_url('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')?>">
   <link rel="stylesheet" href="<?=base_url('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')?>">
   <link rel="stylesheet" href="<?=base_url('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')?>">
+  
 <?php
     $this->session->set_userdata('datatable', 'true');
     
@@ -38,7 +39,7 @@
         
             <div class="col-offset-1 col-md-3">
                 <label for="">Seleccione Fecha</label>
-                <input class="form-control" type="date" name="fecha_reporte" value="<?=$fecha_reporte?>" >
+                <input class="form-control" id="fecha_reporte" type="date" name="fecha_reporte" value="<?=$fecha_reporte?>" >
             </div>
 
             <div class="col-md-3">
@@ -57,9 +58,11 @@
                 <input class="btn btn-primary btn-form-search" type="submit" value="Buscar" name="buscar" >
             </div>
 
+            <?php if($fecha_reporte == date('Y-m-d')): ?>
             <div class="col-md-2">
               <span form="totales" onclick="guardarTotales()" class="btn btn-primary btn-form-search">Guardar</span>
             </div>
+            <?php endif; ?>
         </div>
         </form>
         </div>
@@ -83,21 +86,24 @@ foreach ($sucursales as $key => $sucursal) {
 ?>
 <div class="card">
               <!-- /.card-header -->
-              <div class="card-body">
+              <div class="card-body" style="overflow-x:auto;">
                 <table class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Categoria</th>
-                    <th>Subcategoria</th>
-                    <th>Producto</th>
-                    <th>Tipo de producto</th>
+                    <th width="9%">Categoria</th>
+                    <th width="9%">Subcategoria</th>
+                    <th width="9%">Producto</th>
+                    <th width="9%">Tipo de producto</th>
                     <?php
                     foreach ($sucursales as $key => $sucursal) {
-                        echo '<th>'.$sucursal->SUCURSAL_BI.'</th>';
+                        echo '<th width="9%">'.$sucursal->SUCURSAL_BI.'</th>';
                     }
                     ?>
-                    <th>Total</th>
-					<th>Cargado</th>
+                    <th width="8%">Total</th>
+                   <?php if($fecha_reporte == date('Y-m-d')): ?>
+                    <th width="8%">Recibida</th>
+					          <th width="8%">Cargado</th>
+                    <?php endif;?>
                   </tr>
                   </thead>
                   <tbody id="cantidadTotales">
@@ -120,15 +126,22 @@ foreach ($sucursales as $key => $sucursal) {
                             <td>'.$producto->SUB_CATEGORIA_2.'</td>
                             <td></td>
                             '.$col.'
-                            <td>'.$sum.'</td>
+                            <td>'.$sum.'</td>';
+                            if($fecha_reporte == date('Y-m-d')):
+                      $columna .=     '<td>
+                              <input name="'.$id_subcategoria_2.'[recibida]" type="text">
+                            </td>  
 							            <td>
                               <input name="'.$id_subcategoria_2.'[total]" value="1" type="checkbox">
                               <input name="'.$id_subcategoria_2.'[cantidad]" value="'.$sum.'" type="hidden">
-                          </td>
-                            </tr>';
+                          </td>';
+                            endif;
+
+                       $columna .= '</tr>';
                             if($sum != 0){
                               echo $columna;
                             }
+                            guardarProducto($id_subcategoria_2, $sum);
                         }
                     ?>
                     </form>
@@ -149,13 +162,35 @@ foreach ($sucursales as $key => $sucursal) {
 
   function guardarTotales() {
 
-    
-
     var collection = $('#cantidadTotales form').serialize();
       
     $.post("<?=site_url('guardar-totales')?>", collection)
       .done(function( data ) {
-        
+        $('.loading').hide();
+
+
+        dato = JSON.parse(data);
+               
+          if(dato.status == true) {
+
+            Swal.fire({
+                icon: 'success',
+                title: "Se ha guardado correctamente",
+                timer: 4500
+            });
+
+          }
+
+          else 
+          {
+            Swal.fire({
+                icon: 'error',
+                title: "No habia nada que actualizar",
+                timer: 4500
+            });
+          }
+
+
       });
   }
 </script>

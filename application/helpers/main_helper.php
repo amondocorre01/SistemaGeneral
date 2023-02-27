@@ -1148,3 +1148,23 @@ if( ! function_exists('despacho')) {
 	}
 }
 
+
+if(!function_exists('guardarProducto') ) {
+	function guardarProducto($id, $sum) {
+
+		$CI =& get_instance();
+
+		$sql = "SELECT * FROM DESPACHO WHERE ID_SUB_CATEGORIA_2 = ? AND FECHA = ?";
+		$existe = $CI->db->query($sql, array($id, date('Y-m-d')))->result();
+
+		if(!$existe) {
+
+			$sql2 = "EXECUTE SET_DESPACHO ?, ?, ?, ?"; 
+			$CI->db->query($sql2, array($id, $sum, date('Y-m-d'), date('H:i:s')));
+
+		}
+
+		return $existe;
+	}
+}
+

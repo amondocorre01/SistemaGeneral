@@ -678,8 +678,36 @@ class Pedido extends CI_Controller {
 
 
     public function guardarTotales() {
+
+        $response['status'] = false;
+
+        $sql = "SELECT SOLICITADA, ID_SUB_CATEGORIA_2 FROM DESPACHO WHERE FECHA ='".date('Y-m-d')."'";
+        $registro = $this->db->query($sql)->result();
+
+        $array1 = [];
+
+        foreach ($registro as $value) {
+            $array1[$value->ID_SUB_CATEGORIA_2] = $value->SOLICITADA;
+        }
         
-        var_dump($this->input->post());
+        $array2 = $this->input->post();
+
+        foreach ($array2 as $key => $value2) {
+
+
+                $estado = (isset($value2['total'])) ? $value2['total'] : 0;
+
+                $sql2 = "EXECUTE SET_ITEM_DESPACHO ?, ?, ?, ?";   
+                
+                $this->db->query($sql2, array($value2['recibida'], $estado, $key, date('Y-m-d')))->result();
+
+                $response['status'] = true;
+
+        }
+
+        echo json_encode($response);
+        
+        
     }
 
 }
