@@ -140,8 +140,9 @@ foreach ($sucursales as $key => $sucursal) {
                        $columna .= '</tr>';
                             if($sum != 0){
                               echo $columna;
+                              guardarProducto($id_subcategoria_2, $sum);
                             }
-                            guardarProducto($id_subcategoria_2, $sum);
+                           
                         }
                     ?>
                     </form>
