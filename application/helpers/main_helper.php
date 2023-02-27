@@ -788,7 +788,8 @@ if(!function_exists('getSucursalesUsuario')) {
 if(!function_exists('getInventariosSubcategoria2')) {
 	function getInventariosSubcategoria2(){
 		$CI =& get_instance();
-		$sql = "select (SELECT (CATEGORIA) from INVENTARIOS_CATEGORIA c where c.ID_CATEGORIA =v1.ID_CATEGORIA ) as CATEGORIA, *  from INVENTARIOS_SUB_CATEGORIA_2 v2, INVENTARIOS_SUB_CATEGORIA_1 v1 where v2.ID_SUB_CATEGORIA_1 =v1.ID_SUB_CATEGORIA_1 and v1.ESTADO=1 and v2.ESTADO_REPOSICION=1 and v1.ID_CATEGORIA is not null;";
+		$sql = "select (SELECT (CATEGORIA) from INVENTARIOS_CATEGORIA c where c.ID_CATEGORIA =v1.ID_CATEGORIA ) as CATEGORIA, *, (SELECT d.RECIBIDA FROM DESPACHO d WHERE v2.ID_SUB_CATEGORIA_2 = d.ID_SUB_CATEGORIA_2 AND d.FECHA = '".date('Y-m-d')."') AS RECIBIDA,
+		(SELECT d.ESTADO FROM DESPACHO d WHERE v2.ID_SUB_CATEGORIA_2 = d.ID_SUB_CATEGORIA_2 AND d.FECHA = '".date('Y-m-d')."') AS ESTADO  from INVENTARIOS_SUB_CATEGORIA_2 v2, INVENTARIOS_SUB_CATEGORIA_1 v1 where v2.ID_SUB_CATEGORIA_1 =v1.ID_SUB_CATEGORIA_1 and v1.ESTADO=1 and v2.ESTADO_REPOSICION=1 and v1.ID_CATEGORIA is not null;";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}
