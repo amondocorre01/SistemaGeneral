@@ -271,6 +271,10 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['guardar-perfil'] = 'api/pedido/guardarPerfil';
     $route['guardar-totales'] = 'api/pedido/guardarTotales';
 
+    $route['agregar-sucursal-cronograma'] = 'api/pedido/addToCronograma';
+    $route['get-cronograma'] = 'api/pedido/getCronograma';
+    $route['confirmar-llegada'] = 'api/pedido/confirmarLlegada';
+
 
    
 

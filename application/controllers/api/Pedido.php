@@ -710,6 +710,60 @@ class Pedido extends CI_Controller {
         
     }
 
+    public function addToCronograma() {
+
+        $sucursal = $this->input->post('ubicacion');
+        $turno = $this->input->post('turno');
+        $fecha = $this->input->post('fecha');
+        $response['status'] = false;
+        $response['icon'] = 'error';
+        $response['message'] = 'La ruta hacia esa sucursal ya existe';
+
+
+        
+
+        $sql1 = "SELECT COUNT(ID_TURNO) AS TOTAL FROM INVENTARIOS_CRONOGRAMA WHERE ID_TURNO = ? AND ID_UBICACION = ? AND FECHA = ?";
+        $res = $this->db->query($sql1, [$turno, $sucursal, $fecha])->result();
+
+        if($res[0]->TOTAL == 0) {
+
+            $sql = "INSERT INTO INVENTARIOS_CRONOGRAMA (ID_UBICACION, ID_TURNO, FECHA, ESTADO) VALUES (?, ?, ?, ?)";
+
+            $this->db->query($sql, [$sucursal, $turno, $fecha, 0 ]);
+            $response['status'] = true;
+            $response['icon'] = 'success';
+            $response['message'] = 'Se ha guardado la ruta hacia la sucursal correctamente';
+
+
+        }
+
+        echo json_encode($response);
+
+    }
+
+    public function getCronograma() {
+
+
+        $sql = "SELECT c.ESTADO, c.LLEGADA, c.ID_CRONOGRAMA, c.FECHA, u.DESCRIPCION, t.TURNO FROM INVENTARIOS_CRONOGRAMA c, ID_UBICACION u, INVENTARIOS_TURNO t  WHERE c.ID_UBICACION = u.ID_UBICACION AND c.ID_TURNO = t.ID_TURNO AND c.FECHA = ?";
+
+        $response = $this->db->query($sql, date('Y-m-d'))->result();
+
+        echo json_encode(['data'=>$response]);
+
+    }
+
+    public function confirmarLlegada() {
+        $id =   $this->input->post('id');
+        $sql = "UPDATE INVENTARIOS_CRONOGRAMA SET LLEGADA = ?, ESTADO = ? WHERE ID_CRONOGRAMA = ?";
+        $this->db->query($sql, [date('H:i:s'), 1 , $id]);
+
+        $response['icon'] = 'success';
+        $response['llegada'] = 'Ha marcado su llegada a la sucursal';
+
+        echo json_encode($response);
+
+    }
+
 }
 
 

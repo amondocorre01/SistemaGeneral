@@ -584,6 +584,20 @@ case 'despacho':
 break;
 
 
+case 'cronograma':
+
+	$sql = "SELECT ID_UBICACION, DESCRIPCION FROM ID_UBICACION WHERE ESTADO = ? AND SUCURSAL = ?";
+	$data['sucursales'] = $this->db->query($sql, [1,1])->result();
+
+	$sql1 = "SELECT * FROM INVENTARIOS_TURNO ORDER BY ID_TURNO ASC";
+	$data['turnos'] = $this->db->query($sql1)->result();
+
+
+	echo $this->load->view('generico/apertura/cronograma', $data, TRUE);
+
+break;
+
+
 case 'cambiar-pasword':
 	$data = null;
 	echo $this->load->view('generico/apertura/password', $data, TRUE);

@@ -122,6 +122,7 @@ foreach ($sucursales as $key => $sucursal) {
                             }
                             $checked = ($producto->ESTADO)?'checked onclick="return false;"':'';
                             $readonly = ($producto->ESTADO)?' readonly ':'';
+                            $recibida = ($producto->RECIBIDA>0)? $producto->RECIBIDA : $sum;
                             $columna = '<tr>
                             <td>'.$producto->CATEGORIA.'</td>
                             <td>'.$producto->SUB_CATEGORIA_1.'</td>
@@ -131,7 +132,7 @@ foreach ($sucursales as $key => $sucursal) {
                             <td>'.$sum.'</td>';
                             if($fecha_reporte == date('Y-m-d')):
                       $columna .=     '<td>
-                              <input name="'.$id_subcategoria_2.'[recibida]" type="number"'.$readonly.'value="'.$producto->RECIBIDA.'">
+                              <input name="'.$id_subcategoria_2.'[recibida]" type="number"'.$readonly.'value="'.$recibida.'">
                             </td>  
 							            <td>
                               <input name="'.$id_subcategoria_2.'[total]" value="1" '.$checked.' type="checkbox">
