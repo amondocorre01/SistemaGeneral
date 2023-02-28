@@ -219,9 +219,10 @@
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
 
-          var fecha = '<?=date('Y-m-d')?>'
+          var fecha = '<?=date('Y-m-d')?>';
+          var ubicacion =
           $('.loading').show();
-          $.post("<?=site_url('enviar-entrega')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
+          $.post("<?=site_url('enviar-entrega')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>', ubicacion:'<?=$ubicacion?>'})
                 .done(function( data ) {
                   $('.loading').hide();
                   Swal.fire('Envio Exitoso!', '', 'success');

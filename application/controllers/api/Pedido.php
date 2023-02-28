@@ -497,6 +497,7 @@ class Pedido extends CI_Controller {
 
         $db = $this->input->post('db');
         $sufijo = $this->input->post('sufijo');
+        $ubicacion = $this->input->post('ubicacion');
 
         $DB2 = $this->load->database($db, TRUE);
 
@@ -510,6 +511,10 @@ class Pedido extends CI_Controller {
         $DB2->query($sql3);
 
         $registro = $DB2->query($sql);
+
+
+        $sql4 = "UPDATE INVENTARIOS_CRONOGRAMA SET LLEGADA = ?, ESTADO = ? WHERE ID_UBICACION = ? AND FECHA = ?";
+        $this->db->query($sql4, [date('H:i:s'), 1 , $ubicacion, date('Y-m-d')]);
 
         
             $response['status'] = true;
@@ -744,25 +749,16 @@ class Pedido extends CI_Controller {
     public function getCronograma() {
 
 
-        $sql = "SELECT c.ESTADO, c.LLEGADA, c.ID_CRONOGRAMA, c.FECHA, u.DESCRIPCION, t.TURNO FROM INVENTARIOS_CRONOGRAMA c, ID_UBICACION u, INVENTARIOS_TURNO t  WHERE c.ID_UBICACION = u.ID_UBICACION AND c.ID_TURNO = t.ID_TURNO AND c.FECHA = ?";
+        $sql = "SELECT c.ESTADO, c.LLEGADA, c.ID_CRONOGRAMA, c.FECHA, u.DESCRIPCION, t.TURNO FROM INVENTARIOS_CRONOGRAMA c, ID_UBICACION u, INVENTARIOS_TURNO t  WHERE c.ID_UBICACION = u.ID_UBICACION AND c.ID_TURNO = t.ID_TURNO AND FECHA > (SELECT DATEADD(DAY,-20,GETDATE()));";
 
-        $response = $this->db->query($sql, date('Y-m-d'))->result();
+        $fecha = $this->input->post('fecha');
+
+        $response = $this->db->query($sql)->result();
 
         echo json_encode(['data'=>$response]);
 
     }
 
-    public function confirmarLlegada() {
-        $id =   $this->input->post('id');
-        $sql = "UPDATE INVENTARIOS_CRONOGRAMA SET LLEGADA = ?, ESTADO = ? WHERE ID_CRONOGRAMA = ?";
-        $this->db->query($sql, [date('H:i:s'), 1 , $id]);
-
-        $response['icon'] = 'success';
-        $response['llegada'] = 'Ha marcado su llegada a la sucursal';
-
-        echo json_encode($response);
-
-    }
 
 }
 

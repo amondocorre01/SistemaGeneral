@@ -558,8 +558,9 @@ break;
 case 'entrega-prueba':
 	$db = 'ventas';
 	$sufijo = 'AE';
+	$ubicacion = 13;
 
-	$data = entrega($db, $sufijo);
+	$data = entrega($db, $sufijo, $ubicacion);
 
 	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
 break;

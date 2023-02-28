@@ -7,9 +7,28 @@
             </div>
             <div class="card-body table-responsive">
 
-            <button class="btn btn-xs edit palette-Green-600 bg" data-toggle="modal" data-target="#nuevo">
-                <i class="las la-plus la-1x"></i> Agregar
-            </button>
+            
+	<div class="row">
+		<div class="col-2">
+			<button class="btn btn-xs btn-padding edit palette-Green-600 bg" data-toggle="modal" data-target="#nuevo">
+				<i class="las la-plus la-1x"></i> Agregar
+			</button>
+		</div>
+
+		<div class="col-2">
+		<?=form_label('Fecha', 'fecha')?>
+			<div class="input-group mb-3">
+				<input id="fecha" type="date" class="form-control">
+				<div class="input-group-append">
+					<div class="input-group-text">
+						<span class="las la-search" onclick="filtrar()"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			
             <br> <br>
 
                 <table id="table" class="table table-striped table-hover dt-responsive display table-bordered dataTable dtr-inline"> 
@@ -97,8 +116,47 @@
 
 
 <script>
+
+
+var fecha, table;
+
+fecha = $('#fecha');
+ 
+// Custom filtering function which will search data in column four between two values
+$.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+        var f_fecha = fecha.val(); 
+       
+        var c_fecha = Date.parse(data[2]) / 1000;
+        var a_fecha = Date.parse('<?=date('Y-m-d')?>') / 1000;
+        
+
+
+        if(f_fecha == ''){
+            if(c_fecha == a_fecha){
+                return true;
+            }
+
+            else {
+                return false;
+            }
+        }
+
+        else {
+
+            var f_fecha = Date.parse(f_fecha) / 1000;
+
+            if(f_fecha == c_fecha){
+                    return true;
+            }
+
+            else {
+                return false;
+            }
+
+        }});
    
-    var table = $('#table').DataTable({
+    table = $('#table').DataTable({
         responsive: true,
         ajax: { url: '<?=site_url('get-cronograma')?>' },
         language:{ search: "Buscar", lengthMenu: "Mostrar _MENU_", previous: "Anterior",
@@ -129,25 +187,15 @@
                     
                    return body;
                 }
-            },
-            { title: 'Opciones', width:'5%', data: null, 
-                render: function (data, type, full, meta) { 
-
-					button = '';
-
-                    if(data.ESTADO == 0 ) {
-
-                        button += '<button class="btn btn-xs palette-Green-400 bg" onclick="llegada('+data.ID_CRONOGRAMA+')">';
-                        button +='<i class="las la-flag-checkered la-2x"></i>';
-                        button += '</button>';
-
-                    }
-
-                    return button;
-                }
             }
         ],
     });
+
+
+    function filtrar() {
+
+      table.draw();
+    }
 
 
     function guardarRuta() {

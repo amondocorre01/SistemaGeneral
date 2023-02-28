@@ -1036,7 +1036,7 @@ if(!function_exists('recepcion')){
 
 if(!function_exists('entrega')){
 
-	function entrega($db, $sufijo) {
+	function entrega($db, $sufijo, $ubicacion) {
 		$CI =& get_instance();
 
 		$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
@@ -1072,6 +1072,7 @@ if(!function_exists('entrega')){
 	 	$data['db'] = $db;
 	 	$data['sufijo'] = $sufijo;
 	 	$data['cabecera'] = $cabecera; 
+		$data['ubicacion'] = $ubicacion;
 
 		return $data;
 
