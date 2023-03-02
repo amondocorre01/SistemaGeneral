@@ -505,83 +505,299 @@ break;
 
 /********** MODULO PEDIDOS ***************/
 
+		/*** SUCURSAL PRUEBA  ***/
 case 'perfilPed-prueba':
-
-	$sucursal = 2;
-
-	$id = $this->session->id_usuario;
-
-	$datos['perfiles'] = $this->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES ss', 'ss.ID_LISTA_STOCK AS ID, ss.NOMBRE_LISTA AS TEXT', ['ss.NOMBRE_LISTA'=>'ASC'], ['ss.ID_SUCURSAL'=>$sucursal]);
-
-	$datos['sucursal'] = 2;
-	
-	echo $this->load->view('generico/apertura/perfil_pedido', $datos, TRUE);
+	$sucursal = 13; $data = perfilPed($sucursal);
+	echo $this->load->view('generico/apertura/perfil_pedido', $data, TRUE);
 break;
 
 case 'recepcion-prueba':
-
-	$db = 'ventas';
-	$sufijo = 'AE';
-	$sucursal = 2;
-
-	$data = recepcion($db, $sufijo);
-
+	$db = 'ventas'; $sufijo = 'AE'; $sucursal = 13; $data = recepcion($db, $sufijo);
 	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
-
 break;
 
-
 case 'solicitud-prueba':
-
-	$db = 'ventas';
-	$sufijo = 'AE';
-	$sucursal = 2;
-
-	$data = solicitud($db, $sufijo, $sucursal);
-	
-
+	$db = 'ventas'; $sufijo = 'AE'; $sucursal = 13; $data = solicitud($db, $sufijo, $sucursal);
 	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
 break;
 
-
 case 'existencia-prueba':
-
-	$db = 'ventas';
-	$sufijo = 'AE';
-
-	$data = existencia($db, $sufijo);
-
+	$db = 'ventas'; $sufijo = 'AE'; $data = existencia($db, $sufijo);
 	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
 break;
 
-
 case 'entrega-prueba':
-	$db = 'ventas';
-	$sufijo = 'AE';
-	$ubicacion = 13;
-
-	$data = entrega($db, $sufijo, $ubicacion);
-
+	$db = 'ventas'; $sufijo = 'AE'; $ubicacion = 13; $data = entrega($db, $sufijo, $ubicacion);
 	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
 break;
 
 case 'apv-prueba':
-
-	$db = 'ventas';
-	$sufijo = 'AE';
-
-	$data = preparacion($db, $sufijo);
-
+	$db = 'ventas'; $sufijo = 'AE'; $data = preparacion($db, $sufijo);
 	echo $this->load->view('generico/apertura/apv', $data, TRUE);
+break;
 
+		/*** SUCURSAL AMERICA ESTE  ***/
+case 'perfilPed-AE':
+	$sucursal = 13; $data = perfilPed($sucursal);
+	echo $this->load->view('generico/apertura/perfil_pedido', $data, TRUE);
+break;
+
+case 'recepcion-AE':
+	$db = 'aeste'; $sufijo = 'AE'; $sucursal = 13; $data = recepcion($db, $sufijo);
+	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
+break;
+
+case 'solicitud-AE':
+	$db = 'aeste'; $sufijo = 'AE'; $sucursal = 13; $data = solicitud($db, $sufijo, $sucursal);
+	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
+break;
+
+case 'existencia-AE':
+	$db = 'aeste'; $sufijo = 'AE'; $data = existencia($db, $sufijo);
+	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
+break;
+
+case 'entrega-AE':
+	$db = 'aeste'; $sufijo = 'AE'; $ubicacion = 13; $data = entrega($db, $sufijo, $ubicacion);
+	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
+break;
+
+case 'apv-AE':
+	$db = 'aeste'; $sufijo = 'AE'; $data = preparacion($db, $sufijo);
+	echo $this->load->view('generico/apertura/apv', $data, TRUE);
+break;
+			/*** SUCURSAL AMERICA OESTE  ***/
+
+case 'perfilPed-AO':
+	$sucursal = 5; $data = perfilPed($sucursal);
+	echo $this->load->view('generico/apertura/perfil_pedido', $data, TRUE);
+break;
+
+case 'recepcion-AO':
+	$db = 'aoeste'; $sufijo = 'AO'; $sucursal = 5; $data = recepcion($db, $sufijo);
+	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
+break;
+
+case 'solicitud-AO':
+	$db = 'aoeste'; $sufijo = 'AO'; $sucursal = 5; $data = solicitud($db, $sufijo, $sucursal);
+	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
+break;
+
+case 'existencia-AO':
+	$db = 'aoeste'; $sufijo = 'AO'; $data = existencia($db, $sufijo);
+	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
+break;
+
+case 'entrega-AO':
+	$db = 'aoeste'; $sufijo = 'AO'; $ubicacion = 5; $data = entrega($db, $sufijo, $ubicacion);
+	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
+break;
+
+case 'apv-AO':
+	$db = 'aoeste'; $sufijo = 'AO'; $data = preparacion($db, $sufijo);
+	echo $this->load->view('generico/apertura/apv', $data, TRUE);
+break;
+
+/*** SUCURSAL AMERICA LINCOLN  ***/
+
+case 'perfilPed-AO':
+	$sucursal = 11; $data = perfilPed($sucursal);
+	echo $this->load->view('generico/apertura/perfil_pedido', $data, TRUE);
+break;
+
+case 'recepcion-AO':
+	$db = 'lincoln'; $sufijo = 'AO'; $sucursal = 11; $data = recepcion($db, $sufijo);
+	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
+break;
+
+case 'solicitud-AO':
+	$db = 'lincoln'; $sufijo = 'AO'; $sucursal = 11; $data = solicitud($db, $sufijo, $sucursal);
+	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
+break;
+
+case 'existencia-AO':
+	$db = 'lincoln'; $sufijo = 'AO'; $data = existencia($db, $sufijo);
+	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
+break;
+
+case 'entrega-AO':
+	$db = 'lincoln'; $sufijo = 'AO'; $ubicacion = 11; $data = entrega($db, $sufijo, $ubicacion);
+	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
+break;
+
+case 'apv-AO':
+	$db = 'lincoln'; $sufijo = 'AO'; $data = preparacion($db, $sufijo);
+	echo $this->load->view('generico/apertura/apv', $data, TRUE);
+break;
+
+/*** SUCURSAL AMERICA JORDAN  ***/
+
+case 'perfilPed-SJ':
+	$sucursal = 12; $data = perfilPed($sucursal);
+	echo $this->load->view('generico/apertura/perfil_pedido', $data, TRUE);
+break;
+
+case 'recepcion-SJ':
+	$db = 'jordan'; $sufijo = 'SJ'; $sucursal = 12; $data = recepcion($db, $sufijo);
+	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
+break;
+
+case 'solicitud-SJ':
+	$db = 'jordan'; $sufijo = 'SJ'; $sucursal = 12; $data = solicitud($db, $sufijo, $sucursal);
+	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
+break;
+
+case 'existencia-SJ':
+	$db = 'jordan'; $sufijo = 'SJ'; $data = existencia($db, $sufijo);
+	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
+break;
+
+case 'entrega-SJ':
+	$db = 'jordan'; $sufijo = 'SJ'; $ubicacion = 12; $data = entrega($db, $sufijo, $ubicacion);
+	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
+break;
+
+case 'apv-SJ':
+	$db = 'jordan'; $sufijo = 'SJ'; $data = preparacion($db, $sufijo);
+	echo $this->load->view('generico/apertura/apv', $data, TRUE);
+break;
+
+/*** SUCURSAL SALAMANCA  ***/
+
+case 'perfilPed-SS':
+	$sucursal = 4; $data = perfilPed($sucursal);
+	echo $this->load->view('generico/apertura/perfil_pedido', $data, TRUE);
+break;
+
+case 'recepcion-SS':
+	$db = 'salamanca'; $sufijo = 'SS'; $sucursal = 4; $data = recepcion($db, $sufijo);
+	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
+break;
+
+case 'solicitud-SS':
+	$db = 'salamanca'; $sufijo = 'SS'; $sucursal = 4; $data = solicitud($db, $sufijo, $sucursal);
+	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
+break;
+
+case 'existencia-SS':
+	$db = 'salamanca'; $sufijo = 'SS'; $data = existencia($db, $sufijo);
+	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
+break;
+
+case 'entrega-SS':
+	$db = 'salamanca'; $sufijo = 'SS'; $ubicacion = 4; $data = entrega($db, $sufijo, $ubicacion);
+	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
+break;
+
+case 'apv-SS':
+	$db = 'salamanca'; $sufijo = 'SS'; $data = preparacion($db, $sufijo);
+	echo $this->load->view('generico/apertura/apv', $data, TRUE);
+break;
+
+/*** SUCURSAL MEGA CENTER  ***/
+
+case 'perfilPed-CC':
+	$sucursal = 18; $data = perfilPed($sucursal);
+	echo $this->load->view('generico/apertura/perfil_pedido', $data, TRUE);
+break;
+
+case 'recepcion-CC':
+	$db = 'center'; $sufijo = 'CC'; $sucursal = 18; $data = recepcion($db, $sufijo);
+	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
+break;
+
+case 'solicitud-CC':
+	$db = 'center'; $sufijo = 'CC'; $sucursal = 18; $data = solicitud($db, $sufijo, $sucursal);
+	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
+break;
+
+case 'existencia-CC':
+	$db = 'center'; $sufijo = 'CC'; $data = existencia($db, $sufijo);
+	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
+break;
+
+case 'entrega-CC':
+	$db = 'center'; $sufijo = 'CC'; $ubicacion = 18; $data = entrega($db, $sufijo, $ubicacion);
+	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
+break;
+
+case 'apv-CC':
+	$db = 'center'; $sufijo = 'CC'; $data = preparacion($db, $sufijo);
+	echo $this->load->view('generico/apertura/apv', $data, TRUE);
 break;
 
 case 'despacho':
-	
 	$data = despacho();
-
 	echo $this->load->view('generico/apertura/despacho', $data, TRUE);
+break;
 
+/*** SUCURSAL PANDO  ***/
+
+case 'perfilPed-SP':
+	$sucursal = 2; $data = perfilPed($sucursal);
+	echo $this->load->view('generico/apertura/perfil_pedido', $data, TRUE);
+break;
+
+case 'recepcion-SP':
+	$db = 'pando'; $sufijo = 'SP'; $sucursal = 2; $data = recepcion($db, $sufijo);
+	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
+break;
+
+case 'solicitud-SP':
+	$db = 'pando'; $sufijo = 'SP'; $sucursal = 2; $data = solicitud($db, $sufijo, $sucursal);
+	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
+break;
+
+case 'existencia-SP':
+	$db = 'pando'; $sufijo = 'SP'; $data = existencia($db, $sufijo);
+	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
+break;
+
+case 'entrega-SP':
+	$db = 'pando'; $sufijo = 'SP'; $ubicacion = 2; $data = entrega($db, $sufijo, $ubicacion);
+	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
+break;
+
+case 'apv-SP':
+	$db = 'pando'; $sufijo = 'SP'; $data = preparacion($db, $sufijo);
+	echo $this->load->view('generico/apertura/apv', $data, TRUE);
+break;
+
+/*** SUCURSAL HUPERMALL  ***/
+
+case 'perfilPed-SH':
+	$sucursal = 6; $data = perfilPed($sucursal);
+	echo $this->load->view('generico/apertura/perfil_pedido', $data, TRUE);
+break;
+
+case 'recepcion-SH':
+	$db = 'hupermall'; $sufijo = 'SH'; $sucursal = 6; $data = recepcion($db, $sufijo);
+	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
+break;
+
+case 'solicitud-SH':
+	$db = 'hupermall'; $sufijo = 'SH'; $sucursal = 6; $data = solicitud($db, $sufijo, $sucursal);
+	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
+break;
+
+case 'existencia-SH':
+	$db = 'hupermall'; $sufijo = 'SH'; $data = existencia($db, $sufijo);
+	echo $this->load->view('generico/apertura/existencia', $data, TRUE);
+break;
+
+case 'entrega-SH':
+	$db = 'hupermall'; $sufijo = 'SH'; $ubicacion = 6; $data = entrega($db, $sufijo, $ubicacion);
+	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
+break;
+
+case 'apv-SH':
+	$db = 'hupermall'; $sufijo = 'SH'; $data = preparacion($db, $sufijo);
+	echo $this->load->view('generico/apertura/apv', $data, TRUE);
+break;
+
+case 'despacho':
+	$data = despacho();
+	echo $this->load->view('generico/apertura/despacho', $data, TRUE);
 break;
 
 
@@ -597,6 +813,10 @@ case 'cronograma':
 	echo $this->load->view('generico/apertura/cronograma', $data, TRUE);
 
 break;
+
+
+/********** FIN MODULO PEDIDO  ***********/
+
 
 
 case 'cambiar-pasword':

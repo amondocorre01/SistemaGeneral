@@ -440,3 +440,18 @@ if(!function_exists('getNombreProducto')) {
 		return $respuesta[0];
 	}
 }
+
+if(!function_exists('perfilPed')) {
+	function perfilPed($sucursal) {
+
+
+		$id = $this->session->id_usuario;
+
+		$datos['perfiles'] = $this->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES ss', 'ss.ID_LISTA_STOCK AS ID, ss.NOMBRE_LISTA AS TEXT', ['ss.NOMBRE_LISTA'=>'ASC'], ['ss.ID_SUCURSAL'=>$sucursal]);
+
+		$datos['sucursal'] = $sucursal;
+
+		return $datos;
+
+	}
+}
