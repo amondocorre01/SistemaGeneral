@@ -41,20 +41,17 @@
   <?php endif;?>
 
   <nav class="row navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="col-8 col-md-10">
+        <a class="navbar-brand" href="#">Recepcion</a>
+      </div>
+      <div class="col-2 col-md-1 btn-group">
+          <?php //if($cabecera[0]->ESTADO == 12 ):?>
+              <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarRecepcion()']);?>
         
-        
-          <div class="col-8 col-md-10">
-            <a class="navbar-brand" href="#">Recepcion</a>
-          </div>
-          <div class="col-2 col-md-1 btn-group">
-              <?php if($cabecera[0]->ESTADO == 12 ):?>
-                  <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarRecepcion()']);?>
-            
-                  <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarRecepcion()']);?>
-               <?php endif; ?>
-               <button onclick="generarPdfPedido()">pdf</button>
-          </div>
-        
+              <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarRecepcion()']);?>
+            <?php// endif; ?>
+            <button onclick="generarPdfPedido()">pdf</button>
+      </div>
     </nav>
 
   <br>
@@ -122,7 +119,7 @@
                               <?=$registro[$p->ID_SUB_CATEGORIA_2]?>                      
                             </td>
                             <td width="20%">
-                              <input onblur="checkCantidad(<?=$registro[$p->ID_SUB_CATEGORIA_2]?>,<?=$p->ID_SUB_CATEGORIA_2?>)" id="pro_<?=$p->ID_SUB_CATEGORIA_2?>"  name="<?=$p->ID_SUB_CATEGORIA_2?>[cantidad]" class="form-control enviado" type="number" min="0" max="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>" <?=($cabecera[0]->ESTADO > 12)?'readonly="readonly"':''?> step="1" value="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>">
+                              <input onblur="checkCantidad(<?=$registro[$p->ID_SUB_CATEGORIA_2]?>,<?=$p->ID_SUB_CATEGORIA_2?>)" id="pro_<?=$p->ID_SUB_CATEGORIA_2?>"  name="<?=$p->ID_SUB_CATEGORIA_2?>[cantidad]" class="form-control enviado" type="number" min="0" max="<?=$registro[$p->ID_SUB_CATEGORIA_2]?>" <?=($cabecera[0]->ESTADO > 12)?'readonly="readonly"':''?> step="1" value="<?=$aceptada[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
                             <td width="20%">
                               <input name="<?=$p->ID_SUB_CATEGORIA_2?>[observacion]" class="form-control enviado" type="text" <?=($cabecera[0]->ESTADO > 12)?'readonly="readonly"':''?> value="">

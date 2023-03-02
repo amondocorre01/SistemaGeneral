@@ -431,9 +431,22 @@ class Pedido extends CI_Controller {
         $sql3 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 13, FECHA_RECEPCION = (SELECT DATEADD(HH, -4, GETDATE())) WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.")";
         $DB2->query($sql3);
 
-        $registro = $DB2->query($sql);
 
-        
+        $sql9 = "SELECT CAST(CANTIDAD_ACEPTADA*ADECUACION AS INT) AS ACEPTADA, ID_SUBCATEGORIA_2, DIAS_VENCE FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE CANTIDAD_ACEPTADA > 0 AND FECHA_CONTEO = (SELECT MAX(FECHA) FROM CABECERA_PEDIDO_".$sufijo.")";
+        $inventario = $DB2->query($sql9)->result();
+
+
+        foreach ($inventario as $v) {
+
+            $sql8 = "EXECUTE ".$sufijo."_SET_INVENTARIO ?, ?, ?, ?, ?, ?";
+            $DB2->query($sql8, [$v->ID_SUBCATEGORIA_2, date('Y-m-d'), $v->DIAS_VENCE, 1, $v->ACEPTADA, 1 ]);
+
+        }
+
+       
+
+
+        $registro = $DB2->query($sql);
             $response['status'] = true;
 
         echo json_encode($response);
