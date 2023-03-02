@@ -443,11 +443,11 @@ if(!function_exists('getNombreProducto')) {
 
 if(!function_exists('perfilPed')) {
 	function perfilPed($sucursal) {
+		$CI =& get_instance();
 
+		$id = $CI->session->id_usuario;
 
-		$id = $this->session->id_usuario;
-
-		$datos['perfiles'] = $this->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES ss', 'ss.ID_LISTA_STOCK AS ID, ss.NOMBRE_LISTA AS TEXT', ['ss.NOMBRE_LISTA'=>'ASC'], ['ss.ID_SUCURSAL'=>$sucursal]);
+		$datos['perfiles'] = $CI->main->getListSelect('INVENTARIOS_LISTA_STOCKS_SUCURSALES ss', 'ss.ID_LISTA_STOCK AS ID, ss.NOMBRE_LISTA AS TEXT', ['ss.NOMBRE_LISTA'=>'ASC'], ['ss.ID_SUCURSAL'=>$sucursal]);
 
 		$datos['sucursal'] = $sucursal;
 

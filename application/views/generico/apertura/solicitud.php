@@ -308,7 +308,7 @@
 
 
 
-        $.each(response.minimos, function (i, v) { 
+        $.each(response.productos, function (i, v) { 
           
           precargado = $('#h_'+v.ID_SUB_CATEGORIA_2).val();
 
@@ -319,12 +319,13 @@
               //$('#m_'+v.ID_SUB_CATEGORIA_2).empty();
               $('#m_'+v.ID_SUB_CATEGORIA_2).val(Number(v.STOCK));
 
-              var operacion = Number(v.STOCK)-Number($('#a_'+v.ID_SUB_CATEGORIA_2).html());
-              operacion = Math.ceil(operacion/Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
-
-              if( operacion > 0)
+              var operacion = ((Number(v.STOCK) * Number(v.ADECUACION))-Number($('#a_'+v.ID_SUB_CATEGORIA_2).html()));
+              //operacion = Math.ceil(operacion / Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
+              //operacion = (operacion / Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
+              operacion = (operacion / Number($('#a_'+v.ID_SUB_CATEGORIA_2).html()));
+              if( operacion >0.5)
               {
-                $('#s_'+v.ID_SUB_CATEGORIA_2).val(operacion);
+                $('#s_'+v.ID_SUB_CATEGORIA_2).val(Math.ceil(operacion));
               }
 
               else 

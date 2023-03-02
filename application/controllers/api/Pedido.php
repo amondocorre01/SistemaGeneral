@@ -197,12 +197,15 @@ class Pedido extends CI_Controller {
 
         $id = $this->input->post('lista');
 
-        $minimos = $this->main->getListSelect('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', 'ID_SUB_CATEGORIA_2, STOCK', NULL, ['ID_LISTA_STOCK'=>$id]);
+        //$minimos = $this->main->getListSelect('INVENTARIOS_STOCKS_MINIMOS_SUCURSALES', 'ID_SUB_CATEGORIA_2, STOCK', NULL, ['ID_LISTA_STOCK'=>$id]);
 
-        $productos = $this->main->getListSelect('INVENTARIOS_SUB_CATEGORIA_2', 'ID_SUB_CATEGORIA_2', NULL, ['ESTADO_REPOSICION'=>1]);
-  
+        //$productos = $this->main->getListSelect('INVENTARIOS_SUB_CATEGORIA_2', 'ID_SUB_CATEGORIA_2, CAST(CANTIDAD_ADECUACION_PEDIDOS AS INT ) AS ADECUACION' , NULL, ['ESTADO_REPOSICION'=>1]);
         
-        echo json_encode(['minimos'=>$minimos, 'productos'=>$productos]);
+        $sql="select ISMS.ID_SUB_CATEGORIA_2, ISMS.STOCK, CAST(ISC2.CANTIDAD_ADECUACION_PEDIDOS AS INT) ADECUACION 
+        from INVENTARIOS_STOCKS_MINIMOS_SUCURSALES ISMS ,INVENTARIOS_SUB_CATEGORIA_2 ISC2  where ISC2.ID_SUB_CATEGORIA_2=ISMS.ID_SUB_CATEGORIA_2 AND ID_LISTA_STOCK=?";
+        $productos= $this->db->query($sql,[$id])->result();
+        
+        echo json_encode(['productos'=>$productos]);
     }
 
 
@@ -233,14 +236,14 @@ class Pedido extends CI_Controller {
         $DB2->query($sql7);
 
         $array2 = $this->input->post();
-
+        //var_dump($array2);
         foreach ($array2 as $key => $value) {
             
             if($key != 'db' AND $key != 'sufijo' AND $key != 'lista') {
 
                 
 
-
+                
                 if($value['cantidad'] != $array1[$key] OR $value['minimo'] != $array3[$key]) {
 
                     $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$value['cantidad'].",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key.",".$value['precargado'].",".$value['minimo'];   
