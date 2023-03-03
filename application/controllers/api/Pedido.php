@@ -236,17 +236,18 @@ class Pedido extends CI_Controller {
         $DB2->query($sql7);
 
         $array2 = $this->input->post();
-        //var_dump($array2);
+
         foreach ($array2 as $key => $value) {
             
             if($key != 'db' AND $key != 'sufijo' AND $key != 'lista') {
 
-                
+                $cantidad = ($value['cantidad'] != NULL) ? $value['cantidad'] : 0;
 
-                
-                if($value['cantidad'] != $array1[$key] OR $value['minimo'] != $array3[$key]) {
+                if($cantidad != $array1[$key] OR $value['minimo'] != $array3[$key]) {
 
-                    $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$value['cantidad'].",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key.",".$value['precargado'].",".$value['minimo'];   
+                    
+
+                    $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$cantidad.",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key.",".$value['precargado'].",".$value['minimo'];   
                     
                     $DB2->query($sql2)->result();
      
