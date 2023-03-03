@@ -32,6 +32,8 @@
 }
 </style>
 
+<?php if($registro):?>
+
 <?php if($cabecera AND $cabecera[0]->ESTADO > 10):?>
 
 <?php if($cabecera[0]->ESTADO > 11 ):?>
@@ -176,12 +178,16 @@
   <?=form_close();?>
 </div>
 <?php else:?>
-
   <div class="alert alert-danger" role="alert">
      NO SE HA ENVIADO SOLICITUDES PARA EL DIA
   </div>
-
 <?php endif;?>
+<?php else:?>
+
+<div class="alert alert-danger" role="alert">
+   NO HAY SOLICITUDES POR PARTE DE LA SUCURSAL
+<?php endif;?>
+
 
 <script>
   //  $('.collapse').collapse();

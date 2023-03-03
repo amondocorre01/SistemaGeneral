@@ -110,35 +110,44 @@ if(!function_exists('preparacion')) {
 	$actual = $DB2->query($sql_first)->result();
 
 	
-	$sql_date = "SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_SOLICITUD = (SELECT MAX(FECHA_SOLICITUD) FROM CABECERA_PEDIDO_".$sufijo.") ";   // QUITAR UN DIA
-	$fecha = $DB2->query($sql_date)->result();
-
-	$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_CONTEO, OBSERVACION, CANTIDAD_ENVIADA, TURNO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->FECHA."'";
-	$registro = $DB2->query($sql)->result();
-
-	$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->FECHA."'";
-	$cabecera = $DB2->query($sql2)->result();
-
+	$sql_cabecera = "SELECT TOP 1 ID_CABECERA, FECHA_SOLICITUD FROM CABECERA_PEDIDO_".$sufijo." ORDER BY ID_CABECERA DESC";   // QUITAR UN DIA
+	$fecha_cabecera = $DB2->query($sql_cabecera)->result();
 
 	$array = [];  $estado = []; $observacion = []; $solicitada = []; $envio = [];
 
-	foreach ($registro as $value) {
-		$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
-		$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
-		$observacion[$value->ID_SUBCATEGORIA_2] = $value->OBSERVACION;
-		$solicitada[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENVIADA;
-		$envio[$value->ID_SUBCATEGORIA_2] = $value->TURNO;
+	if($fecha_cabecera[0]->FECHA_SOLICITUD) {
+
+		$sql_date = "SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_SOLICITUD = (SELECT MAX(FECHA_SOLICITUD) FROM CABECERA_PEDIDO_".$sufijo.") ";   // QUITAR UN DIA
+		$fecha = $DB2->query($sql_date)->result();
+
+		$sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_CONTEO, OBSERVACION, CANTIDAD_ENVIADA, TURNO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->FECHA."'";
+		$registro = $DB2->query($sql)->result();
+
+		$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->FECHA."'";
+		$cabecera = $DB2->query($sql2)->result();
+
+
+		foreach ($registro as $value) {
+			$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
+			$estado[$value->ID_SUBCATEGORIA_2] = $value->ESTADO_CONTEO;
+			$observacion[$value->ID_SUBCATEGORIA_2] = $value->OBSERVACION;
+			$solicitada[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENVIADA;
+			$envio[$value->ID_SUBCATEGORIA_2] = $value->TURNO;
+		}
+
+		$data['fecha'] = $fecha[0]->FECHA;
+		$data['cabecera'] = $cabecera;
+
 	}
 
-	
 	 $data['registro'] = $array;
 	 $data['estado'] = $estado;
 	 $data['db'] = $db;
 	 $data['sufijo'] = $sufijo;
-	 $data['cabecera'] = $cabecera;
+	 
 	 $data['observacion'] = $observacion;
 	 $data['solicitada'] = $solicitada;
-	 $data['fecha'] = $fecha[0]->FECHA;
+	 
 	 $data['turnos'] = $turnos;
 	 $data['envio'] = $envio;
 
