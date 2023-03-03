@@ -45,12 +45,13 @@
         <a class="navbar-brand" href="#">Recepcion</a>
       </div>
       <div class="col-2 col-md-1 btn-group">
-          <?php //if($cabecera[0]->ESTADO == 12 ):?>
+          <?php if($cabecera[0]->ESTADO == 12 ):?>
               <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarRecepcion()']);?>
         
               <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarRecepcion()']);?>
-            <?php// endif; ?>
-            <button onclick="generarPdfPedido()">pdf</button>
+            <?php endif; ?>
+            
+            <?=anchor('recepcion-excel/'.$db.'/'.$sufijo, '<span class="las la-file-excel la-2x"></span>', ['class'=>'btn palette-Green-600 bg btn-xs float-right']);?>
       </div>
     </nav>
 

@@ -52,6 +52,8 @@
 
       <?php endif;?>
 
+      <?=anchor('solicitud-excel/'.$db.'/'.$sufijo, '<span class="las la-file-excel la-2x"></span>', ['class'=>'btn palette-Green-600 bg btn-xs float-right']);?>
+
     </nav>
 
 

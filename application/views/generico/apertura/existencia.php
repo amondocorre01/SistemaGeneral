@@ -51,6 +51,9 @@
                     <?=form_button('cerrar', '<span class="las la-lock la-2x"></span>', ['class'=>'btn palette-Grey-600 bg btn-xs float-right', 'onclick'=>'cerrarTodo()']);?>
                     <?=form_button('abrir', '<span class="las la-key la-2x"></span>', ['class'=>'btn palette-Pink-800 bg btn-xs float-right', 'onclick'=>'abrirTodo()']);?>
                 <?php endif;?>
+
+                
+                  <?=anchor('inventario-excel/'.$db.'/'.$sufijo, '<span class="las la-file-excel la-2x"></span>', ['class'=>'btn palette-Green-600 bg btn-xs float-right']);?>
           </div>
         
     </nav>
@@ -275,4 +278,5 @@
       }
     })
   }
+
 </script>

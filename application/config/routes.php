@@ -276,6 +276,13 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['confirmar-llegada'] = 'api/pedido/confirmarLlegada';
 
 
+    /****** REPORTES ******/
+
+    $route['inventario-excel/(:any)/(:any)'] = 'report/pedido/inventario/$1/$2';
+    $route['solicitud-excel/(:any)/(:any)'] = 'report/pedido/solicitud/$1/$2';
+    $route['preparacion-excel/(:any)/(:any)'] = 'report/pedido/preparacion/$1/$2';
+    $route['recepcion-excel/(:any)/(:any)'] = 'report/pedido/recepcion/$1/$2';
+
    
 
 
