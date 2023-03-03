@@ -325,7 +325,7 @@
               //operacion = Math.ceil(operacion / Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
               //operacion = (operacion / Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
               operacion = (operacion / Number($('#a_'+v.ID_SUB_CATEGORIA_2).html()));
-              if( operacion >0.5)
+              if( operacion >=0.5)
               {
                 $('#s_'+v.ID_SUB_CATEGORIA_2).val(Math.ceil(operacion));
               }
