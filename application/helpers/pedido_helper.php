@@ -89,6 +89,7 @@ if(!function_exists('solicitud')) {
 		$data['cabecera'] = $cabecera;
 		$data['precargado'] = $precargado;
 		$data['minimo'] = $minimo;
+		$data['sucursal'] = $sucursal;
 
 		return $data;
 	}

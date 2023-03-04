@@ -188,10 +188,6 @@
 
 <script>
 
-    
-  //  $('.collapse').collapse();
-
-
     function guardarSolicitud(){
 
       var collection = $('#serializeExample form').serialize();
@@ -246,7 +242,7 @@
           var fecha = '<?=$this->session->fecha_conteo?>';
           $('.loading').show();
 
-          $.post("<?=site_url('enviar-pedido')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
+          $.post("<?=site_url('enviar-pedido')?>", {ubicacion:<?=$sucursal?> ,fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
                 .done(function( data ) {
                   $('.loading').hide();
 
@@ -263,7 +259,7 @@
                   }
 
                   else {
-                    Swal.fire('No habia ninguna modificacion', '', 'info');
+                    Swal.fire(dato.message, '', 'info');
                   }
                   
                 });

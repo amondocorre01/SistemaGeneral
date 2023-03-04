@@ -214,49 +214,60 @@ class Pedido extends CI_Controller {
         $response['status'] = false;
         $db = $this->input->post('db');
         $sufijo = $this->input->post('sufijo');
+        $ubicacion = $this->input->post('ubicacion');
 
-        $DB2 = $this->load->database($db, TRUE);
-        $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD, MINIMO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
-        $registro = $DB2->query($sql)->result();
+        $response['status'] = false;
+        $response['message'] = 'Sin elementos que actualizar';
 
-        $array1 = [];
+        $sql_hora_max = "SELECT CASE WHEN EXISTS (SELECT HORA_MAX_PEDIDO FROM ID_UBICACION u WHERE u.ID_UBICACION = ?  AND (SELECT DATEADD(HH, -4, CONVERT(time, GETDATE()))) <= u.HORA_MAX_PEDIDO)THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS PERMISO";
+        $result_hora_max = $this->db->query($sql_hora_max, [$ubicacion])->result();
 
-        foreach ($registro as $value) {
-            $array1[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
-            $array3[$value->ID_SUBCATEGORIA_2] = $value->MINIMO;
-            
-        }
 
-        $perfil = $this->input->post('lista');
+        if($result_hora_max[0]->PERMISO) {
 
-        if ($perfil) {
-        $sql7 = "UPDATE CABECERA_PEDIDO_AE SET PERFIL = ".$perfil." WHERE FECHA = '".$this->session->fecha_conteo."'";
-        }
+            $DB2 = $this->load->database($db, TRUE);
+            $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD, MINIMO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
+            $registro = $DB2->query($sql)->result();
 
-        $DB2->query($sql7);
+            $array1 = [];
 
-        $array2 = $this->input->post();
-
-        foreach ($array2 as $key => $value) {
-            
-            if($key != 'db' AND $key != 'sufijo' AND $key != 'lista') {
-
-                $cantidad = ($value['cantidad'] != NULL) ? $value['cantidad'] : 0;
-
-                if($cantidad != $array1[$key] OR $value['minimo'] != $array3[$key]) {
-
-                    
-
-                    $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$cantidad.",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key.",".$value['precargado'].",".$value['minimo'];   
-                    
-                    $DB2->query($sql2)->result();
-     
-                    $response['status'] = true;
-                 }
-
+            foreach ($registro as $value) {
+                $array1[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_SOLICITADA;
+                $array3[$value->ID_SUBCATEGORIA_2] = $value->MINIMO;
+                
             }
 
-            
+            $perfil = $this->input->post('lista');
+
+            if ($perfil) {
+            $sql7 = "UPDATE CABECERA_PEDIDO_AE SET PERFIL = ".$perfil." WHERE FECHA = '".$this->session->fecha_conteo."'";
+            }
+
+            $DB2->query($sql7);
+
+            $array2 = $this->input->post();
+
+            foreach ($array2 as $key => $value) {
+                
+                if($key != 'db' AND $key != 'sufijo' AND $key != 'lista') {
+
+                    $cantidad = ($value['cantidad'] != NULL) ? $value['cantidad'] : 0;
+
+                    if($cantidad != $array1[$key] OR $value['minimo'] != $array3[$key]) {
+
+                        $sql2 = "EXECUTE AE_SET_ITEM_SOLICITUD ".$cantidad.",'".$this->session->fecha_conteo."','".date('Y-m-d')."','".date('H:i:s')."',".$this->session->id_usuario.",".$key.",".$value['precargado'].",".$value['minimo'];   
+                        
+                        $DB2->query($sql2)->result();
+        
+                        $response['status'] = true;
+                    }
+                }
+            }
+
+        }
+
+        else {
+            $response['message'] = 'Se encuentra fuera de la hora de limite de Guardado';
         }
 
         echo json_encode($response);
@@ -270,17 +281,31 @@ class Pedido extends CI_Controller {
         $db = $this->input->post('db');
         $sufijo = $this->input->post('sufijo');
         $fecha = $this->input->post('fecha');
+        $ubicacion = $this->input->post('ubicacion');
 
-        $DB2 = $this->load->database($db, TRUE);
+        $response['message'] = 'Sin elementos que actualizar';
 
-        $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 11 WHERE FECHA_CONTEO ='".$fecha."'";
-        $DB2->query($sql);
+        $sql_hora_max = "SELECT CASE WHEN EXISTS (SELECT HORA_MAX_PEDIDO FROM ID_UBICACION u WHERE u.ID_UBICACION = ?  AND (SELECT DATEADD(HH, -4, CONVERT(time, GETDATE()))) <= u.HORA_MAX_PEDIDO)THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS PERMISO";
+        $result_hora_max = $this->db->query($sql_hora_max, [$ubicacion])->result();
 
-        $sql2 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 11, USUARIO_SOLICITUD = ".$this->session->id_usuario.", FECHA_SOLICITUD ='".date('Y-m-d H:i:s')."' WHERE FECHA = (SELECT MAX(FECHA) FROM CABECERA_PEDIDO_".$sufijo." ) ";
-        $DB2->query($sql2);
+
+        if($result_hora_max[0]->PERMISO) {
+
+            $DB2 = $this->load->database($db, TRUE);
+
+            $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 11 WHERE FECHA_CONTEO ='".$fecha."'";
+            $DB2->query($sql);
+
+            $sql2 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 11, USUARIO_SOLICITUD = ".$this->session->id_usuario.", FECHA_SOLICITUD ='".date('Y-m-d H:i:s')."' WHERE FECHA = (SELECT MAX(FECHA) FROM CABECERA_PEDIDO_".$sufijo." ) ";
+            $DB2->query($sql2);
 
         
             $response['status'] = true;
+        }
+
+        else {
+            $response['message'] = 'Se encuentra fuera de la hora de limite de envio';
+        }
 
         echo json_encode($response);
     }
