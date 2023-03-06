@@ -507,17 +507,17 @@ break;
 
 		/*** SUCURSAL PRUEBA  ***/
 case 'perfilPed-prueba':
-	$sucursal = 13; $data = perfilPed($sucursal);
+	$sucursal = 21; $data = perfilPed($sucursal);
 	echo $this->load->view('generico/apertura/perfil_pedido', $data, TRUE);
 break;
 
 case 'recepcion-prueba':
-	$db = 'ventas'; $sufijo = 'AE'; $sucursal = 13; $data = recepcion($db, $sufijo);
+	$db = 'ventas'; $sufijo = 'AE'; $sucursal = 21; $data = recepcion($db, $sufijo);
 	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
 break;
 
 case 'solicitud-prueba':
-	$db = 'ventas'; $sufijo = 'AE'; $sucursal = 13; $data = solicitud($db, $sufijo, $sucursal);
+	$db = 'ventas'; $sufijo = 'AE'; $sucursal = 21; $data = solicitud($db, $sufijo, $sucursal);
 	echo $this->load->view('generico/apertura/solicitud', $data, TRUE);
 break;
 
@@ -527,7 +527,7 @@ case 'existencia-prueba':
 break;
 
 case 'entrega-prueba':
-	$db = 'ventas'; $sufijo = 'AE'; $ubicacion = 13; $data = entrega($db, $sufijo, $ubicacion);
+	$db = 'ventas'; $sufijo = 'AE'; $ubicacion = 21; $data = entrega($db, $sufijo, $ubicacion);
 	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
 break;
 

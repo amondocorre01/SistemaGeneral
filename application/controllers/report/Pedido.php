@@ -381,7 +381,7 @@
 			
 		
 
-	   		$matriz =  $DB2->query("SELECT NOMBRE_PRODUCTO, CANTIDAD_SOLICITADA, CANTIDAD_ACEPTADA, TURNO, OBSERVACION2 FROM INVENTARIOS_DECLARACION_".$sufijo." id WHERE CANTIDAD_SOLICITADA > 0 AND FECHA_CONTEO = (SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_RECEPCION = (SELECT MAX(FECHA_RECEPCION) FROM CABECERA_PEDIDO_".$sufijo." cp))")->result();
+	   		$matriz =  $DB2->query("SELECT NOMBRE_PRODUCTO, CANTIDAD_SOLICITADA, CANTIDAD_ACEPTADA, CANTIDAD_DEVUELTA, OBSERVACION3 FROM INVENTARIOS_DECLARACION_".$sufijo." id WHERE CANTIDAD_SOLICITADA > 0 AND FECHA_CONTEO = (SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_ENTREGA = (SELECT MAX(FECHA_ENTREGA) FROM CABECERA_PEDIDO_".$sufijo." cp))")->result();
 
 
 	   $this->excel->getProperties()->setCreator("Capresso")
@@ -423,7 +423,7 @@
 			$this->excel->getActiveSheet()->getStyle('C2')->getFont()->setBold( true );
 			$this->excel->getActiveSheet()->getStyle('C2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('a4dbd2');
 
-			$this->excel->getActiveSheet()->setCellValue('D2', 'Turno' );
+			$this->excel->getActiveSheet()->setCellValue('D2', 'Cantidad Devuelta' );
 			$this->excel->getActiveSheet()->getStyle('D2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 			$this->excel->getActiveSheet()->getStyle('D2')->applyFromArray($this->excel->getBorderThinBlack());
 			$this->excel->getActiveSheet()->getStyle('D2')->getFont()->setBold( true );
@@ -442,8 +442,8 @@
 				$producto                       = $row->NOMBRE_PRODUCTO;
 				$cantidad                       = $row->CANTIDAD_SOLICITADA;
 				$aceptada                      = $row->CANTIDAD_ACEPTADA;
-				$turno                      	= $row->TURNO;
-				$observacion                    = $row->OBSERVACION2;
+				$rechazada                      	= $row->CANTIDAD_DEVUELTA;
+				$observacion                    = $row->OBSERVACION3;
 				
 				$this->excel->getActiveSheet()->setCellValue('A'.$posicion, $producto );
 				$this->excel->getActiveSheet()->getStyle('A'.$posicion)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -467,7 +467,7 @@
 
 				$i+=1;
 			}
-	   $filename='recepcion-'.$bd.'-'.date('Y-m-d').'.xls'; //save our workbook as this file name
+	   $filename='entrega-'.$bd.'-'.date('Y-m-d').'.xls'; //save our workbook as this file name
 	   header('Content-Type: application/vnd.ms-excel'); //mime type
 	   header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
 	   header('Cache-Control: max-age=0'); //no cache

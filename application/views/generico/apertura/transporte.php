@@ -40,6 +40,18 @@
     </div>
   <?php endif;?>
 
+  <div class="dropdown show">
+    <a class="btn btn-secondary dropdown-toggle palette-Red-700 bg" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+     Descargar Reportes
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" href="<?=site_url('transporte-excel/'.$db.'/'.$sufijo)?>"><i class="las la-file-excel la-2x palette-Green-600 text"></i>  <b>Excel</b>  </a>
+    </div>
+  </div>
+
+  <br><br>
+
   	<nav class="row navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="col-8 col-md-10">
 			<a class="navbar-brand" href="#">Entrega</a>
