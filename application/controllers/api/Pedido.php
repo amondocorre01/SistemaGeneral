@@ -219,11 +219,8 @@ class Pedido extends CI_Controller {
         $response['status'] = false;
         $response['message'] = 'Sin elementos que actualizar';
 
-        $sql_hora_max = "SELECT CASE WHEN EXISTS (SELECT HORA_MAX_PEDIDO FROM ID_UBICACION u WHERE u.ID_UBICACION = ?  AND (SELECT DATEADD(HH, -4, CONVERT(time, GETDATE()))) <= u.HORA_MAX_PEDIDO)THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS PERMISO";
-        $result_hora_max = $this->db->query($sql_hora_max, [$ubicacion])->result();
-
-
-        if($result_hora_max[0]->PERMISO) {
+       
+        
 
             $DB2 = $this->load->database($db, TRUE);
             $sql = "SELECT ID_SUBCATEGORIA_2, CANTIDAD_SOLICITADA, ESTADO_SOLICITUD, MINIMO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".date('Y-m-d')."'";
@@ -241,9 +238,10 @@ class Pedido extends CI_Controller {
 
             if ($perfil) {
             $sql7 = "UPDATE CABECERA_PEDIDO_AE SET PERFIL = ".$perfil." WHERE FECHA = '".$this->session->fecha_conteo."'";
+            $DB2->query($sql7);
             }
 
-            $DB2->query($sql7);
+            
 
             $array2 = $this->input->post();
 
@@ -263,12 +261,6 @@ class Pedido extends CI_Controller {
                     }
                 }
             }
-
-        }
-
-        else {
-            $response['message'] = 'Se encuentra fuera de la hora de limite de Guardado';
-        }
 
         echo json_encode($response);
     } 

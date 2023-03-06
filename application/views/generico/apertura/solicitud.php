@@ -34,6 +34,19 @@
 <?php if($cabecera AND $cabecera[0]->ESTADO > 9): ?>
 
 
+  <div class="dropdown show">
+    <a class="btn btn-secondary dropdown-toggle palette-Red-700 bg" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+     Descargar Reportes
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" href="<?=site_url('solicitud-excel/'.$db.'/'.$sufijo)?>"><i class="las la-file-excel la-2x palette-Green-600 text"></i>  <b>Excel</b>  </a>
+    </div>
+  </div>
+
+  <br><br>
+
+
 
 <br>
 
@@ -51,9 +64,6 @@
       </div>
 
       <?php endif;?>
-
-      <?=anchor('solicitud-excel/'.$db.'/'.$sufijo, '<span class="las la-file-excel la-2x"></span>', ['class'=>'btn palette-Green-600 bg btn-xs float-right']);?>
-
     </nav>
 
 

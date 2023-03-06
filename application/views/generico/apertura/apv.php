@@ -46,6 +46,19 @@
 <?php endif;?>
 
 
+<div class="dropdown show">
+    <a class="btn btn-secondary dropdown-toggle palette-Red-700 bg" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+     Descargar Reportes
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" href="<?=site_url('preparacion-excel/'.$db.'/'.$sufijo)?>"><i class="las la-file-excel la-2x palette-Green-600 text"></i>  <b>Excel</b>  </a>
+    </div>
+  </div>
+
+  <br><br>
+
+
 
 <nav class="row navbar navbar-expand-lg navbar-dark bg-dark">
 
@@ -53,7 +66,7 @@
         <a class="navbar-brand" href="#">Preparacion</a>
       </div>
       <?php if($cabecera[0]->ESTADO == 11 ):?>
-        <div class="col-3 col-md-2 btn-group">
+        <div class="col-3 col-md-2">
             <?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarPreparacion()']);?>
             <?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarPreparacion()']);?>
 
@@ -63,8 +76,6 @@
             <?php endif;?>
         </div>
       <?php endif;?>
-
-      <?=anchor('preparacion-excel/'.$db.'/'.$sufijo, '<span class="las la-file-excel la-2x"></span>', ['class'=>'btn palette-Green-600 bg btn-xs float-right']);?>
     </nav>
 
 <br>
