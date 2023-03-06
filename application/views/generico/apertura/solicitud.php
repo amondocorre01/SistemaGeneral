@@ -208,7 +208,6 @@
                 .done(function( data ) {
                   $('.loading').hide();
 
-
                   dato = JSON.parse(data);
                
                   if(dato.status == true) {
@@ -229,9 +228,6 @@
                         timer: 4500
                     });
                   }
-                  
-
-          
                 });
     }
 
@@ -328,12 +324,11 @@
               $('#m_'+v.ID_SUB_CATEGORIA_2).val(Number(v.STOCK));
 
               var operacion = ((Number(v.STOCK) * Number(v.ADECUACION))-Number($('#a_'+v.ID_SUB_CATEGORIA_2).html()));
-              //operacion = Math.ceil(operacion / Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
-              //operacion = (operacion / Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
-              operacion = (operacion / Number($('#a_'+v.ID_SUB_CATEGORIA_2).html()));
-              if( operacion >=0.5)
+             
+              operacion = ( operacion / Number($('#p_'+v.ID_SUB_CATEGORIA_2).val()));
+              if( operacion >= 0.5)
               {
-                $('#s_'+v.ID_SUB_CATEGORIA_2).val(Math.ceil(operacion));
+                $('#s_'+v.ID_SUB_CATEGORIA_2).val(Math.round(operacion));
               }
 
               else 

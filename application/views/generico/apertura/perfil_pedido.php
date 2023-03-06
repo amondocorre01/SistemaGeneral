@@ -18,13 +18,13 @@
                             <?php endforeach;?>
                         </select>
                     </div>
-                    <div class="col-2">
+                    <div class="col-2 col-lg-1">
                             <?=form_button('send', '<i class="las la-search"></i>Buscar', ['class'=>'btn btn-danger btn-lg btn-padding', 'onclick'=>'getPerfil()', 'id'=>'getPerfiles']);?>
                     </div>
-                    <div class="col-1">
+                    <div class="col-2 col-lg-1">
                         <?=form_button('new', '<i class="las la-plus"></i>Crear', ['class'=>'btn btn-success btn-lg btn-padding', 'onclick'=>'showNewPerfil()']);?>
                     </div>
-                    <div class="col-1">
+                    <div class="col-2 col-lg-1">
                         <?=form_button('new', '<i class="las la-copy"></i>Clonar', ['class'=>'btn btn-info btn-lg btn-padding', 'onclick'=>'clonePerfil()']);?>
                     </div>
 

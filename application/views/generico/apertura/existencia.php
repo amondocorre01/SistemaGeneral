@@ -47,8 +47,6 @@
  
 
   <nav class="row navbar navbar-expand-lg navbar-dark bg-dark">
-        
-        
           <div class="col-9 col-md-10">
             <a class="navbar-brand" href="#">Inventario</a>
           </div>
@@ -83,25 +81,36 @@
               <span class="btn btn-danger float-right btn-xs" data-toggle="collapse" data-target="#collapse<?=$value->ID_CATEGORIA?>" aria-expanded="true" aria-controls="collapseOne">
                 <i class="las la-plus" ></i>
               </span>
+
+              
             </h6>
           </div>
 
           <div id="collapse<?=$value->ID_CATEGORIA?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body" style="background-color:white">
-
             <?php $subcategoria = json_decode($value->SUBCATEGORIA)?>
 
             <div class="accordion" id="accordionExample">
+
+           
+
           <?php foreach ($subcategoria as $sub) : ?>
+
+           
 
             <?php if(isset($sub->PRODUCTOS)):?>
           <div class="card" style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.6 )">
           <div class="card-header" id="heading_sc_<?=$sub->ID_SUB_CATEGORIA_1?>">
           <h6>
           <?=$sub->SUB_CATEGORIA_1?>
-            <span class="btn btn-danger float-right btn-xs" data-toggle="collapse" data-target="#subcollapse<?=$sub->ID_SUB_CATEGORIA_1?>" aria-expanded="true" aria-controls="collapseOne">
+            <span class="btn btn-danger float-right btn-xs collapsedo<?=$sub->ID_SUB_CATEGORIA_1?>" data-toggle="collapse" data-target="#subcollapse<?=$sub->ID_SUB_CATEGORIA_1?>" aria-expanded="true" aria-controls="collapseOne">
             <i class="las la-plus" ></i>
             </span>
+            <script>
+              $('.collapsedo<?=$sub->ID_SUB_CATEGORIA_1?>').click(function() {
+                  var icon = $(this).find('i').toggleClass('las la-plus las la-minus');
+              });
+            </script>
           </h6>
           </div>
 
@@ -148,7 +157,6 @@
 <?php endif;?>
 
 <script>
-
 
     function guardarDeclaracion(){
 
