@@ -457,7 +457,7 @@
 				$this->excel->getActiveSheet()->getStyle('C'.$posicion)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 				$this->excel->getActiveSheet()->getStyle('C'.$posicion)->applyFromArray($this->excel->getBorderThinBlack());
 
-				$this->excel->getActiveSheet()->setCellValue('D'.$posicion, $turno );
+				$this->excel->getActiveSheet()->setCellValue('D'.$posicion, $rechazada );
 				$this->excel->getActiveSheet()->getStyle('D'.$posicion)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 				$this->excel->getActiveSheet()->getStyle('D'.$posicion)->applyFromArray($this->excel->getBorderThinBlack());
 

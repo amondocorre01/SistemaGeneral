@@ -282,6 +282,8 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['solicitud-excel/(:any)/(:any)'] = 'report/pedido/solicitud/$1/$2';
     $route['preparacion-excel/(:any)/(:any)'] = 'report/pedido/preparacion/$1/$2';
     $route['recepcion-excel/(:any)/(:any)'] = 'report/pedido/recepcion/$1/$2';
+    $route['entrega-excel/(:any)/(:any)'] = 'report/pedido/entrega/$1/$2';
+
 
    
 
