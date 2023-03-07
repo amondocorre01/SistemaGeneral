@@ -174,7 +174,7 @@
 </div>
 <?php else:?>
   <div class="alert alert-danger" role="alert">
-     NO SE HIZO LA PRIMERA DECLARACION DE INVENTARIO DEL DIA
+     NO SE HIZO AUN LA PREPARACION DEL PEDIDO O NO SE SOLICITO NADA
   </div>
  
 <?php endif;?>

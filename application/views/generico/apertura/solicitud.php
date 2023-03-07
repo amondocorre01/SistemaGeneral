@@ -137,8 +137,8 @@
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Producto</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Unidad Conteo</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Stock</th>
-                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Stock Minimo</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Medida Solicitud</th>
+                      <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Stock Minimo</th>
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Solicitud</th>
                       <?php foreach ($sub->PRODUCTOS as $p): ?>
                         <tr>
@@ -147,15 +147,15 @@
                               <?=$p->MEDIDA_ESTANDARIZACION?>                          
                             </td>
                             <td width="12%" id="a_<?=$p->ID_SUB_CATEGORIA_2?>">
-                            <?=$registro[$p->ID_SUB_CATEGORIA_2]?>
-                            </td>
-
-                            <td width="12%">
-                              <input id="m_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>[minimo]" class="form-control" type="number" min="0" <?=($estado[$p->ID_SUB_CATEGORIA_2]>='11')?'readonly="readonly"':''?> step="1" value="<?=$minimo[$p->ID_SUB_CATEGORIA_2]?>">
+                              <?=$registro[$p->ID_SUB_CATEGORIA_2]?>
                             </td>
 
                             <td width="12%">
                               <?=(isset($p->MEDIDA_ADECUACIÓN))?$p->MEDIDA_ADECUACIÓN: ''?>
+                            </td>
+
+                            <td width="12%">
+                              <input id="m_<?=$p->ID_SUB_CATEGORIA_2?>" name="<?=$p->ID_SUB_CATEGORIA_2?>[minimo]" class="form-control" type="number" min="0" readonly step="1" value="<?=$minimo[$p->ID_SUB_CATEGORIA_2]?>">
                             </td>
 
                             <td width="20%">    
@@ -336,10 +336,6 @@
                 $('#s_'+v.ID_SUB_CATEGORIA_2).val(0);
               }
           }
-
-          
-
-          
         });
 
       });

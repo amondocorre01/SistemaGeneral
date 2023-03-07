@@ -204,28 +204,37 @@ if(!function_exists('recepcion')){
 		$sql5 = "SELECT CAST((SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.") AS Date) AS DIA;";
 		$fecha = $DB2->query($sql5)->result();
 
-	
-		$sql = "SELECT ID_INVENTARIOS_DECLARACION, NOMBRE_PRODUCTO, CANTIDAD_ENVIADA, CANTIDAD_ACEPTADA, ID_SUBCATEGORIA_2 FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
-	
-		$registro = $DB2->query($sql)->result();
-
-
-		$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
-		$cabecera = $DB2->query($sql2)->result();
-
+		$sql_cabecera = "SELECT TOP 1 ID_CABECERA, FECHA_PREPARACION FROM CABECERA_PEDIDO_".$sufijo." ORDER BY ID_CABECERA DESC";   // QUITAR UN DIA
+		$fecha_cabecera = $DB2->query($sql_cabecera)->result();
 
 		$array = [];  $estado = []; $aceptada = [];
 
-		foreach ($registro as $value) {
-			$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENVIADA;
-			$aceptada[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ACEPTADA;
+
+		if($fecha_cabecera[0]->FECHA_PREPARACION) {
+
+	
+			$sql = "SELECT ID_INVENTARIOS_DECLARACION, NOMBRE_PRODUCTO, CANTIDAD_ENVIADA, CANTIDAD_ACEPTADA, ID_SUBCATEGORIA_2 FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+		
+			$registro = $DB2->query($sql)->result();
+
+
+			$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
+			$cabecera = $DB2->query($sql2)->result();
+
+
+			foreach ($registro as $value) {
+				$array[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ENVIADA;
+				$aceptada[$value->ID_SUBCATEGORIA_2] = $value->CANTIDAD_ACEPTADA;
+			}
+
+			$data['cabecera'] = $cabecera;
+
 		}
 
 	 	$data['registro'] = $array;
 	 	$data['aceptada'] = $aceptada;
 	 	$data['db'] = $db;
 	 	$data['sufijo'] = $sufijo;
-	 	$data['cabecera'] = $cabecera;
 
 		return $data;
 	}
