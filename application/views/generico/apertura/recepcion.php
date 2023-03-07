@@ -54,7 +54,7 @@
 
   <nav class="row navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="col-8 col-md-10">
-        <a class="navbar-brand" href="#">Recepcion</a>
+        <a class="navbar-brand" href="#">Recepción</a>
       </div>
       <div class="col-2 col-md-1 btn-group">
           <?php if($cabecera[0]->ESTADO == 12 ):?>
