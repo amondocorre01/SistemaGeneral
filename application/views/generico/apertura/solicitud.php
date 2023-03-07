@@ -125,10 +125,15 @@
           <div class="card-header" id="heading_sc_<?=$sub->ID_SUB_CATEGORIA_1?>">
           <h6>
           <?=$sub->SUB_CATEGORIA_1?>
-            <span class="btn btn-danger float-right btn-xs" data-toggle="collapse" data-target="#subcollapse<?=$sub->ID_SUB_CATEGORIA_1?>" aria-expanded="true" aria-controls="collapseOne">
+            <span class="btn btn-danger float-right btn-xs collapsedo<?=$sub->ID_SUB_CATEGORIA_1?>" data-toggle="collapse" data-target="#subcollapse<?=$sub->ID_SUB_CATEGORIA_1?>" aria-expanded="true" aria-controls="collapseOne">
             <i class="las la-plus" ></i>
             </span>
           </h6>
+          <script>
+              $('.collapsedo<?=$sub->ID_SUB_CATEGORIA_1?>').click(function() {
+                  var icon = $(this).find('i').toggleClass('las la-plus las la-minus');
+              });
+            </script>
           </div>
 
             <div id="subcollapse<?=$sub->ID_SUB_CATEGORIA_1?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">

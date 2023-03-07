@@ -194,8 +194,9 @@ if(!function_exists('guardarProducto') ) {
 
 if(!function_exists('recepcion')){
 
-	function recepcion($db, $sufijo) {
+	function recepcion($db, $sufijo, $turno = 'NO PERECEDERO') {
 		$CI =& get_instance();
+
 
 		$data['existencia'] =  $CI->main->getListSelect('EXISTENCIA', '*', ['ORDEN'=>'ASC']);
 	
@@ -213,9 +214,9 @@ if(!function_exists('recepcion')){
 		if($fecha_cabecera[0]->FECHA_PREPARACION) {
 
 	
-			$sql = "SELECT ID_INVENTARIOS_DECLARACION, NOMBRE_PRODUCTO, CANTIDAD_ENVIADA, CANTIDAD_ACEPTADA, ID_SUBCATEGORIA_2 FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO ='".$fecha[0]->DIA."'";
+			$sql = "SELECT ID_INVENTARIOS_DECLARACION, NOMBRE_PRODUCTO, CANTIDAD_ENVIADA, CANTIDAD_ACEPTADA, ID_SUBCATEGORIA_2 FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO = ? AND TURNO= ?";
 		
-			$registro = $DB2->query($sql)->result();
+			$registro = $DB2->query($sql, [$fecha[0]->DIA, $turno])->result();
 
 
 			$sql2 = "SELECT ESTADO, FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA ='".$fecha[0]->DIA."'";
@@ -229,12 +230,16 @@ if(!function_exists('recepcion')){
 
 			$data['cabecera'] = $cabecera;
 
+
+			//$sql_turno = "SELECT DISTINCT TURNO FROM 
+
 		}
 
 	 	$data['registro'] = $array;
 	 	$data['aceptada'] = $aceptada;
 	 	$data['db'] = $db;
 	 	$data['sufijo'] = $sufijo;
+		$data['turno'] = $turno;
 
 		return $data;
 	}

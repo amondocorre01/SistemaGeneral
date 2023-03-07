@@ -156,6 +156,7 @@
  
 <?php endif;?>
 
+
 <script>
 
     function guardarDeclaracion(){
