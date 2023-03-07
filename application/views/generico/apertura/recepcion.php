@@ -34,11 +34,8 @@
 
 <?php $action = current_url().'?vc='.$this->input->get('vc') ?>
 
-<form action="<?=$action?>">
-    <select name="turno">
-        
-    </select>
-</form>
+
+
 
 <?php if($registro): ?>
   <?php if($cabecera[0]->ESTADO > 12 ):?>
@@ -49,15 +46,35 @@
     </div>
   <?php endif;?>
 
-  <div class="dropdown show">
-    <a class="btn btn-secondary dropdown-toggle palette-Red-700 bg" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-     Descargar Reportes
-    </a>
 
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-      <a class="dropdown-item" href="<?=site_url('recepcion-excel/'.$db.'/'.$sufijo)?>"><i class="las la-file-excel la-2x palette-Green-600 text"></i>  <b>Excel</b>  </a>
+
+  <div class="row">
+    <div class="col-3">
+      <form method="POST" id="form_turno" action="<?=$action?>">
+        <select name="turno" class="form-control" onchange="submit_turno()">
+            <option value="">--- Seleccione una opcion ---</option>
+            <?php foreach ($turnos as $t): ?>
+                <option value="<?=$t->TURNO?>" <?=($t->TURNO==$this->session->keyturno)?'selected':''?>><?=$t->TURNO?></option>
+            <?php endforeach; ?>
+        </select>
+      </form>
+    </div>
+    <div class="col-3">
+
+    <div class="dropdown show">
+      <a class="btn btn-secondary dropdown-toggle palette-Red-700 bg" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Descargar Reportes
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="<?=site_url('recepcion-excel/'.$db.'/'.$sufijo)?>"><i class="las la-file-excel la-2x palette-Green-600 text"></i>  <b>Excel</b>  </a>
+      </div>
+    </div>
+
     </div>
   </div>
+
+  
 
   <br><br>
 
@@ -195,6 +212,12 @@
 <?php endif;?>
 
 <script>
+
+
+function submit_turno(){
+
+  $('#form_turno').submit();
+}
 
 
     function guardarRecepcion(){

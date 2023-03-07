@@ -229,11 +229,14 @@ if(!function_exists('recepcion')){
 			}
 
 			$data['cabecera'] = $cabecera;
-
-
-			//$sql_turno = "SELECT DISTINCT TURNO FROM 
-
+			
 		}
+
+
+			$sql_turno = "SELECT DISTINCT TURNO FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE FECHA_CONTEO = ? ";
+			$result_turno = $DB2->query($sql_turno, [$fecha[0]->DIA])->result();
+			$data['turnos'] = $result_turno;
+
 
 	 	$data['registro'] = $array;
 	 	$data['aceptada'] = $aceptada;

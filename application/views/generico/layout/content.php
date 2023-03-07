@@ -512,7 +512,12 @@ case 'perfilPed-prueba':
 break;
 
 case 'recepcion-prueba':
-	$db = 'ventas'; $sufijo = 'AE'; $sucursal = 21; $data = recepcion($db, $sufijo);
+	$turno = ($this->input->post('turno')) ? $this->input->post('turno') : 'NO PERECEDERO';
+	
+	$array = array('keyturno' => $turno);
+	$this->session->set_userdata($array);
+	
+	$db = 'ventas'; $sufijo = 'AE'; $sucursal = 21; $data = recepcion($db, $sufijo, $turno);
 	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
 break;
 
