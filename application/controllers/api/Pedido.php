@@ -807,7 +807,7 @@ class Pedido extends CI_Controller {
 
             $sql = "INSERT INTO INVENTARIOS_CRONOGRAMA (ID_UBICACION, ID_TURNO, FECHA, ESTADO) VALUES (?, ?, ?, ?)";
 
-            $this->db->query($sql, [$sucursal, $turno, $fecha, 0 ]);
+            $this->db->query($sql, [$sucursal, $turno, $fecha, 1 ]);
             $response['status'] = true;
             $response['icon'] = 'success';
             $response['message'] = 'Se ha guardado la ruta hacia la sucursal correctamente';
@@ -822,7 +822,7 @@ class Pedido extends CI_Controller {
     public function getCronograma() {
 
 
-        $sql = "SELECT c.ESTADO, c.LLEGADA, c.ID_CRONOGRAMA, c.FECHA, u.DESCRIPCION, t.TURNO FROM INVENTARIOS_CRONOGRAMA c, ID_UBICACION u, INVENTARIOS_TURNO t  WHERE c.ID_UBICACION = u.ID_UBICACION AND c.ID_TURNO = t.ID_TURNO AND FECHA > (SELECT DATEADD(DAY,-20,GETDATE()));";
+        $sql = "SELECT c.ESTADO, c.LLEGADA, c.ID_CRONOGRAMA, c.FECHA, u.DESCRIPCION, t.TURNO, ice.DESCRIPCION AS ESTADO_CRONOGRAMA FROM INVENTARIOS_CRONOGRAMA c, ID_UBICACION u, INVENTARIOS_TURNO t, INVENTARIO_CRONOGRAMA_ESTADO ice  WHERE ice.ID_INVENTARIO_CRONOGRAMA_ESTADO = c.ESTADO AND  c.ID_UBICACION = u.ID_UBICACION AND c.ID_TURNO = t.ID_TURNO AND FECHA > (SELECT DATEADD(DAY,-20,GETDATE()));";
 
         $fecha = $this->input->post('fecha');
 

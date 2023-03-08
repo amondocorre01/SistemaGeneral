@@ -170,24 +170,8 @@ $.fn.dataTable.ext.search.push(
             { title: 'Sucursal', width:'12%' ,data: 'DESCRIPCION' },
             { title: 'Fecha', width:'12%' ,data: 'FECHA' },
             { title: 'Hora de Llegada', width:'12%' ,data: 'LLEGADA' },            
-            { title: 'Estado', width:'12%' ,data: null, 
-                render: function (data, type, full, meta) { 
+            { title: 'Estado', width:'12%' ,data: 'ESTADO_CRONOGRAMA' }, 
 
-                    var body = '';
-
-                    if(data.ESTADO == 1)
-                    {
-                        body = '<label class="palette-Green-600 bg"><span class="palette-White text">LLEGADA</span></label>';
-                    }
-
-                    else 
-                    {       
-                        body = '<label class="palette-Red-600 bg"><span class="palette-White text">EN CAMINO</span></label>';   
-                    }   
-                    
-                   return body;
-                }
-            }
         ],
     });
 
