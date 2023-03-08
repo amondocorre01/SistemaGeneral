@@ -35,6 +35,7 @@
         
         <div class="card-body">
         <form action="<?=current_url()?>" method="GET" id="form_fecha">
+
         <div class="row">
         
             <div class="col-offset-1 col-md-3">
@@ -108,6 +109,7 @@ foreach ($sucursales as $key => $sucursal) {
                   </thead>
                   <tbody id="cantidadTotales">
                     <form id="totales">
+                      <input type="hidden" name="tipo" value="<?=$this->input->get('tipo_reporte')?>">
                     <?php
                         foreach ($productosSub2 as $key => $producto) {
                             $col='';

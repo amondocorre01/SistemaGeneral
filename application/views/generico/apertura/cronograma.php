@@ -168,8 +168,7 @@ $.fn.dataTable.ext.search.push(
         columns: [
             { title: 'Turno', width:'12%' ,data: 'TURNO' },
             { title: 'Sucursal', width:'12%' ,data: 'DESCRIPCION' },
-            { title: 'Fecha', width:'12%' ,data: 'FECHA' },
-            { title: 'Hora de Llegada', width:'12%' ,data: 'LLEGADA' },            
+            { title: 'Fecha', width:'12%' ,data: 'FECHA' },           
             { title: 'Estado', width:'12%' ,data: 'ESTADO_CRONOGRAMA' }, 
 
         ],

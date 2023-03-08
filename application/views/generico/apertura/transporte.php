@@ -48,7 +48,7 @@
   <div class="row">
     <div class="col-3">
       <form method="POST" id="form_turno" action="<?=$action?>">
-        <select name="turno" class="form-control" onchange="submit_turno()">
+        <select name="turno" id="tipo_turno" class="form-control" onchange="submit_turno()">
             <option value="">--- Seleccione una opcion ---</option>
             <?php foreach ($turnos as $t): ?>
                 <option value="<?=$t->TURNO?>" <?=($t->TURNO==$turno)?'selected':''?>><?=$t->TURNO?></option>
@@ -261,9 +261,9 @@ $('#form_turno').submit();
         if (result.isConfirmed) {
 
           var fecha = '<?=date('Y-m-d')?>';
-          var ubicacion =
+          var tipo = $('#tipo_turno').val();
           $('.loading').show();
-          $.post("<?=site_url('enviar-entrega')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>', ubicacion:'<?=$ubicacion?>'})
+          $.post("<?=site_url('enviar-entrega')?>", {tipo:tipo, fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>', ubicacion:'<?=$ubicacion?>'})
                 .done(function( data ) {
                   $('.loading').hide();
                   Swal.fire('Envio Exitoso!', '', 'success');

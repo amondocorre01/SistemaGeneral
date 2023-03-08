@@ -440,6 +440,7 @@ class Pedido extends CI_Controller {
 
         $db = $this->input->post('db');
         $sufijo = $this->input->post('sufijo');
+        $sucursal = $this->input->post('sucursal');
 
         $DB2 = $this->load->database($db, TRUE);
 
@@ -473,6 +474,22 @@ class Pedido extends CI_Controller {
     
             }
         }
+
+
+        $sqlTipo = "SELECT ID_TURNO FROM INVENTARIOS_TURNO WHERE TURNO = ?";
+        $sqlRes =  $this->db->query($sqlTipo, array($this->input->post('tipo')))->result();
+
+
+        $sqlCronograma = "UPDATE INVENTARIO_CRONOGRAMA SET ID_CRONOGRAMA_ESTADO = 3 WHERE FECHA = ? AND ID_TURNO = ? AND ID_UBICACION = ?";
+        $this->db->query($sqlCronograma, array(date('Y-m-d'), $sqlRes[0]->ID_TURNO, $sucursal));
+
+
+        $sqlCronogramaRegistro = "SELECT ID_INVENTARIO_CRONOGRAMA FROM INVENTARIO_CRONOGRAMA WHERE FECHA = ? AND ID_TURNO = ? AND ID_UBICACION = ?";
+        $resCronogramaRegistro = $this->db->query($sqlCronogramaRegistro, array(date('Y-m-d'), $sqlRes[0]->ID_TURNO, $sucursal))->result();
+
+        $sqlCronogramaRegistro2 = "INSERT INTO INVENTARIO_CRONOGRAMA_REGISTRO(FECHA, HORA, ID_INVENTARIO_CRONOGRAMA) VALUES ( ?, ?, ?)";
+        $this->db->query($sqlCronogramaRegistro2, array(date('Y-m-d'), date('H:i:s'), $resCronogramaRegistro[0]->ID_INVENTARIO_CRONOGRAMA));
+
 
 
         //CONCLUYO LOS VIAJES 
@@ -573,6 +590,20 @@ class Pedido extends CI_Controller {
             
         }
 
+        $sqlTipo = "SELECT ID_TURNO FROM INVENTARIOS_TURNO WHERE TURNO = ?";
+        $sqlRes =  $this->db->query($sqlTipo, array($this->input->post('tipo')))->result();
+
+
+        $sqlCronograma = "UPDATE INVENTARIO_CRONOGRAMA SET ID_CRONOGRAMA_ESTADO = 4 WHERE FECHA = ? AND ID_TURNO = ? AND ID_UBICACION = ?";
+        $this->db->query($sqlCronograma, array(date('Y-m-d'), $sqlRes[0]->ID_TURNO, $ubicacion));
+
+
+        $sqlCronogramaRegistro = "SELECT ID_INVENTARIO_CRONOGRAMA FROM INVENTARIO_CRONOGRAMA WHERE FECHA = ? AND ID_TURNO = ? AND ID_UBICACION = ?";
+        $resCronogramaRegistro = $this->db->query($sqlCronogramaRegistro, array(date('Y-m-d'), $sqlRes[0]->ID_TURNO, $ubicacion))->result();
+
+        $sqlCronogramaRegistro2 = "INSERT INTO INVENTARIO_CRONOGRAMA_REGISTRO(FECHA, HORA, ID_INVENTARIO_CRONOGRAMA) VALUES ( ?, ?, ?)";
+        $this->db->query($sqlCronogramaRegistro2, array(date('Y-m-d'), date('H:i:s'), $resCronogramaRegistro[0]->ID_INVENTARIO_CRONOGRAMA));
+
 
         //CONCLUYO LOS VIAJES 
 
@@ -584,8 +615,8 @@ class Pedido extends CI_Controller {
              $sql3 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 14, FECHA_ENTREGA = (SELECT DATEADD(HH, -4, GETDATE())) WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.")";
              $DB2->query($sql3);
 
-             $sql4 = "UPDATE INVENTARIOS_CRONOGRAMA SET LLEGADA = ?, ESTADO = ? WHERE ID_UBICACION = ? AND FECHA = ?";
-             $this->db->query($sql4, [date('H:i:s'), 1 , $ubicacion, date('Y-m-d')]);
+             $sql4 = "UPDATE INVENTARIO_CRONOGRAMA SET  ID_CRONOGRAMA_ESTADO = ? WHERE ID_UBICACION = ? AND FECHA = ?";
+             $this->db->query($sql4, [ 1 , $ubicacion, date('Y-m-d')]);
 
         }
 
@@ -772,16 +803,25 @@ class Pedido extends CI_Controller {
 
         foreach ($array2 as $key => $value2) {
 
+                if($key != 'tipo'):
+                    $estado = (isset($value2['total'])) ? $value2['total'] : 0;
 
-                $estado = (isset($value2['total'])) ? $value2['total'] : 0;
+                    $sql2 = "EXECUTE SET_ITEM_DESPACHO ?, ?, ?, ?";   
+                    
+                    $this->db->query($sql2, array($value2['recibida'], $estado, $key, date('Y-m-d')))->result();
 
-                $sql2 = "EXECUTE SET_ITEM_DESPACHO ?, ?, ?, ?";   
-                
-                $this->db->query($sql2, array($value2['recibida'], $estado, $key, date('Y-m-d')))->result();
-
-                $response['status'] = true;
+                    $response['status'] = true;
+                endif;
 
         }
+
+        $sqlTipo = "SELECT ID_TURNO FROM INVENTARIOs_TURNO WHERE TURNO = ?";
+        $sqlRes =  $this->db->query($sqlTipo, array($this->input->post('tipo')))->result();
+
+       
+
+        $sqlCronograma = "UPDATE INVENTARIO_CRONOGRAMA SET ID_CRONOGRAMA_ESTADO = 2 WHERE FECHA = ? AND ID_TURNO = ?";
+        $this->db->query($sqlCronograma, array(date('Y-m-d'), $sqlRes[0]->ID_TURNO));
 
         echo json_encode($response);
         
@@ -800,12 +840,12 @@ class Pedido extends CI_Controller {
 
         
 
-        $sql1 = "SELECT COUNT(ID_TURNO) AS TOTAL FROM INVENTARIOS_CRONOGRAMA WHERE ID_TURNO = ? AND ID_UBICACION = ? AND FECHA = ?";
+        $sql1 = "SELECT COUNT(ID_TURNO) AS TOTAL FROM INVENTARIO_CRONOGRAMA WHERE ID_TURNO = ? AND ID_UBICACION = ? AND FECHA = ?";
         $res = $this->db->query($sql1, [$turno, $sucursal, $fecha])->result();
 
         if($res[0]->TOTAL == 0) {
 
-            $sql = "INSERT INTO INVENTARIOS_CRONOGRAMA (ID_UBICACION, ID_TURNO, FECHA, ESTADO) VALUES (?, ?, ?, ?)";
+            $sql = "INSERT INTO INVENTARIO_CRONOGRAMA (ID_UBICACION, ID_TURNO, FECHA, ID_CRONOGRAMA_ESTADO) VALUES (?, ?, ?, ?)";
 
             $this->db->query($sql, [$sucursal, $turno, $fecha, 1 ]);
             $response['status'] = true;
@@ -822,7 +862,7 @@ class Pedido extends CI_Controller {
     public function getCronograma() {
 
 
-        $sql = "SELECT c.ESTADO, c.LLEGADA, c.ID_CRONOGRAMA, c.FECHA, u.DESCRIPCION, t.TURNO, ice.DESCRIPCION AS ESTADO_CRONOGRAMA FROM INVENTARIOS_CRONOGRAMA c, ID_UBICACION u, INVENTARIOS_TURNO t, INVENTARIO_CRONOGRAMA_ESTADO ice  WHERE ice.ID_INVENTARIO_CRONOGRAMA_ESTADO = c.ESTADO AND  c.ID_UBICACION = u.ID_UBICACION AND c.ID_TURNO = t.ID_TURNO AND FECHA > (SELECT DATEADD(DAY,-20,GETDATE()));";
+        $sql = "SELECT c.ID_CRONOGRAMA_ESTADO, c.ID_INVENTARIO_CRONOGRAMA, c.FECHA, u.DESCRIPCION, t.TURNO, ice.DESCRIPCION AS ESTADO_CRONOGRAMA FROM INVENTARIO_CRONOGRAMA c, ID_UBICACION u, INVENTARIOS_TURNO t, INVENTARIO_CRONOGRAMA_ESTADO ice  WHERE ice.ID_INVENTARIO_CRONOGRAMA_ESTADO = c.ID_CRONOGRAMA_ESTADO AND  c.ID_UBICACION = u.ID_UBICACION AND c.ID_TURNO = t.ID_TURNO AND FECHA > (SELECT DATEADD(DAY,-20,GETDATE()));";
 
         $fecha = $this->input->post('fecha');
 
