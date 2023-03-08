@@ -41,7 +41,7 @@
   <?php if($cabecera[0]->ESTADO > 12 ):?>
     <div class="row ">
       <div class="col-md-12 text-center">
-        <?=img(['src'=>'assets/dist/img/close2.png', 'width' => '15%'])?>
+        <?=img(['src'=>'assets/dist/img/close2.png', 'width' => '10%'])?>
       </div>
     </div>
   <?php endif;?>
@@ -54,7 +54,7 @@
         <select name="turno" class="form-control" onchange="submit_turno()">
             <option value="">--- Seleccione una opcion ---</option>
             <?php foreach ($turnos as $t): ?>
-                <option value="<?=$t->TURNO?>" <?=($t->TURNO==$this->session->keyturno)?'selected':''?>><?=$t->TURNO?></option>
+                <option value="<?=$t->TURNO?>" <?=($t->TURNO==$turno)?'selected':''?>><?=$t->TURNO?></option>
             <?php endforeach; ?>
         </select>
       </form>

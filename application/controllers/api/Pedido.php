@@ -446,29 +446,48 @@ class Pedido extends CI_Controller {
         $sql6 = "SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.")";
         $fecha = $DB2->query($sql6)->result();
         
-
-        $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 13 WHERE FECHA_CONTEO ='".$fecha[0]->FECHA."'";
-
-        $sql3 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 13, FECHA_RECEPCION = (SELECT DATEADD(HH, -4, GETDATE())) WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.")";
-        $DB2->query($sql3);
+        $turno = $this->session->keyturno;
 
 
-        $sql9 = "SELECT CAST(CANTIDAD_ACEPTADA*ADECUACION AS INT) AS ACEPTADA, ID_SUBCATEGORIA_2, DIAS_VENCE FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE CANTIDAD_ACEPTADA > 0 AND FECHA_CONTEO = (SELECT MAX(FECHA) FROM CABECERA_PEDIDO_".$sufijo.")";
-        $inventario = $DB2->query($sql9)->result();
+        $sqlFinal = "EXECUTE ".$sufijo."_RECEPCION '".date('Y-m-d')."','".date('H:i:s')."','".$turno."'";
+        $DB2->query($sqlFinal)->result();
 
 
-        foreach ($inventario as $v) {
+        $sqlRegistrado = "SELECT * FROM RECEPCION_".$sufijo." WHERE FECHA = ? AND TURNO = ?";
+        $existe = $DB2->query($sqlRegistrado, [date('Y-m-d'), $turno])->result();
 
-            $sql8 = "EXECUTE ".$sufijo."_SET_INVENTARIO ?, ?, ?, ?, ?, ?";
-            $DB2->query($sql8, [$v->ID_SUBCATEGORIA_2, date('Y-m-d'), $v->DIAS_VENCE, 1, $v->ACEPTADA, 1 ]);
+        if(!$existe)
+        {
+            $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 13 WHERE FECHA_CONTEO = ? AND TURNO = ?";
+            $registro = $DB2->query($sql, [$fecha[0]->FECHA, $turno]);
+
+
+            $sql9 = "SELECT CAST(CANTIDAD_ACEPTADA*ADECUACION AS INT) AS ACEPTADA, ID_SUBCATEGORIA_2, DIAS_VENCE FROM INVENTARIOS_DECLARACION_".$sufijo." WHERE TURNO = ? AND CANTIDAD_ACEPTADA > 0 AND FECHA_CONTEO = (SELECT MAX(FECHA) FROM CABECERA_PEDIDO_".$sufijo.")";
+            $inventario = $DB2->query($sql9, [$turno])->result();
+    
+    
+            foreach ($inventario as $v) {
+    
+                $sql8 = "EXECUTE ".$sufijo."_SET_INVENTARIO ?, ?, ?, ?, ?, ?";
+                $DB2->query($sql8, [$v->ID_SUBCATEGORIA_2, date('Y-m-d'), $v->DIAS_VENCE, 1, $v->ACEPTADA, 1 ]);
+    
+            }
+        }
+
+
+        //CONCLUYO LOS VIAJES 
+
+        $sqlViajes = "SELECT COUNT(*) AS TERMINO FROM RECEPCION_".$sufijo." WHERE  (SELECT COUNT(*) FROM RECEPCION_".$sufijo." WHERE FECHA = ?) = (SELECT COUNT(*) FROM TURNOS)";
+        $termino = $DB2->query($sqlViajes, [date('Y-m-d')])->result();
+
+        if($termino[0]->TERMINO){
+
+             $sql3 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 13, FECHA_RECEPCION = (SELECT DATEADD(HH, -4, GETDATE())) WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.")";
+             $DB2->query($sql3);
 
         }
 
-       
-
-
-        $registro = $DB2->query($sql);
-            $response['status'] = true;
+        $response['status'] = true;
 
         echo json_encode($response);
     }
