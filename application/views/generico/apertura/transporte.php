@@ -31,8 +31,11 @@
   color: black;
 }
 </style>
+
+<?php $action = current_url().'?vc='.$this->input->get('vc') ?>
+
 <?php if($registro): ?>
-  <?php if($cabecera[0]->ESTADO > 13 ):?>
+  <?php if($cabecera[0]->ESTADO > 12 ):?>
     <div class="row ">
       <div class="col-md-12 text-center">
         <?=img(['src'=>'assets/dist/img/close2.png', 'width' => '15%'])?>
@@ -40,15 +43,34 @@
     </div>
   <?php endif;?>
 
-  <div class="dropdown show">
-    <a class="btn btn-secondary dropdown-toggle palette-Red-700 bg" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-     Descargar Reportes
-    </a>
 
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-      <a class="dropdown-item" href="<?=site_url('entrega-excel/'.$db.'/'.$sufijo)?>"><i class="las la-file-excel la-2x palette-Green-600 text"></i>  <b>Excel</b>  </a>
+
+  <div class="row">
+    <div class="col-3">
+      <form method="POST" id="form_turno" action="<?=$action?>">
+        <select name="turno" class="form-control" onchange="submit_turno()">
+            <option value="">--- Seleccione una opcion ---</option>
+            <?php foreach ($turnos as $t): ?>
+                <option value="<?=$t->TURNO?>" <?=($t->TURNO==$turno)?'selected':''?>><?=$t->TURNO?></option>
+            <?php endforeach; ?>
+        </select>
+      </form>
+    </div>
+    <div class="col-3">
+
+    <div class="dropdown show">
+      <a class="btn btn-secondary dropdown-toggle palette-Red-700 bg" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Descargar Reportes
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="<?=site_url('entrega-excel/'.$db.'/'.$sufijo)?>"><i class="las la-file-excel la-2x palette-Green-600 text"></i>  <b>Excel</b>  </a>
+      </div>
+    </div>
+
     </div>
   </div>
+
 
   <br><br>
 
@@ -57,7 +79,7 @@
 			<a class="navbar-brand" href="#">Entrega</a>
 		</div>
 		<div class="col-2 col-md-1 btn-group">
-			<?php if($cabecera[0]->ESTADO == 13 ):?>
+			<?php if($cabecera[0]->ESTADO == 12 ):?>
 				<?=form_button('agregar', '<span style="font-size:1.5rem" class="las la-save la-2x"></span>', ['class'=>'btn btn-danger btn-xs float-right btn-hide', 'onclick'=>'guardarEntrega()']);?>
 		
 				<?=form_button('enviar', '<span style="font-size:1.5rem" class="las la-paper-plane la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right btn-hide', 'onclick'=>'enviarEntrega()']);?>
@@ -118,6 +140,7 @@
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Observacion</th>
                       
                       <?php foreach ($sub->PRODUCTOS as $p): ?>
+                        <?php if(isset($registro[$p->ID_SUB_CATEGORIA_2])):?>
                         <?php if($registro[$p->ID_SUB_CATEGORIA_2] > 0):?> 
                           <?php $count = $count + 1?>
                           <?php $count2 = $count2 + 1?>
@@ -143,7 +166,8 @@
                               <input name="<?=$p->ID_SUB_CATEGORIA_2?>[observacion]" class="form-control enviado" type="text" <?=($cabecera[0]->ESTADO > 13)?'readonly="readonly"':''?> value="">
                             </td>
                         </tr>
-                        <?php endif; ?>   
+                        <?php endif; ?> 
+                        <?php endif; ?>  
                       <?php endforeach; ?>
                       <script>
                         var cantidad2 = '<?=$count2?>';
@@ -185,6 +209,11 @@
 <?php endif;?>
 
 <script>
+
+function submit_turno(){
+
+$('#form_turno').submit();
+}
 
 
     function guardarEntrega(){

@@ -532,7 +532,13 @@ case 'existencia-prueba':
 break;
 
 case 'entrega-prueba':
-	$db = 'ventas'; $sufijo = 'AE'; $ubicacion = 21; $data = entrega($db, $sufijo, $ubicacion);
+
+	$turno = ($this->input->post('turno')) ? $this->input->post('turno') : 'NO PERECEDERO';
+	
+	$array = array('keyturno' => $turno);
+	$this->session->set_userdata($array);
+
+	$db = 'ventas'; $sufijo = 'AE'; $ubicacion = 21; $data = entrega($db, $sufijo, $ubicacion, $turno);
 	echo $this->load->view('generico/apertura/transporte', $data, TRUE);
 break;
 

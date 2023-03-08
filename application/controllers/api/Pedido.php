@@ -453,8 +453,8 @@ class Pedido extends CI_Controller {
         $DB2->query($sqlFinal)->result();
 
 
-        $sqlRegistrado = "SELECT * FROM RECEPCION_".$sufijo." WHERE FECHA = ? AND TURNO = ?";
-        $existe = $DB2->query($sqlRegistrado, [date('Y-m-d'), $turno])->result();
+        $sqlRegistrado = "SELECT * FROM RECEPCION_".$sufijo." WHERE FECHA = ? AND TURNO = ? AND TIPO = ?";
+        $existe = $DB2->query($sqlRegistrado, [date('Y-m-d'), $turno, 'RECEPCION'])->result();
 
         if(!$existe)
         {
@@ -477,8 +477,8 @@ class Pedido extends CI_Controller {
 
         //CONCLUYO LOS VIAJES 
 
-        $sqlViajes = "SELECT COUNT(*) AS TERMINO FROM RECEPCION_".$sufijo." WHERE  (SELECT COUNT(*) FROM RECEPCION_".$sufijo." WHERE FECHA = ?) = (SELECT COUNT(*) FROM TURNOS)";
-        $termino = $DB2->query($sqlViajes, [date('Y-m-d')])->result();
+        $sqlViajes = "SELECT COUNT(*) AS TERMINO FROM RECEPCION_".$sufijo." WHERE  (SELECT COUNT(*) FROM RECEPCION_".$sufijo." WHERE FECHA = ? AND TIPO = ?) = (SELECT COUNT(*) FROM TURNOS)";
+        $termino = $DB2->query($sqlViajes, [date('Y-m-d'), 'RECEPCION'])->result();
 
         if($termino[0]->TERMINO){
 
@@ -529,8 +529,6 @@ class Pedido extends CI_Controller {
 
                     $value2['observacion'] = ($value2['observacion']) ? $value2['observacion'] : 'NINGUNA';
 
-                    
-
                         $sql2 = "EXECUTE ".$sufijo."_SET_ITEM_ENTREGA ".$value2['entregada'].",".$value2['regresada'].",'".$fecha[0]->FECHA."','".$value2['observacion']."',".$key;
 
                         $DB2->query($sql2)->result();
@@ -554,25 +552,47 @@ class Pedido extends CI_Controller {
 
         $DB2 = $this->load->database($db, TRUE);
 
-        $sql6 = "SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_RECEPCION = (SELECT MAX(FECHA_RECEPCION) FROM CABECERA_PEDIDO_".$sufijo.")";
+        $sql6 = "SELECT FECHA FROM CABECERA_PEDIDO_".$sufijo." WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.")";
         $fecha = $DB2->query($sql6)->result();
         
-
-        $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 14 WHERE FECHA_CONTEO ='".$fecha[0]->FECHA."'";
-
-        $sql3 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 14, FECHA_ENTREGA = (SELECT DATEADD(HH, -4, GETDATE())) WHERE FECHA_RECEPCION = (SELECT MAX(FECHA_RECEPCION) FROM CABECERA_PEDIDO_".$sufijo.")";
-        $DB2->query($sql3);
-
-        $registro = $DB2->query($sql);
+        $turno = $this->session->keyturno;
 
 
-        $sql4 = "UPDATE INVENTARIOS_CRONOGRAMA SET LLEGADA = ?, ESTADO = ? WHERE ID_UBICACION = ? AND FECHA = ?";
-        $this->db->query($sql4, [date('H:i:s'), 1 , $ubicacion, date('Y-m-d')]);
+        $sqlFinal = "EXECUTE ".$sufijo."_ENTREGA '".date('Y-m-d')."','".date('H:i:s')."','".$turno."'";
+        $DB2->query($sqlFinal)->result();
 
-        
-            $response['status'] = true;
+
+        $sqlRegistrado = "SELECT * FROM RECEPCION_".$sufijo." WHERE FECHA = ? AND TURNO = ? AND TIPO = ?";
+        $existe = $DB2->query($sqlRegistrado, [date('Y-m-d'), $turno, 'ENTREGA'])->result();
+
+        if(!$existe)
+        {
+
+            $sql = "UPDATE INVENTARIOS_DECLARACION_".$sufijo." SET ESTADO_CONTEO = 14 WHERE FECHA_CONTEO = ? AND TURNO = ?";
+            $registro = $DB2->query($sql, [$fecha[0]->FECHA, $turno]);
+            
+        }
+
+
+        //CONCLUYO LOS VIAJES 
+
+        $sqlViajes = "SELECT COUNT(*) AS TERMINO FROM RECEPCION_".$sufijo." WHERE  (SELECT COUNT(*) FROM RECEPCION_".$sufijo." WHERE FECHA = ? AND TIPO = ?) = (SELECT COUNT(*) FROM TURNOS)";
+        $termino = $DB2->query($sqlViajes, [date('Y-m-d'), 'ENTREGA'])->result();
+
+        if($termino[0]->TERMINO){
+
+             $sql3 = "UPDATE CABECERA_PEDIDO_".$sufijo." SET ESTADO = 14, FECHA_ENTREGA = (SELECT DATEADD(HH, -4, GETDATE())) WHERE FECHA_PREPARACION = (SELECT MAX(FECHA_PREPARACION) FROM CABECERA_PEDIDO_".$sufijo.")";
+             $DB2->query($sql3);
+
+             $sql4 = "UPDATE INVENTARIOS_CRONOGRAMA SET LLEGADA = ?, ESTADO = ? WHERE ID_UBICACION = ? AND FECHA = ?";
+             $this->db->query($sql4, [date('H:i:s'), 1 , $ubicacion, date('Y-m-d')]);
+
+        }
+
+        $response['status'] = true;
 
         echo json_encode($response);
+
     }
 
     public function abrir_declaracion() 

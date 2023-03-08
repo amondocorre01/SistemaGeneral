@@ -147,6 +147,7 @@
                       <th style="background-color: rgba(<?=$value->COLOR_R?>, <?=$value->COLOR_G?>, <?=$value->COLOR_B?>, 0.4 )">Observacion</th>
                       
                       <?php foreach ($sub->PRODUCTOS as $p): ?>
+                        <?php if(isset($registro[$p->ID_SUB_CATEGORIA_2])):?>
                         <?php if($registro[$p->ID_SUB_CATEGORIA_2] > 0):?> 
                           <?php $count = $count + 1?>
                           <?php $count2 = $count2 + 1?>
@@ -154,7 +155,7 @@
                             <td width="20%"><?=$p->SUB_CATEGORIA_2?></td>
                             <td width="15%">
                               
-                              <?php if(isset($p->MEDIDA_ADECUACIÓN)): ?>
+                              <?php if(isset($p->MEDIDA_ADECUACIÓN)): ?> 
                               <?=$p->MEDIDA_ADECUACIÓN?> 
                               <?php endif; ?>                         
                             </td>
@@ -168,7 +169,8 @@
                               <input name="<?=$p->ID_SUB_CATEGORIA_2?>[observacion]" class="form-control enviado" type="text" <?=($cabecera[0]->ESTADO > 12)?'readonly="readonly"':''?> value="">
                             </td>
                         </tr>
-                        <?php endif; ?>   
+                        <?php endif; ?> 
+                        <?php endif; ?>     
                       <?php endforeach; ?>
                       <script>
                         var cantidad2 = '<?=$count2?>';
