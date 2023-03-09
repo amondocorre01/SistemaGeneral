@@ -517,7 +517,7 @@ case 'recepcion-prueba':
 	$array = array('keyturno' => $turno);
 	$this->session->set_userdata($array);
 	
-	$db = 'ventas'; $sufijo = 'AE'; $sucursal = 21; $data = recepcion($db, $sufijo, $turno);
+	$db = 'ventas'; $sufijo = 'AE'; $sucursal = 21; $data = recepcion($db, $sufijo, $turno, $sucursal);
 	echo $this->load->view('generico/apertura/recepcion', $data, TRUE);
 break;
 

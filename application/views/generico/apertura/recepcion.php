@@ -51,7 +51,7 @@
   <div class="row">
     <div class="col-3">
       <form method="POST" id="form_turno" action="<?=$action?>">
-        <select name="turno" class="form-control" onchange="submit_turno()">
+        <select id="tipo_turno" name="turno" class="form-control" onchange="submit_turno()">
             <option value="">--- Seleccione una opcion ---</option>
             <?php foreach ($turnos as $t): ?>
                 <option value="<?=$t->TURNO?>" <?=($t->TURNO==$turno)?'selected':''?>><?=$t->TURNO?></option>
@@ -266,9 +266,12 @@ function submit_turno(){
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
 
-          var fecha = '<?=date('Y-m-d')?>'
+          var fecha = '<?=date('Y-m-d')?>';
+          var sucursal = '<?=$sucursal?>';
+          var tipo = $('#tipo_turno').val();
+
           $('.loading').show();
-          $.post("<?=site_url('enviar-recepcion')?>", {fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
+          $.post("<?=site_url('enviar-recepcion')?>", {tipo:tipo, sucursal:sucursal, fecha:fecha, db:'<?=$db?>', sufijo:'<?=$sufijo?>'})
                 .done(function( data ) {
                   $('.loading').hide();
                   Swal.fire('Envio Exitoso!', '', 'success');

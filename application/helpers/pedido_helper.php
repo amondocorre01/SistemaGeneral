@@ -194,7 +194,7 @@ if(!function_exists('guardarProducto') ) {
 
 if(!function_exists('recepcion')){
 
-	function recepcion($db, $sufijo, $turno = 'NO PERECEDERO') {
+	function recepcion($db, $sufijo, $turno = 'NO PERECEDERO', $sucursal) {
 		$CI =& get_instance();
 
 
@@ -243,6 +243,7 @@ if(!function_exists('recepcion')){
 	 	$data['db'] = $db;
 	 	$data['sufijo'] = $sufijo;
 		$data['turno'] = $turno;
+		$data['sucursal'] = $sucursal;
 
 		return $data;
 	}
