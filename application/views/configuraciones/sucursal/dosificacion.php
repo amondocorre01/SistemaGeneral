@@ -5,7 +5,7 @@
       <div id="opciones-<?=$codigo?>">
 
           <ul>
-              <li><a href="#opcion-2-<?=$codigo?><?=$id?>"> Impresion </a></li>
+              <li><a href="#opcion-2-<?=$codigo?><?=$id?>"> Impresión </a></li>
               <li><a href="#opcion-4-<?=$codigo?><?=$id?>"> Mensajes </a></li>
               <li><a href="#opcion-5-<?=$codigo?><?=$id?>"> Impresora </a></li>
           </ul>

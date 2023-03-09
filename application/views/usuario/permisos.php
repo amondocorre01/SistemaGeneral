@@ -40,7 +40,7 @@
 <script>
 
 $('#usuarios').select2({
-    placeholder: "--- Seleccione una opcion ---"
+    placeholder: "--- Seleccione una opción ---"
 });
 
 $('#usuarios').on('change', function(){

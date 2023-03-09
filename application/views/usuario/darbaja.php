@@ -64,7 +64,7 @@
                         <?=form_label("Expedido", 'new_expedido');?>
 
                         <select name="new_expedido" id="new_expedido" class="form-control">
-                            <option value="">--- Seleccione una opcion ---</option>
+                            <option value="">--- Seleccione una opción ---</option>
                                 <option value="CB">Cochabamba</option>
                                 <option value="SC">Santa Cruz</option>
                                 <option value="LP">La Paz</option>
@@ -111,7 +111,7 @@
                         <?=form_label("Cargo", 'new_cargos');?>
 
                         <select name="new_cargos" id="new_cargos" class="form-control">
-                            <option value="">--- Seleccione una opcion ---</option>
+                            <option value="">--- Seleccione una opción ---</option>
                             <?php foreach ($cargos as $cargo) : ?>
                                 <option value="<?=$cargo->ID?>"><?=$cargo->TEXT?></option>
                             <?php endforeach; ?>
@@ -123,7 +123,7 @@
                     <div class="form-group" >
                         <?=form_label("Perfil(*)", 'new_perfiles', ['class'=>'palette-Red-600 text']);?>
                         <select name="new_perfiles" id="new_perfiles" class="form-control">
-                            <option value="">--- Seleccione una opcion ---</option>
+                            <option value="">--- Seleccione una opción ---</option>
                             <?php foreach ($perfiles as $perfil) : ?>
                                 <option value="<?=$perfil->TEXT?>"><?=$perfil->TEXT?></option>
                             <?php endforeach; ?>
@@ -156,7 +156,7 @@
                     <div class="form-group" >
                         <?=form_label("AFP", 'afp');?>
                         <select name="afp" id="afp" class="form-control">
-                            <option value="">--- Seleccione una opcion ---</option>
+                            <option value="">--- Seleccione una opción ---</option>
                             <?php foreach ($afp as $a) : ?>
                                 <option value="<?=$a->ID_AFP?>"><?=$a->NOMBRE_AFP?></option>
                             <?php endforeach; ?>
@@ -221,7 +221,7 @@
         <div class="col-12">
             <?=form_label( 'Sucursal', 'sucursal'); ?>
             <select name="sucursal" id="sucursal" class="form-control" data-user="" class="form-control">
-                <option value="">--- Seleccione una opcion ---</option>
+                <option value="">--- Seleccione una opción ---</option>
                 <?php foreach ($sucursales as $sucursal) : ?>
                     <option value="<?=$sucursal->ID_UBICACION?>"><?=$sucursal->DESCRIPCION?></option>
                 <?php endforeach; ?>
@@ -402,7 +402,7 @@
         <div class="col-12">
             <?=form_label( 'Nuevo perfil', 'perfil'); ?>
             <select name="perfil" id="change_perfil" class="form-control" data-user="" class="form-control">
-                <option value="">--- Seleccione una opcion ---</option>
+                <option value="">--- Seleccione una opción ---</option>
                 <?php foreach ($perfiles as $perfil) : ?>
                     <option value="<?=$perfil->TEXT?>"><?=$perfil->TEXT?></option>
                 <?php endforeach; ?>

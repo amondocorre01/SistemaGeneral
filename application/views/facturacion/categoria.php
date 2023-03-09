@@ -243,7 +243,7 @@ $('#categoria').on('change', function(){
 
 
     $('.select2').select2({
-        placeholder: "Seleccione una opcion"
+        placeholder: "Seleccione una opción"
     });
 
     

@@ -28,8 +28,8 @@ $name_impresora = $this->session->userdata('impresora');
                 <?php else: ?>
                 <?php if(isset($_SESSION['monto_apertura_pendiente'])):?>
                 <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                Atencion: Esta pendiente el registro del monto con el ingreso del turno. <br>
-                Para registrar la informacion ingrese en el menu lateral en la opcion APERTURA DE CAJA.
+                Atención: Esta pendiente el registro del monto con el ingreso del turno. <br>
+                Para registrar la información ingrese en el menú lateral en la opción APERTURA DE CAJA.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -61,7 +61,7 @@ $name_impresora = $this->session->userdata('impresora');
                             <i class="fa fa-money palette-White text"></i> <span class="palette-White text">Registar cierre de caja</span>
                         </button>
                         <a class="btn btn-app" onclick="abrirGavetera('<?=$name_impresora?>');">
-                            <i class="fa fa-archive"></i> Abrir gabeta de dinero
+                            <i class="fa fa-archive"></i> Abrir gaveta de dinero
                         </a>
                     </center>
                 </div>
