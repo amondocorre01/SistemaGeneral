@@ -828,6 +828,18 @@ break;
 
 /********** FIN MODULO PEDIDO  ***********/
 
+/****************** INICIO MODULO RECETA *******************/
+
+
+case 'receta':
+
+	$data['primeraCategoria'] = getPrimeraCategoria();
+
+	echo $this->load->view('generico/receta/registro', $data, TRUE);
+break;
+/****************** FIN MODULO RECETA **********************/
+
+
 
 
 case 'cambiar-pasword':

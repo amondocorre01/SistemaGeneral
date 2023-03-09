@@ -285,6 +285,18 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['entrega-excel/(:any)/(:any)'] = 'report/pedido/entrega/$1/$2';
 
 
+
+    /*** RECETA  ***/
+
+    $route['receta-segunda-categoria'] = 'configuraciones/Producto/getCategoria2';
+    $route['receta-producto-madre'] = 'configuraciones/Producto/getProductoMadre';
+    $route['receta-producto-unico'] = 'configuraciones/Producto/getProductoUnico';
+    $route['get-table-receta'] = 'configuraciones/Producto/getTableReceta';
+
+
+
+
+
    
 
 

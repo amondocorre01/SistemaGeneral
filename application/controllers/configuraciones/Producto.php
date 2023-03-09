@@ -306,5 +306,44 @@
          }
         echo json_encode($datos);
      }
+
+
+     public function getCategoria2(){
+
+         $id = $this->input->post('id');
+         $response = getSegundaCategoria($id);
+
+         echo json_encode($response);
+     }
+
+      public function getProductoMadre(){
+
+         $id = $this->input->post('id');
+
+         $sqlProductoMadre = "SELECT productos FROM CATEGORIA_2 WHERE ID_CATEGORIA_2 = ?";
+         $response = $this->db->query($sqlProductoMadre, [$id])->result();
+
+         echo $response[0]->productos;
+      }
+
+      public function getProductoUnico(){
+
+         $id = $this->input->post('id');
+
+         $sqlProductoUnico = "SELECT  ID_PRODUCTO_UNICO, ORDENADO, TAMAÑO FROM VENTAS_PRODUCTO_UNICO vpu, VENTAS_TAMAÑO vt  WHERE vpu.ID_TAMAÑO = vt.ID_TAMAÑO AND  vpu.ID_PRODUCTO_MADRE = ? order by ORDENADO asc ";
+         $response = $this->db->query($sqlProductoUnico, [$id])->result();
+
+         echo json_encode($response);
+     }
+
+
+     public function getTableReceta() {
+
+         $sqlSubCategoria = "SELECT  ID_SUB_CATEGORIA_2, SUB_CATEGORIA_2 FROM INVENTARIOS_SUB_CATEGORIA_2 isc2 WHERE isc2.ESTADO2 = 1 ORDER BY SUB_CATEGORIA_2 ASC";
+      
+         $data['elementos'] = $this->db->query($sqlSubCategoria)->result();
+
+         $this->load->view('configuraciones/productos/receta', $data, FALSE);
+     }
      
    }
