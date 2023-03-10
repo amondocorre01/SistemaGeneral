@@ -1,4 +1,3 @@
-
 <div class="row">
 	<div class="col-2">
 		<span onclick="agregarElementos()" class="btn btn-xs palette-Red-700 bg" data-toggle="modal" data-target="#nuevo">
@@ -24,7 +23,38 @@
 				<th width="10%">Eliminar</th>
 			</tr>
 			<tbody id="elementoReceta">
-
+				
+					<?php foreach ($receta as $r): ?>
+						<tr class="palette-Green-100 bg" id="row_<?=$r->ID_SUB_CATEGORIA_2?>">
+						<td>
+							<?=$r->SUB_CATEGORIA_2?>
+							<input type="hidden" name="<?=$r->ID_SUB_CATEGORIA_2?>[idUnico]" value="<?=$r->ID_PRODUCTO_UNICO?>">
+							<input type="hidden" name="<?=$r->ID_SUB_CATEGORIA_2?>[id]" value="<?=$r->ID_SUB_CATEGORIA_2?>">
+						</td>
+						<td>
+							<input name="<?=$r->ID_SUB_CATEGORIA_2?>[fruta]" <?=($r->ESTADO_FRUTAS)?'checked':''?> value="1" type="checkbox">
+						</td>
+						<td>
+							<input name="<?=$r->ID_SUB_CATEGORIA_2?>[mesa]" <?=($r->PARA_MESA)?'checked':''?> value="1" type="checkbox">
+						</td>
+						<td>
+							<input name="<?=$r->ID_SUB_CATEGORIA_2?>[llevar]" <?=($r->PARA_LLEVAR)?'checked':''?> value="1" type="checkbox">
+						</td>
+						<td>
+							<input name="<?=$r->ID_SUB_CATEGORIA_2?>[manda]" <?=($r->MANDATORIO)?'checked':''?> value="1" type="checkbox">
+						</td>
+						<td>
+							<input name="<?=$r->ID_SUB_CATEGORIA_2?>[perece]" <?=($r->PERECEDERO)?'checked':''?> value="1" type="checkbox">
+						</td>
+						<td>
+							<input name="<?=$r->ID_SUB_CATEGORIA_2?>[adecuacion]" class="form-control" value="<?=$r->TAMAÑO?>" type="text">
+						</td>
+						<td>
+							<span onclick="borrarLogico(<?=$r->ID?>)" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span>
+						</td>
+						</tr>
+					<?php endforeach ?>
+				
 			</tbody>
 		
 	</table>
@@ -96,7 +126,7 @@
 
 		var row = '<tr id="row_'+id+'">';
 
-		row += '<td>'+nombre+'<input type="hidden" name="'+id+'[idUnico]" value="'+unico+'"><input type="hidden" name="'+id+'[id]" value="'+id+'"><input type="hidden" name="'+id+'[id]" value="'+id+'"></td>';
+		row += '<td>'+nombre+'<input type="hidden" name="'+id+'[idUnico]" value="'+unico+'"><input type="hidden" name="'+id+'[id]" value="'+id+'"></td>';
 
 		row += '<td><input name="'+id+'[fruta]" value="1" type="checkbox"></td>';
 		row += '<td><input name="'+id+'[mesa]" value="1" type="checkbox"></td>';
@@ -117,11 +147,41 @@
 		$('#row_'+id).remove();
 	}
 
+	function borrarLogico(id)
+	{
+		Swal.fire({
+        title: 'Deseas eliminar este elemento de la receta?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        denyButtonText: 'No',
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          $('.loading').show();
+
+          $.post("<?=site_url('receta-borrar-logico')?>", {id:id})
+                .done(function( data ) {
+                  $('.loading').hide();
+
+                  dato = JSON.parse(data);
+
+                  if(dato.status == true){
+                    Swal.fire('Borrado exitoso!', '', 'success');
+                  }
+                });
+          
+        } else if (result.isDenied) {
+          Swal.fire('Has decido no quitar este elemento', '', 'info')
+        }
+      })
+	}
+
 	function guardarReceta()
 	{
 		var collection = $('#serializeExample form').serialize();
 
-		$.post("<?=site_url('guardar-receta')?>", collection)
+		$.post("<?=site_url('guardar-receta-editada')?>", collection)
 			.done(function( data ) {
 				dato = JSON.parse(data);
 

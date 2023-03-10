@@ -353,6 +353,8 @@
       $receta = $this->input->post();
 
       $response['status'] = false; 
+      $response['icon'] = 'error';
+      $response['message'] = 'No se ha guardado nada';
 
 
       foreach ($receta as $key => $r) {
@@ -369,11 +371,79 @@
          
          $sqlReceta = "EXECUTE  SET_ITEM_RECETA ?, ?, ?, ?, ?, ?, ?, ?";
          $result = $this->db->query($sqlReceta, [$idUnico, $id, $adecua, $fruta, $llevar, $mesa, $manda, $perece])->result();  
+
+         $response['status'] = true; 
+         $response['icon'] = 'success';
+         $response['message'] = 'Se ha guardado la receta';
       }
 
 
       echo json_encode($response);
 
      }
-     
+
+     public function editReceta() {
+
+      $id = $this->input->post('id');
+
+      $sqlSubCategoria = "SELECT  CONCAT_WS('-',ID_SUB_CATEGORIA_2,CAST(CANTIDAD_ADECUACION_PEDIDOS AS INT)) AS ID, SUB_CATEGORIA_2 FROM INVENTARIOS_SUB_CATEGORIA_2 isc2 WHERE isc2.ESTADO2 = 1 ORDER BY SUB_CATEGORIA_2 ASC";
+      $data['elementos'] = $this->db->query($sqlSubCategoria)->result();
+
+      $sqlReceta = "SELECT isc.SUB_CATEGORIA_2, vr.*  FROM VENTAS_RECETA vr, INVENTARIOS_SUB_CATEGORIA_2 isc WHERE isc.ID_SUB_CATEGORIA_2 = vr.ID_SUB_CATEGORIA_2 AND ID_PRODUCTO_UNICO = ? and vr.ESTADO= 1";
+      $data['receta'] = $this->db->query($sqlReceta, [$id])->result();
+
+      $this->load->view('configuraciones/productos/editReceta', $data, FALSE);
+  }
+
+
+  public function saveRecetaEditada() {
+
+
+   $receta = $this->input->post();
+
+   $response['status'] = false; 
+   $response['icon'] = 'error';
+   $response['message'] = 'No se ha guardado nada'; 
+
+
+
+
+   foreach ($receta as $key => $r) {
+
+      $idUnico = (isset($r['idUnico'])) ? $r['idUnico'] : NULL;
+      $id = (isset($r['id'])) ? $r['id'] : NULL;
+      $adecua = (isset($r['adecuacion'])) ? $r['adecuacion'] : NULL;
+      $fruta = (isset($r['fruta'])) ? $r['fruta'] : 0;
+      $llevar = (isset($r['llevar'])) ? $r['llevar'] : 0;
+      $mesa = (isset($r['mesa'])) ? $r['mesa'] : 0;
+      $manda = (isset($r['manda'])) ? $r['manda'] : 0;
+      $perece = (isset($r['perece'])) ? $r['perece'] : 0;
+
+      
+      $sqlReceta = "EXECUTE  EDIT_ITEM_RECETA ?, ?, ?, ?, ?, ?, ?, ?";
+      $result = $this->db->query($sqlReceta, [$idUnico, $id, $adecua, $fruta, $llevar, $mesa, $manda, $perece])->result();  
+
+      $response['status'] = true; 
+      $response['icon'] = 'success';
+      $response['message'] = 'Se han guardado las modificaciones'; 
    }
+
+
+   echo json_encode($response);
+
+  }
+
+  public function borrarLogico() 
+  {
+   $id = $this->input->post('id');
+
+   $sqlLogico = "UPDATE VENTAS_RECETA SET ESTADO = 0 WHERE ID = ?";
+   $this->db->query($sqlLogico, [$id]);
+
+   $response['status'] = true; 
+
+   echo json_encode($response);
+  }
+
+     
+}
