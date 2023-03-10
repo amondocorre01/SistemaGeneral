@@ -50,7 +50,7 @@
 							<input name="<?=$r->ID_SUB_CATEGORIA_2?>[adecuacion]" class="form-control" value="<?=$r->TAMAÑO?>" type="text">
 						</td>
 						<td>
-							<span onclick="borrarLogico(<?=$r->ID?>)" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span>
+							<span onclick="borrarLogico(<?=$r->ID.','.$r->ID_SUB_CATEGORIA_2?>)" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span>
 						</td>
 						</tr>
 					<?php endforeach ?>
@@ -147,7 +147,7 @@
 		$('#row_'+id).remove();
 	}
 
-	function borrarLogico(id)
+	function borrarLogico(id, idUnico)
 	{
 		Swal.fire({
         title: 'Deseas eliminar este elemento de la receta?',
@@ -167,6 +167,7 @@
                   dato = JSON.parse(data);
 
                   if(dato.status == true){
+					borrar(idUnico);
                     Swal.fire('Borrado exitoso!', '', 'success');
                   }
                 });
