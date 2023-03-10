@@ -15,9 +15,11 @@
 		
 			<tr>
 				<th>Nombre</th>
-				<th>Mesa</th>
-				<th>Llevar</th>
+				<th>Es fruta</th>
+				<th>Para mesa</th>
+				<th>Para llevar</th>
 				<th>Mandatorio</th>
+				<th>Perecedero</th>
 				<th>Eliminar</th>
 			</tr>
 			<tbody id="elementoReceta">
@@ -54,7 +56,7 @@
                 <?=form_label("Elemento", 'elementos');?>
 				<select name="elementos" id="elementos" class="form-control select2">
 					<?php foreach ($elementos as $e) : ?>
-						<option value="<?=$e->ID_SUB_CATEGORIA_2?>"><?=$e->SUB_CATEGORIA_2?></option>
+						<option value="<?=$e->ID?>"><?=$e->SUB_CATEGORIA_2?></option>
 					<?php endforeach;?>
 				</select>
             </div>
@@ -83,16 +85,23 @@
 	function addElement()
 	{
 		var nombre = $('#elementos option:selected').text();
-		var id = $('#elementos option:selected').val();
+		var idAll = $('#elementos option:selected').val();
+
+		var separado = idAll.split('-');
+		var id = separado[0];
+		var adecuacion = separado[1];
+
 		var unico = $('#productoUnico option:selected').val();
 
 		var row = '<tr id="row_'+id+'">';
 
-		row += '<td>'+nombre+'<input type="hidden" name="'+id+'[idUnico]" value="'+unico+'"><input type="hidden" name="'+id+'[id]" value="'+id+'"></td>';
+		row += '<td>'+nombre+'<input type="hidden" name="'+id+'[idUnico]" value="'+unico+'"><input type="hidden" name="'+id+'[id]" value="'+id+'"><input type="hidden" name="'+id+'[adecuacion]" value="'+adecuacion+'"><input type="hidden" name="'+id+'[id]" value="'+id+'"></td>';
 
+		row += '<td><input name="'+id+'[fruta]" value="1" type="checkbox"></td>';
 		row += '<td><input name="'+id+'[mesa]" value="1" type="checkbox"></td>';
 		row += '<td><input name="'+id+'[llevar]" value="1" type="checkbox"></td>';
-		row += '<td><input name="'+id+'[mandatorio]" value="1" type="checkbox"></td>';
+		row += '<td><input name="'+id+'[manda]" value="1" type="checkbox"></td>';
+		row += '<td><input name="'+id+'[perece]" value="1" type="checkbox"></td>';
 		row += '<td><span onclick="borrar('+id+')" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span></td>';
 
 		row += '</tr>';

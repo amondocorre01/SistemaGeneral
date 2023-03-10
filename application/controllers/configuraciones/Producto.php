@@ -339,11 +339,41 @@
 
      public function getTableReceta() {
 
-         $sqlSubCategoria = "SELECT  ID_SUB_CATEGORIA_2, SUB_CATEGORIA_2 FROM INVENTARIOS_SUB_CATEGORIA_2 isc2 WHERE isc2.ESTADO2 = 1 ORDER BY SUB_CATEGORIA_2 ASC";
+         $sqlSubCategoria = "SELECT  CONCAT_WS('-',ID_SUB_CATEGORIA_2,CAST(CANTIDAD_ADECUACION_PEDIDOS AS INT)) AS ID, SUB_CATEGORIA_2 FROM INVENTARIOS_SUB_CATEGORIA_2 isc2 WHERE isc2.ESTADO2 = 1 ORDER BY SUB_CATEGORIA_2 ASC";
       
          $data['elementos'] = $this->db->query($sqlSubCategoria)->result();
 
          $this->load->view('configuraciones/productos/receta', $data, FALSE);
+     }
+
+
+     public function saveReceta() {
+
+
+      $receta = $this->input->post();
+
+      $response['status'] = false; 
+
+
+      foreach ($receta as $key => $r) {
+
+         $idUnico = (isset($r['idUnico'])) ? $r['idUnico'] : NULL;
+         $id = (isset($r['id'])) ? $r['id'] : NULL;
+         $adecua = (isset($r['adecuacion'])) ? $r['adecuacion'] : NULL;
+         $fruta = (isset($r['fruta'])) ? $r['fruta'] : 0;
+         $llevar = (isset($r['llevar'])) ? $r['llevar'] : 0;
+         $mesa = (isset($r['mesa'])) ? $r['mesa'] : 0;
+         $manda = (isset($r['manda'])) ? $r['manda'] : 0;
+         $perece = (isset($r['perece'])) ? $r['perece'] : 0;
+
+         
+         $sqlReceta = "EXECUTE  SET_ITEM_RECETA ?, ?, ?, ?, ?, ?, ?, ?";
+         $result = $this->db->query($sqlReceta, [$idUnico, $id, $adecua, $fruta, $llevar, $mesa, $manda, $perece])->result();  
+      }
+
+
+      echo json_encode($response);
+
      }
      
    }

@@ -292,6 +292,8 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['receta-producto-madre'] = 'configuraciones/Producto/getProductoMadre';
     $route['receta-producto-unico'] = 'configuraciones/Producto/getProductoUnico';
     $route['get-table-receta'] = 'configuraciones/Producto/getTableReceta';
+    $route['guardar-receta'] = 'configuraciones/Producto/saveReceta';
+
 
 
 
