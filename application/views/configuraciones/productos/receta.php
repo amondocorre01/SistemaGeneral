@@ -14,13 +14,14 @@
 	<table class="table table-bordered table-striped" id="receta-item">
 		
 			<tr>
-				<th>Nombre</th>
-				<th>Es fruta</th>
-				<th>Para mesa</th>
-				<th>Para llevar</th>
-				<th>Mandatorio</th>
-				<th>Perecedero</th>
-				<th>Eliminar</th>
+				<th width="30%">Nombre</th>
+				<th width="10%">Es fruta</th>
+				<th width="10%">Para mesa</th>
+				<th width="10%">Para llevar</th>
+				<th width="10%">Mandatorio</th>
+				<th width="10%">Perecedero</th>
+				<th width="10%">Medida</th>
+				<th width="10%">Eliminar</th>
 			</tr>
 			<tbody id="elementoReceta">
 
@@ -71,11 +72,11 @@
     </div>
   </div>
 </div>
-
+<script src="<?=base_url('assets/plugins/select2/js/select2.js')?>" ></script>
 
 <script>
 
-	$('.select2').select2();
+	$('#elementos').select2({dropdownParent: $('#nuevo')});
 
 	function agregarElementos() 
 	{
@@ -95,13 +96,14 @@
 
 		var row = '<tr id="row_'+id+'">';
 
-		row += '<td>'+nombre+'<input type="hidden" name="'+id+'[idUnico]" value="'+unico+'"><input type="hidden" name="'+id+'[id]" value="'+id+'"><input type="hidden" name="'+id+'[adecuacion]" value="'+adecuacion+'"><input type="hidden" name="'+id+'[id]" value="'+id+'"></td>';
+		row += '<td>'+nombre+'<input type="hidden" name="'+id+'[idUnico]" value="'+unico+'"><input type="hidden" name="'+id+'[id]" value="'+id+'"><input type="hidden" name="'+id+'[id]" value="'+id+'"></td>';
 
 		row += '<td><input name="'+id+'[fruta]" value="1" type="checkbox"></td>';
 		row += '<td><input name="'+id+'[mesa]" value="1" type="checkbox"></td>';
 		row += '<td><input name="'+id+'[llevar]" value="1" type="checkbox"></td>';
 		row += '<td><input name="'+id+'[manda]" value="1" type="checkbox"></td>';
 		row += '<td><input name="'+id+'[perece]" value="1" type="checkbox"></td>';
+		row += '<td><input name="'+id+'[adecuacion]" class="form-control" value="'+adecuacion+'" type="text"></td>';
 		row += '<td><span onclick="borrar('+id+')" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span></td>';
 
 		row += '</tr>';
