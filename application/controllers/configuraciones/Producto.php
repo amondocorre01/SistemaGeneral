@@ -465,7 +465,7 @@
       $visual = (isset($r['visual'])) ? $r['visual'] : 0;
       
       
-      $sqlReceta = "EXECUTE  SET_ITEM_RECETA_COMBO ?, ?, ?, ?, ?";
+      $sqlReceta = "EXECUTE SET_ITEM_RECETA_COMBO ?, ?, ?, ?, ?";
       $result = $this->db->query($sqlReceta, [$idUnico, $idGrupo, $opcional, $precio, $visual])->result();  
 
       $response['status'] = true; 

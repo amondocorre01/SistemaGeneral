@@ -15,7 +15,7 @@
 				<h3 class="card-title">Receta Combo</h3>
 			</div>
 			
-			<div class="card-body">
+			<div class="card-body" id="serializeExample">
 				<form action="<?=current_url()?>" method="GET" id="form_fecha">
 
 					<div class="row">
