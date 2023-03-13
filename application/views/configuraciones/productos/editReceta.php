@@ -23,7 +23,6 @@
 				<th width="10%">Eliminar</th>
 			</tr>
 			<tbody id="elementoReceta">
-				
 					<?php foreach ($receta as $r): ?>
 						<tr class="palette-Green-100 bg" id="row_<?=$r->ID_SUB_CATEGORIA_2?>">
 						<td>
@@ -53,10 +52,8 @@
 							<span onclick="borrarLogico(<?=$r->ID.','.$r->ID_SUB_CATEGORIA_2?>)" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span>
 						</td>
 						</tr>
-					<?php endforeach ?>
-				
+					<?php endforeach; ?>
 			</tbody>
-		
 	</table>
 </form>
 </div>

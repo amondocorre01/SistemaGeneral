@@ -837,6 +837,13 @@ case 'receta':
 
 	echo $this->load->view('generico/receta/registro', $data, TRUE);
 break;
+
+case 'receta-combo':
+
+	$data['primeraCategoria'] = getPrimeraCategoria();
+
+	echo $this->load->view('generico/receta/combo', $data, TRUE);
+break;
 /****************** FIN MODULO RECETA **********************/
 
 
