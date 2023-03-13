@@ -445,5 +445,37 @@
    echo json_encode($response);
   }
 
-     
+
+  public function saveRecetaCombo() {
+
+
+   $receta = $this->input->post();
+
+   $response['status'] = false; 
+   $response['icon'] = 'error';
+   $response['message'] = 'No se ha guardado nada';
+
+
+   foreach ($receta as $key => $r) {
+
+      $idUnico = (isset($r['idUnico'])) ? $r['idUnico'] : NULL;
+      $idGrupo = (isset($r['idGrupo'])) ? $r['idGrupo'] : NULL;
+      $opcional = (isset($r['opcional'])) ? $r['opcional'] : 0;
+      $precio = (isset($r['precio'])) ? $r['precio'] : 0;
+      $visual = (isset($r['visual'])) ? $r['visual'] : 0;
+      
+      
+      $sqlReceta = "EXECUTE  SET_ITEM_RECETA_COMBO ?, ?, ?, ?, ?";
+      $result = $this->db->query($sqlReceta, [$idUnico, $idGrupo, $opcional, $precio, $visual])->result();  
+
+      $response['status'] = true; 
+      $response['icon'] = 'success';
+      $response['message'] = 'Se ha guardado la receta';
+   }
+
+
+   echo json_encode($response);
+
+  }
+
 }

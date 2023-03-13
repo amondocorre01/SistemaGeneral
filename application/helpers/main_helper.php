@@ -736,3 +736,14 @@ if(!function_exists('getSucursalesUsuario')) {
 		return $respuesta;
 	}
 }
+
+
+if(!function_exists('getMenuCombo')) {
+	function getMenuCombo() {
+		$CI =& get_instance();
+		$sql="SELECT ID_VENTAS_MENU_COMBO, ID_CATEGORIA_1, NOMBRE_MENU, CANTIDAD, ORDEN, BOTON_AGREGAR, COMBO_MADRE FROM VENTAS_MENU_COMBO vmc WHERE vmc.ESTADO=1 ORDER BY ORDEN ASC";
+
+		$respuesta = $CI->db->query($sql)->result();
+		return $respuesta;
+	}
+}
