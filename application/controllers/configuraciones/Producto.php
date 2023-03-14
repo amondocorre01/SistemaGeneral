@@ -320,8 +320,18 @@
 
          $id = $this->input->post('id');
 
-         $sqlProductoMadre = "SELECT productos FROM CATEGORIA_2 WHERE ID_CATEGORIA_2 = ?";
-         $response = $this->db->query($sqlProductoMadre, [$id])->result();
+         if($id > 0) 
+         {
+            $sqlProductoMadre = "SELECT productos FROM CATEGORIA_2 WHERE ID_CATEGORIA_2 = ".$id;
+         }
+            
+         else
+         {
+            $sqlProductoMadre = "SELECT productos FROM CATEGORIA_2 ";
+         }
+            
+
+         $response = $this->db->query($sqlProductoMadre)->result();
 
          echo $response[0]->productos;
       }
@@ -490,7 +500,11 @@
 
 
       $sql = "EXECUTE SET_ITEM_MENU_COMBO ?, ?, ?, ?, ?, ?";
-      $responseMenuCombo = $this->db->query($sql, [$cat1, $cant, $estado, $orden, $agregar, $madre]);
+      $responseMenuCombo = $this->db->query($sql, [$cat1, $cant, $estado, $orden, $agregar, $madre])->result();
+
+      $response['id'] = $responseMenuCombo[0]->ID;
+      $response['nombre'] = $responseMenuCombo[0]->MADRE.'-'.$responseMenuCombo[0]->NOMBRE;
+
 
       $response['icon'] = 'success';
       $response['message'] = 'Grupo creado correctamente';

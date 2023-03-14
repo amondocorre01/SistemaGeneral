@@ -374,7 +374,11 @@ if(!function_exists('getPrimeraCategoria')) {
 if(!function_exists('getSegundaCategoria')) {
 	function getSegundaCategoria($id){
 		$CI =& get_instance();
-		$sql = "select * from VENTAS_CATEGORIA_2 where ID_CATEGORIA='$id' AND ELIMINADO = '0'; ";
+		if($id > 0)
+			$sql = "select * from VENTAS_CATEGORIA_2 where ID_CATEGORIA='$id' AND ELIMINADO = '0'; ";
+		else
+			$sql = "select * from VENTAS_CATEGORIA_2 where ELIMINADO = '0'; ";
+
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}
@@ -382,7 +386,10 @@ if(!function_exists('getSegundaCategoria')) {
 if(!function_exists('getProductosMadre')) {
 	function getProductosMadre($id){
 		$CI =& get_instance();
-		$sql = "select * from VENTAS_PRODUCTO_MADRE where ID_CATEGORIA_2='$id' AND ELIMINADO = '0'; ";
+		if($id > 0)
+			$sql = "select * from VENTAS_PRODUCTO_MADRE where ID_CATEGORIA_2 = ".$id." AND ELIMINADO = '0'";
+		else
+			$sql = "select * from VENTAS_PRODUCTO_MADRE where ELIMINADO = '0'";
 		$respuesta = $CI->main->getQuery($sql);
 		return $respuesta;
 	}
@@ -762,7 +769,7 @@ if(!function_exists('getCategorias')) {
 if(!function_exists('getOrden')) {
 	function getOrden() {
 		$CI =& get_instance();
-		$sql="SELECT value FROM STRING_SPLIT('1,2,3,4,5,6,7,8,9,10,11,12,13,14,15', ',') WHERE value NOT IN (SELECT ORDEN FROM VENTAS_MENU_COMBO vmc)";
+		$sql="SELECT value FROM STRING_SPLIT('1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30', ',') WHERE value NOT IN (SELECT ORDEN FROM VENTAS_MENU_COMBO vmc)";
 
 		$respuesta = $CI->db->query($sql)->result();
 		return $respuesta;

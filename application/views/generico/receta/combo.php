@@ -28,10 +28,8 @@
 								<?php endforeach; ?>
 							</select>
 						</div>
-						<div class="col-md-1">
-							<div>
-								<button onclick="verModal()" class="btn btn-danger btn-lg" type="button">Agregar</button>
-							</div>
+						<div class="col-md-1 btn-group">
+							<button onclick="verModal()" class="btn btn-danger btn-lg" type="button">Agregar</button>
 						</div>
 					</div>
 
@@ -43,7 +41,8 @@
 							<div class="form-group">
 							<label>Categoria</label>
 							<select name="productoCategoria1" id="productoCategoria1" class="form-control myFont" style="width: 100%;" onchange="getCategoria2()">
-								<option value="" selected="selected">Seleccione la primera categoria</option>
+								<option value="">---Seleccione una opcion---</option>
+								<option value="-1">Todos</option>
 								<?php
 									foreach ($primeraCategoria as $key => $value) {
 										echo '<option '.$sel.' value="'.$value->ID_CATEGORIA.'">'.$value->CATEGORIA.'</option>';
@@ -200,7 +199,7 @@
 
 
 			$('#productoCategoria2').append(new Option('--- Seleccione una Opcion ---', ''));
-            
+            $('#productoCategoria2').append(new Option('Todos', '-1'));
 			$.each(dato, function( index, value ) {
 				$('#productoCategoria2').append(new Option(value.CATEGORIA_2, value.ID_CATEGORIA_2));
 		 	});
@@ -310,6 +309,8 @@
 
 				$('#agregar').modal('hide');
 
+				$('#menuCombo').append(new Option(dato.nombre, dato.id));
+
 				Swal.fire({
                         icon: dato.icon,
                         title: dato.message,
@@ -317,6 +318,16 @@
                     });
 
 			});
+	}
+
+	function borrar(id)
+	{
+		$('#row_'+id).remove();
+	}
+
+	function verMenuCombo() {
+
+		alert('Hola');
 	}
 
 </script>
