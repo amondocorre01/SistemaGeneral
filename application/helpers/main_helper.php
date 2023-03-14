@@ -747,3 +747,34 @@ if(!function_exists('getMenuCombo')) {
 		return $respuesta;
 	}
 }
+
+
+if(!function_exists('getCategorias')) {
+	function getCategorias() {
+		$CI =& get_instance();
+		$sql="SELECT ID_CATEGORIA, CATEGORIA, ORDENADO FROM VENTAS_CATEGORIA_1 vc WHERE vc.ELIMINADO=0 ORDER BY ORDENADO ASC";
+
+		$respuesta = $CI->db->query($sql)->result();
+		return $respuesta;
+	}
+}
+
+if(!function_exists('getOrden')) {
+	function getOrden() {
+		$CI =& get_instance();
+		$sql="SELECT value FROM STRING_SPLIT('1,2,3,4,5,6,7,8,9,10,11,12,13,14,15', ',') WHERE value NOT IN (SELECT ORDEN FROM VENTAS_MENU_COMBO vmc)";
+
+		$respuesta = $CI->db->query($sql)->result();
+		return $respuesta;
+	}
+}
+
+if(!function_exists('getMadre')) {
+	function getMadre() {
+		$CI =& get_instance();
+		$sql="SELECT value FROM STRING_SPLIT('1,2,3,4,5', ',') WHERE value NOT IN (SELECT COMBO_MADRE FROM VENTAS_MENU_COMBO vmc)";
+
+		$respuesta = $CI->db->query($sql)->result();
+		return $respuesta;
+	}
+}

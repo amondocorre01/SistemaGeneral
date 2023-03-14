@@ -24,13 +24,13 @@
 							<select name="menuCombo" id="menuCombo" class="form-control" style="width: 100%;">
 								<option value="" selected="selected">Seleccione una Opción</option>
 								<?php foreach ($combo as $key => $value) : ?>
-									<option value="<?=$value->ID_CATEGORIA_1?>"><?=$value->NOMBRE_MENU?></option>;
+									<option value="<?=$value->ID_CATEGORIA_1?>"><?=$value->COMBO_MADRE.'-'.$value->NOMBRE_MENU?></option>;
 								<?php endforeach; ?>
 							</select>
 						</div>
 						<div class="col-md-1">
 							<div>
-								<button onchange="habilitarCombo()" class="btn btn-danger btn-lg" type="button">Agregar</button>
+								<button onclick="verModal()" class="btn btn-danger btn-lg" type="button">Agregar</button>
 							</div>
 						</div>
 					</div>
@@ -112,6 +112,72 @@
 			</div>
         </div>
     </div>
+</div>
+
+
+<div class="modal fade" id="agregar" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xs" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="nombre2">Agregar Grupo</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      <div class="row" id="newGroup">
+		<form method="POST"> 
+        <div class="col-md-12">
+            <div class="form-group">
+                <?=form_label("Nombre de Grupo", 'grupo');?>
+                <select name="cat1" id="cat1" class="form-control" style="width: 100%;">
+					<option value="" selected="selected">Seleccione una Categoria</option>
+					<?php	foreach ($cat1 as $c) : ?>
+						<option value="<?=$c->ID_CATEGORIA?>"><?=$c->CATEGORIA?></option>;
+					<?php endforeach; ?>
+				</select>
+            </div>
+
+			<div class="form-group">
+                <?=form_label("Cantidad", 'cantidad');?>
+                <?=form_input(['class'=>'form-control', 'name'=>'cantidad']);?>
+            </div>
+
+			<div class="form-group">
+                <?=form_label("Orden", 'orden');?>
+				<select name="orden1" id="orden1" class="form-control" style="width: 100%;">
+					<option value="" selected="selected">Seleccione un Orden Disponible</option>
+					<?php	foreach ($orden as $o) : ?>
+						<option value="<?=$o->value?>"><?=$o->value?></option>;
+					<?php endforeach; ?>
+				</select>
+            </div>
+
+			<div class="form-group">
+                <?=form_label("Combo madre", 'madre');?>
+				<select name="madre" id="madre" class="form-control" style="width: 100%;">
+					<option value="" selected="selected">Seleccione una Opcion</option>
+					<?php	foreach ($madre as $m) : ?>
+						<option value="<?=$m->value?>"><?=$m->value?></option>;
+					<?php endforeach; ?>
+				</select>
+            </div>
+
+			<div class="form-group">
+                <?=form_label("Agregar", 'agregarInput');?>
+				<?=form_input(['id'=>'agregarInput', 'type'=>'checkbox', 'value'=>'1']);?>
+            </div>
+        </div>
+		</form>
+      </div>
+           
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn palette-Red-700 bg" onclick="agregarGrupo()">Registrar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -224,6 +290,32 @@
                         title: dato.message,
                         timer: 4500
                     });
+			});
+	}
+
+
+	function verModal(){
+
+		$('#agregar').modal('show');
+
+	}
+
+	function agregarGrupo(){
+		var collection = $('#newGroup form').serialize();
+
+		$.post("<?=site_url('agregar-grupo')?>", collection)
+            .done(function( data ) {
+
+				dato = JSON.parse(data);
+
+				$('#agregar').modal('hide');
+
+				Swal.fire({
+                        icon: dato.icon,
+                        title: dato.message,
+                        timer: 4500
+                    });
+
 			});
 	}
 

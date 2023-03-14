@@ -478,4 +478,26 @@
 
   }
 
+  public function agregarGrupo() {
+      $grupo = $this->input->post();
+
+      $cat1 = (isset($grupo['cat1'])) ? $grupo['cat1'] : null;
+      $cant = (isset($grupo['cantidad'])) ? $grupo['cantidad'] : 0;
+      $estado = 1;
+      $orden = (isset($grupo['orden1'])) ? $grupo['orden1'] : null;
+      $agregar = (isset($grupo['agregar'])) ? $grupo['agregar'] : 0;
+      $madre = (isset($grupo['madre'])) ? $grupo['madre'] : null;
+
+
+      $sql = "EXECUTE SET_ITEM_MENU_COMBO ?, ?, ?, ?, ?, ?";
+      $responseMenuCombo = $this->db->query($sql, [$cat1, $cant, $estado, $orden, $agregar, $madre]);
+
+      $response['icon'] = 'success';
+      $response['message'] = 'Grupo creado correctamente';
+
+
+      echo json_encode($response);
+
+  } 
+
 }

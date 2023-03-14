@@ -296,8 +296,8 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['guardar-receta-editada'] = 'configuraciones/Producto/saveRecetaEditada';
     $route['edit-table-receta'] = 'configuraciones/Producto/editReceta';
     $route['receta-borrar-logico'] = 'configuraciones/Producto/borrarLogico';
-
     $route['guardar-receta-combo'] = 'configuraciones/Producto/saveRecetaCombo';
+    $route['agregar-grupo'] = 'configuraciones/Producto/agregarGrupo';
 
 
 

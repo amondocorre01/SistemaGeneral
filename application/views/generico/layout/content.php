@@ -842,6 +842,9 @@ case 'receta-combo':
 
 	$data['primeraCategoria'] = getPrimeraCategoria();
 	$data['combo'] = getMenuCombo(); 
+	$data['cat1'] = getCategorias();
+	$data['orden'] = getOrden();
+	$data['madre'] = getMadre();
 
 	echo $this->load->view('generico/receta/combo', $data, TRUE);
 break;
