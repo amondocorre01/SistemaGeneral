@@ -295,7 +295,7 @@
 
 	function verModal(){
 
-		$('#agregar').modal('show');
+			$('#agregar').modal('show');
 
 	}
 
