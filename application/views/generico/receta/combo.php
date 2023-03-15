@@ -40,7 +40,7 @@
 							
 							<div class="form-group">
 							<label>Categoria</label>
-							<select name="productoCategoria1" id="productoCategoria1" class="form-control myFont" style="width: 100%;" onchange="getCategoria2()">
+							<select name="productoCategoria1" id="productoCategoria1" class="form-control myFont select2" style="width: 100%;" onchange="getCategoria2()">
 								<option value="">---Seleccione una opcion---</option>
 								<option value="-1">Todos</option>
 								<?php
@@ -54,7 +54,7 @@
 						<div class="col-md-2">
 							<div class="form-group">
 							<label>Subcategoria</label>
-							<select name="productoCategoria2" id="productoCategoria2" class="form-control myFont" style="width: 100%;" onchange="getProductoMadre()" >
+							<select name="productoCategoria2" id="productoCategoria2" class="form-control myFont select2" style="width: 100%;" onchange="getProductoMadre()" >
 								<option value="" selected="selected">Seleccione la segunda categoria</option>
 							</select>
 							</div>
@@ -62,7 +62,7 @@
 						<div class="col-md-3">
 							<div class="form-group">
 							<label>Seleccione el producto</label>
-							<select name="productoMadre" id="productoMadre" class="form-control myFont" style="width: 100%;" onchange="getProductoUnico()">
+							<select name="productoMadre" id="productoMadre" class="form-control myFont select2" style="width: 100%;" onchange="getProductoUnico()">
 								
 							</select>
 							</div>
@@ -71,7 +71,7 @@
 						<div class="col-md-2">
 							<div class="form-group">
 							<label>Seleccione la Presentacion</label>
-							<select name="productoUnico" id="productoUnico" class="form-control myFont" style="width: 100%;" onchange="showButtons()">
+							<select name="productoUnico" id="productoUnico" class="form-control myFont select2" style="width: 100%;" onchange="showButtons()">
 							
 							</select>
 							</div>
@@ -186,6 +186,10 @@
 		$('[data-toggle="tooltip"]').tooltip()
 	});
 
+	$('.select2').select2({
+		theme: "classic"
+	});
+
 	
 	function getCategoria2() {
 
@@ -195,7 +199,10 @@
 		.done(function( data ) 
 		{
         	$('.loading').hide();
-            dato = JSON.parse(data); $('#productoCategoria2').empty();
+            dato = JSON.parse(data); 
+			$('#productoCategoria2').empty();
+			$('#productoMadre').empty();
+			$('#productoUnico').empty();
 
 
 			$('#productoCategoria2').append(new Option('--- Seleccione una Opcion ---', ''));
@@ -219,7 +226,7 @@
 			
 			$('#productoMadre').append(new Option('--- Seleccione una Opcion ---', ''));
 			$.each(dato, function( index, value ) {
-				$('#productoMadre').append(new Option(value.PRODUCTO_MADRE, value.ID_PRODUCTO_MADRE));
+				$('#productoMadre').append(new Option(value.PRODUCTO, value.ID_PRODUCTO_MADRE));
 			});
 		});	
 	}

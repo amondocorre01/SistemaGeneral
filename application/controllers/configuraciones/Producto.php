@@ -322,18 +322,18 @@
 
          if($id > 0) 
          {
-            $sqlProductoMadre = "SELECT productos FROM CATEGORIA_2 WHERE ID_CATEGORIA_2 = ".$id;
+            $sqlProductoMadre = "SELECT  ID_PRODUCTO_MADRE, TRIM(CONCAT_WS(' ', vc.CATEGORIA_2, vpm.PRODUCTO_MADRE)) AS PRODUCTO FROM VENTAS_PRODUCTO_MADRE vpm, VENTAS_CATEGORIA_2 vc WHERE vpm.ID_CATEGORIA_2 = vc.ID_CATEGORIA_2 AND vc.ELIMINADO. vc.ID_CATEGORIA_2 = ".$id;
          }
             
          else
          {
-            $sqlProductoMadre = "SELECT productos FROM CATEGORIA_2 ";
+            $sqlProductoMadre = "SELECT  ID_PRODUCTO_MADRE, TRIM(CONCAT_WS(' ', vc.CATEGORIA_2, vpm.PRODUCTO_MADRE)) AS PRODUCTO FROM VENTAS_PRODUCTO_MADRE vpm, VENTAS_CATEGORIA_2 vc WHERE vpm.ID_CATEGORIA_2 = vc.ID_CATEGORIA_2";
          }
             
 
          $response = $this->db->query($sqlProductoMadre)->result();
 
-         echo $response[0]->productos;
+         echo json_encode($response);
       }
 
       public function getProductoUnico(){
@@ -408,14 +408,11 @@
 
   public function saveRecetaEditada() {
 
-
    $receta = $this->input->post();
 
    $response['status'] = false; 
    $response['icon'] = 'error';
    $response['message'] = 'No se ha guardado nada'; 
-
-
 
 
    foreach ($receta as $key => $r) {
