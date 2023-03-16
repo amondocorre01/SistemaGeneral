@@ -298,6 +298,8 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['receta-borrar-logico'] = 'configuraciones/Producto/borrarLogico';
     $route['guardar-receta-combo'] = 'configuraciones/Producto/saveRecetaCombo';
     $route['agregar-grupo'] = 'configuraciones/Producto/agregarGrupo';
+    $route['get-elementos-combo'] = 'configuraciones/Producto/elementoCombo';
+    $route['set-categoria-1'] = 'configuraciones/Producto/setCategoria1';
 
 
 

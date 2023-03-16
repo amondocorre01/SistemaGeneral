@@ -28,24 +28,28 @@
 								<?php endforeach; ?>
 							</select>
 						</div>
-						<div class="col-md-1 btn-group">
+						<div class="col-md-2 btn-group">
 							<button onclick="verModal()" class="btn btn-danger btn-lg" type="button">Agregar</button>
+							<button onclick="buscarElementos()" class="btn btn-success btn-lg" type="button">Buscar</button>
 						</div>
 					</div>
 
 					<br>
 
-					<div class="row" id="elemento_combo">
+					<div id="buscador">
+
+					<div class="row control-group" id="elemento_combo">
 						<div class="col-md-3">
 							
 							<div class="form-group">
 							<label>Categoria</label>
+							<span onclick="rowsCat1()" class="btnShowProducts btn-info btn-xs" title="Agregar los elementos"><i class="fa fa-plus"></i></span>
 							<select name="productoCategoria1" id="productoCategoria1" class="form-control myFont select2" style="width: 100%;" onchange="getCategoria2()">
 								<option value="">---Seleccione una opcion---</option>
 								<option value="-1">Todos</option>
 								<?php
 									foreach ($primeraCategoria as $key => $value) {
-										echo '<option '.$sel.' value="'.$value->ID_CATEGORIA.'">'.$value->CATEGORIA.'</option>';
+										echo '<option value="'.$value->ID_CATEGORIA.'">'.$value->CATEGORIA.'</option>';
 									}
 								?>
 							</select>
@@ -84,6 +88,7 @@
 						</div>
 
 					</div>
+
 					<br>
 					<div class="row">
 						<div class="col-md-12" id="table-receta">
@@ -107,6 +112,12 @@
 							</form>
 						</div>
 					</div>
+
+					</div>
+					
+
+					
+					
 				</form>
 			</div>
         </div>
@@ -183,7 +194,8 @@
 <script>
 
 	$(function () {
-		$('[data-toggle="tooltip"]').tooltip()
+		$('[data-toggle="tooltip"]').tooltip();
+		$('#buscador').hide();
 	});
 
 	$('.select2').select2({
@@ -335,6 +347,92 @@
 	function verMenuCombo() {
 
 		alert('Hola');
+	}
+
+	function buscarElementos() {
+
+		var id = $('#menuCombo option:selected').val();
+		var nombre = $('#menuCombo option:selected').text();
+		
+		if(id > 0)
+		{
+			$('#buscador').show('slow');
+
+
+			$.post('<?=site_url('get-elementos-combo')?>', {id:id, nombre:nombre})
+			.done(function( data ) {
+
+				var datos = JSON.parse(data);
+				
+				$.each(datos, function (index, value) { 
+
+
+					var grupo = value.GRUPO;
+					var idGrupo = value.ID_CATEGORIA_1;
+				    var nombre = value.PRODUCTO_MADRE;
+					var idUnico = value.ID_PRODUCTO_UNICO;
+					var opcional = value.OPCIONAL;
+					var precio = value.PRECIO;
+					var presentacion = $('#productoUnico option:selected').text();
+
+				    var row = '<tr class="palette-Green-100 bg" id="row_'+idUnico+'">';
+
+					row += '<td>'+grupo+'<input type="hidden" name="'+idUnico+'[idUnico]" value="'+idUnico+'"><input type="hidden" name="'+idUnico+'[idGrupo]" value="'+idGrupo+'"></td>';
+
+					var tamanio = presentacion ? presentacion : 'Tamaño Unico'
+
+					row += '<td>'+nombre+'('+tamanio+')</td>';
+					row += '<td><input name="'+idUnico+'[opcional]" value="'+opcional+'" type="checkbox"></td>';
+					row += '<td><input name="'+idUnico+'[precio]" value="'+precio+'" type="number" step="0.10" min="0.00"></td>';
+					row += '<td><input name="'+idUnico+'[visual]" value="1" type="checkbox"></td>';
+					
+					row += '<td><span onclick="borrar('+idUnico+')" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span></td>';
+
+					row += '</tr>';
+
+					$('#elementoReceta').append(row);
+					 
+				});
+			});
+		}
+	}
+
+	function rowsCat1() {
+
+		var id = $('#productoCategoria1 option:selected').val();
+
+		$.post("<?=site_url('set-categoria-1')?>", {id:id})
+		.done(function( data ) {
+
+			var datos = JSON.parse(data);
+				
+				$.each(datos, function (index, value) { 
+
+
+					var grupo = $('#menuCombo option:selected').text();
+					var idGrupo = $('#menuCombo option:selected').val();
+				    var nombre = value.NOMBRE;
+					var idUnico = value.ID_PRODUCTO_UNICO;
+					var presentacion = $('#productoUnico option:selected').text();
+
+				    var row = '<tr id="row_'+idUnico+'">';
+
+					row += '<td>'+grupo+'<input type="hidden" name="'+idUnico+'[idUnico]" value="'+idUnico+'"><input type="hidden" name="'+idUnico+'[idGrupo]" value="'+idGrupo+'"></td>';
+
+					row += '<td>'+nombre+'</td>';
+					row += '<td><input name="'+idUnico+'[opcional]" value="1" type="checkbox"></td>';
+					row += '<td><input name="'+idUnico+'[precio]" value="0" type="number" step="0.10" min="0.00"></td>';
+					row += '<td><input name="'+idUnico+'[visual]" value="1" type="checkbox"></td>';
+					
+					row += '<td><span onclick="borrar('+idUnico+')" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span></td>';
+
+					row += '</tr>';
+
+					$('#elementoReceta').append(row);
+					 
+				});
+		});
+
 	}
 
 </script>
