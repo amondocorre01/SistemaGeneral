@@ -300,6 +300,13 @@ $route['actualizar-permisos-perfil'] = 'api/perfiles/save';
     $route['agregar-grupo'] = 'configuraciones/Producto/agregarGrupo';
     $route['get-elementos-combo'] = 'configuraciones/Producto/elementoCombo';
     $route['set-categoria-1'] = 'configuraciones/Producto/setCategoria1';
+    $route['set-categoria-2'] = 'configuraciones/Producto/setCategoria2';
+    $route['set-categoria-3'] = 'configuraciones/Producto/setCategoria3';
+    $route['set-categoria-4'] = 'configuraciones/Producto/setCategoria4';
+    $route['delete-elemento-combo'] =  'configuraciones/Producto/deleteElementoCombo';
+
+
+
 
 
 

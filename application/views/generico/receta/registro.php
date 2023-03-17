@@ -118,7 +118,7 @@
 			
 			$('#productoMadre').append(new Option('--- Seleccione una Opcion ---', ''));
 			$.each(dato, function( index, value ) {
-				$('#productoMadre').append(new Option(value.PRODUCTO_MADRE, value.ID_PRODUCTO_MADRE));
+				$('#productoMadre').append(new Option(value.PRODUCTO, value.ID_PRODUCTO_MADRE));
 			});
 		});	
 	}

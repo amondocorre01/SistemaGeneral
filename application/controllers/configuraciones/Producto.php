@@ -516,7 +516,7 @@
          $pieces = explode("-", $nombre);
          $madre =  $pieces[0];
 
-         $sql = "SELECT CONCAT_WS('-', mc2.COMBO_MADRE, NOMBRE_MENU) AS GRUPO, mc2.ID_CATEGORIA_1, pm.PRODUCTO_MADRE, rc.ID_PRODUCTO_UNICO, rc.OPCIONAL, rc.PRECIO FROM VENTAS_RECETA_COMBO rc, VENTAS_PRODUCTO_UNICO pu, VENTAS_PRODUCTO_MADRE pm, VENTAS_MENU_COMBO mc2 WHERE rc.ID_VENTAS_MENU_COMBO = (SELECT TOP 1 mc.ID_VENTAS_MENU_COMBO FROM VENTAS_MENU_COMBO mc WHERE mc.COMBO_MADRE = ? AND mc.ID_CATEGORIA_1 = ?) AND rc.ID_PRODUCTO_UNICO = pu.ID_PRODUCTO_UNICO AND pu.ID_PRODUCTO_MADRE = pm.ID_PRODUCTO_MADRE AND rc.ID_VENTAS_MENU_COMBO = mc2.ID_VENTAS_MENU_COMBO";
+         $sql = "SELECT CONCAT_WS('-', mc2.COMBO_MADRE, NOMBRE_MENU) AS GRUPO, mc2.ID_CATEGORIA_1, pm.PRODUCTO_MADRE, rc.ID_VENTAS_MENU_COMBO, rc.ID_PRODUCTO_UNICO, rc.OPCIONAL, rc.PRECIO FROM VENTAS_RECETA_COMBO rc, VENTAS_PRODUCTO_UNICO pu, VENTAS_PRODUCTO_MADRE pm, VENTAS_MENU_COMBO mc2 WHERE rc.ID_VENTAS_MENU_COMBO = (SELECT TOP 1 mc.ID_VENTAS_MENU_COMBO FROM VENTAS_MENU_COMBO mc WHERE mc.COMBO_MADRE = ? AND mc.ID_CATEGORIA_1 = ?) AND rc.ID_PRODUCTO_UNICO = pu.ID_PRODUCTO_UNICO AND pu.ID_PRODUCTO_MADRE = pm.ID_PRODUCTO_MADRE AND rc.ID_VENTAS_MENU_COMBO = mc2.ID_VENTAS_MENU_COMBO AND rc.ESTADO = 1";
 
          $responseRecetaCombo = $this->db->query($sql, [$madre, $id])->result();
 
@@ -543,20 +543,57 @@
 
    public function setCategoria2(){
 
-      $id1 = $this->input->post('id');
+      $id1 = $this->input->post('id1');
       $id2 = $this->input->post('id2');
 
-      $sql = "SELECT CONCAT(vc2.CATEGORIA_2,' ',vpm.PRODUCTO_MADRE,'(',vt.TAMAÑO,')') AS NOMBRE, vpu.ID_PRODUCTO_UNICO FROM VENTAS_CATEGORIA_1 vc1, VENTAS_CATEGORIA_2 vc2, VENTAS_PRODUCTO_MADRE vpm, VENTAS_PRODUCTO_UNICO vpu, VENTAS_TAMAÑO vt 
-   WHERE
-      vc1.ID_CATEGORIA = ? AND vc2. AND vc1.ELIMINADO = 0 AND vc2.ID_CATEGORIA = vc1.ID_CATEGORIA AND 
-      vpm.ID_CATEGORIA_2 = vc2.ID_CATEGORIA_2 AND vpu.ID_PRODUCTO_MADRE = vpm.ID_PRODUCTO_MADRE AND 
-      vt.ID_TAMAÑO = vpu.ID_TAMAÑO AND vc2.ELIMINADO = 0 and vpm.ELIMINADO = 0 AND vpu.ELIMINADO = 0
-      ";
+      $sql = "SELECT CONCAT(vc2.CATEGORIA_2,' ',vpm.PRODUCTO_MADRE,'(',vt.TAMAÑO,')') AS NOMBRE, vpu.ID_PRODUCTO_UNICO FROM VENTAS_CATEGORIA_1 vc1, VENTAS_CATEGORIA_2 vc2, VENTAS_PRODUCTO_MADRE vpm, VENTAS_PRODUCTO_UNICO vpu, VENTAS_TAMAÑO vt WHERE vc1.ID_CATEGORIA = ? AND vc2.ID_CATEGORIA_2 = ? AND vc1.ELIMINADO = 0 AND vc2.ID_CATEGORIA = vc1.ID_CATEGORIA AND vpm.ID_CATEGORIA_2 = vc2.ID_CATEGORIA_2 AND vpu.ID_PRODUCTO_MADRE = vpm.ID_PRODUCTO_MADRE AND vt.ID_TAMAÑO = vpu.ID_TAMAÑO AND vc2.ELIMINADO = 0 and vpm.ELIMINADO = 0 AND vpu.ELIMINADO = 0";
 
-      $response = $this->db->query($sql, [$id])->result();
+      $response = $this->db->query($sql, [$id1, $id2])->result();
 
       echo json_encode($response);
 
+   }
+
+   public function setCategoria3(){
+
+      $id1 = $this->input->post('id1');
+      $id2 = $this->input->post('id2');
+      $id3 = $this->input->post('id3');
+
+      $sql = "SELECT CONCAT(vc2.CATEGORIA_2,' ',vpm.PRODUCTO_MADRE,'(',vt.TAMAÑO,')') AS NOMBRE, vpu.ID_PRODUCTO_UNICO FROM VENTAS_CATEGORIA_1 vc1, VENTAS_CATEGORIA_2 vc2, VENTAS_PRODUCTO_MADRE vpm, VENTAS_PRODUCTO_UNICO vpu, VENTAS_TAMAÑO vt WHERE vc1.ID_CATEGORIA = ? AND vc2.ID_CATEGORIA_2 = ? AND vpm.ID_PRODUCTO_MADRE = ? AND vc1.ELIMINADO = 0 AND vc2.ID_CATEGORIA = vc1.ID_CATEGORIA AND vpm.ID_CATEGORIA_2 = vc2.ID_CATEGORIA_2 AND vpu.ID_PRODUCTO_MADRE = vpm.ID_PRODUCTO_MADRE AND vt.ID_TAMAÑO = vpu.ID_TAMAÑO AND vc2.ELIMINADO = 0 and vpm.ELIMINADO = 0 AND vpu.ELIMINADO = 0";
+
+      $response = $this->db->query($sql, [$id1, $id2, $id3])->result();
+
+      echo json_encode($response);
+
+   }
+
+   public function setCategoria4(){
+
+      $id1 = $this->input->post('id1');
+      $id2 = $this->input->post('id2');
+      $id3 = $this->input->post('id3');
+      $id4 = $this->input->post('id4');
+
+      $sql = "SELECT CONCAT(vc2.CATEGORIA_2,' ',vpm.PRODUCTO_MADRE,'(',vt.TAMAÑO,')') AS NOMBRE, vpu.ID_PRODUCTO_UNICO FROM VENTAS_CATEGORIA_1 vc1, VENTAS_CATEGORIA_2 vc2, VENTAS_PRODUCTO_MADRE vpm, VENTAS_PRODUCTO_UNICO vpu, VENTAS_TAMAÑO vt WHERE vc1.ID_CATEGORIA = ? AND vc2.ID_CATEGORIA_2 = ? AND vpm.ID_PRODUCTO_MADRE = ? AND vpu.ID_PRODUCTO_UNICO = ? AND vc1.ELIMINADO = 0 AND vc2.ID_CATEGORIA = vc1.ID_CATEGORIA AND vpm.ID_CATEGORIA_2 = vc2.ID_CATEGORIA_2 AND vpu.ID_PRODUCTO_MADRE = vpm.ID_PRODUCTO_MADRE AND vt.ID_TAMAÑO = vpu.ID_TAMAÑO AND vc2.ELIMINADO = 0 and vpm.ELIMINADO = 0 AND vpu.ELIMINADO = 0";
+
+      $response = $this->db->query($sql, [$id1, $id2, $id3, $id4])->result();
+
+      echo json_encode($response);
+
+   }
+
+   public function deleteElementoCombo() {
+      $id = $this->input->post('id');
+      $menu = $this->input->post('menu');
+
+      $sql = "UPDATE VENTAS_RECETA_COMBO SET ESTADO = 0 WHERE ID_PRODUCTO_UNICO = ? AND ID_VENTAS_MENU_COMBO = ?";
+
+      $this->db->query($sql, [$id, $menu]);
+
+      $response['status'] = true;
+
+      echo json_encode($response);
    }
 
 } 

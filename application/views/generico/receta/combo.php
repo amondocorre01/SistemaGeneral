@@ -28,13 +28,15 @@
 								<?php endforeach; ?>
 							</select>
 						</div>
-						<div class="col-md-2 btn-group">
-							<button onclick="verModal()" class="btn btn-danger btn-lg" type="button">Agregar</button>
-							<button onclick="buscarElementos()" class="btn btn-success btn-lg" type="button">Buscar</button>
+						<div class="col-md-4 btn-group">
+							<button onclick="buscarElementos()" class="btn btn-success btn-lg" type="button"><i class="las la-search la-1x"></i>Buscar</button>
+							<button onclick="verModal()" class="btn btn-danger btn-lg" type="button"><i class="las la-plus la-1x"></i>Agregar</button>
+							<button onclick="limpiarElementos()" class="btn btn-info btn-lg" type="button"><i class="las la-broom la-1x"></i>Limpiar</button>
+							
 						</div>
 					</div>
 
-					<br>
+					<br><hr><br><br>
 
 					<div id="buscador">
 
@@ -55,9 +57,10 @@
 							</select>
 							</div>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<div class="form-group">
 							<label>Subcategoria</label>
+							<span onclick="rowsCat2()" class="btnShowProducts btn-info btn-xs" title="Agregar los elementos"><i class="fa fa-plus"></i></span>
 							<select name="productoCategoria2" id="productoCategoria2" class="form-control myFont select2" style="width: 100%;" onchange="getProductoMadre()" >
 								<option value="" selected="selected">Seleccione la segunda categoria</option>
 							</select>
@@ -65,25 +68,21 @@
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-							<label>Seleccione el producto</label>
+							<label>Producto</label>
+							<span onclick="rowsCat3()" class="btnShowProducts btn-info btn-xs" title="Agregar los elementos"><i class="fa fa-plus"></i></span>
 							<select name="productoMadre" id="productoMadre" class="form-control myFont select2" style="width: 100%;" onchange="getProductoUnico()">
 								
 							</select>
 							</div>
 						</div>
 
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<div class="form-group">
-							<label>Seleccione la Presentacion</label>
-							<select name="productoUnico" id="productoUnico" class="form-control myFont select2" style="width: 100%;" onchange="showButtons()">
+							<label>Presentacion</label>
+							<span onclick="rowsCat4()" class="btnShowProducts btn-info btn-xs" title="Agregar los elementos"><i class="fa fa-plus"></i></span>
+							<select name="productoUnico" id="productoUnico" class="form-control myFont select2" style="width: 100%;">
 							
 							</select>
-							</div>
-						</div>
-
-						<div class="col-md-1">
-							<div class="btn-group" role="group" aria-label="Basic example">
-								<span hidden class="gbutton palette-Red-700 bg btn btn-padding" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="setReceta()"><i class="las la-plus-square la-2x"></i></span>
 							</div>
 						</div>
 
@@ -114,10 +113,6 @@
 					</div>
 
 					</div>
-					
-
-					
-					
 				</form>
 			</div>
         </div>
@@ -265,34 +260,6 @@
 		$('.gbutton').removeAttr('hidden');
 	}
 
-	function setReceta() {
-
-		var grupo = $('#menuCombo option:selected').text();
-		var idGrupo = $('#menuCombo option:selected').val();
-		var nombre = $('#productoMadre option:selected').text();
-		var idUnico = $('#productoUnico option:selected').val();
-		var presentacion = $('#productoUnico option:selected').text();
-
-
-
-		var row = '<tr id="row_'+idUnico+'">';
-
-		row += '<td>'+grupo+'<input type="hidden" name="'+idUnico+'[idUnico]" value="'+idUnico+'"><input type="hidden" name="'+idUnico+'[idGrupo]" value="'+idGrupo+'"></td>';
-
-		var tamanio = presentacion ? presentacion : 'Tamaño Unico'
-
-		row += '<td>'+nombre+'('+tamanio+')</td>';
-		row += '<td><input name="'+idUnico+'[opcional]" value="1" type="checkbox"></td>';
-		row += '<td><input name="'+idUnico+'[precio]" value="0" type="number" step="0.10" min="0.00"></td>';
-		row += '<td><input name="'+idUnico+'[visual]" value="1" type="checkbox"></td>';
-		
-		row += '<td><span onclick="borrar('+idUnico+')" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span></td>';
-
-		row += '</tr>';
-
-		$('#elementoReceta').append(row);
-
-	}
 
 	function guardarReceta()
 	{
@@ -339,9 +306,22 @@
 			});
 	}
 
-	function borrar(id)
+	function borrar(id,menu)
 	{
-		$('#row_'+id).remove();
+		$('#row_'+id+'_'+menu).remove();
+
+		$.post('<?=site_url('delete-elemento-combo')?>', {id:id, menu:menu})
+		.done(function( data ) {
+			datos = JSON.parse(data);
+
+			if(datos.status == true) {
+				Swal.fire({
+					icon: 'success',
+					title: 'Se ha quitado el elemento del combo',
+					timer: 4500
+				});
+			}
+		});
 	}
 
 	function verMenuCombo() {
@@ -373,9 +353,10 @@
 					var idUnico = value.ID_PRODUCTO_UNICO;
 					var opcional = value.OPCIONAL;
 					var precio = value.PRECIO;
+					var menu = value.ID_VENTAS_MENU_COMBO;
 					var presentacion = $('#productoUnico option:selected').text();
 
-				    var row = '<tr class="palette-Green-100 bg" id="row_'+idUnico+'">';
+				    var row = '<tr class="palette-Green-100 bg" id="row_'+idUnico+'_'+menu+'">';
 
 					row += '<td>'+grupo+'<input type="hidden" name="'+idUnico+'[idUnico]" value="'+idUnico+'"><input type="hidden" name="'+idUnico+'[idGrupo]" value="'+idGrupo+'"></td>';
 
@@ -386,7 +367,7 @@
 					row += '<td><input name="'+idUnico+'[precio]" value="'+precio+'" type="number" step="0.10" min="0.00"></td>';
 					row += '<td><input name="'+idUnico+'[visual]" value="1" type="checkbox"></td>';
 					
-					row += '<td><span onclick="borrar('+idUnico+')" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span></td>';
+					row += '<td><span onclick="borrar('+idUnico+','+menu+')" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span></td>';
 
 					row += '</tr>';
 
@@ -401,21 +382,74 @@
 
 		var id = $('#productoCategoria1 option:selected').val();
 
-		$.post("<?=site_url('set-categoria-1')?>", {id:id})
-		.done(function( data ) {
+
+		if(id) 
+		{
+			$.post("<?=site_url('set-categoria-1')?>", {id:id})
+			.done(function( data ) {
+
+				var datos = JSON.parse(data);
+					
+					$.each(datos, function (index, value) { 
+
+
+						var grupo = $('#menuCombo option:selected').text();
+						var idGrupo = $('#menuCombo option:selected').val();
+						var nombre = value.NOMBRE;
+						var idUnico = value.ID_PRODUCTO_UNICO;
+						var presentacion = $('#productoUnico option:selected').text();
+
+						var row = '<tr class="temporal" id="row_'+idUnico+'">';
+
+						row += '<td>'+grupo+'<input type="hidden" name="'+idUnico+'[idUnico]" value="'+idUnico+'"><input type="hidden" name="'+idUnico+'[idGrupo]" value="'+idGrupo+'"></td>';
+
+						row += '<td>'+nombre+'</td>';
+						row += '<td><input name="'+idUnico+'[opcional]" value="1" type="checkbox"></td>';
+						row += '<td><input name="'+idUnico+'[precio]" value="0" type="number" step="0.10" min="0.00"></td>';
+						row += '<td><input name="'+idUnico+'[visual]" value="1" type="checkbox"></td>';
+						
+						row += '<td><span onclick="borrar('+idUnico+')" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span></td>';
+
+						row += '</tr>';
+
+						$('#elementoReceta').append(row);
+						
+					});
+			});
+		}
+
+		else 
+		{
+			Swal.fire({
+                        icon: 'info',
+                        title: 'Debe elegir una categoria primero',
+                        timer: 4500
+                    });
+		}
+
+	}
+
+	function rowsCat2() {
+
+		var id1 = $('#productoCategoria1 option:selected').val();
+		var id2 = $('#productoCategoria2 option:selected').val();
+
+		if(id1 && id2) {
+
+			$.post("<?=site_url('set-categoria-2')?>", {id1:id1, id2:id2})
+			.done(function( data ) {
 
 			var datos = JSON.parse(data);
-				
-				$.each(datos, function (index, value) { 
-
+		
+			$.each(datos, function (index, value) { 
 
 					var grupo = $('#menuCombo option:selected').text();
 					var idGrupo = $('#menuCombo option:selected').val();
-				    var nombre = value.NOMBRE;
+					var nombre = value.NOMBRE;
 					var idUnico = value.ID_PRODUCTO_UNICO;
 					var presentacion = $('#productoUnico option:selected').text();
 
-				    var row = '<tr id="row_'+idUnico+'">';
+					var row = '<tr class="temporal" id="row_'+idUnico+'">';
 
 					row += '<td>'+grupo+'<input type="hidden" name="'+idUnico+'[idUnico]" value="'+idUnico+'"><input type="hidden" name="'+idUnico+'[idGrupo]" value="'+idGrupo+'"></td>';
 
@@ -429,10 +463,116 @@
 					row += '</tr>';
 
 					$('#elementoReceta').append(row);
-					 
+					
 				});
+			});
+		}
+
+		else 
+		{
+			Swal.fire({
+				icon: 'info',
+				title: 'Debe elegir una sub-categoria primero',
+				timer: 4500
+			});
+		}	
+	}
+
+	function rowsCat3() {
+
+		var id1 = $('#productoCategoria1 option:selected').val();
+		var id2 = $('#productoCategoria2 option:selected').val();
+		var id3 = $('#productoMadre option:selected').val();
+
+		if(id1 && id2 && id3) {
+
+		$.post("<?=site_url('set-categoria-3')?>", {id1:id1, id2:id2, id3:id3})
+		.done(function( data ) {
+
+		var datos = JSON.parse(data);
+
+			$.each(datos, function (index, value) { 
+
+
+				var grupo = $('#menuCombo option:selected').text();
+				var idGrupo = $('#menuCombo option:selected').val();
+				var nombre = value.NOMBRE;
+				var idUnico = value.ID_PRODUCTO_UNICO;
+				var presentacion = $('#productoUnico option:selected').text();
+
+				var row = '<tr class="temporal" id="row_'+idUnico+'">';
+
+				row += '<td>'+grupo+'<input type="hidden" name="'+idUnico+'[idUnico]" value="'+idUnico+'"><input type="hidden" name="'+idUnico+'[idGrupo]" value="'+idGrupo+'"></td>';
+
+				row += '<td>'+nombre+'</td>';
+				row += '<td><input name="'+idUnico+'[opcional]" value="1" type="checkbox"></td>';
+				row += '<td><input name="'+idUnico+'[precio]" value="0" type="number" step="0.10" min="0.00"></td>';
+				row += '<td><input name="'+idUnico+'[visual]" value="1" type="checkbox"></td>';
+				
+				row += '<td><span onclick="borrar('+idUnico+')" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span></td>';
+
+				row += '</tr>';
+
+				$('#elementoReceta').append(row);
+				
+			});
 		});
 
+	}
+
+		else 
+		{
+			Swal.fire({
+				icon: 'info',
+				title: 'Debe elegir un producto primero',
+				timer: 4500
+			});
+		}
+	}
+
+	function rowsCat4() {
+
+		var id1 = $('#productoCategoria1 option:selected').val();
+		var id2 = $('#productoCategoria2 option:selected').val();
+		var id3 = $('#productoMadre option:selected').val();
+		var id4 = $('#productoUnico option:selected').val();
+
+		$.post("<?=site_url('set-categoria-4')?>", {id1:id1, id2:id2, id3:id3, id4:id4})
+		.done(function( data ) {
+
+		var datos = JSON.parse(data);
+
+			$.each(datos, function (index, value) { 
+
+
+				var grupo = $('#menuCombo option:selected').text();
+				var idGrupo = $('#menuCombo option:selected').val();
+				var nombre = value.NOMBRE;
+				var idUnico = value.ID_PRODUCTO_UNICO;
+				var presentacion = $('#productoUnico option:selected').text();
+
+				var row = '<tr class="temporal" id="row_'+idUnico+'">';
+
+				row += '<td>'+grupo+'<input type="hidden" name="'+idUnico+'[idUnico]" value="'+idUnico+'"><input type="hidden" name="'+idUnico+'[idGrupo]" value="'+idGrupo+'"></td>';
+
+				row += '<td>'+nombre+'</td>';
+				row += '<td><input name="'+idUnico+'[opcional]" value="1" type="checkbox"></td>';
+				row += '<td><input name="'+idUnico+'[precio]" value="0" type="number" step="0.10" min="0.00"></td>';
+				row += '<td><input name="'+idUnico+'[visual]" value="1" type="checkbox"></td>';
+				
+				row += '<td><span onclick="borrar('+idUnico+')" class="btn btn-xs palette-Red-700 bg"><i class="las la-trash"></i></span></td>';
+
+				row += '</tr>';
+
+				$('#elementoReceta').append(row);
+				
+			});
+		});
+	}
+
+
+	function limpiarElementos() {
+		$('.temporal').remove();
 	}
 
 </script>
