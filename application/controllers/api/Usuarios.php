@@ -135,6 +135,7 @@
             echo $this->load->view('usuario/body/permisos', $data, TRUE);
             
         }
+        
 
         public function permisos() {
 
