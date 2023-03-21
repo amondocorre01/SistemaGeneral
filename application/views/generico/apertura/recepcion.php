@@ -49,14 +49,16 @@
 
 
   <div class="row">
-    <div class="col-3">
-      <form method="POST" id="form_turno" action="<?=$action?>">
-        <select id="tipo_turno" name="turno" class="form-control" onchange="submit_turno()">
+    <div class="col-4">
+      <form class="form-inline" method="POST" id="form_turno" action="<?=$action?>">
+        <select id="tipo_turno" name="turno" class="form-control">
             <option value="">--- Seleccione una opcion ---</option>
             <?php foreach ($turnos as $t): ?>
                 <option value="<?=$t->TURNO?>" <?=($t->TURNO==$turno)?'selected':''?>><?=$t->TURNO?></option>
             <?php endforeach; ?>
         </select>
+
+        <?=form_button('enviar_tipo', '<span style="font-size:1.5rem" class="las la-search la-2x"></span>', ['class'=>'btn btn-success btn-xs float-right', 'onclick'=>'submit_turno()']);?>
       </form>
     </div>
     <div class="col-3">
